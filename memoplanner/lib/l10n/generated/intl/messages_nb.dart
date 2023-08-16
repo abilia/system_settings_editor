@@ -326,13 +326,14 @@ class MessageLookup extends MessageLookupByLibrary {
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Hvis du logger ut nå vil du miste følgende:'),
         'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
-            'Ignore battery optimizations'),
+            'Ignorer batterioptimaliseringer'),
         'imageArchive': MessageLookupByLibrary.simpleMessage('Bildearkiv'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Bildevalg'),
         'inTimePre': MessageLookupByLibrary.simpleMessage('om'),
         'incorrectCode': MessageLookupByLibrary.simpleMessage('Feil kode'),
         'infoType':
             MessageLookupByLibrary.simpleMessage('Velg ekstra funksjon'),
+        'infoTypeNone': MessageLookupByLibrary.simpleMessage(''),
         'installStarterSet':
             MessageLookupByLibrary.simpleMessage('Installere startoppsett?'),
         'installing': MessageLookupByLibrary.simpleMessage('Installerer'),
@@ -350,7 +351,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'licenseErrorAlreadyInUse':
             MessageLookupByLibrary.simpleMessage('Lisensen er allerede i bruk'),
         'licenseErrorNotFound': MessageLookupByLibrary.simpleMessage(
-            'Vi fant ikke en gyldig lisens.\nVennligst sjekk lisensnøkkelen og prøv på nytt'),
+            'Vi fant ikke en gyldig lisens.\nVennligst sjekk lisensnøkkelen og prøv på nytt.'),
         'licenseExpired':
             MessageLookupByLibrary.simpleMessage('Lisensen har utløpt'),
         'licenseExpiredMessage': MessageLookupByLibrary.simpleMessage(

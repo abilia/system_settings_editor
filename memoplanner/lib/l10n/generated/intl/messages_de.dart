@@ -334,13 +334,14 @@ class MessageLookup extends MessageLookupByLibrary {
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Wenn Sie sich jetzt abmelden, verlieren Folgendes:'),
         'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
-            'Ignore battery optimizations'),
+            'Batterieoptimierungen ignorieren'),
         'imageArchive': MessageLookupByLibrary.simpleMessage('Bildarchiv'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Bildauswahl'),
         'inTimePre': MessageLookupByLibrary.simpleMessage('in'),
         'incorrectCode': MessageLookupByLibrary.simpleMessage('Falscher Code'),
         'infoType':
             MessageLookupByLibrary.simpleMessage('Extrafunktion auswählen'),
+        'infoTypeNone': MessageLookupByLibrary.simpleMessage(''),
         'installStarterSet': MessageLookupByLibrary.simpleMessage(
             'Einstiegspaket installieren?'),
         'installing': MessageLookupByLibrary.simpleMessage('Wird installiert'),

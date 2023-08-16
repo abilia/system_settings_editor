@@ -332,6 +332,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'inTimePre': MessageLookupByLibrary.simpleMessage('om'),
         'incorrectCode': MessageLookupByLibrary.simpleMessage('Felaktig kod'),
         'infoType': MessageLookupByLibrary.simpleMessage('Välj extra funktion'),
+        'infoTypeNone': MessageLookupByLibrary.simpleMessage(''),
         'installStarterSet': MessageLookupByLibrary.simpleMessage(
             'Installera startuppsättning?'),
         'installing': MessageLookupByLibrary.simpleMessage('Installerar'),
@@ -349,7 +350,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'licenseErrorAlreadyInUse':
             MessageLookupByLibrary.simpleMessage('Licensen används redan'),
         'licenseErrorNotFound': MessageLookupByLibrary.simpleMessage(
-            'Vi hittade ingen giltig licens.\nKontrollera licensnyckeln och försök igen'),
+            'Vi hittade ingen giltig licens.\nKontrollera licensnyckeln och försök igen.'),
         'licenseExpired':
             MessageLookupByLibrary.simpleMessage('Licensen har gått ut'),
         'licenseExpiredMessage': MessageLookupByLibrary.simpleMessage(

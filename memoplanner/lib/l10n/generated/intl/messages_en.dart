@@ -195,7 +195,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'connectedNoInternet':
             MessageLookupByLibrary.simpleMessage('Connected, no internet'),
         'contactProviderToExtendLicense': MessageLookupByLibrary.simpleMessage(
-            'Contact your MEMOplanner provider in order to extend your license.'),
+            'Contact your MEMOplanner provider in order to extend your licence.'),
         'continue_': MessageLookupByLibrary.simpleMessage('Continue'),
         'countdown': MessageLookupByLibrary.simpleMessage('Countdown'),
         'createAccount': MessageLookupByLibrary.simpleMessage('Create Account'),
@@ -278,9 +278,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'enterYourCodeToAccess':
             MessageLookupByLibrary.simpleMessage('Enter your code to access'),
         'enterYourLicense':
-            MessageLookupByLibrary.simpleMessage('Enter your license key'),
+            MessageLookupByLibrary.simpleMessage('Enter your licence key'),
         'enterYourLicenseHint': MessageLookupByLibrary.simpleMessage(
-            'License key should contain 12 digits'),
+            'Licence key should contain 12 digits'),
         'error': MessageLookupByLibrary.simpleMessage('Error'),
         'evening': MessageLookupByLibrary.simpleMessage('evening'),
         'everyDay': MessageLookupByLibrary.simpleMessage('Every day (7)'),
@@ -325,6 +325,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'incorrectCode': MessageLookupByLibrary.simpleMessage('Incorrect code'),
         'infoType':
             MessageLookupByLibrary.simpleMessage('Select extra function'),
+        'infoTypeNone': MessageLookupByLibrary.simpleMessage(''),
         'installStarterSet':
             MessageLookupByLibrary.simpleMessage('Install starter set?'),
         'installing': MessageLookupByLibrary.simpleMessage('Installing'),
@@ -338,16 +339,16 @@ class MessageLookup extends MessageLookupByLibrary {
         'lastSyncWas': MessageLookupByLibrary.simpleMessage('Last sync was'),
         'left': MessageLookupByLibrary.simpleMessage('Left'),
         'licenseErrorAlreadyInUse':
-            MessageLookupByLibrary.simpleMessage('License is already in use'),
+            MessageLookupByLibrary.simpleMessage('Licence is already in use'),
         'licenseErrorNotFound': MessageLookupByLibrary.simpleMessage(
-            'We didn\'t find a valid license.\nPlease check the license key and try again'),
+            'We didn\'t find a valid licence.\nPlease check the licence key and try again.'),
         'licenseExpired':
-            MessageLookupByLibrary.simpleMessage('License is expired'),
+            MessageLookupByLibrary.simpleMessage('Licence is expired'),
         'licenseExpiredMessage': MessageLookupByLibrary.simpleMessage(
-            'Your license has expired and MEMOplanner will no longer synchronize with myAbilia'),
-        'licenseNumber': MessageLookupByLibrary.simpleMessage('License number'),
+            'Your licence has expired and MEMOplanner will no longer synchronize with myAbilia'),
+        'licenseNumber': MessageLookupByLibrary.simpleMessage('Licence number'),
         'licenseValidDate':
-            MessageLookupByLibrary.simpleMessage('License valid date'),
+            MessageLookupByLibrary.simpleMessage('Licence valid date'),
         'lineAcrossCurrentTime':
             MessageLookupByLibrary.simpleMessage('Line across current time'),
         'linesForEachHour':
@@ -370,7 +371,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'lunch': MessageLookupByLibrary.simpleMessage('Lunch'),
         'medium': MessageLookupByLibrary.simpleMessage('Medium'),
         'memoplannerLicenseExpired':
-            MessageLookupByLibrary.simpleMessage('MEMOplanner license expired'),
+            MessageLookupByLibrary.simpleMessage('MEMOplanner licence expired'),
         'menu': MessageLookupByLibrary.simpleMessage('Menu'),
         'menuItemsDisabled':
             MessageLookupByLibrary.simpleMessage('all menu items are disabled'),
@@ -402,7 +403,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'name': MessageLookupByLibrary.simpleMessage('Name'),
         'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
-            'You need an active license to save your data to myAbilia.'),
+            'You need an active licence to save your data to myAbilia.'),
         'newActivity': MessageLookupByLibrary.simpleMessage('New activity'),
         'newActivityTemplate':
             MessageLookupByLibrary.simpleMessage('New activity template'),
@@ -427,7 +428,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'noEndDate': MessageLookupByLibrary.simpleMessage('No end date'),
         'noImages': MessageLookupByLibrary.simpleMessage('You have no images'),
         'noLicense': MessageLookupByLibrary.simpleMessage(
-            'This account has no valid license.'),
+            'This account has no valid licence.'),
         'noMatchingImage':
             MessageLookupByLibrary.simpleMessage('No matching image name'),
         'noNotes': MessageLookupByLibrary.simpleMessage('You have no notes'),

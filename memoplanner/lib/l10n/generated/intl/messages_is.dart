@@ -25,727 +25,750 @@ class MessageLookup extends MessageLookupByLibrary {
       _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
-        'about': MessageLookupByLibrary.simpleMessage('About'),
-        'aboutDevice': MessageLookupByLibrary.simpleMessage('About the device'),
-        'aboutMemoplanner': MessageLookupByLibrary.simpleMessage('About'),
-        'acceptTerms': MessageLookupByLibrary.simpleMessage(
-            'I have read and agree to the'),
+        'about': MessageLookupByLibrary.simpleMessage('Um'),
+        'aboutDevice': MessageLookupByLibrary.simpleMessage('Um tækið'),
+        'aboutMemoplanner': MessageLookupByLibrary.simpleMessage('Um'),
+        'acceptTerms':
+            MessageLookupByLibrary.simpleMessage('Ég hef lesið og samþykkt'),
         'accessToCamera':
-            MessageLookupByLibrary.simpleMessage('Access to Camera'),
+            MessageLookupByLibrary.simpleMessage('Aðgangur að myndavél'),
         'accessToMicrophone':
-            MessageLookupByLibrary.simpleMessage('Access to Microphone'),
+            MessageLookupByLibrary.simpleMessage('Aðgangur að hljóðnema'),
         'accessToPhotos':
-            MessageLookupByLibrary.simpleMessage('Access to Photos'),
+            MessageLookupByLibrary.simpleMessage('Aðgangur að ljósmyndum'),
         'accountCreatedBody': MessageLookupByLibrary.simpleMessage(
-            'Your account has been created.\nYou can login using your username and password'),
+            'Reikningurinn þinn hefur verið stofnaður.\nÞú getur skráð þig inn með notandanafninu þínu og lykilorði'),
         'accountCreatedHeading':
-            MessageLookupByLibrary.simpleMessage('Account created'),
+            MessageLookupByLibrary.simpleMessage('Reikningur stofnaður'),
         'activateScreensaver':
-            MessageLookupByLibrary.simpleMessage('Activate Screensaver'),
-        'activities': MessageLookupByLibrary.simpleMessage('Activities'),
-        'activity': MessageLookupByLibrary.simpleMessage('Activity'),
+            MessageLookupByLibrary.simpleMessage('Virkja skjávörn'),
+        'activities': MessageLookupByLibrary.simpleMessage('Verkefni'),
+        'activity': MessageLookupByLibrary.simpleMessage('Verkefni'),
         'activityAvailableFor':
-            MessageLookupByLibrary.simpleMessage('Available for'),
+            MessageLookupByLibrary.simpleMessage('Í boði fyrir'),
         'activityDuration':
-            MessageLookupByLibrary.simpleMessage('Activity duration'),
+            MessageLookupByLibrary.simpleMessage('Tímalengd verkefnis'),
         'activityTemplatePlural':
-            MessageLookupByLibrary.simpleMessage('activity templates'),
+            MessageLookupByLibrary.simpleMessage('virk sniðmát'),
         'activityTemplateSingular':
-            MessageLookupByLibrary.simpleMessage('activity template'),
-        'activityView': MessageLookupByLibrary.simpleMessage('Activity View'),
-        'add': MessageLookupByLibrary.simpleMessage('Add'),
-        'addActivity': MessageLookupByLibrary.simpleMessage('Add activity'),
-        'addChecklist': MessageLookupByLibrary.simpleMessage('Add checklist'),
-        'addNew': MessageLookupByLibrary.simpleMessage('Add new'),
-        'addNote': MessageLookupByLibrary.simpleMessage('Add note'),
-        'addRecurringActivity':
-            MessageLookupByLibrary.simpleMessage('Add recurring activity'),
-        'addTimer': MessageLookupByLibrary.simpleMessage('Add Timer'),
+            MessageLookupByLibrary.simpleMessage('virkt sniðmát'),
+        'activityView': MessageLookupByLibrary.simpleMessage('Verkefnissýn'),
+        'add': MessageLookupByLibrary.simpleMessage('Bæta við'),
+        'addActivity':
+            MessageLookupByLibrary.simpleMessage('Bæta við verkefni'),
+        'addChecklist':
+            MessageLookupByLibrary.simpleMessage('Bæta við gátlista'),
+        'addNew': MessageLookupByLibrary.simpleMessage('Bæta við nýju'),
+        'addNote':
+            MessageLookupByLibrary.simpleMessage('Bæta við minnispunkti'),
+        'addRecurringActivity': MessageLookupByLibrary.simpleMessage(
+            'Bæta við síendurteknu verkefni'),
+        'addTimer': MessageLookupByLibrary.simpleMessage('Bæta við tímamæli'),
         'addToPhotoCalendarQuestion': MessageLookupByLibrary.simpleMessage(
-            'Do you want to add this photo to Photo-calendar?'),
-        'afternoon': MessageLookupByLibrary.simpleMessage('afternoon'),
-        'alarm': MessageLookupByLibrary.simpleMessage('Alarm'),
+            'Viltu bæta þessari ljósmynd við ljósmyndadagatalið?'),
+        'afternoon': MessageLookupByLibrary.simpleMessage('eftirmiðdagur'),
+        'alarm': MessageLookupByLibrary.simpleMessage('Viðvörun'),
         'alarmAndVibration':
-            MessageLookupByLibrary.simpleMessage('Alarm + vibration'),
-        'alarmOnlyAtStartTime':
-            MessageLookupByLibrary.simpleMessage('Alarm only at Start time'),
-        'alarmSettings': MessageLookupByLibrary.simpleMessage('Alarm settings'),
-        'alarmTime': MessageLookupByLibrary.simpleMessage('Alarm time'),
-        'alert': MessageLookupByLibrary.simpleMessage('Alert'),
+            MessageLookupByLibrary.simpleMessage('Viðvörun + titringur'),
+        'alarmOnlyAtStartTime': MessageLookupByLibrary.simpleMessage(
+            'Viðvörun aðeins við upphafstíma'),
+        'alarmSettings':
+            MessageLookupByLibrary.simpleMessage('Stillingar viðvörunar'),
+        'alarmTime': MessageLookupByLibrary.simpleMessage('Viðvörunartími'),
+        'alert': MessageLookupByLibrary.simpleMessage('Viðvörunarhljóð'),
         'alertAlarmsDisabled': MessageLookupByLibrary.simpleMessage(
-            'All alarms will be disabled until midnight on this device'),
-        'allDataSaved': MessageLookupByLibrary.simpleMessage('All data saved!'),
-        'allDay': MessageLookupByLibrary.simpleMessage('All day'),
-        'allDays': MessageLookupByLibrary.simpleMessage('All days'),
-        'allPhotos': MessageLookupByLibrary.simpleMessage('All photos'),
-        'allSupportPersons':
-            MessageLookupByLibrary.simpleMessage('All my support persons'),
-        'allow': MessageLookupByLibrary.simpleMessage('Allow'),
+            'Allar viðvaranir verða gerðar óvirkar fram til miðnættis á þessu tæki'),
+        'allDataSaved':
+            MessageLookupByLibrary.simpleMessage('Öll gögn vistuð!'),
+        'allDay': MessageLookupByLibrary.simpleMessage('Allur dagurinn'),
+        'allDays': MessageLookupByLibrary.simpleMessage('Alla daga'),
+        'allPhotos': MessageLookupByLibrary.simpleMessage('Allar ljósmyndir'),
+        'allSupportPersons': MessageLookupByLibrary.simpleMessage(
+            'Allir einstaklingar í þjónustu'),
+        'allow': MessageLookupByLibrary.simpleMessage('Heimila'),
         'allowAccessBody2': MessageLookupByLibrary.simpleMessage(
-            'You can always do that later from the'),
+            'Þú getur alltaf gert það síðar í'),
         'allowAccessCameraBody': MessageLookupByLibrary.simpleMessage(
-            'Allow access to camera to be able to take a photo from the device.'),
+            'Heimilaðu aðgang að ljósmyndum til að geta tekið ljósmyndir með tækinu.'),
         'allowAccessMicrophoneBody': MessageLookupByLibrary.simpleMessage(
-            'Allow access to microphone to be able to record speech from the device'),
+            'Heimilaðu aðgang að hljóðnema til að geta tekið upp tal með tækinu'),
         'allowAccessPhotosBody': MessageLookupByLibrary.simpleMessage(
-            'Allow access to photos to be able to use photos from the device.'),
+            'Heimilaðu aðgang að ljósmyndum til að geta notað ljósmyndir af tækinu.'),
         'allowNotifications':
-            MessageLookupByLibrary.simpleMessage('Allow notifications'),
+            MessageLookupByLibrary.simpleMessage('Heimila tilkynningar'),
         'allowNotificationsDescription1': MessageLookupByLibrary.simpleMessage(
-            'Allow notifications to be able to get alarms and reminders from activities. You can do that from the'),
+            'Heimila tilkynningar til að fá viðvaranir og áminningar frá verkefnum. Þú getur gert það í'),
         'allowPassedStartTime':
-            MessageLookupByLibrary.simpleMessage('Allow passed start time'),
-        'alwaysOn': MessageLookupByLibrary.simpleMessage('Always on'),
-        'am': MessageLookupByLibrary.simpleMessage('AM'),
-        'analogue': MessageLookupByLibrary.simpleMessage('Analogue'),
+            MessageLookupByLibrary.simpleMessage('Leyfa liðinn upphafstíma'),
+        'alwaysOn': MessageLookupByLibrary.simpleMessage('Alltaf kveikt'),
+        'am': MessageLookupByLibrary.simpleMessage('fyrir hádegi'),
+        'analogue': MessageLookupByLibrary.simpleMessage('Venjuleg'),
         'analogueDigital':
-            MessageLookupByLibrary.simpleMessage('Analogue + digital'),
+            MessageLookupByLibrary.simpleMessage('Venjuleg + stafræn'),
         'androidSettings':
-            MessageLookupByLibrary.simpleMessage('Android Settings'),
+            MessageLookupByLibrary.simpleMessage('Stillingar Android'),
         'androidVersion':
-            MessageLookupByLibrary.simpleMessage('Android version'),
-        'availableFor': MessageLookupByLibrary.simpleMessage('Available for'),
-        'back': MessageLookupByLibrary.simpleMessage('Back'),
-        'backToLogin': MessageLookupByLibrary.simpleMessage('Back to Login'),
-        'battery': MessageLookupByLibrary.simpleMessage('Battery'),
-        'browser': MessageLookupByLibrary.simpleMessage('Browser'),
-        'calendar': MessageLookupByLibrary.simpleMessage('Calendar'),
-        'calendarView': MessageLookupByLibrary.simpleMessage('Day Calendar'),
-        'camera': MessageLookupByLibrary.simpleMessage('Camera'),
-        'canLogOutSafely':
-            MessageLookupByLibrary.simpleMessage('Now you can log out safely'),
-        'cancel': MessageLookupByLibrary.simpleMessage('Cancel'),
+            MessageLookupByLibrary.simpleMessage('Android-útgáfa'),
+        'availableFor': MessageLookupByLibrary.simpleMessage('Í boði fyrir'),
+        'back': MessageLookupByLibrary.simpleMessage('Til baka'),
+        'backToLogin':
+            MessageLookupByLibrary.simpleMessage('Aftur í innskráningu'),
+        'battery': MessageLookupByLibrary.simpleMessage('Rafhlaða'),
+        'browser': MessageLookupByLibrary.simpleMessage('Vafri'),
+        'calendar': MessageLookupByLibrary.simpleMessage('Dagatal'),
+        'calendarView': MessageLookupByLibrary.simpleMessage('Dagatal'),
+        'camera': MessageLookupByLibrary.simpleMessage('Myndavél'),
+        'canLogOutSafely': MessageLookupByLibrary.simpleMessage(
+            'Nú getur þú skráð þig út með öruggum hætti'),
+        'cancel': MessageLookupByLibrary.simpleMessage('Hætta við'),
         'cancelChanges': MessageLookupByLibrary.simpleMessage('Cancel changes'),
-        'captions': MessageLookupByLibrary.simpleMessage('Captions'),
-        'categories': MessageLookupByLibrary.simpleMessage('Categories'),
-        'category': MessageLookupByLibrary.simpleMessage('Category'),
-        'check': MessageLookupByLibrary.simpleMessage('Check'),
-        'checkable': MessageLookupByLibrary.simpleMessage('Checkable'),
-        'checkableActivities':
-            MessageLookupByLibrary.simpleMessage('Checkable activities'),
+        'captions': MessageLookupByLibrary.simpleMessage('Yfirsagnir'),
+        'categories': MessageLookupByLibrary.simpleMessage('Flokkar'),
+        'category': MessageLookupByLibrary.simpleMessage('Flokkur'),
+        'check': MessageLookupByLibrary.simpleMessage('Skoða'),
+        'checkable': MessageLookupByLibrary.simpleMessage('Hægt að haka við'),
+        'checkableActivities': MessageLookupByLibrary.simpleMessage(
+            'Verkefni sem hægt er að haka við'),
         'checklist': MessageLookupByLibrary.simpleMessage('Checklist'),
         'checklistDoneInfo': MessageLookupByLibrary.simpleMessage(
-            'All checklist tasks in your activity are completed. Do you want to complete the activity?'),
-        'clear': MessageLookupByLibrary.simpleMessage('Clear'),
+            'Lokið hefur verið við alla gátlista í verkefninu þínu. Viltu ljúka þessu verkefni?'),
+        'clear': MessageLookupByLibrary.simpleMessage('Hreinsa'),
         'clearData':
-            MessageLookupByLibrary.simpleMessage('Clear MEMOplanner data'),
+            MessageLookupByLibrary.simpleMessage('Hreinsa gögn MEMOplanner'),
         'clearDataDescription': MessageLookupByLibrary.simpleMessage(
-            'Clear app data and go to startup guide.'),
-        'clickSound': MessageLookupByLibrary.simpleMessage('Click Sound'),
-        'clock': MessageLookupByLibrary.simpleMessage('Clock'),
-        'clockFiveMinutesHalfPastTts':
-            MessageLookupByLibrary.simpleMessage('twenty five to %s'),
+            'Hreinsa gögn apps og fara í ræsileiðbeiningar.'),
+        'clickSound': MessageLookupByLibrary.simpleMessage('Smelluhljóð'),
+        'clock': MessageLookupByLibrary.simpleMessage('Klukka'),
+        'clockFiveMinutesHalfPastTts': MessageLookupByLibrary.simpleMessage(
+            'tuttugu og fimm mínútur í %s'),
         'clockFiveMinutesPastTts':
-            MessageLookupByLibrary.simpleMessage('five past %s'),
-        'clockFiveMinutesToHalfPastTts':
-            MessageLookupByLibrary.simpleMessage('twenty five past %s'),
+            MessageLookupByLibrary.simpleMessage('fimm mínútur yfir %s'),
+        'clockFiveMinutesToHalfPastTts': MessageLookupByLibrary.simpleMessage(
+            'tuttugu og fimm mínútur yfir %s'),
         'clockFiveMinutesToTts':
-            MessageLookupByLibrary.simpleMessage('five to %s'),
+            MessageLookupByLibrary.simpleMessage('fimm mínútur í %s'),
         'clockHalfPastTts':
             MessageLookupByLibrary.simpleMessage('Half past %s'),
         'clockQuarterPastTts':
-            MessageLookupByLibrary.simpleMessage('quarter past %s'),
+            MessageLookupByLibrary.simpleMessage('korter yfir %s'),
         'clockQuarterToTts':
-            MessageLookupByLibrary.simpleMessage('Quarter to %s'),
+            MessageLookupByLibrary.simpleMessage('Korter í %s'),
         'clockTenMinutesPastTts':
-            MessageLookupByLibrary.simpleMessage('ten past %s'),
+            MessageLookupByLibrary.simpleMessage('tíu mínútur yfir %s'),
         'clockTenMinutesToTts':
-            MessageLookupByLibrary.simpleMessage('ten to %s'),
+            MessageLookupByLibrary.simpleMessage('tíu mínútur í %s'),
         'clockTheTimeIsTts':
-            MessageLookupByLibrary.simpleMessage('the time is %s'),
+            MessageLookupByLibrary.simpleMessage('klukkan er %s'),
         'clockTwentyMinutesPastTts':
-            MessageLookupByLibrary.simpleMessage('twenty past %s'),
+            MessageLookupByLibrary.simpleMessage('tuttugu mínútur yfir %s'),
         'clockTwentyMinutesToTts':
-            MessageLookupByLibrary.simpleMessage('twenty to %s'),
-        'close': MessageLookupByLibrary.simpleMessage('Close'),
-        'code': MessageLookupByLibrary.simpleMessage('Code'),
-        'codeProtect': MessageLookupByLibrary.simpleMessage('Code protect'),
+            MessageLookupByLibrary.simpleMessage('tuttugu mínútur í %s'),
+        'close': MessageLookupByLibrary.simpleMessage('Loka'),
+        'code': MessageLookupByLibrary.simpleMessage('Kóði'),
+        'codeProtect': MessageLookupByLibrary.simpleMessage('Kóðavernda'),
         'codeProtectAndroidSettings': MessageLookupByLibrary.simpleMessage(
-            'Code protect Android Settings'),
+            'Kóðavernda Android-stillingar'),
         'codeProtectSettings':
-            MessageLookupByLibrary.simpleMessage('Code protect settings'),
+            MessageLookupByLibrary.simpleMessage('Kóðavernda stillingar'),
         'codeProtectThisView':
-            MessageLookupByLibrary.simpleMessage('Code protect this view'),
-        'columnOfDots': MessageLookupByLibrary.simpleMessage('Column of dots'),
-        'columns': MessageLookupByLibrary.simpleMessage('Columns'),
-        'completed': MessageLookupByLibrary.simpleMessage('completed'),
-        'completedQuestion': MessageLookupByLibrary.simpleMessage('Completed?'),
-        'confirmCode': MessageLookupByLibrary.simpleMessage('Confirm code'),
+            MessageLookupByLibrary.simpleMessage('Kóðavernda þessa sýn'),
+        'columnOfDots': MessageLookupByLibrary.simpleMessage('Punktadálkur'),
+        'columns': MessageLookupByLibrary.simpleMessage('Dálkar'),
+        'completed': MessageLookupByLibrary.simpleMessage('lokið'),
+        'completedQuestion': MessageLookupByLibrary.simpleMessage('Lokið?'),
+        'confirmCode': MessageLookupByLibrary.simpleMessage('Staðfesta kóða'),
         'confirmDiscard': MessageLookupByLibrary.simpleMessage(
-            'Are you sure you want to discard your changes?'),
+            'Ertu viss um að vilja hafna breytingunum?'),
         'confirmFactoryReset': MessageLookupByLibrary.simpleMessage(
-            'Do you want to start factory reset?'),
+            'Viltu hefja endurstillingu á verksmiðjustillingar?'),
         'confirmFactoryResetDescription': MessageLookupByLibrary.simpleMessage(
-            'After factory reset is finished you will need to reinstall MEMOplanner software. Follow the reconditioning instructions to do that.'),
+            'Þegar endurstillingu á verksmiðjustillingar er lokið þarftu að setja aftur inn MEMOplanner-hugbúnaðinn. Fylgdu leiðbeiningunum um endurbyggingu til að gera það.'),
         'confirmPassword':
-            MessageLookupByLibrary.simpleMessage('Confirm password'),
-        'confirmPrivacyPolicy':
-            MessageLookupByLibrary.simpleMessage('Confirm privacy policy'),
+            MessageLookupByLibrary.simpleMessage('Staðfestu lykilorðið'),
+        'confirmPrivacyPolicy': MessageLookupByLibrary.simpleMessage(
+            'Staðfestu persónuverndarstefnuna'),
         'confirmTermsOfUse':
-            MessageLookupByLibrary.simpleMessage('Confirm terms of use'),
+            MessageLookupByLibrary.simpleMessage('Staðfestu notandaskilmálana'),
         'conflictWarning': MessageLookupByLibrary.simpleMessage(
-            'There are activities conflicting with this activity. Press OK to continue.'),
+            'Verkefni eru fyrir hendi sem stangast á við þetta verkefni. Ýttu á Í LAGI til að halda áfram.'),
         'connectInternetToContinue': MessageLookupByLibrary.simpleMessage(
-            'Connect to the internet to continue'),
+            'Tengstu netinu til að halda áfram'),
         'connectToInternetToLogOut': MessageLookupByLibrary.simpleMessage(
-            'Connect to internet to log out safely'),
+            'Tengstu netinu til að skrá þig út með öruggum hætti'),
         'connectToWifiToLogOut': MessageLookupByLibrary.simpleMessage(
-            'Connect to Wi-Fi to log out safely'),
-        'connected': MessageLookupByLibrary.simpleMessage('Connected'),
+            'Tengstu Wi-Fi til að skrá þig út með öruggum hætti'),
+        'connected': MessageLookupByLibrary.simpleMessage('Tengt'),
         'connectedNoInternet':
-            MessageLookupByLibrary.simpleMessage('Connected, no internet'),
+            MessageLookupByLibrary.simpleMessage('Tengt, engin nettenging'),
         'contactProviderToExtendLicense': MessageLookupByLibrary.simpleMessage(
-            'Contact your MEMOplanner provider in order to extend your license.'),
-        'continue_': MessageLookupByLibrary.simpleMessage('Continue'),
-        'countdown': MessageLookupByLibrary.simpleMessage('Countdown'),
-        'createAccount': MessageLookupByLibrary.simpleMessage('Create Account'),
+            'Hafðu samband við þjónustuveitanda MEMOplanner til að framlengja leyfið þitt.'),
+        'continue_': MessageLookupByLibrary.simpleMessage('Halda áfram'),
+        'countdown': MessageLookupByLibrary.simpleMessage('Niðurtalning'),
+        'createAccount':
+            MessageLookupByLibrary.simpleMessage('Stofna reikning'),
         'createAccountHeading': MessageLookupByLibrary.simpleMessage(
-            'Create your account in myAbilia'),
+            'Stofnaðu reikning á myAbilia'),
         'createAccountHint': MessageLookupByLibrary.simpleMessage(
-            'Don’t have a myAbilia account yet?'),
+            'Ertu ekki komin/n með myAbilia-reikning?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
-            'You need a myAbilia account to use MEMOplanner'),
+            'Þú þarft myAbilia-reikning til að nota MEMOplanner'),
         'daily': MessageLookupByLibrary.simpleMessage('Daily'),
-        'date': MessageLookupByLibrary.simpleMessage('Date'),
-        'day': MessageLookupByLibrary.simpleMessage('day'),
-        'dayAndNight': MessageLookupByLibrary.simpleMessage('Day and night'),
-        'dayCalendar': MessageLookupByLibrary.simpleMessage('Day Calendar'),
-        'dayColours': MessageLookupByLibrary.simpleMessage('Day colours'),
+        'date': MessageLookupByLibrary.simpleMessage('Dagsetning'),
+        'day': MessageLookupByLibrary.simpleMessage('dagur'),
+        'dayAndNight': MessageLookupByLibrary.simpleMessage('Dag og nótt'),
+        'dayCalendar': MessageLookupByLibrary.simpleMessage('Dagatal'),
+        'dayColours': MessageLookupByLibrary.simpleMessage('Dagalitir'),
         'dayInessive': MessageLookupByLibrary.simpleMessage(''),
-        'dayInterval': MessageLookupByLibrary.simpleMessage('Day interval'),
-        'days': MessageLookupByLibrary.simpleMessage('days'),
-        'defaultSound': MessageLookupByLibrary.simpleMessage('Default'),
-        'defaults': MessageLookupByLibrary.simpleMessage('Defaults'),
-        'delete': MessageLookupByLibrary.simpleMessage('Delete'),
-        'deleteActivityQuestion': MessageLookupByLibrary.simpleMessage(
-            'Do you want to delete this activity?'),
-        'deleteAfter': MessageLookupByLibrary.simpleMessage(
-            'Delete at the end of the day'),
+        'dayInterval': MessageLookupByLibrary.simpleMessage('Dagabil'),
+        'days': MessageLookupByLibrary.simpleMessage('dagar'),
+        'defaultSound': MessageLookupByLibrary.simpleMessage('Sjálfgefið'),
+        'defaults': MessageLookupByLibrary.simpleMessage('Sjálfgefið'),
+        'delete': MessageLookupByLibrary.simpleMessage('Eyða'),
+        'deleteActivityQuestion':
+            MessageLookupByLibrary.simpleMessage('Viltu eyða þessu verkefni?'),
+        'deleteAfter': MessageLookupByLibrary.simpleMessage('Eyða í lok dags'),
         'deleteRecurringActivity':
-            MessageLookupByLibrary.simpleMessage('Delete recurring activity'),
-        'deselectAll': MessageLookupByLibrary.simpleMessage('Deselect all'),
-        'deviceName': MessageLookupByLibrary.simpleMessage('Device name'),
+            MessageLookupByLibrary.simpleMessage('Eyða síendurteknu verkefni'),
+        'deselectAll': MessageLookupByLibrary.simpleMessage('Afvelja allt'),
+        'deviceName': MessageLookupByLibrary.simpleMessage('Nafn tækis'),
         'devicesLocalImages':
-            MessageLookupByLibrary.simpleMessage('Device’s local images'),
-        'digital': MessageLookupByLibrary.simpleMessage('Digital'),
-        'disableAlarms': MessageLookupByLibrary.simpleMessage('Disable alarms'),
-        'discard': MessageLookupByLibrary.simpleMessage('Discard'),
-        'display': MessageLookupByLibrary.simpleMessage('Display'),
+            MessageLookupByLibrary.simpleMessage('Staðbundnar myndir tækis'),
+        'digital': MessageLookupByLibrary.simpleMessage('Stafræn'),
+        'disableAlarms':
+            MessageLookupByLibrary.simpleMessage('Gera viðvaranir óvirkar'),
+        'discard': MessageLookupByLibrary.simpleMessage('Hafna'),
+        'display': MessageLookupByLibrary.simpleMessage('Sýna'),
         'doNotLoseYourContent':
-            MessageLookupByLibrary.simpleMessage('Don\'t lose your content!'),
+            MessageLookupByLibrary.simpleMessage('Ekki tapa neinu efni!'),
         'doYouWantToDeleteThisPhoto': MessageLookupByLibrary.simpleMessage(
-            'Are you sure you want to delete this photo?'),
+            'Ertu viss um að vilja eyða þessari ljósmynd?'),
         'doYouWantToImportADefaultSet': MessageLookupByLibrary.simpleMessage(
-            'Do you want to import a default set of data with activities, timers, checklists and image archive?'),
-        'dontDeleteAfter': MessageLookupByLibrary.simpleMessage(
-            'Don\'t remove at the end of the day'),
-        'dots': MessageLookupByLibrary.simpleMessage('Dots'),
-        'downloadVoiceText': MessageLookupByLibrary.simpleMessage(
-            'Download voice for speech support'),
-        'duration': MessageLookupByLibrary.simpleMessage('Duration'),
-        'earlyMorning': MessageLookupByLibrary.simpleMessage('early morning'),
-        'earyMorning': MessageLookupByLibrary.simpleMessage('early morning'),
-        'edge': MessageLookupByLibrary.simpleMessage('Edge'),
-        'edit': MessageLookupByLibrary.simpleMessage('Edit'),
-        'editActivity': MessageLookupByLibrary.simpleMessage('Edit activity'),
+            'Viltu flytja inn sjálfgefið sett af gögnum með verkefnum, tímamælum, gátlistum og myndasafni?'),
+        'dontDeleteAfter':
+            MessageLookupByLibrary.simpleMessage('Ekki eyða í lok dags'),
+        'dots': MessageLookupByLibrary.simpleMessage('Punktar'),
+        'downloadVoiceText':
+            MessageLookupByLibrary.simpleMessage('Sæktu rödd fyrir raddhjálp'),
+        'duration': MessageLookupByLibrary.simpleMessage('Tímalengd'),
+        'earlyMorning': MessageLookupByLibrary.simpleMessage('snemma morguns'),
+        'earyMorning': MessageLookupByLibrary.simpleMessage('snemma morguns'),
+        'edge': MessageLookupByLibrary.simpleMessage('Brún'),
+        'edit': MessageLookupByLibrary.simpleMessage('Breyta'),
+        'editActivity': MessageLookupByLibrary.simpleMessage('Breyta verkefni'),
         'editActivityTemplate':
-            MessageLookupByLibrary.simpleMessage('Edit activity template'),
-        'editCategory': MessageLookupByLibrary.simpleMessage('Edit category'),
-        'editRecurringActivity':
-            MessageLookupByLibrary.simpleMessage('Edit recurring activity'),
-        'editTimer': MessageLookupByLibrary.simpleMessage('Edit timer'),
+            MessageLookupByLibrary.simpleMessage('Breyta verkefnissniðmáti'),
+        'editCategory': MessageLookupByLibrary.simpleMessage('Breyta flokki'),
+        'editRecurringActivity': MessageLookupByLibrary.simpleMessage(
+            'Breyta síendurteknu verkefni'),
+        'editTimer': MessageLookupByLibrary.simpleMessage('Breyta tímamæli'),
         'editTimerTemplate':
-            MessageLookupByLibrary.simpleMessage('Edit timer template'),
-        'emptyFolder':
-            MessageLookupByLibrary.simpleMessage('The folder is empty'),
+            MessageLookupByLibrary.simpleMessage('Breyta tímamælissniðmáti'),
+        'emptyFolder': MessageLookupByLibrary.simpleMessage('Mappan er tóm'),
         'endBeforeStartError': MessageLookupByLibrary.simpleMessage(
-            'End date can\'t be before start date'),
-        'endDate': MessageLookupByLibrary.simpleMessage('End date'),
-        'endDateNotSpecifiedErrorMessage':
-            MessageLookupByLibrary.simpleMessage('You must enter an end date.'),
-        'endTime': MessageLookupByLibrary.simpleMessage('End time'),
-        'endsNow': MessageLookupByLibrary.simpleMessage('Ends now'),
-        'enterCode': MessageLookupByLibrary.simpleMessage('Enter code'),
+            'Lokadagur má ekki vera á undan upphafsdegi'),
+        'endDate': MessageLookupByLibrary.simpleMessage('Lokadagur'),
+        'endDateNotSpecifiedErrorMessage': MessageLookupByLibrary.simpleMessage(
+            'Þú verður að slá inn lokadag.'),
+        'endTime': MessageLookupByLibrary.simpleMessage('Lokatími'),
+        'endsNow': MessageLookupByLibrary.simpleMessage('Endar núna'),
+        'enterCode': MessageLookupByLibrary.simpleMessage('Slá inn kóða'),
         'enterNameForActivity':
-            MessageLookupByLibrary.simpleMessage('Enter name for activity'),
+            MessageLookupByLibrary.simpleMessage('Sláðu inn nafn á verkefni'),
         'enterNameForTimer':
-            MessageLookupByLibrary.simpleMessage('Enter name for timer'),
-        'enterNewCode': MessageLookupByLibrary.simpleMessage('Enter new code'),
-        'enterPassword': MessageLookupByLibrary.simpleMessage('Enter password'),
-        'enterTask': MessageLookupByLibrary.simpleMessage('Enter task'),
-        'enterText': MessageLookupByLibrary.simpleMessage('Enter text'),
-        'enterUsername': MessageLookupByLibrary.simpleMessage('Enter username'),
-        'enterYourCodeToAccess':
-            MessageLookupByLibrary.simpleMessage('Enter your code to access'),
+            MessageLookupByLibrary.simpleMessage('Sláðu inn nafn á tímamælinn'),
+        'enterNewCode':
+            MessageLookupByLibrary.simpleMessage('Sláðu inn nýjan kóða'),
+        'enterPassword':
+            MessageLookupByLibrary.simpleMessage('Sláðu inn lykilorð'),
+        'enterTask': MessageLookupByLibrary.simpleMessage('Sláðu inn verk'),
+        'enterText': MessageLookupByLibrary.simpleMessage('Sláðu inn texta'),
+        'enterUsername':
+            MessageLookupByLibrary.simpleMessage('Sláðu inn notandanafn'),
+        'enterYourCodeToAccess': MessageLookupByLibrary.simpleMessage(
+            'Sláðu inn kóða til að fá aðgang'),
         'enterYourLicense':
-            MessageLookupByLibrary.simpleMessage('Enter your license key'),
+            MessageLookupByLibrary.simpleMessage('Sláðu inn leyfislykil'),
         'enterYourLicenseHint': MessageLookupByLibrary.simpleMessage(
-            'License key should contain 12 digits'),
-        'error': MessageLookupByLibrary.simpleMessage('Error'),
-        'evening': MessageLookupByLibrary.simpleMessage('evening'),
-        'everyDay': MessageLookupByLibrary.simpleMessage('Every day (7)'),
+            'Leyfislykillinn ætti að innihalda 12 tölustafi'),
+        'error': MessageLookupByLibrary.simpleMessage('Villa'),
+        'evening': MessageLookupByLibrary.simpleMessage('kvöld'),
+        'everyDay': MessageLookupByLibrary.simpleMessage('Alla daga (7)'),
         'everyOtherWeek':
-            MessageLookupByLibrary.simpleMessage('Every other week'),
-        'extra': MessageLookupByLibrary.simpleMessage('Extra'),
-        'factoryReset': MessageLookupByLibrary.simpleMessage('Factory reset'),
+            MessageLookupByLibrary.simpleMessage('Aðra hverja viku'),
+        'extra': MessageLookupByLibrary.simpleMessage('Aukalegt'),
+        'factoryReset': MessageLookupByLibrary.simpleMessage(
+            'Endurstilling á verksmiðjustillingar'),
         'factoryResetDescription': MessageLookupByLibrary.simpleMessage(
-            'Factory reset and reinstall MEMOplanner software (instructions required).'),
+            'Endurstilla á verksmiðjustillingar og setja aftur inn MEMOplanner-hugbúnaðinn (fyrirmæli nauðsynleg).'),
         'factoryResetFailed': MessageLookupByLibrary.simpleMessage(
-            'Factory reset failed, please try again later.'),
-        'finish': MessageLookupByLibrary.simpleMessage('Finish'),
-        'fr': MessageLookupByLibrary.simpleMessage('Fri'),
-        'fromTemplate': MessageLookupByLibrary.simpleMessage('From template'),
-        'fullDay': MessageLookupByLibrary.simpleMessage('All day'),
+            'Endurstilling á verksmiðjustillingar mistókst, reyndu aftur síðar.'),
+        'finish': MessageLookupByLibrary.simpleMessage('Ljúka'),
+        'fr': MessageLookupByLibrary.simpleMessage('Fös.'),
+        'fromTemplate': MessageLookupByLibrary.simpleMessage('Frá sniðmáti'),
+        'fullDay': MessageLookupByLibrary.simpleMessage('Allur dagur'),
         'fullScreenAlarm':
-            MessageLookupByLibrary.simpleMessage('Full screen alarm'),
+            MessageLookupByLibrary.simpleMessage('Heilskjásviðvörun'),
         'fullScreenAlarmInfo': MessageLookupByLibrary.simpleMessage(
-            'Allow this permission to be able to get full screen alarm of activities'),
-        'functions': MessageLookupByLibrary.simpleMessage('Functions'),
-        'general': MessageLookupByLibrary.simpleMessage('General'),
-        'getStarted': MessageLookupByLibrary.simpleMessage('Get started'),
+            'Heimilaðu þessa heimild til að fá heilskjásviðvörun fyrir verkefni.'),
+        'functions': MessageLookupByLibrary.simpleMessage('Aðgerðir'),
+        'general': MessageLookupByLibrary.simpleMessage('Almennt'),
+        'getStarted': MessageLookupByLibrary.simpleMessage('Fyrstu skref'),
         'goOnlineBeforeLogout': MessageLookupByLibrary.simpleMessage(
-            'Go online before you log out!'),
-        'h': MessageLookupByLibrary.simpleMessage('h'),
-        'headings': MessageLookupByLibrary.simpleMessage('Headings'),
-        'homeScreen': MessageLookupByLibrary.simpleMessage('Home screen'),
+            'Tengstu netinu áður en þú skráir þig út!'),
+        'h': MessageLookupByLibrary.simpleMessage('klst.'),
+        'headings': MessageLookupByLibrary.simpleMessage('Fyrirsagnir'),
+        'homeScreen': MessageLookupByLibrary.simpleMessage('Heimaskjár'),
         'homeScreenSettingsHint': MessageLookupByLibrary.simpleMessage(
-            'View displayed when the home button is pressed'),
-        'hour': MessageLookupByLibrary.simpleMessage('hour'),
+            'Sýn er birt þegar ýtt er á hnappinn heim'),
+        'hour': MessageLookupByLibrary.simpleMessage('klukkutími'),
         'hourInessive': MessageLookupByLibrary.simpleMessage(''),
-        'hours': MessageLookupByLibrary.simpleMessage('hours'),
+        'hours': MessageLookupByLibrary.simpleMessage('klukkutímar'),
         'iOSAlarmTimeWarning': MessageLookupByLibrary.simpleMessage(
-            'On an iPhone, alarm sounds can only be played for maximum 30 seconds'),
+            'Aðeins er hægt að spila viðvörunarhljóð í að hámarki 30 sekúndur á iPhone-símum'),
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
-            'If you log out now you will lose:'),
+            'Ef þú skráir þig út núna muntu tapa:'),
         'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
-            'Ignore battery optimizations'),
-        'imageArchive': MessageLookupByLibrary.simpleMessage('Image Archive'),
-        'imagePicker': MessageLookupByLibrary.simpleMessage('Image picker'),
-        'inTimePre': MessageLookupByLibrary.simpleMessage('in'),
-        'incorrectCode': MessageLookupByLibrary.simpleMessage('Incorrect code'),
+            'Hunsa hagræðingu rafhlöðunnar'),
+        'imageArchive': MessageLookupByLibrary.simpleMessage('Myndasafn'),
+        'imagePicker': MessageLookupByLibrary.simpleMessage('Myndveljari'),
+        'inTimePre': MessageLookupByLibrary.simpleMessage('eftir'),
+        'incorrectCode': MessageLookupByLibrary.simpleMessage('Rangur kóði'),
         'infoType':
-            MessageLookupByLibrary.simpleMessage('Select extra function'),
+            MessageLookupByLibrary.simpleMessage('Veldu aukalega aðgerð'),
+        'infoTypeNone':
+            MessageLookupByLibrary.simpleMessage('Engin aukaleg aðgerð valin'),
         'installStarterSet':
-            MessageLookupByLibrary.simpleMessage('Install starter set?'),
-        'installing': MessageLookupByLibrary.simpleMessage('Installing'),
-        'interval': MessageLookupByLibrary.simpleMessage('Interval'),
-        'intervals': MessageLookupByLibrary.simpleMessage('Intervals'),
-        'iosVersion': MessageLookupByLibrary.simpleMessage('iOS version'),
-        'keepEditing': MessageLookupByLibrary.simpleMessage('Keep editing'),
+            MessageLookupByLibrary.simpleMessage('Setja inn byrjendasett?'),
+        'installing': MessageLookupByLibrary.simpleMessage('Set inn'),
+        'interval': MessageLookupByLibrary.simpleMessage('Bil'),
+        'intervals': MessageLookupByLibrary.simpleMessage('Bil'),
+        'iosVersion': MessageLookupByLibrary.simpleMessage('iOS-útgáfa'),
+        'keepEditing':
+            MessageLookupByLibrary.simpleMessage('Halda breytingum áfram'),
         'keepScreenAwakeWhileCharging': MessageLookupByLibrary.simpleMessage(
-            'Keep screen awake when charging'),
-        'large': MessageLookupByLibrary.simpleMessage('Large'),
-        'lastSyncWas': MessageLookupByLibrary.simpleMessage('Last sync was'),
-        'left': MessageLookupByLibrary.simpleMessage('Left'),
+            'Halda skjá vakandi við hleðslu'),
+        'large': MessageLookupByLibrary.simpleMessage('Stór'),
+        'lastSyncWas': MessageLookupByLibrary.simpleMessage(
+            'Síðasta samstilling fór fram'),
+        'left': MessageLookupByLibrary.simpleMessage('Til vinstri'),
         'licenseErrorAlreadyInUse':
-            MessageLookupByLibrary.simpleMessage('License is already in use'),
+            MessageLookupByLibrary.simpleMessage('Leyfi er þegar í notkun'),
         'licenseErrorNotFound': MessageLookupByLibrary.simpleMessage(
-            'We didn\'t find a valid license.\nPlease check the license key and try again'),
+            'Okkur tókst ekki að finna gilt leyfi.\nAthugaðu leyfislykilinn og reyndu aftur.'),
         'licenseExpired':
-            MessageLookupByLibrary.simpleMessage('License is expired'),
+            MessageLookupByLibrary.simpleMessage('Leyfi er runnið út'),
         'licenseExpiredMessage': MessageLookupByLibrary.simpleMessage(
-            'Your license has expired and MEMOplanner will no longer synchronize with myAbilia'),
-        'licenseNumber': MessageLookupByLibrary.simpleMessage('License number'),
+            'Leyfið þitt er runnið út og MEMOplanner mun ekki lengur samstilla sig við myAbilia'),
+        'licenseNumber': MessageLookupByLibrary.simpleMessage('Leyfisnúmer'),
         'licenseValidDate':
-            MessageLookupByLibrary.simpleMessage('License valid date'),
-        'lineAcrossCurrentTime':
-            MessageLookupByLibrary.simpleMessage('Line across current time'),
-        'linesForEachHour':
-            MessageLookupByLibrary.simpleMessage('Lines for each hour'),
-        'listView': MessageLookupByLibrary.simpleMessage('List'),
-        'loggedInUser':
-            MessageLookupByLibrary.simpleMessage('Logged in user account'),
+            MessageLookupByLibrary.simpleMessage('Dagsetning gilds leyfis'),
+        'lineAcrossCurrentTime': MessageLookupByLibrary.simpleMessage(
+            'Lína í gegnum núverandi tíma'),
+        'linesForEachHour': MessageLookupByLibrary.simpleMessage(
+            'Línur fyrir hverja klukkustund'),
+        'listView': MessageLookupByLibrary.simpleMessage('Listi'),
+        'loggedInUser': MessageLookupByLibrary.simpleMessage(
+            'Innskráð/ur á notandareikning'),
         'loggedOutMessage': MessageLookupByLibrary.simpleMessage(
-            'You have been logged out. Please log in again.'),
-        'login': MessageLookupByLibrary.simpleMessage('Log in'),
+            'Þú hefur verið skráð/ur út. Skráðu þig inn aftur.'),
+        'login': MessageLookupByLibrary.simpleMessage('Innskrá'),
         'loginHintMP': MessageLookupByLibrary.simpleMessage(
-            'Use your myAbilia account to Log in'),
+            'Notaðu myAbilia-reikninginn þinn til að skrá þig inn'),
         'loginHintMPGO': MessageLookupByLibrary.simpleMessage(
-            'Login with the same username and password as on your MEMOplanner'),
-        'logout': MessageLookupByLibrary.simpleMessage('Log out'),
+            'Skráðu þig inn með sama notandanafni og lykilorði og á MEMOplanner'),
+        'logout': MessageLookupByLibrary.simpleMessage('Útskrá'),
         'longPressInfoText': MessageLookupByLibrary.simpleMessage(
-            'Tap and hold about 1 second on any function to get it read to by speech synthesis'),
+            'Ýttu og haltu inni í um 1 sekúndu á hvaða aðgerð sem er til að láta raddgervingu lesa fyrir hana.'),
         'longpressToSpeak': MessageLookupByLibrary.simpleMessage(
-            'Tap and hold for speech support'),
-        'lunch': MessageLookupByLibrary.simpleMessage('Lunch'),
-        'medium': MessageLookupByLibrary.simpleMessage('Medium'),
+            'Ýttu og haltu inni fyrir raddhjálp'),
+        'lunch': MessageLookupByLibrary.simpleMessage('Hádegisverður'),
+        'medium': MessageLookupByLibrary.simpleMessage('Meðalstór'),
         'memoplannerLicenseExpired':
-            MessageLookupByLibrary.simpleMessage('MEMOplanner license expired'),
-        'menu': MessageLookupByLibrary.simpleMessage('Menu'),
-        'menuItemsDisabled':
-            MessageLookupByLibrary.simpleMessage('all menu items are disabled'),
+            MessageLookupByLibrary.simpleMessage('MEMOplanner-leyfi runnið út'),
+        'menu': MessageLookupByLibrary.simpleMessage('Valmynd'),
+        'menuItemsDisabled': MessageLookupByLibrary.simpleMessage(
+            'öll valmyndaratriði eru sýnd'),
         'menuRemovalWarning': MessageLookupByLibrary.simpleMessage(
-            'Do you really want to remove the Settings from the Menu? If you do, it will still be possible to access settings by clicking directly under the category symbols in the day calendar; left – right – left. This works even if they are hidden.'),
-        'midMorning': MessageLookupByLibrary.simpleMessage('mid-morning'),
-        'min': MessageLookupByLibrary.simpleMessage('min'),
-        'minute': MessageLookupByLibrary.simpleMessage('minute'),
+            'Ertu viss um að vilja fjarlægja stillingarnar af valmyndinni? Ef þú gerir það er enn hægt að fara í stillingarnar með því að smella beint undir flokkstáknunum í dagatalinu; vinstri – hægri – vinstri. Þetta virkar einnig ef þær eru faldar.'),
+        'midMorning': MessageLookupByLibrary.simpleMessage('miðmorgun'),
+        'min': MessageLookupByLibrary.simpleMessage('mín.'),
+        'minute': MessageLookupByLibrary.simpleMessage('mínúta'),
         'minuteInessive': MessageLookupByLibrary.simpleMessage(''),
-        'minutes': MessageLookupByLibrary.simpleMessage('minutes'),
+        'minutes': MessageLookupByLibrary.simpleMessage('mínútur'),
         'missingRequiredActivitySetting': MessageLookupByLibrary.simpleMessage(
-            'You need either “Show templates”, “Select name” or “Select image” selected.'),
+            'Þú þarft að hafa valið annaðhvort „sýna sniðmát“, „velja nafn“ eða „velja mynd“.'),
         'missingStartTime': MessageLookupByLibrary.simpleMessage(
-            'You must enter a start time.'),
+            'Þú verður að slá inn upphafstíma.'),
         'missingTitleOrImage': MessageLookupByLibrary.simpleMessage(
-            'An activity needs an image or a name.'),
+            'Mynd eða nafn þarf að vera fyrir verkefnið.'),
         'missingTitleOrImageAndStartTime': MessageLookupByLibrary.simpleMessage(
-            'Your activity should contain an image or name and start time.'),
-        'mo': MessageLookupByLibrary.simpleMessage('Mon'),
-        'mobilePictures':
-            MessageLookupByLibrary.simpleMessage('Mobile pictures'),
-        'month': MessageLookupByLibrary.simpleMessage('Month'),
-        'monthCalendar': MessageLookupByLibrary.simpleMessage('Month Calendar'),
-        'monthCalendarGrid': MessageLookupByLibrary.simpleMessage('Simple'),
+            'Verkefnið ætti að innihalda mynd eða nafn og upphafstíma'),
+        'mo': MessageLookupByLibrary.simpleMessage('Mán.'),
+        'mobilePictures': MessageLookupByLibrary.simpleMessage('Farsímamyndir'),
+        'month': MessageLookupByLibrary.simpleMessage('Mánuður'),
+        'monthCalendar': MessageLookupByLibrary.simpleMessage('Mánaðardagatal'),
+        'monthCalendarGrid': MessageLookupByLibrary.simpleMessage('Einfalt'),
         'monthCalendarPreview':
-            MessageLookupByLibrary.simpleMessage('Detailed'),
-        'monthly': MessageLookupByLibrary.simpleMessage('Monthly'),
-        'myPhotos': MessageLookupByLibrary.simpleMessage('My photos'),
-        'name': MessageLookupByLibrary.simpleMessage('Name'),
+            MessageLookupByLibrary.simpleMessage('Ítarlegt'),
+        'monthly': MessageLookupByLibrary.simpleMessage('Mánaðarlega'),
+        'myPhotos': MessageLookupByLibrary.simpleMessage('Ljósmyndirnar mínar'),
+        'name': MessageLookupByLibrary.simpleMessage('Nafn'),
         'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
-            'You need an active license to save your data to myAbilia.'),
-        'newActivity': MessageLookupByLibrary.simpleMessage('New activity'),
+            'Þú þarft gilt leyfi til að vista gögnin þín á myAbilia.'),
+        'newActivity': MessageLookupByLibrary.simpleMessage('Nýtt verkefni'),
         'newActivityTemplate':
-            MessageLookupByLibrary.simpleMessage('New activity template'),
+            MessageLookupByLibrary.simpleMessage('Nýtt verkefnissniðmát'),
         'newChecklist': MessageLookupByLibrary.simpleMessage('New checklist'),
         'newNote': MessageLookupByLibrary.simpleMessage('New note'),
         'newTask': MessageLookupByLibrary.simpleMessage('New task'),
-        'newText': MessageLookupByLibrary.simpleMessage('New'),
-        'newTimer': MessageLookupByLibrary.simpleMessage('New timer'),
+        'newText': MessageLookupByLibrary.simpleMessage('Nýtt'),
+        'newTimer': MessageLookupByLibrary.simpleMessage('Nýr tímamælir'),
         'newTimerTemplate':
-            MessageLookupByLibrary.simpleMessage('New timer template'),
-        'next': MessageLookupByLibrary.simpleMessage('Next'),
-        'night': MessageLookupByLibrary.simpleMessage('night'),
-        'no': MessageLookupByLibrary.simpleMessage('No'),
+            MessageLookupByLibrary.simpleMessage('Nýtt tímamælissniðmát'),
+        'next': MessageLookupByLibrary.simpleMessage('Næsta'),
+        'night': MessageLookupByLibrary.simpleMessage('nótt'),
+        'no': MessageLookupByLibrary.simpleMessage('Nei'),
         'noActivities':
-            MessageLookupByLibrary.simpleMessage('No activities today'),
-        'noAlarm': MessageLookupByLibrary.simpleMessage('No alarm'),
+            MessageLookupByLibrary.simpleMessage('Engin verkefni í dag'),
+        'noAlarm': MessageLookupByLibrary.simpleMessage('Engin viðvörun'),
         'noChecklists':
-            MessageLookupByLibrary.simpleMessage('You have no checklists'),
+            MessageLookupByLibrary.simpleMessage('Þú átt enga gátlista'),
         'noConnection': MessageLookupByLibrary.simpleMessage(
-            'No contact with myAbilia. Check your Internet connection.'),
-        'noDayColours': MessageLookupByLibrary.simpleMessage('No day colours'),
-        'noEndDate': MessageLookupByLibrary.simpleMessage('No end date'),
-        'noImages': MessageLookupByLibrary.simpleMessage('You have no images'),
+            'Ekkert samband við myAbilia. Athugaðu nettenginguna þína.'),
+        'noDayColours': MessageLookupByLibrary.simpleMessage('Engir dagalitir'),
+        'noEndDate': MessageLookupByLibrary.simpleMessage('Engin lokadagur'),
+        'noImages': MessageLookupByLibrary.simpleMessage('Þú átt engar myndir'),
         'noLicense': MessageLookupByLibrary.simpleMessage(
-            'This account has no valid license.'),
+            'Þessi reikningur er ekki með gilt leyfi.'),
         'noMatchingImage':
-            MessageLookupByLibrary.simpleMessage('No matching image name'),
-        'noNotes': MessageLookupByLibrary.simpleMessage('You have no notes'),
+            MessageLookupByLibrary.simpleMessage('Myndanafnið fannst ekki'),
+        'noNotes':
+            MessageLookupByLibrary.simpleMessage('Þú átt enga minnispunkta'),
         'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
-        'noSound': MessageLookupByLibrary.simpleMessage('- No sound -'),
+        'noSound': MessageLookupByLibrary.simpleMessage('- Ekkert hljóð -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
-            'There are no templates and you have not selected name or image in adding an activity step-by-step.'),
+            'Engin sniðmát eru fyrir hendi og þú hefur ekki valið nafn eða mynd þegar verkefni var bætt við í skrefum.'),
         'noTemplateActivityError2': MessageLookupByLibrary.simpleMessage(
-            'To fix this, either create templates or select either name or image for step-by-step.'),
+            'Til að laga þetta ættir þú annaðhvort að búa til sniðmát eða velja annaðhvort nafn eða mynd fyrir skrefavinnsluna.'),
         'noTemplates':
-            MessageLookupByLibrary.simpleMessage('You have no templates'),
-        'noTimeout': MessageLookupByLibrary.simpleMessage('No timeout'),
+            MessageLookupByLibrary.simpleMessage('Þú átt engin sniðmát'),
+        'noTimeout': MessageLookupByLibrary.simpleMessage('Engin tímalok'),
         'noVoicesInstalled':
-            MessageLookupByLibrary.simpleMessage('No voices installed'),
-        'nonCheckableActivities':
-            MessageLookupByLibrary.simpleMessage('Non checkable activities'),
-        'notCheckable': MessageLookupByLibrary.simpleMessage('Not checkable'),
-        'notCompleted': MessageLookupByLibrary.simpleMessage('not completed'),
-        'notConnected': MessageLookupByLibrary.simpleMessage('Not connected'),
-        'notSelected': MessageLookupByLibrary.simpleMessage('Not selected'),
+            MessageLookupByLibrary.simpleMessage('Engar raddir innsettar'),
+        'nonCheckableActivities': MessageLookupByLibrary.simpleMessage(
+            'Verkefni sem ekki er hægt að haka við'),
+        'notCheckable':
+            MessageLookupByLibrary.simpleMessage('Ekki hægt að haka við'),
+        'notCompleted': MessageLookupByLibrary.simpleMessage('ólokið'),
+        'notConnected': MessageLookupByLibrary.simpleMessage('Ótengt'),
+        'notSelected': MessageLookupByLibrary.simpleMessage('Ekki valið'),
         'note': MessageLookupByLibrary.simpleMessage('Note'),
-        'notifications': MessageLookupByLibrary.simpleMessage('Notifications'),
+        'notifications': MessageLookupByLibrary.simpleMessage('Tilkynningar'),
         'notificationsWarningHintText': MessageLookupByLibrary.simpleMessage(
-            'Allow notifications to be able to get alarms and reminders from activities.'),
+            'Heimila tilkynningar til að fá viðvaranir og áminningar frá verkefnum.'),
         'notificationsWarningText': MessageLookupByLibrary.simpleMessage(
-            'Allow notifications from the settings to be able to receive alarms and reminders.'),
-        'now': MessageLookupByLibrary.simpleMessage('Now'),
-        'ok': MessageLookupByLibrary.simpleMessage('OK'),
-        'oneDot': MessageLookupByLibrary.simpleMessage('One dot'),
-        'oneTimePillarView':
-            MessageLookupByLibrary.simpleMessage('1 time pillar'),
+            'Heimila tilkynningar í stillingum til að fá viðvaranir og áminningar frá verkefnum.'),
+        'now': MessageLookupByLibrary.simpleMessage('Núna'),
+        'ok': MessageLookupByLibrary.simpleMessage('Í LAGI'),
+        'oneDot': MessageLookupByLibrary.simpleMessage('Einn punktur'),
+        'oneTimePillarView': MessageLookupByLibrary.simpleMessage('1 tímalína'),
         'onlyActivateScreensaverDuringNight':
             MessageLookupByLibrary.simpleMessage(
-                'Only activate screensaver during night'),
+                'Virkja skjávörn aðeins að næturlagi'),
         'onlyAppliesToGo': MessageLookupByLibrary.simpleMessage(
-            'Only applies to MEMOplanner Go'),
-        'onlyMe': MessageLookupByLibrary.simpleMessage('Only me'),
+            'Á aðeins við um MEMOplanner Go'),
+        'onlyMe': MessageLookupByLibrary.simpleMessage('Aðeins ég'),
         'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
             'You can only have one extra function in this activity'),
-        'onlyThisDay': MessageLookupByLibrary.simpleMessage('Only this day'),
-        'password': MessageLookupByLibrary.simpleMessage('Password'),
+        'onlyThisDay':
+            MessageLookupByLibrary.simpleMessage('Aðeins þennan dag'),
+        'password': MessageLookupByLibrary.simpleMessage('Lykilorð'),
         'passwordHint': MessageLookupByLibrary.simpleMessage(
-            'Password (minimum 12 characters)'),
+            'Lykilorð (að lágmarki 12 rittákn)'),
         'passwordMismatch': MessageLookupByLibrary.simpleMessage(
-            'Both passwords must be the same'),
+            'Bæði lykilorðin verða að vera eins'),
         'passwordToShort': MessageLookupByLibrary.simpleMessage(
-            'The password must consist of at least 12 characters'),
-        'pause': MessageLookupByLibrary.simpleMessage('Pause'),
-        'permissions': MessageLookupByLibrary.simpleMessage('Permissions'),
-        'photoCalendar': MessageLookupByLibrary.simpleMessage('Photo calendar'),
-        'photoPlural': MessageLookupByLibrary.simpleMessage('photos'),
-        'photoSingular': MessageLookupByLibrary.simpleMessage('photo'),
-        'picture': MessageLookupByLibrary.simpleMessage('Image'),
-        'play': MessageLookupByLibrary.simpleMessage('Play'),
-        'pm': MessageLookupByLibrary.simpleMessage('PM'),
+            'Lykilorðið verður að samanstanda af 12 rittáknum að lágmarki'),
+        'pause': MessageLookupByLibrary.simpleMessage('Pása'),
+        'permissions': MessageLookupByLibrary.simpleMessage('Heimildir'),
+        'photoCalendar':
+            MessageLookupByLibrary.simpleMessage('Ljósmyndadagatal'),
+        'photoPlural': MessageLookupByLibrary.simpleMessage('ljósmyndir'),
+        'photoSingular': MessageLookupByLibrary.simpleMessage('ljósmynd'),
+        'picture': MessageLookupByLibrary.simpleMessage('Mynd'),
+        'play': MessageLookupByLibrary.simpleMessage('Spila'),
+        'pm': MessageLookupByLibrary.simpleMessage('eftir hádegi'),
         'previewActivityTitle':
-            MessageLookupByLibrary.simpleMessage('Erik\'s birthday party'),
-        'previous': MessageLookupByLibrary.simpleMessage('Previous'),
-        'privacyPolicy': MessageLookupByLibrary.simpleMessage('privacy policy'),
+            MessageLookupByLibrary.simpleMessage('Afmælisteiti Eiríks'),
+        'previous': MessageLookupByLibrary.simpleMessage('Fyrra'),
+        'privacyPolicy':
+            MessageLookupByLibrary.simpleMessage('persónuverndarstefna'),
         'privacyPolicyUrl': MessageLookupByLibrary.simpleMessage(
             'intl/policy-for-the-processing-of-personal-data'),
-        'producer': MessageLookupByLibrary.simpleMessage('Producer'),
+        'producer': MessageLookupByLibrary.simpleMessage('Framleiðandi'),
         'quickSettingsMenu':
-            MessageLookupByLibrary.simpleMessage('Quick settings'),
-        'readAndAgree1': MessageLookupByLibrary.simpleMessage('To use'),
+            MessageLookupByLibrary.simpleMessage('Hraðstillingar'),
+        'readAndAgree1': MessageLookupByLibrary.simpleMessage('Til að nota'),
         'readAndAgree2': MessageLookupByLibrary.simpleMessage(
-            ', please read and agree to the terms of use and privacy policy.'),
-        'record': MessageLookupByLibrary.simpleMessage('Record'),
-        'recurrence': MessageLookupByLibrary.simpleMessage('Recurrence'),
-        'recurring': MessageLookupByLibrary.simpleMessage('Recurring'),
-        'recurringDataEmptyErrorMessage':
-            MessageLookupByLibrary.simpleMessage('Select at least one day.'),
+            'ættir þú að lesa og samþykkja notandaskilmálana og persónuverndarstefnuna.'),
+        'record': MessageLookupByLibrary.simpleMessage('Taka upp'),
+        'recurrence': MessageLookupByLibrary.simpleMessage('Síendurtekið'),
+        'recurring': MessageLookupByLibrary.simpleMessage('Síendurtekið'),
+        'recurringDataEmptyErrorMessage': MessageLookupByLibrary.simpleMessage(
+            'Veldu að minnsta kosti einn dag.'),
         'redirectToAndroidSettings': MessageLookupByLibrary.simpleMessage(
-            'You will be redirect to the Android settings.'),
-        'reminder': MessageLookupByLibrary.simpleMessage('Reminder'),
-        'reminders': MessageLookupByLibrary.simpleMessage('Reminders'),
-        'remove': MessageLookupByLibrary.simpleMessage('Remove'),
+            'Þú verður send/ur í stillingar fyrir Android.'),
+        'reminder': MessageLookupByLibrary.simpleMessage('Áminning'),
+        'reminders': MessageLookupByLibrary.simpleMessage('Áminningar'),
+        'remove': MessageLookupByLibrary.simpleMessage('Fjarlægja'),
         'removeFromPhotoCalendarQuestion': MessageLookupByLibrary.simpleMessage(
-            'Do you want to remove this photo from Photo-calendar?'),
-        'removeImage': MessageLookupByLibrary.simpleMessage('Remove image'),
-        'resetDeviceQuestion': MessageLookupByLibrary.simpleMessage(
-            'Do you want to reset the device?'),
-        'right': MessageLookupByLibrary.simpleMessage('Right'),
-        'sa': MessageLookupByLibrary.simpleMessage('Sat'),
+            'Viltu fjarlægja þessa ljósmynd úr ljósmyndadagatalinu?'),
+        'removeImage': MessageLookupByLibrary.simpleMessage('Fjarlægðu mynd'),
+        'resetDeviceQuestion':
+            MessageLookupByLibrary.simpleMessage('Viltu endurstilla tækið?'),
+        'right': MessageLookupByLibrary.simpleMessage('Til hægri'),
+        'sa': MessageLookupByLibrary.simpleMessage('Lau.'),
         'saturdayAndSunday':
-            MessageLookupByLibrary.simpleMessage('Saturday and Sunday'),
-        'save': MessageLookupByLibrary.simpleMessage('Save'),
+            MessageLookupByLibrary.simpleMessage('Laugardag og sunnudag'),
+        'save': MessageLookupByLibrary.simpleMessage('Vista'),
         'saveNote': MessageLookupByLibrary.simpleMessage('Save note'),
         'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(
             'Do you want to save note first?'),
         'screenBrightness':
-            MessageLookupByLibrary.simpleMessage('Screen brightness'),
-        'screenTimeout': MessageLookupByLibrary.simpleMessage('Screen timeout'),
-        'search': MessageLookupByLibrary.simpleMessage('Search'),
+            MessageLookupByLibrary.simpleMessage('Birtustig skjás'),
+        'screenTimeout': MessageLookupByLibrary.simpleMessage('Tímalok skjás'),
+        'search': MessageLookupByLibrary.simpleMessage('Leita'),
         'searchForUpdate':
-            MessageLookupByLibrary.simpleMessage('Search for update'),
-        'searchImage': MessageLookupByLibrary.simpleMessage('Search image'),
-        'second': MessageLookupByLibrary.simpleMessage('second'),
-        'seconds': MessageLookupByLibrary.simpleMessage('seconds'),
+            MessageLookupByLibrary.simpleMessage('Leita að uppfærslu'),
+        'searchImage': MessageLookupByLibrary.simpleMessage('Leita að mynd'),
+        'second': MessageLookupByLibrary.simpleMessage('sekúnda'),
+        'seconds': MessageLookupByLibrary.simpleMessage('sekúndur'),
         'selectADayToViewDetails': MessageLookupByLibrary.simpleMessage(
-            'Select a day to view more details'),
-        'selectAlarm': MessageLookupByLibrary.simpleMessage('Select alarm'),
-        'selectAlarmType': MessageLookupByLibrary.simpleMessage('Select alarm'),
-        'selectAll': MessageLookupByLibrary.simpleMessage('Select all'),
-        'selectAllDay': MessageLookupByLibrary.simpleMessage('Select all day'),
+            'Veldu dag til að skoða frekari upplýsingar'),
+        'selectAlarm': MessageLookupByLibrary.simpleMessage('Velja viðvörun'),
+        'selectAlarmType':
+            MessageLookupByLibrary.simpleMessage('Veldu viðvörun'),
+        'selectAll': MessageLookupByLibrary.simpleMessage('Velja allt'),
+        'selectAllDay':
+            MessageLookupByLibrary.simpleMessage('Velja allan daginn'),
         'selectAvailableFor':
-            MessageLookupByLibrary.simpleMessage('Select available for'),
-        'selectCategory':
-            MessageLookupByLibrary.simpleMessage('Select category'),
+            MessageLookupByLibrary.simpleMessage('Velja í boði fyrir'),
+        'selectCategory': MessageLookupByLibrary.simpleMessage('Velja flokk'),
         'selectCheckable':
-            MessageLookupByLibrary.simpleMessage('Select checkable'),
+            MessageLookupByLibrary.simpleMessage('Velja viðhakanlegt'),
         'selectChecklist':
-            MessageLookupByLibrary.simpleMessage('Select checklist'),
-        'selectDate': MessageLookupByLibrary.simpleMessage('Select date'),
+            MessageLookupByLibrary.simpleMessage('Velja gátlista'),
+        'selectDate': MessageLookupByLibrary.simpleMessage('Velja dagsetningu'),
         'selectDuration':
-            MessageLookupByLibrary.simpleMessage('Select duration'),
+            MessageLookupByLibrary.simpleMessage('Veldu tímalengd'),
         'selectFromLibrary':
-            MessageLookupByLibrary.simpleMessage('Select from library'),
-        'selectImage': MessageLookupByLibrary.simpleMessage('Select image'),
+            MessageLookupByLibrary.simpleMessage('Veldu úr safni'),
+        'selectImage': MessageLookupByLibrary.simpleMessage('Veldu mynd'),
         'selectInfoType':
-            MessageLookupByLibrary.simpleMessage('Select extra function'),
-        'selectName': MessageLookupByLibrary.simpleMessage('Select name'),
-        'selectNote': MessageLookupByLibrary.simpleMessage('Select note'),
+            MessageLookupByLibrary.simpleMessage('Veldu aukalega aðgerð'),
+        'selectName': MessageLookupByLibrary.simpleMessage('Velja nafn'),
+        'selectNote': MessageLookupByLibrary.simpleMessage('Velja minnispunkt'),
         'selectReminder':
-            MessageLookupByLibrary.simpleMessage('Select reminder'),
+            MessageLookupByLibrary.simpleMessage('Velja áminningu'),
         'selectTemplateTimer':
-            MessageLookupByLibrary.simpleMessage('Select timer'),
-        'selectType': MessageLookupByLibrary.simpleMessage('Select type'),
-        'selectedSupportPersons':
-            MessageLookupByLibrary.simpleMessage('Selected support persons'),
-        'serialNumber': MessageLookupByLibrary.simpleMessage('Serial number'),
-        'setTime': MessageLookupByLibrary.simpleMessage('Set time'),
-        'settings': MessageLookupByLibrary.simpleMessage('Settings'),
-        'settingsData': MessageLookupByLibrary.simpleMessage('Settings data'),
-        'settingsLink': MessageLookupByLibrary.simpleMessage('settings'),
-        'setupYourInternetConnection': MessageLookupByLibrary.simpleMessage(
-            'Setup your internet connection'),
-        'showAlarm': MessageLookupByLibrary.simpleMessage('Show alarm'),
+            MessageLookupByLibrary.simpleMessage('Veldu tímamæli'),
+        'selectType': MessageLookupByLibrary.simpleMessage('Velja gerð'),
+        'selectedSupportPersons': MessageLookupByLibrary.simpleMessage(
+            'Valdir einstaklingar í þjónustu'),
+        'serialNumber': MessageLookupByLibrary.simpleMessage('Raðnúmer'),
+        'setTime': MessageLookupByLibrary.simpleMessage('Stilltu tíma'),
+        'settings': MessageLookupByLibrary.simpleMessage('Stillingar'),
+        'settingsData':
+            MessageLookupByLibrary.simpleMessage('Stillingaupplýsingar'),
+        'settingsLink': MessageLookupByLibrary.simpleMessage('stillingum'),
+        'setupYourInternetConnection':
+            MessageLookupByLibrary.simpleMessage('Settu upp nettengingu'),
+        'showAlarm': MessageLookupByLibrary.simpleMessage('Sýna viðvörun'),
         'showAlarmOnlyAtStartTime': MessageLookupByLibrary.simpleMessage(
-            'Show alarm only at start time'),
+            'Sýna viðvörun aðeins við upphafstíma'),
         'showBrowseButtons':
-            MessageLookupByLibrary.simpleMessage('Show browse buttons'),
-        'showCagetories':
-            MessageLookupByLibrary.simpleMessage('Show categories'),
-        'showClock': MessageLookupByLibrary.simpleMessage('Show clock'),
-        'showColours': MessageLookupByLibrary.simpleMessage('Show colours'),
-        'showDate': MessageLookupByLibrary.simpleMessage('Show date'),
+            MessageLookupByLibrary.simpleMessage('Sýna hnappa vafra'),
+        'showCagetories': MessageLookupByLibrary.simpleMessage('Sýna flokka'),
+        'showClock': MessageLookupByLibrary.simpleMessage('Sýna klukku'),
+        'showColours': MessageLookupByLibrary.simpleMessage('Sýna liti'),
+        'showDate': MessageLookupByLibrary.simpleMessage('Sýna dagsetningu'),
         'showDayPeriod':
-            MessageLookupByLibrary.simpleMessage('Show time for day and night'),
-        'showDisableAlarms':
-            MessageLookupByLibrary.simpleMessage('Show Disable alarms'),
-        'showEndTime': MessageLookupByLibrary.simpleMessage('Show end time'),
+            MessageLookupByLibrary.simpleMessage('Sýna tíma fyrir dag og nótt'),
+        'showDisableAlarms': MessageLookupByLibrary.simpleMessage(
+            'Sýna Gera viðvaranir óvirkar'),
+        'showEndTime': MessageLookupByLibrary.simpleMessage('Sýna lokatíma'),
         'showMonthAndYear':
-            MessageLookupByLibrary.simpleMessage('Show month and year'),
-        'showNoAlarm': MessageLookupByLibrary.simpleMessage('Show no alarm'),
+            MessageLookupByLibrary.simpleMessage('Sýna mánuð og ár'),
+        'showNoAlarm':
+            MessageLookupByLibrary.simpleMessage('Sýna enga viðvörun'),
         'showOngoingActivityInFullScreen': MessageLookupByLibrary.simpleMessage(
-            'Show ongoing activity in full screen'),
-        'showQuarterHourWatchBar':
-            MessageLookupByLibrary.simpleMessage('Show Quarter Hour Watch bar'),
-        'showReminders': MessageLookupByLibrary.simpleMessage('Show reminders'),
+            'Sýna yfirstandandi verkefni á heilskjá'),
+        'showQuarterHourWatchBar': MessageLookupByLibrary.simpleMessage(
+            'Sýna vöktunarstiku fyrir korter'),
+        'showReminders':
+            MessageLookupByLibrary.simpleMessage('Sýna áminningar'),
         'showSelectEndDate':
-            MessageLookupByLibrary.simpleMessage('Show select end date'),
+            MessageLookupByLibrary.simpleMessage('Sýna velja lokadag'),
         'showSilentAlarm':
-            MessageLookupByLibrary.simpleMessage('Show silent alarm'),
+            MessageLookupByLibrary.simpleMessage('Sýna hljóðlausa viðvörun'),
         'showSpeechAtAlarm':
-            MessageLookupByLibrary.simpleMessage('Show speech at alarm'),
-        'showTemplates': MessageLookupByLibrary.simpleMessage('Show templates'),
+            MessageLookupByLibrary.simpleMessage('Sýna tal við viðvörun'),
+        'showTemplates': MessageLookupByLibrary.simpleMessage('Sýna sniðmát'),
         'showVibrationAlarm':
-            MessageLookupByLibrary.simpleMessage('Show vibration'),
+            MessageLookupByLibrary.simpleMessage('Sýna titring'),
         'showWeekNumber':
-            MessageLookupByLibrary.simpleMessage('Show week number'),
-        'showWeekday': MessageLookupByLibrary.simpleMessage('Show weekday'),
-        'showYear': MessageLookupByLibrary.simpleMessage('Show year'),
-        'silentAlarm': MessageLookupByLibrary.simpleMessage('Silent alarm'),
-        'small': MessageLookupByLibrary.simpleMessage('Small'),
+            MessageLookupByLibrary.simpleMessage('Sýna vikunúmer'),
+        'showWeekday': MessageLookupByLibrary.simpleMessage('Sýna vikudag'),
+        'showYear': MessageLookupByLibrary.simpleMessage('Sýna ár'),
+        'silentAlarm':
+            MessageLookupByLibrary.simpleMessage('Hljóðlaus viðvörun'),
+        'small': MessageLookupByLibrary.simpleMessage('Lítil'),
         'speakEveryWord': MessageLookupByLibrary.simpleMessage(
-            'Read out word when space bar is pressed'),
-        'speech': MessageLookupByLibrary.simpleMessage('Speech'),
-        'speechOnEnd':
-            MessageLookupByLibrary.simpleMessage('Speech at End time'),
+            'Lesa upp orð þegar ýtt er á bilhnapp'),
+        'speech': MessageLookupByLibrary.simpleMessage('Tal'),
+        'speechOnEnd': MessageLookupByLibrary.simpleMessage('Tal við lokatíma'),
         'speechOnStart':
-            MessageLookupByLibrary.simpleMessage('Speech at Start time'),
-        'speechRate': MessageLookupByLibrary.simpleMessage('Speech rate'),
-        'start': MessageLookupByLibrary.simpleMessage('Start'),
-        'startTime': MessageLookupByLibrary.simpleMessage('Start time'),
+            MessageLookupByLibrary.simpleMessage('Tal við upphafstíma'),
+        'speechRate': MessageLookupByLibrary.simpleMessage('Talhraði'),
+        'start': MessageLookupByLibrary.simpleMessage('Ræsa'),
+        'startTime': MessageLookupByLibrary.simpleMessage('Upphafstími'),
         'startTimeBeforeNowError': MessageLookupByLibrary.simpleMessage(
-            'You have selected a start time which has already passed. This is not allowed.'),
+            'Þú hefur valið upphafstíma sem er liðinn. Það má ekki.'),
         'startTimeBeforeNowWarning': MessageLookupByLibrary.simpleMessage(
-            'You have selected a start time which has already passed. Press OK to continue.'),
-        'startTimer': MessageLookupByLibrary.simpleMessage('Start timer'),
-        'startsNow': MessageLookupByLibrary.simpleMessage('Starts now'),
-        'step': MessageLookupByLibrary.simpleMessage('Step'),
-        'stepByStep': MessageLookupByLibrary.simpleMessage('Step-by-step'),
-        'stop': MessageLookupByLibrary.simpleMessage('Stop'),
-        'su': MessageLookupByLibrary.simpleMessage('Sun'),
-        'supportId': MessageLookupByLibrary.simpleMessage('Support id'),
+            'Þú hefur valið upphafstíma sem er liðinn. Ýttu á Í LAGI til að halda áfram.'),
+        'startTimer': MessageLookupByLibrary.simpleMessage('Ræstu tímamæli'),
+        'startsNow': MessageLookupByLibrary.simpleMessage('Byrjar núna'),
+        'step': MessageLookupByLibrary.simpleMessage('Skref'),
+        'stepByStep': MessageLookupByLibrary.simpleMessage('Í skrefum'),
+        'stop': MessageLookupByLibrary.simpleMessage('Stopp'),
+        'su': MessageLookupByLibrary.simpleMessage('Sun.'),
+        'supportId':
+            MessageLookupByLibrary.simpleMessage('Kenni fyrir þjónustu'),
         'supportPersons':
-            MessageLookupByLibrary.simpleMessage('Support persons'),
-        'syncing': MessageLookupByLibrary.simpleMessage('Syncing...'),
-        'system': MessageLookupByLibrary.simpleMessage('System'),
-        'takeNewPhoto': MessageLookupByLibrary.simpleMessage('Take new photo'),
-        'task': MessageLookupByLibrary.simpleMessage('Task'),
+            MessageLookupByLibrary.simpleMessage('Einstaklingar í þjónustu'),
+        'syncing': MessageLookupByLibrary.simpleMessage('Samstilli...'),
+        'system': MessageLookupByLibrary.simpleMessage('Kerfi'),
+        'takeNewPhoto':
+            MessageLookupByLibrary.simpleMessage('Taka nýja ljósmynd'),
+        'task': MessageLookupByLibrary.simpleMessage('Verk'),
         'tasks': MessageLookupByLibrary.simpleMessage('tasks'),
-        'templates': MessageLookupByLibrary.simpleMessage('Templates'),
-        'termsOfUse': MessageLookupByLibrary.simpleMessage('terms of use'),
+        'templates': MessageLookupByLibrary.simpleMessage('Sniðmát'),
+        'termsOfUse': MessageLookupByLibrary.simpleMessage('notandaskilmálana'),
         'termsOfUseUrl':
             MessageLookupByLibrary.simpleMessage('intl/terms-of-use'),
         'testOfSpeechRate':
-            MessageLookupByLibrary.simpleMessage('Test of speech rate'),
-        'textToSpeech': MessageLookupByLibrary.simpleMessage('Speech support'),
-        'th': MessageLookupByLibrary.simpleMessage('Thu'),
+            MessageLookupByLibrary.simpleMessage('Prófun á talhraða'),
+        'textToSpeech': MessageLookupByLibrary.simpleMessage('Raddhjálp'),
+        'th': MessageLookupByLibrary.simpleMessage('Fim.'),
         'thisDayAndForward':
-            MessageLookupByLibrary.simpleMessage('This day and forward'),
+            MessageLookupByLibrary.simpleMessage('Þennan dag og áfram'),
         'throughEditView':
-            MessageLookupByLibrary.simpleMessage('Through Edit View'),
-        'time': MessageLookupByLibrary.simpleMessage('Time'),
+            MessageLookupByLibrary.simpleMessage('Í gegnum breyta sýn'),
+        'time': MessageLookupByLibrary.simpleMessage('Tími'),
         'timeAfternoonTts':
-            MessageLookupByLibrary.simpleMessage('%s in the afternoon'),
-        'timeAgoPost': MessageLookupByLibrary.simpleMessage('ago'),
+            MessageLookupByLibrary.simpleMessage('%s um eftirmiðdaginn'),
+        'timeAgoPost': MessageLookupByLibrary.simpleMessage('fyrir'),
         'timeAgoPre': MessageLookupByLibrary.simpleMessage(''),
-        'timeEveningTts':
-            MessageLookupByLibrary.simpleMessage('%s in the evening'),
-        'timeForeNoonTts':
-            MessageLookupByLibrary.simpleMessage('%s in the mid-morning'),
-        'timeIsUp': MessageLookupByLibrary.simpleMessage('Time is up'),
+        'timeEveningTts': MessageLookupByLibrary.simpleMessage('%s að kvöldi'),
+        'timeForeNoonTts': MessageLookupByLibrary.simpleMessage('%s að morgni'),
+        'timeIsUp': MessageLookupByLibrary.simpleMessage('Tímanum er lokið'),
         'timeMorningTts':
-            MessageLookupByLibrary.simpleMessage('%s in the early morning'),
-        'timeNightTts': MessageLookupByLibrary.simpleMessage('%s at night'),
+            MessageLookupByLibrary.simpleMessage('%s snemma morguns'),
+        'timeNightTts': MessageLookupByLibrary.simpleMessage('%s að nóttu'),
         'timeOnQuarterHourBar':
-            MessageLookupByLibrary.simpleMessage('Time on Quarter Hour bar'),
-        'timeTo': MessageLookupByLibrary.simpleMessage('to'),
-        'timeline': MessageLookupByLibrary.simpleMessage('Timeline'),
+            MessageLookupByLibrary.simpleMessage('Tími korterssiku'),
+        'timeTo': MessageLookupByLibrary.simpleMessage('til'),
+        'timeline': MessageLookupByLibrary.simpleMessage('Tímalína'),
         'timelineLength':
-            MessageLookupByLibrary.simpleMessage('Timeline length'),
-        'timelineZoom': MessageLookupByLibrary.simpleMessage('Timeline zoom'),
-        'timeout': MessageLookupByLibrary.simpleMessage('Timeout'),
+            MessageLookupByLibrary.simpleMessage('Lengd tímalínu'),
+        'timelineZoom': MessageLookupByLibrary.simpleMessage('Tímalínuþysun'),
+        'timeout': MessageLookupByLibrary.simpleMessage('Tímalok'),
         'timeoutSettingsHint': MessageLookupByLibrary.simpleMessage(
-            'Returns to the home screen after a period of inactivity'),
+            'Fer aftur á heimaskjá eftir aðgerðarleysi í tiltekinn tíma'),
         'timepillarSettings':
-            MessageLookupByLibrary.simpleMessage('Time pillar settings'),
-        'timer': MessageLookupByLibrary.simpleMessage('Timer'),
-        'timerDelete': MessageLookupByLibrary.simpleMessage(
-            'Do you want to delete the timer?'),
-        'timerInvalidDuration':
-            MessageLookupByLibrary.simpleMessage('Duration cannot be zero.'),
+            MessageLookupByLibrary.simpleMessage('Stillingar tímalínu'),
+        'timer': MessageLookupByLibrary.simpleMessage('Tímamælir'),
+        'timerDelete':
+            MessageLookupByLibrary.simpleMessage('Viltu eyða timamælinum?'),
+        'timerInvalidDuration': MessageLookupByLibrary.simpleMessage(
+            'Tímalengd má ekki vera núll.'),
         'timerPause': MessageLookupByLibrary.simpleMessage(
-            'Do you want to pause the timer?'),
-        'timerPaused': MessageLookupByLibrary.simpleMessage('Paused'),
+            'Viltu gera pásu á tímamælinum?'),
+        'timerPaused': MessageLookupByLibrary.simpleMessage('Á pásu'),
         'timerResume': MessageLookupByLibrary.simpleMessage(
-            'Do you want to continue the timer?'),
+            'Viltu halda tímamælinum áfram?'),
         'timerTemplatePlural':
-            MessageLookupByLibrary.simpleMessage('timer templates'),
+            MessageLookupByLibrary.simpleMessage('tímamælissniðmát'),
         'timerTemplateSingular':
-            MessageLookupByLibrary.simpleMessage('timer template'),
-        'timers': MessageLookupByLibrary.simpleMessage('Timers'),
-        'toLogin': MessageLookupByLibrary.simpleMessage('to Log in'),
-        'today': MessageLookupByLibrary.simpleMessage('Today'),
+            MessageLookupByLibrary.simpleMessage('tímamælissniðmát'),
+        'timers': MessageLookupByLibrary.simpleMessage('Tímamælar'),
+        'toLogin': MessageLookupByLibrary.simpleMessage('í innskráningu'),
+        'today': MessageLookupByLibrary.simpleMessage('Í dag'),
         'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
             'You have made too many attempts to log in. Please wait a few seconds until trying again'),
-        'toolbar': MessageLookupByLibrary.simpleMessage('Toolbar'),
+        'toolbar': MessageLookupByLibrary.simpleMessage('Verkfærastika'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
-            'Functions displayed in bottom of page'),
-        'topField': MessageLookupByLibrary.simpleMessage('Top Field'),
-        'tu': MessageLookupByLibrary.simpleMessage('Tue'),
+            'Aðgerðir sýndar neðst á síðu'),
+        'topField': MessageLookupByLibrary.simpleMessage('Efsti reitur'),
+        'tu': MessageLookupByLibrary.simpleMessage('Þri.'),
         'turnOffNotifications':
-            MessageLookupByLibrary.simpleMessage('Turn off notifications?'),
+            MessageLookupByLibrary.simpleMessage('Slökkva á tilkynningum?'),
         'turnOffNotificationsBody': MessageLookupByLibrary.simpleMessage(
-            'You will no longer be able to get alarms and reminders from activities.'),
+            'Þú munt ekki lengur fá viðvaranir og áminningar frá verkefnum.'),
         'twelveHourFormat':
-            MessageLookupByLibrary.simpleMessage('12 hours format'),
+            MessageLookupByLibrary.simpleMessage('12 klukkustunda snið'),
         'twoTimePillarsView':
-            MessageLookupByLibrary.simpleMessage('2 time pillars'),
+            MessageLookupByLibrary.simpleMessage('2 tímalínur'),
         'typeOfDisplay':
-            MessageLookupByLibrary.simpleMessage('Type of display'),
+            MessageLookupByLibrary.simpleMessage('Gerð framsetningar'),
         'typeSomething':
-            MessageLookupByLibrary.simpleMessage('Type something…'),
+            MessageLookupByLibrary.simpleMessage('Skrifaðu eitthvað...'),
         'unCheckActivityQuestion': MessageLookupByLibrary.simpleMessage(
-            'Do you want to uncheck the activity?'),
+            'Viltu afvelja þetta verkefni?'),
         'unauthorizedHeader':
-            MessageLookupByLibrary.simpleMessage('You have been logged out'),
+            MessageLookupByLibrary.simpleMessage('Þú hefur verið skráð/ur út.'),
         'unauthorizedMessage': MessageLookupByLibrary.simpleMessage(
-            'This is most likely due to a password change, please try logging in again.'),
-        'undo': MessageLookupByLibrary.simpleMessage('Undo'),
-        'unknownError': MessageLookupByLibrary.simpleMessage('Unknown error'),
+            'Það er líklegast vegna breytingar á lykilorði, prófaðu að skrá þig inn aftur.'),
+        'undo': MessageLookupByLibrary.simpleMessage('Afturkalla'),
+        'unknownError': MessageLookupByLibrary.simpleMessage('Óþekkt villa'),
         'userTypeNotSupported': MessageLookupByLibrary.simpleMessage(
-            'Users of type Support person or Admin can\'t log in to MEMOplanner. Please use myAbilia.'),
-        'username': MessageLookupByLibrary.simpleMessage('Username'),
+            'Notendur sem eru af gerðinni aðili í þjónustu eða kerfisstjóri geta ekki skráð sig inn á MEMOplanner. Notaðu myAbilia.'),
+        'username': MessageLookupByLibrary.simpleMessage('Notandanafn'),
         'usernameHint': MessageLookupByLibrary.simpleMessage(
-            'Username (phone number or email)'),
+            'Notandanafn (símanúmer eða netfang)'),
         'usernameTaken': MessageLookupByLibrary.simpleMessage(
-            'Username/email address is already in use'),
-        'version': MessageLookupByLibrary.simpleMessage('Version'),
+            'Notandanafn/netfang er þegar í notkun'),
+        'version': MessageLookupByLibrary.simpleMessage('Útgáfa'),
         'vibrationIfAvailable':
-            MessageLookupByLibrary.simpleMessage('Vibration (if available)'),
-        'view': MessageLookupByLibrary.simpleMessage('View'),
-        'viewDay': MessageLookupByLibrary.simpleMessage('Day'),
-        'viewMode': MessageLookupByLibrary.simpleMessage('View mode'),
-        'viewSettings': MessageLookupByLibrary.simpleMessage('View settings'),
-        'voice': MessageLookupByLibrary.simpleMessage('Voice'),
-        'voices': MessageLookupByLibrary.simpleMessage('Voices'),
-        'volumeAlarm': MessageLookupByLibrary.simpleMessage('Volume for alarm'),
-        'volumeMedia': MessageLookupByLibrary.simpleMessage('Volume for media'),
-        'warning': MessageLookupByLibrary.simpleMessage('Warning'),
-        'we': MessageLookupByLibrary.simpleMessage('Wed'),
-        'week': MessageLookupByLibrary.simpleMessage('week'),
-        'weekCalendar': MessageLookupByLibrary.simpleMessage('Week Calendar'),
-        'weekdays': MessageLookupByLibrary.simpleMessage('Weekdays (5)'),
-        'weekly': MessageLookupByLibrary.simpleMessage('Weekly'),
-        'welcome': MessageLookupByLibrary.simpleMessage('Welcome!'),
+            MessageLookupByLibrary.simpleMessage('Titringur (ef í boði)'),
+        'view': MessageLookupByLibrary.simpleMessage('Sýn'),
+        'viewDay': MessageLookupByLibrary.simpleMessage('Dagur'),
+        'viewMode': MessageLookupByLibrary.simpleMessage('Skoða ham'),
+        'viewSettings':
+            MessageLookupByLibrary.simpleMessage('Stillingar sýnar'),
+        'voice': MessageLookupByLibrary.simpleMessage('Rödd'),
+        'voices': MessageLookupByLibrary.simpleMessage('Raddir'),
+        'volumeAlarm':
+            MessageLookupByLibrary.simpleMessage('Hljóðstyrkur viðvörunar'),
+        'volumeMedia':
+            MessageLookupByLibrary.simpleMessage('Hljóðstyrkur miðla'),
+        'warning': MessageLookupByLibrary.simpleMessage('Viðvörun'),
+        'we': MessageLookupByLibrary.simpleMessage('Mið.'),
+        'week': MessageLookupByLibrary.simpleMessage('vika'),
+        'weekCalendar': MessageLookupByLibrary.simpleMessage('Vikudagatal'),
+        'weekdays': MessageLookupByLibrary.simpleMessage('Vikudagar (5)'),
+        'weekly': MessageLookupByLibrary.simpleMessage('Vikulega'),
+        'welcome': MessageLookupByLibrary.simpleMessage('Velkomin/nn!'),
         'welcomeText': MessageLookupByLibrary.simpleMessage(
-            'This guide will help you get started with MEMOplanner.'),
-        'welcomeTo': MessageLookupByLibrary.simpleMessage('Welcome to'),
+            'Þessi leiðarvísir inniheldur leiðbeiningar fyrir MEMOplanner.'),
+        'welcomeTo': MessageLookupByLibrary.simpleMessage('Velkomin/n í'),
         'wifi': MessageLookupByLibrary.simpleMessage('Wi-Fi'),
         'wifiNoInternet': MessageLookupByLibrary.simpleMessage(
-            'Your current Wi-Fi has failed to connect to the internet, try another network or contact your internet provider for help.'),
+            'Ekki var hægt að tengjast netinu í gegnum Wi-Fi, prófaðu annað net eða hafðu samband við netþjónustuna þína til að fá aðstoð.'),
         'wrongCredentials': MessageLookupByLibrary.simpleMessage(
-            'Username or password doesn\'t match.\nVerify your credentials and try again.'),
-        'yearly': MessageLookupByLibrary.simpleMessage('Yearly'),
-        'yes': MessageLookupByLibrary.simpleMessage('Yes')
+            'Notandanafn eða lykilorð passar ekki.\nSannreyndu innskráningarupplýsingarnar þínar og reyndu aftur.'),
+        'yearly': MessageLookupByLibrary.simpleMessage('Árlega'),
+        'yes': MessageLookupByLibrary.simpleMessage('Já')
       };
 }

@@ -325,8 +325,8 @@ class MessageLookup extends MessageLookupByLibrary {
             'På en iPhone kan alarmlyde kun afspilles i maksimalt 30 sekunder'),
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Hvis du logger ud nu, taber du:'),
-        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
-            'Ignore battery optimizations'),
+        'ignoreBatteryOptimizations':
+            MessageLookupByLibrary.simpleMessage('Ignorer batterioptimeringer'),
         'imageArchive': MessageLookupByLibrary.simpleMessage('Billedarkiv'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Billedvalg'),
         'inTimePre': MessageLookupByLibrary.simpleMessage('om'),
@@ -334,6 +334,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Forkert kodeord'),
         'infoType':
             MessageLookupByLibrary.simpleMessage('Vælg ekstra funktion'),
+        'infoTypeNone': MessageLookupByLibrary.simpleMessage(''),
         'installStarterSet': MessageLookupByLibrary.simpleMessage(
             'Vil du installere startersættet?'),
         'installing': MessageLookupByLibrary.simpleMessage('Installering'),
@@ -351,7 +352,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'licenseErrorAlreadyInUse':
             MessageLookupByLibrary.simpleMessage('Licensen er allerede i brug'),
         'licenseErrorNotFound': MessageLookupByLibrary.simpleMessage(
-            'Vi fandt ikke en gyldig licens.\nKontroller venligst licensnøglen og prøv igen'),
+            'Vi fandt ikke en gyldig licens.\nKontroller venligst licensnøglen og prøv igen.'),
         'licenseExpired':
             MessageLookupByLibrary.simpleMessage('Licensen er udløbet'),
         'licenseExpiredMessage': MessageLookupByLibrary.simpleMessage(

@@ -334,7 +334,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Als u nu uitlogt, gaat het volgende verloren:'),
         'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
-            'Ignore battery optimizations'),
+            'Negeer batterij-optimalisaties'),
         'imageArchive':
             MessageLookupByLibrary.simpleMessage('Afbeeldingenarchief'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Afbeeldingkiezer'),
@@ -342,6 +342,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'incorrectCode': MessageLookupByLibrary.simpleMessage('Onjuiste code'),
         'infoType':
             MessageLookupByLibrary.simpleMessage('Extra functie selecteren'),
+        'infoTypeNone': MessageLookupByLibrary.simpleMessage(''),
         'installStarterSet': MessageLookupByLibrary.simpleMessage(
             'Standaard dataset installeren?'),
         'installing': MessageLookupByLibrary.simpleMessage('Installeren'),
@@ -359,7 +360,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'licenseErrorAlreadyInUse':
             MessageLookupByLibrary.simpleMessage('Licentie is al in gebruik'),
         'licenseErrorNotFound': MessageLookupByLibrary.simpleMessage(
-            'We hebben geen geldige licentie gevonden.\nControleer de licentiesleutel en probeer het opnieuw'),
+            'We hebben geen geldige licentie gevonden.\nControleer de licentiesleutel en probeer het opnieuw.'),
         'licenseExpired':
             MessageLookupByLibrary.simpleMessage('Licentie verlopen'),
         'licenseExpiredMessage': MessageLookupByLibrary.simpleMessage(

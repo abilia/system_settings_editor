@@ -329,8 +329,8 @@ class MessageLookup extends MessageLookupByLibrary {
             'IPhonessa hälytysääniä voidaan toistaa enintään 30 sekunnin ajan'),
         'ifYouLogoutYouWillLose': MessageLookupByLibrary.simpleMessage(
             'Jos kirjaudut ulos nyt, menetät:'),
-        'ignoreBatteryOptimizations': MessageLookupByLibrary.simpleMessage(
-            'Ignore battery optimizations'),
+        'ignoreBatteryOptimizations':
+            MessageLookupByLibrary.simpleMessage('Ohita akun optimointi'),
         'imageArchive': MessageLookupByLibrary.simpleMessage('Kuva-arkisto'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Kuvanvalitsin'),
         'inTimePre': MessageLookupByLibrary.simpleMessage('in'),
@@ -338,6 +338,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Virheellinen koodi'),
         'infoType':
             MessageLookupByLibrary.simpleMessage('Valitse lisätoiminto'),
+        'infoTypeNone': MessageLookupByLibrary.simpleMessage(''),
         'installStarterSet':
             MessageLookupByLibrary.simpleMessage('Aseta aloitussarja'),
         'installing': MessageLookupByLibrary.simpleMessage('Asentaa'),
@@ -355,7 +356,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'licenseErrorAlreadyInUse':
             MessageLookupByLibrary.simpleMessage('Lisenssi on jo käytössä'),
         'licenseErrorNotFound': MessageLookupByLibrary.simpleMessage(
-            'Emme löytäneet voimassa olevaa lisenssiä.\nTarkista lisenssin avain ja yritä uudelleen'),
+            'Emme löytäneet voimassa olevaa lisenssiä.\nTarkista lisenssin avain ja yritä uudelleen.'),
         'licenseExpired':
             MessageLookupByLibrary.simpleMessage('Lisenssi on vanhentunut'),
         'licenseExpiredMessage': MessageLookupByLibrary.simpleMessage(
