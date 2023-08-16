@@ -121,7 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'canLogOutSafely': MessageLookupByLibrary.simpleMessage(
             'Nå kan du logge deg ut trygt'),
         'cancel': MessageLookupByLibrary.simpleMessage('Avbryt'),
-        'cancelChanges': MessageLookupByLibrary.simpleMessage(''),
+        'cancelChanges': MessageLookupByLibrary.simpleMessage('Cancel changes'),
         'captions': MessageLookupByLibrary.simpleMessage('Titler'),
         'categories': MessageLookupByLibrary.simpleMessage('Kategorier'),
         'category': MessageLookupByLibrary.simpleMessage('Kategori'),
@@ -129,7 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'checkable': MessageLookupByLibrary.simpleMessage('Kvitterbar'),
         'checkableActivities':
             MessageLookupByLibrary.simpleMessage('Kvitterbare aktiviteter'),
-        'checklist': MessageLookupByLibrary.simpleMessage(''),
+        'checklist': MessageLookupByLibrary.simpleMessage('Checklist'),
         'checklistDoneInfo': MessageLookupByLibrary.simpleMessage(
             'Alle oppgavene er utført. Vil du merke aktiviteten som ferdig?'),
         'clear': MessageLookupByLibrary.simpleMessage('Slette'),
@@ -211,7 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Har du ikke en myAbilia-konto ennå?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'Du trenger en myAbilia-konto for å bruke MEMOplanner'),
-        'daily': MessageLookupByLibrary.simpleMessage(''),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Dato'),
         'day': MessageLookupByLibrary.simpleMessage('dag'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Døgnet'),
@@ -416,9 +416,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'newActivity': MessageLookupByLibrary.simpleMessage('Ny aktivitet'),
         'newActivityTemplate':
             MessageLookupByLibrary.simpleMessage('Ny aktivitetsmal'),
-        'newChecklist': MessageLookupByLibrary.simpleMessage(''),
-        'newNote': MessageLookupByLibrary.simpleMessage(''),
-        'newTask': MessageLookupByLibrary.simpleMessage(''),
+        'newChecklist': MessageLookupByLibrary.simpleMessage('New checklist'),
+        'newNote': MessageLookupByLibrary.simpleMessage('New note'),
+        'newTask': MessageLookupByLibrary.simpleMessage('New task'),
         'newText': MessageLookupByLibrary.simpleMessage('Ny'),
         'newTimer': MessageLookupByLibrary.simpleMessage('Ny timer'),
         'newTimerTemplate':
@@ -441,7 +441,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'noMatchingImage':
             MessageLookupByLibrary.simpleMessage('Ingen samsvarende bildenavn'),
         'noNotes': MessageLookupByLibrary.simpleMessage('Du har ingen notater'),
-        'noRecurrence': MessageLookupByLibrary.simpleMessage(''),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Ingen lyd -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Det er ingen maler, og du har ikke valgt navn og bilde i sekvensmodus.'),
@@ -458,7 +458,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'notCompleted': MessageLookupByLibrary.simpleMessage('ikke ferdig'),
         'notConnected': MessageLookupByLibrary.simpleMessage('Ikke tilkoblet'),
         'notSelected': MessageLookupByLibrary.simpleMessage('Ikke valgt'),
-        'note': MessageLookupByLibrary.simpleMessage(''),
+        'note': MessageLookupByLibrary.simpleMessage('Note'),
         'notifications': MessageLookupByLibrary.simpleMessage('Notifikasjoner'),
         'notificationsWarningHintText': MessageLookupByLibrary.simpleMessage(
             'Tillat notifikasjoner for å få alarm og påminnelser for aktiviteter'),
@@ -474,7 +474,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'onlyAppliesToGo':
             MessageLookupByLibrary.simpleMessage('Gjelder kun MEMOplanner Go'),
         'onlyMe': MessageLookupByLibrary.simpleMessage('Bare meg'),
-        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(''),
+        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
+            'You can only have one extra function in this activity'),
         'onlyThisDay': MessageLookupByLibrary.simpleMessage('Bare denne dagen'),
         'password': MessageLookupByLibrary.simpleMessage('Passord'),
         'passwordHint':
@@ -524,8 +525,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'saturdayAndSunday':
             MessageLookupByLibrary.simpleMessage('Lørdag og søndag'),
         'save': MessageLookupByLibrary.simpleMessage('Lagre'),
-        'saveNote': MessageLookupByLibrary.simpleMessage(''),
-        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(''),
+        'saveNote': MessageLookupByLibrary.simpleMessage('Save note'),
+        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(
+            'Do you want to save note first?'),
         'screenBrightness':
             MessageLookupByLibrary.simpleMessage('Skjermens lysstyrke'),
         'screenTimeout':
@@ -636,7 +638,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'system': MessageLookupByLibrary.simpleMessage('System'),
         'takeNewPhoto': MessageLookupByLibrary.simpleMessage('Ta nytt bilde'),
         'task': MessageLookupByLibrary.simpleMessage('Oppgave'),
-        'tasks': MessageLookupByLibrary.simpleMessage(''),
+        'tasks': MessageLookupByLibrary.simpleMessage('tasks'),
         'templates': MessageLookupByLibrary.simpleMessage('Maler'),
         'termsOfUse': MessageLookupByLibrary.simpleMessage('brukervillkår'),
         'termsOfUseUrl':
@@ -689,7 +691,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'timers': MessageLookupByLibrary.simpleMessage('Timere'),
         'toLogin': MessageLookupByLibrary.simpleMessage('til Logg inn'),
         'today': MessageLookupByLibrary.simpleMessage('I dag'),
-        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(''),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'You have made too many attempts to log in. Please wait a few seconds until trying again'),
         'toolbar': MessageLookupByLibrary.simpleMessage('Knapperad'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
             'Visninger som vises på verktøylinjen'),

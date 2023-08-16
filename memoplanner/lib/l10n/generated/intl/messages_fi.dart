@@ -122,7 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'canLogOutSafely': MessageLookupByLibrary.simpleMessage(
             'Nyt voit kirjautua turvallisesti ulos'),
         'cancel': MessageLookupByLibrary.simpleMessage('Peruuta'),
-        'cancelChanges': MessageLookupByLibrary.simpleMessage(''),
+        'cancelChanges': MessageLookupByLibrary.simpleMessage('Cancel changes'),
         'captions': MessageLookupByLibrary.simpleMessage('Otsikot'),
         'categories': MessageLookupByLibrary.simpleMessage('Kategoriat'),
         'category': MessageLookupByLibrary.simpleMessage('Kategoria'),
@@ -130,7 +130,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'checkable': MessageLookupByLibrary.simpleMessage('Tarkistettava'),
         'checkableActivities':
             MessageLookupByLibrary.simpleMessage('Tarkistettavat aktiviteetit'),
-        'checklist': MessageLookupByLibrary.simpleMessage(''),
+        'checklist': MessageLookupByLibrary.simpleMessage('Checklist'),
         'checklistDoneInfo': MessageLookupByLibrary.simpleMessage(
             'Kaikki aktiviteettisi tarkistusluettelotehtävät on suoritettu. Haluatko suorittaa toiminnon loppuun?'),
         'clear': MessageLookupByLibrary.simpleMessage('Poista'),
@@ -212,7 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Eikö sinulla ole vielä myAbilia-tiliä?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'Tarvitset myAbilia-tilin käyttääksesi MEMOplanneria'),
-        'daily': MessageLookupByLibrary.simpleMessage(''),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Päivämäärä'),
         'day': MessageLookupByLibrary.simpleMessage('päivä'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Päivä ja yö'),
@@ -333,7 +333,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Ohita akun optimointi'),
         'imageArchive': MessageLookupByLibrary.simpleMessage('Kuva-arkisto'),
         'imagePicker': MessageLookupByLibrary.simpleMessage('Kuvanvalitsin'),
-        'inTimePre': MessageLookupByLibrary.simpleMessage(''),
+        'inTimePre': MessageLookupByLibrary.simpleMessage('in'),
         'incorrectCode':
             MessageLookupByLibrary.simpleMessage('Virheellinen koodi'),
         'infoType':
@@ -418,16 +418,16 @@ class MessageLookup extends MessageLookupByLibrary {
         'monthly': MessageLookupByLibrary.simpleMessage('Kuukausittain'),
         'myPhotos': MessageLookupByLibrary.simpleMessage('Omat valokuvat'),
         'name': MessageLookupByLibrary.simpleMessage('Nimi'),
-        'nbOneAClock': MessageLookupByLibrary.simpleMessage(''),
+        'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
             'Sinun pitää aktivoida lisenssi tietojen myAbiliaan tallentamiseen.'),
         'newActivity':
             MessageLookupByLibrary.simpleMessage('Uusi aktiviteettia'),
         'newActivityTemplate':
             MessageLookupByLibrary.simpleMessage('Uusi toimintomallipohja'),
-        'newChecklist': MessageLookupByLibrary.simpleMessage(''),
-        'newNote': MessageLookupByLibrary.simpleMessage(''),
-        'newTask': MessageLookupByLibrary.simpleMessage(''),
+        'newChecklist': MessageLookupByLibrary.simpleMessage('New checklist'),
+        'newNote': MessageLookupByLibrary.simpleMessage('New note'),
+        'newTask': MessageLookupByLibrary.simpleMessage('New task'),
         'newText': MessageLookupByLibrary.simpleMessage('Uusi'),
         'newTimer': MessageLookupByLibrary.simpleMessage('Uusi ajastin'),
         'newTimerTemplate':
@@ -453,7 +453,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Ei vastaavaa kuvan nimeä'),
         'noNotes': MessageLookupByLibrary.simpleMessage(
             'Sinulla ei ole muistiinpanoja'),
-        'noRecurrence': MessageLookupByLibrary.simpleMessage(''),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Ei ääntä -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Mallit ei ole, etkä ole valinnut nimeä tai kuvaa lisätessäsi aktiviteettia vaiheittain.'),
@@ -471,7 +471,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'notCompleted': MessageLookupByLibrary.simpleMessage('kesken'),
         'notConnected': MessageLookupByLibrary.simpleMessage('Ei yhteyttä'),
         'notSelected': MessageLookupByLibrary.simpleMessage('Ei valittu'),
-        'note': MessageLookupByLibrary.simpleMessage(''),
+        'note': MessageLookupByLibrary.simpleMessage('Note'),
         'notifications': MessageLookupByLibrary.simpleMessage('Ilmoitukset'),
         'notificationsWarningHintText': MessageLookupByLibrary.simpleMessage(
             'Salli ilmoitusten saada hälytyksiä ja muistutuksia toiminnasta.'),
@@ -488,7 +488,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'onlyAppliesToGo': MessageLookupByLibrary.simpleMessage(
             'Koskee vain MEMOplanner Gota'),
         'onlyMe': MessageLookupByLibrary.simpleMessage('Vain minä'),
-        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(''),
+        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
+            'You can only have one extra function in this activity'),
         'onlyThisDay':
             MessageLookupByLibrary.simpleMessage('Vain tänä päivänä'),
         'password': MessageLookupByLibrary.simpleMessage('Salasana'),
@@ -539,8 +540,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'saturdayAndSunday':
             MessageLookupByLibrary.simpleMessage('Lauantai ja sunnuntai'),
         'save': MessageLookupByLibrary.simpleMessage('Tallenna'),
-        'saveNote': MessageLookupByLibrary.simpleMessage(''),
-        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(''),
+        'saveNote': MessageLookupByLibrary.simpleMessage('Save note'),
+        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(
+            'Do you want to save note first?'),
         'screenBrightness':
             MessageLookupByLibrary.simpleMessage('Näytön kirkkaus'),
         'screenTimeout':
@@ -661,7 +663,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'system': MessageLookupByLibrary.simpleMessage('Järjestelmä'),
         'takeNewPhoto': MessageLookupByLibrary.simpleMessage('Ota uusi kuva'),
         'task': MessageLookupByLibrary.simpleMessage('Tehtävä'),
-        'tasks': MessageLookupByLibrary.simpleMessage(''),
+        'tasks': MessageLookupByLibrary.simpleMessage('tasks'),
         'templates': MessageLookupByLibrary.simpleMessage('Mallit'),
         'termsOfUse': MessageLookupByLibrary.simpleMessage('käyttöehdot'),
         'termsOfUseUrl':
@@ -716,7 +718,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'timers': MessageLookupByLibrary.simpleMessage('Ajastimet'),
         'toLogin': MessageLookupByLibrary.simpleMessage('kirjautumissivulle'),
         'today': MessageLookupByLibrary.simpleMessage('Tänään'),
-        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(''),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'You have made too many attempts to log in. Please wait a few seconds until trying again'),
         'toolbar': MessageLookupByLibrary.simpleMessage('Työkalurivi'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
             'Näkymät näkyvät työkalupalkissa'),

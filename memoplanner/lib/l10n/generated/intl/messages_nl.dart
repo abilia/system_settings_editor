@@ -123,7 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'canLogOutSafely':
             MessageLookupByLibrary.simpleMessage('U kunt nu veilig uitloggen'),
         'cancel': MessageLookupByLibrary.simpleMessage('Annuleren'),
-        'cancelChanges': MessageLookupByLibrary.simpleMessage(''),
+        'cancelChanges': MessageLookupByLibrary.simpleMessage('Cancel changes'),
         'captions': MessageLookupByLibrary.simpleMessage('Bijschriften'),
         'categories': MessageLookupByLibrary.simpleMessage('Categorieën'),
         'category': MessageLookupByLibrary.simpleMessage('Categorie'),
@@ -131,7 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'checkable': MessageLookupByLibrary.simpleMessage('Afvinkbaar'),
         'checkableActivities':
             MessageLookupByLibrary.simpleMessage('Afvinkbare activiteiten'),
-        'checklist': MessageLookupByLibrary.simpleMessage(''),
+        'checklist': MessageLookupByLibrary.simpleMessage('Checklist'),
         'checklistDoneInfo': MessageLookupByLibrary.simpleMessage(
             'Alle checklisttaken zijn voltooid. Wilt u de activiteit afsluiten?'),
         'clear': MessageLookupByLibrary.simpleMessage('Verwijderen'),
@@ -215,7 +215,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Heeft u nog geen myAbilia-account?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'U heeft een myAbilia-account nodig om MEMOplanner te gebruiken'),
-        'daily': MessageLookupByLibrary.simpleMessage(''),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Datum'),
         'day': MessageLookupByLibrary.simpleMessage('dag'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Dag en nacht'),
@@ -420,15 +420,15 @@ class MessageLookup extends MessageLookupByLibrary {
         'monthly': MessageLookupByLibrary.simpleMessage('Maandelijks'),
         'myPhotos': MessageLookupByLibrary.simpleMessage('Mijn foto\'s'),
         'name': MessageLookupByLibrary.simpleMessage('Naam'),
-        'nbOneAClock': MessageLookupByLibrary.simpleMessage(''),
+        'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
             'U hebt een actieve licentie nodig om uw gegevens op te slaan in myAbilia.'),
         'newActivity': MessageLookupByLibrary.simpleMessage('Nieuw activiteit'),
         'newActivityTemplate':
             MessageLookupByLibrary.simpleMessage('Nieuw activiteitsjabloon'),
-        'newChecklist': MessageLookupByLibrary.simpleMessage(''),
-        'newNote': MessageLookupByLibrary.simpleMessage(''),
-        'newTask': MessageLookupByLibrary.simpleMessage(''),
+        'newChecklist': MessageLookupByLibrary.simpleMessage('New checklist'),
+        'newNote': MessageLookupByLibrary.simpleMessage('New note'),
+        'newTask': MessageLookupByLibrary.simpleMessage('New task'),
         'newText': MessageLookupByLibrary.simpleMessage('Nieuw'),
         'newTimer': MessageLookupByLibrary.simpleMessage('Nieuwe timer'),
         'newTimerTemplate':
@@ -453,7 +453,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Geen overeenkomende afbeeldingsnaam'),
         'noNotes':
             MessageLookupByLibrary.simpleMessage('Je hebt geen aantekeningen'),
-        'noRecurrence': MessageLookupByLibrary.simpleMessage(''),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Geen geluid -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Er zijn geen sjablonen en u heeft geen naam of afbeelding geselecteerd in het stap voor stap toevoegen van een activiteit.'),
@@ -471,7 +471,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'notConnected': MessageLookupByLibrary.simpleMessage('Niet verbonden'),
         'notSelected':
             MessageLookupByLibrary.simpleMessage('Niet geselecteerd'),
-        'note': MessageLookupByLibrary.simpleMessage(''),
+        'note': MessageLookupByLibrary.simpleMessage('Note'),
         'notifications': MessageLookupByLibrary.simpleMessage('Meldingen'),
         'notificationsWarningHintText': MessageLookupByLibrary.simpleMessage(
             'Sta meldingen toe om alarmen en herinneringen van activiteiten te kunnen ontvangen.'),
@@ -487,7 +487,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'onlyAppliesToGo': MessageLookupByLibrary.simpleMessage(
             'Geldt alleen voor MEMOplanner Go'),
         'onlyMe': MessageLookupByLibrary.simpleMessage('Mij alleen'),
-        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(''),
+        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
+            'You can only have one extra function in this activity'),
         'onlyThisDay': MessageLookupByLibrary.simpleMessage('Alleen deze dag'),
         'password': MessageLookupByLibrary.simpleMessage('Wachtwoord'),
         'passwordHint': MessageLookupByLibrary.simpleMessage(
@@ -537,8 +538,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'saturdayAndSunday':
             MessageLookupByLibrary.simpleMessage('Zaterdag en zondag'),
         'save': MessageLookupByLibrary.simpleMessage('Opslaan'),
-        'saveNote': MessageLookupByLibrary.simpleMessage(''),
-        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(''),
+        'saveNote': MessageLookupByLibrary.simpleMessage('Save note'),
+        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(
+            'Do you want to save note first?'),
         'screenBrightness':
             MessageLookupByLibrary.simpleMessage('Schermhelderheid'),
         'screenTimeout':
@@ -663,7 +665,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'takeNewPhoto':
             MessageLookupByLibrary.simpleMessage('Nieuwe foto nemen'),
         'task': MessageLookupByLibrary.simpleMessage('Taak'),
-        'tasks': MessageLookupByLibrary.simpleMessage(''),
+        'tasks': MessageLookupByLibrary.simpleMessage('tasks'),
         'templates': MessageLookupByLibrary.simpleMessage('Sjablonen'),
         'termsOfUse':
             MessageLookupByLibrary.simpleMessage('gebruiksvoorwaarden'),
@@ -719,7 +721,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'timers': MessageLookupByLibrary.simpleMessage('Timers'),
         'toLogin': MessageLookupByLibrary.simpleMessage('naar Inloggen'),
         'today': MessageLookupByLibrary.simpleMessage('Vandaag'),
-        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(''),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'You have made too many attempts to log in. Please wait a few seconds until trying again'),
         'toolbar': MessageLookupByLibrary.simpleMessage('Werkbalk'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
             'Weergaven weergegeven in de werkbalk'),

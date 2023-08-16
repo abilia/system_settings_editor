@@ -121,7 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'canLogOutSafely': MessageLookupByLibrary.simpleMessage(
             'Nú getur þú skráð þig út með öruggum hætti'),
         'cancel': MessageLookupByLibrary.simpleMessage('Hætta við'),
-        'cancelChanges': MessageLookupByLibrary.simpleMessage(''),
+        'cancelChanges': MessageLookupByLibrary.simpleMessage('Cancel changes'),
         'captions': MessageLookupByLibrary.simpleMessage('Yfirsagnir'),
         'categories': MessageLookupByLibrary.simpleMessage('Flokkar'),
         'category': MessageLookupByLibrary.simpleMessage('Flokkur'),
@@ -129,7 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'checkable': MessageLookupByLibrary.simpleMessage('Hægt að haka við'),
         'checkableActivities': MessageLookupByLibrary.simpleMessage(
             'Verkefni sem hægt er að haka við'),
-        'checklist': MessageLookupByLibrary.simpleMessage(''),
+        'checklist': MessageLookupByLibrary.simpleMessage('Checklist'),
         'checklistDoneInfo': MessageLookupByLibrary.simpleMessage(
             'Lokið hefur verið við alla gátlista í verkefninu þínu. Viltu ljúka þessu verkefni?'),
         'clear': MessageLookupByLibrary.simpleMessage('Hreinsa'),
@@ -147,7 +147,8 @@ class MessageLookup extends MessageLookupByLibrary {
             'tuttugu og fimm mínútur yfir %s'),
         'clockFiveMinutesToTts':
             MessageLookupByLibrary.simpleMessage('fimm mínútur í %s'),
-        'clockHalfPastTts': MessageLookupByLibrary.simpleMessage(''),
+        'clockHalfPastTts':
+            MessageLookupByLibrary.simpleMessage('Half past %s'),
         'clockQuarterPastTts':
             MessageLookupByLibrary.simpleMessage('korter yfir %s'),
         'clockQuarterToTts':
@@ -211,7 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Ertu ekki komin/n með myAbilia-reikning?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'Þú þarft myAbilia-reikning til að nota MEMOplanner'),
-        'daily': MessageLookupByLibrary.simpleMessage(''),
+        'daily': MessageLookupByLibrary.simpleMessage('Daily'),
         'date': MessageLookupByLibrary.simpleMessage('Dagsetning'),
         'day': MessageLookupByLibrary.simpleMessage('dagur'),
         'dayAndNight': MessageLookupByLibrary.simpleMessage('Dag og nótt'),
@@ -412,15 +413,15 @@ class MessageLookup extends MessageLookupByLibrary {
         'monthly': MessageLookupByLibrary.simpleMessage('Mánaðarlega'),
         'myPhotos': MessageLookupByLibrary.simpleMessage('Ljósmyndirnar mínar'),
         'name': MessageLookupByLibrary.simpleMessage('Nafn'),
-        'nbOneAClock': MessageLookupByLibrary.simpleMessage(''),
+        'nbOneAClock': MessageLookupByLibrary.simpleMessage('one o clock'),
         'needLicenseToSaveData': MessageLookupByLibrary.simpleMessage(
             'Þú þarft gilt leyfi til að vista gögnin þín á myAbilia.'),
         'newActivity': MessageLookupByLibrary.simpleMessage('Nýtt verkefni'),
         'newActivityTemplate':
             MessageLookupByLibrary.simpleMessage('Nýtt verkefnissniðmát'),
-        'newChecklist': MessageLookupByLibrary.simpleMessage(''),
-        'newNote': MessageLookupByLibrary.simpleMessage(''),
-        'newTask': MessageLookupByLibrary.simpleMessage(''),
+        'newChecklist': MessageLookupByLibrary.simpleMessage('New checklist'),
+        'newNote': MessageLookupByLibrary.simpleMessage('New note'),
+        'newTask': MessageLookupByLibrary.simpleMessage('New task'),
         'newText': MessageLookupByLibrary.simpleMessage('Nýtt'),
         'newTimer': MessageLookupByLibrary.simpleMessage('Nýr tímamælir'),
         'newTimerTemplate':
@@ -444,7 +445,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Myndanafnið fannst ekki'),
         'noNotes':
             MessageLookupByLibrary.simpleMessage('Þú átt enga minnispunkta'),
-        'noRecurrence': MessageLookupByLibrary.simpleMessage(''),
+        'noRecurrence': MessageLookupByLibrary.simpleMessage('No recurrence'),
         'noSound': MessageLookupByLibrary.simpleMessage('- Ekkert hljóð -'),
         'noTemplateActivityError1': MessageLookupByLibrary.simpleMessage(
             'Engin sniðmát eru fyrir hendi og þú hefur ekki valið nafn eða mynd þegar verkefni var bætt við í skrefum.'),
@@ -462,7 +463,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'notCompleted': MessageLookupByLibrary.simpleMessage('ólokið'),
         'notConnected': MessageLookupByLibrary.simpleMessage('Ótengt'),
         'notSelected': MessageLookupByLibrary.simpleMessage('Ekki valið'),
-        'note': MessageLookupByLibrary.simpleMessage(''),
+        'note': MessageLookupByLibrary.simpleMessage('Note'),
         'notifications': MessageLookupByLibrary.simpleMessage('Tilkynningar'),
         'notificationsWarningHintText': MessageLookupByLibrary.simpleMessage(
             'Heimila tilkynningar til að fá viðvaranir og áminningar frá verkefnum.'),
@@ -478,7 +479,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'onlyAppliesToGo': MessageLookupByLibrary.simpleMessage(
             'Á aðeins við um MEMOplanner Go'),
         'onlyMe': MessageLookupByLibrary.simpleMessage('Aðeins ég'),
-        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(''),
+        'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
+            'You can only have one extra function in this activity'),
         'onlyThisDay':
             MessageLookupByLibrary.simpleMessage('Aðeins þennan dag'),
         'password': MessageLookupByLibrary.simpleMessage('Lykilorð'),
@@ -530,8 +532,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'saturdayAndSunday':
             MessageLookupByLibrary.simpleMessage('Laugardag og sunnudag'),
         'save': MessageLookupByLibrary.simpleMessage('Vista'),
-        'saveNote': MessageLookupByLibrary.simpleMessage(''),
-        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(''),
+        'saveNote': MessageLookupByLibrary.simpleMessage('Save note'),
+        'saveNoteQuestion': MessageLookupByLibrary.simpleMessage(
+            'Do you want to save note first?'),
         'screenBrightness':
             MessageLookupByLibrary.simpleMessage('Birtustig skjás'),
         'screenTimeout': MessageLookupByLibrary.simpleMessage('Tímalok skjás'),
@@ -649,7 +652,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'takeNewPhoto':
             MessageLookupByLibrary.simpleMessage('Taka nýja ljósmynd'),
         'task': MessageLookupByLibrary.simpleMessage('Verk'),
-        'tasks': MessageLookupByLibrary.simpleMessage(''),
+        'tasks': MessageLookupByLibrary.simpleMessage('tasks'),
         'templates': MessageLookupByLibrary.simpleMessage('Sniðmát'),
         'termsOfUse': MessageLookupByLibrary.simpleMessage('notandaskilmálana'),
         'termsOfUseUrl':
@@ -702,7 +705,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'timers': MessageLookupByLibrary.simpleMessage('Tímamælar'),
         'toLogin': MessageLookupByLibrary.simpleMessage('í innskráningu'),
         'today': MessageLookupByLibrary.simpleMessage('Í dag'),
-        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(''),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'You have made too many attempts to log in. Please wait a few seconds until trying again'),
         'toolbar': MessageLookupByLibrary.simpleMessage('Verkfærastika'),
         'toolbarSettingsHint': MessageLookupByLibrary.simpleMessage(
             'Aðgerðir sýndar neðst á síðu'),
