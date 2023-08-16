@@ -24,6 +24,7 @@ Squash commits for feature branches are permitted if there are trivial commits t
 
 We're using [lokalise](https://app.lokalise.com) and [lokalise_flutter_sdk](https://pub.dev/packages/lokalise_flutter_sdk) for our translations. To update translations after a newly added string or language:
 
+- Under Advanced settings in the Download tab, change 'Empty translations' to 'Replace with base language'
 - Download all languages as arb files in the format `intl_%LANG_ISO%.arb`
 - Put the files in the l10n folder [:calendar:](https://github.com/abilia/seagull/tree/master/memoplanner/lib/l10n)[:blue_book:](https://github.com/abilia/seagull/tree/master/handi/lib/l10n)
 
