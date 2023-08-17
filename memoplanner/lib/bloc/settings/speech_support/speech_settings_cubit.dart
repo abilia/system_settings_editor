@@ -36,6 +36,7 @@ class SpeechSettingsCubit extends Cubit<SpeechSettingsState> {
   Future<void> setVoice(String voice) async {
     assert(Config.isMP, 'Cannot set voice on mpgo!');
     if (voice.isNotEmpty) await acapelaTts.setVoice({'voice': voice});
+    if (isClosed) return;
     emit(state.copyWith(voice: voice));
     await voiceDb.setVoice(voice);
   }

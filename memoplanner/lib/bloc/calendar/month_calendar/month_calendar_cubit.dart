@@ -67,10 +67,12 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     _maybeGoToCurrentDay(state.firstDay.nextMonth());
     final first = state.firstDay.nextMonth();
     final last = first.nextMonth();
+    final activities = await activityRepository?.allBetween(first, last) ?? [];
+    if (isClosed) return;
     emit(
       _mapToState(
         first,
-        await activityRepository?.allBetween(first, last) ?? [],
+        activities,
         timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
         true,
@@ -82,10 +84,12 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     _maybeGoToCurrentDay(state.firstDay.previousMonth());
     final first = state.firstDay.previousMonth();
     final last = first.nextMonth();
+    final activities = await activityRepository?.allBetween(first, last) ?? [];
+    if (isClosed) return;
     emit(
       _mapToState(
         first,
-        await activityRepository?.allBetween(first, last) ?? [],
+        activities,
         timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
         true,
@@ -97,10 +101,12 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     dayPickerBloc.add(GoTo(day: clockBloc.state));
     final first = clockBloc.state.firstDayOfMonth();
     final last = first.nextMonth();
+    final activities = await activityRepository?.allBetween(first, last) ?? [];
+    if (isClosed) return;
     emit(
       _mapToState(
         first,
-        await activityRepository?.allBetween(first, last) ?? [],
+        activities,
         timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
         true,
@@ -118,10 +124,12 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   Future<void> updateMonth([_]) async {
     final first = state.firstDay;
     final last = first.nextMonth();
+    final activities = await activityRepository?.allBetween(first, last) ?? [];
+    if (isClosed) return;
     emit(
       _mapToState(
         first,
-        await activityRepository?.allBetween(first, last) ?? [],
+        activities,
         timerAlarmBloc?.state.timers ?? [],
         clockBloc.state,
       ),

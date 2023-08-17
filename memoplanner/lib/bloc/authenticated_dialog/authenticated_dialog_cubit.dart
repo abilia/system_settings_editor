@@ -40,6 +40,7 @@ class AuthenticatedDialogCubit extends Cubit<AuthenticatedDialogState> {
 
   Future<void> loadTermsOfUse() async {
     final termsAccepted = await termsOfUseRepository.isTermsOfUseAccepted();
+    if (isClosed) return;
     emit(state.copyWith(termsOfUse: !termsAccepted));
   }
 

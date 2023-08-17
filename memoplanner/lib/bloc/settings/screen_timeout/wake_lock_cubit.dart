@@ -34,6 +34,7 @@ class WakeLockCubit extends Cubit<WakeLockState> {
 
   Future setKeepScreenOnWhileCharging(bool keepScreenOn) async {
     await settingsDb.setKeepScreenOnWhileCharging(keepScreenOn);
+    if (isClosed) return;
     emit(
       state.copyWith(
         keepScreenOnWhileCharging: settingsDb.keepScreenOnWhileCharging,

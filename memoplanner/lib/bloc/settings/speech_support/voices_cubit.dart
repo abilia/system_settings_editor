@@ -45,13 +45,14 @@ class VoicesCubit extends Cubit<VoicesState> {
   Future<void> loadAvailableVoices() async {
     if (state is VoicesLoading) return;
     final newAvailible = await voiceRepository.readAvailableVoices();
-    if (newAvailible.isEmpty) return;
+    if (newAvailible.isEmpty || isClosed) return;
     emit(state.copyWith(allAvailable: newAvailible));
   }
 
   Future<void> downloadVoice(VoiceData voice) async {
     emit(state.copyWith(downloading: {...state.downloading, voice.name}));
     final downloadSuccess = await voiceRepository.downloadVoice(voice);
+    if (isClosed) return;
 
     emit(
       state.copyWith(downloading: {...state.downloading}..remove(voice.name)),
@@ -68,6 +69,8 @@ class VoicesCubit extends Cubit<VoicesState> {
     }
 
     await speechSettingsCubit.setTextToSpeech(true);
+
+    if (isClosed) return;
 
     emit(
       state.copyWith(allDownloaded: {...state.allDownloaded, voice.name}),
@@ -100,6 +103,7 @@ class VoicesCubit extends Cubit<VoicesState> {
     await speechSettingsCubit.setSpeakEveryWord(false);
     await speechSettingsCubit.setTextToSpeech(false);
     await speechSettingsCubit.setVoice('');
+    if (isClosed) return;
     emit(VoicesLoading(languageCode: state.languageCode));
     await _deleteAllVoices();
     await initialize();
