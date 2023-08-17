@@ -63,6 +63,7 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
           termsOfUse: state.termsOfUse,
           privacyPolicy: state.privacyPolicy,
         );
+        if (isClosed) return;
         emit(state.success());
       } on CreateAccountException catch (exception) {
         final firstError =

@@ -36,6 +36,7 @@ class UserFileBloc extends Bloc<UserFileEvent, UserFileState> {
     final storedFiles = await userFileRepository.getAllLoadedFiles();
     if (isClosed) return;
     if (storedFiles.isNotEmpty || await userFileRepository.allDownloaded()) {
+      if (isClosed) return;
       emit(UserFilesLoaded(storedFiles, state._tempFiles));
     }
     await _downloadUserFiles(emit);

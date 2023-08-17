@@ -58,12 +58,14 @@ class SortableBloc extends Bloc<SortableEvent, SortableState> {
       bool initDefaults, Emitter<SortableState> emit) async {
     try {
       final sortables = await sortableRepository.getAll();
+      if (isClosed) return;
       emit(SortablesLoaded(sortables: sortables));
       if (initDefaults) {
         await _addMissingDefaults(sortables);
       }
     } catch (e) {
       _log.warning('exception when loading sortable $e');
+      if (isClosed) return;
       emit(SortablesLoadedFailed());
     }
   }

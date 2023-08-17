@@ -76,6 +76,7 @@ class LoginCubit extends Cubit<LoginState> {
       await _checkValidLicense(licenseExpiredConfirmed);
     } catch (error) {
       final authenticationFailureCause = _getAuthenticationFailureCause(error);
+      if (isClosed) return;
       emit(state.failure(cause: authenticationFailureCause));
     }
   }

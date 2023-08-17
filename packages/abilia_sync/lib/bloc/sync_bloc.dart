@@ -72,6 +72,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         lastSynced = clockBloc.state;
         await lastSyncDb.setSyncTime(lastSynced);
       }
+      if (isClosed) return;
       emit(Synced(lastSynced: lastSynced, didFetchData: didFetchData));
     } catch (error) {
       emit(SyncedFailed(lastSynced: state.lastSynced));
