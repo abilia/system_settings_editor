@@ -10,9 +10,11 @@ import 'package:memoplanner/utils/all.dart';
 class AlarmListener extends StatelessWidget {
   static final _log = Logger('AlarmListener');
   final Widget child;
+  final NotificationAlarm? alarm;
 
   const AlarmListener({
     required this.child,
+    this.alarm,
     Key? key,
   }) : super(key: key);
 
@@ -24,10 +26,11 @@ class AlarmListener extends StatelessWidget {
       listeners: [
         BlocListener<AlarmCubit, NotificationAlarm?>(
           listener: (context, state) async {
-            if (state != null) {
+            if (state != null && state != alarm) {
+              _log.info('pushing alarm: $state');
               await GetIt.I<AlarmNavigator>().pushAlarm(
                 context,
-                state.setFullScreenActivity(fullScreenActivity),
+                state.set(fullScreenActivity: fullScreenActivity),
               );
             }
           },

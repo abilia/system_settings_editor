@@ -97,6 +97,7 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
         '$notificationResponse',
       );
       if (notificationResponse != null) {
+        onNotification(notificationResponse);
         if (Platform.isAndroid) {
           _log.info('on android, parsing payload for fullscreen alarm');
           final payload = notificationResponse.payload;
@@ -104,8 +105,6 @@ Future<NotificationAlarm?> getOrAddPayloadToStream() async {
             return NotificationAlarm.decode(payload);
           }
         }
-        _log.info('on iOS, adding payload to selectNotificationSubject');
-        onNotification(notificationResponse);
       }
     }
   } catch (e) {

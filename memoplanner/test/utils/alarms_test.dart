@@ -249,7 +249,7 @@ void main() {
       // Arrange
       const activities = Iterable<Activity>.empty();
       // Act
-      final alarms = activities.alarmsFrom(startDate);
+      final alarms = activities.alarmsFrom(startDate, take: 10);
       // Assert
       expect(alarms, isEmpty);
     });
@@ -260,7 +260,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toList();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toList();
       // Assert
       expect(alarms, [
         StartAlarm(ActivityDay(activity, day)),
@@ -274,7 +274,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toList();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toList();
       // Assert
       expect(alarms, [EndAlarm(ActivityDay(activity, day))]);
     });
@@ -285,7 +285,7 @@ void main() {
       final activities = [activity];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toList();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toList();
       // Assert
       expect(alarms, [
         StartAlarm(ActivityDay(activity, day)),
@@ -301,7 +301,7 @@ void main() {
       final activities = [before, after, onTime];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toSet();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toSet();
       // Assert
       expect(
         alarms,
@@ -334,7 +334,7 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toList();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toList();
       // Assert
       expect(alarms, [
         StartAlarm(ActivityDay(onTime, day)),
@@ -356,7 +356,7 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toList();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toList();
       // Assert
       expect(alarms, [
         ReminderBefore(ActivityDay(afterWithReminder, day), reminder: reminder)
@@ -380,7 +380,7 @@ void main() {
       final activities = [overlapping, later];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toSet();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toSet();
 
       // Assert
       expect(alarms, {
@@ -423,7 +423,7 @@ void main() {
           alarmType: noAlarm,
           startTime: now.add(5.minutes()),
           reminderBefore: [5.minutes().inMilliseconds]);
-      final got = <Activity>[activity].alarmsFrom(now);
+      final got = <Activity>[activity].alarmsFrom(now, take: 10);
       expect(got,
           [ReminderBefore(ActivityDay(activity, now), reminder: 5.minutes())]);
     });
@@ -545,7 +545,7 @@ void main() {
       final activities = [afterWithReminder, onTime];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toList();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toList();
       // Assert
       expect(alarms, isEmpty);
     });
@@ -562,7 +562,7 @@ void main() {
       final activities = [checkable];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toList();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toList();
       // Assert
       expect(
           alarms,
@@ -583,7 +583,8 @@ void main() {
       final activities = [checkable];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate.add(1.hours())).toList();
+      final alarms =
+          activities.alarmsFrom(startDate.add(1.hours()), take: 10).toList();
       // Assert
       expect(
           alarms,
@@ -606,7 +607,7 @@ void main() {
       final activities = [checkable];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toList();
+      final alarms = activities.alarmsFrom(startDate, take: 10).toList();
       // Assert
       expect(alarms, isEmpty);
     });
@@ -631,7 +632,7 @@ void main() {
       final activities = [maxed];
 
       // Act
-      final alarms = activities.alarmsFrom(startDate).toList();
+      final alarms = activities.alarmsFrom(startDate, take: 50).toList();
       final ad = ActivityDay(maxed, nextDay);
       // Assert
       expect(

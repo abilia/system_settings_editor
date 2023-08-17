@@ -171,6 +171,32 @@ void main() {
       expect(scheduleNotificationsCalls, 2);
     });
 
+    testWidgets(
+        'SGC-2540 Reschedule notifications on payload with reschedule property',
+        (tester) async {
+      // Arrange
+      await tester.pumpWidget(const App());
+      await tester.pumpAndSettle();
+
+      // Assert - Alarms only scheduled on app start
+      expect(scheduleNotificationsCalls, 1);
+
+      final payload = StartAlarm(
+        ActivityDay(
+          activity,
+          activityWithAlarmday,
+        ),
+        reschedule: true,
+      );
+
+      // Act
+      selectNotificationSubject.add(payload);
+      await tester.pumpAndSettle();
+
+      // Assert - Alarms scheduled once more
+      expect(scheduleNotificationsCalls, 2);
+    });
+
     testWidgets('SGC-1874 alarm with end time at midnight will show',
         (WidgetTester tester) async {
       // Arrange
@@ -358,6 +384,27 @@ void main() {
       await tester.pumpAndSettle();
       // Assert
       expect(scheduleNotificationsCalls, 0);
+    });
+
+    testWidgets(
+        'SGC-2540 notications rescheduled on app alarm start when flag set',
+        (WidgetTester tester) async {
+      // Act
+      final payload = StartAlarm(
+        ActivityDay(
+          activity,
+          activityWithAlarmday,
+        ),
+        reschedule: true,
+      );
+
+      await tester.pumpWidget(App(payload: payload));
+      await tester.pumpAndSettle();
+      selectNotificationSubject.add(payload);
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(scheduleNotificationsCalls, 1);
     });
 
     testWidgets('SGC-843 Alarm page Close button cancels alarm',

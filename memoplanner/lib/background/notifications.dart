@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:file_storage/file_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,11 @@ Future scheduleNotifications(
   );
   final notificationTimes = <DateTime>{};
   var scheduled = 0;
-  for (final newNotification in schedulerData.notifications) {
+  for (final newNotification in schedulerData.notifications.mapIndexed(
+    (index, element) => index < schedulerData.maxNotifications - 1
+        ? element
+        : element.set(reschedule: true),
+  )) {
     if (await _scheduleNotification(
       newNotification,
       locale,
@@ -186,7 +191,8 @@ Future<bool> _scheduleNotification(
     log(
       Level.FINEST,
       'scheduling ($hash): $title - $subtitle at '
-      '$time ${notificationAlarm.event.hasImage ? ' with image' : ''}',
+      '$time ${notificationAlarm.event.hasImage ? ' with image' : ''}'
+      '${notificationAlarm.reschedule ? ' reschedule' : ''}',
     );
     await notificationPlugin.zonedSchedule(
       hash,
