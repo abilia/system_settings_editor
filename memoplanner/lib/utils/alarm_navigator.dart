@@ -22,12 +22,13 @@ class AlarmNavigator {
     required NotificationAlarm alarm,
     required Authenticated authenticatedState,
   }) {
-    log.fine('pushFullscreenAlarm: $alarm');
+    log.info('pushFullscreenAlarm: $alarm');
     final alarmPage = _alarmPage(alarm);
     final route = AlarmRoute(
       builder: (_) => AuthenticatedBlocsProvider(
         authenticatedState: authenticatedState,
         child: AlarmListener(
+          alarm: alarm,
           child: PopAwareAlarmPage(
             alarm: alarm,
             alarmNavigator: this,
@@ -49,7 +50,7 @@ class AlarmNavigator {
   void _popRoute(String key) {
     final route = _routesOnStack.remove(key);
     if (route != null) {
-      log.fine('route $route with key $key removed');
+      log.info('route $route with key $key removed');
       route.navigator?.removeRoute(route);
     }
   }
@@ -64,7 +65,7 @@ class AlarmNavigator {
     popScreensaverRoute();
     final authProviders = copiedAuthProviders(context);
     final activityRepository = context.read<ActivityRepository>();
-    log.fine('pushAlarm: $alarm');
+    log.info('pushAlarm: $alarm');
     final alarmPage = _alarmPage(alarm);
     final route = AlarmRoute(
       builder: (_) => RepositoryProvider.value(
@@ -91,13 +92,17 @@ class AlarmNavigator {
         _routesOnStack[alarm.stackId] = route;
         return navigator.push(route);
       }
-      log.fine('pushed alarm exists on stack');
+      log.info('pushed alarm exists on stack');
       if (navigator.canPop()) {
-        log.finer('alarm is not root, removes');
+        log.info('alarm is not root, removes');
         navigator.removeRoute(routeOnStack);
       } else {
-        log.finer('alarm is root, replacing');
-        return navigator.pushAndRemoveUntil(route, (_) => false);
+        log.severe('alarm is root!');
+        // navigator.pushAndRemoveUntil(route, (_) => false);
+        // TODO(@bornold) We cannot pop root because we close all the blocs
+        // created in `getFullscreenAlarmRoute()` ln 20
+        // Need to find a better way to take care of replacing the root screen
+        // without closing the blocs
       }
     }
     _routesOnStack[alarm.stackId] = route;

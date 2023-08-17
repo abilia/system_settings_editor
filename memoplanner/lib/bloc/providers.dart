@@ -295,7 +295,9 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 scheduleNotificationsDelay:
                     GetIt.I<Delays>().scheduleNotificationsDelay,
                 ticker: GetIt.I<Ticker>(),
+                notificationStream: selectNotificationSubject,
               ),
+              lazy: false,
             ),
             BlocProvider<SessionsCubit>(
               create: (context) => SessionsCubit(

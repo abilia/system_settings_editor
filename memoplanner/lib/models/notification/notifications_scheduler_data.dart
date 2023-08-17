@@ -6,12 +6,13 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class NotificationsSchedulerData extends Equatable {
-  final Iterable<NotificationAlarm> notifications;
+  final List<NotificationAlarm> notifications;
   final String language;
   final bool alwaysUse24HourFormat;
   final AlarmSettings settings;
   final FileStorage fileStorage;
   final DateTime? dateTime;
+  final int maxNotifications;
 
   const NotificationsSchedulerData._({
     required this.notifications,
@@ -19,6 +20,7 @@ class NotificationsSchedulerData extends Equatable {
     required this.alwaysUse24HourFormat,
     required this.settings,
     required this.fileStorage,
+    required this.maxNotifications,
     this.dateTime,
   });
 
@@ -29,6 +31,8 @@ class NotificationsSchedulerData extends Equatable {
     required bool alwaysUse24HourFormat,
     required AlarmSettings settings,
     required FileStorage fileStorage,
+    int maxNotifications =
+        64, // https://pub.dev/packages/flutter_local_notifications#ios-pending-notifications-limit
     DateTime? dateTime,
   }) {
     final now = dateTime != null ? () => dateTime : DateTime.now;
@@ -47,6 +51,7 @@ class NotificationsSchedulerData extends Equatable {
       alwaysUse24HourFormat: alwaysUse24HourFormat,
       settings: settings,
       fileStorage: fileStorage,
+      maxNotifications: maxNotifications,
       dateTime: dateTime,
     );
   }
@@ -63,6 +68,7 @@ class NotificationsSchedulerData extends Equatable {
       'settings': settings.toMap(),
       'fileStorage': fileStorage.dir,
       'dateTime': dateTime?.millisecondsSinceEpoch,
+      'maxNotifications': maxNotifications,
     };
   }
 
@@ -80,6 +86,7 @@ class NotificationsSchedulerData extends Equatable {
       alwaysUse24HourFormat: data['alwaysUse24HourFormat'],
       settings: AlarmSettings.fromMap(data['settings']),
       fileStorage: FileStorage(data['fileStorage']),
+      maxNotifications: data['maxNotifications'],
       dateTime: dateTime,
     );
   }
@@ -91,5 +98,6 @@ class NotificationsSchedulerData extends Equatable {
         settings,
         fileStorage,
         dateTime,
+        maxNotifications,
       ];
 }

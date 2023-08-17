@@ -651,6 +651,36 @@ void main() {
                 UILocalNotificationDateInterpretation.wallClockTime),
       ).called(11 + 3);
     });
+
+    test('if max notifications reached, last alarm will have reschedule flag ',
+        () async {
+      await scheduleNotificationsIsolated(
+        NotificationsSchedulerData.fromCalendarEvents(
+          activities: allActivities,
+          timers: allTimers,
+          language: 'en',
+          alwaysUse24HourFormat: true,
+          settings: const AlarmSettings(),
+          fileStorage: mockedFileStorage,
+          dateTime: now,
+          maxNotifications: 4,
+        ),
+      );
+      await Future.delayed(300.milliseconds());
+      verifyCancelAllPendingNotifications();
+      final captured = verify(
+        () => mockedNotificationsPlugin.zonedSchedule(
+            any(), any(), any(), any(), any(),
+            payload: captureAny(named: 'payload'),
+            androidScheduleMode: AndroidScheduleMode.alarmClock,
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.wallClockTime),
+      ).captured;
+      final scheduledPayload =
+          captured.cast<String>().map(NotificationAlarm.decode).toList();
+      expect(scheduledPayload.last.reschedule, isTrue);
+    });
+
     test('scheduleNotifications 3 timers', () async {
       await scheduleNotifications(
         NotificationsSchedulerData.fromCalendarEvents(
