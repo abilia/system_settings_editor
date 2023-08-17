@@ -13,6 +13,7 @@ import 'package:memoplanner/utils/all.dart';
 
 import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
+import '../../../mocks/mocks.dart';
 import '../../../test_helpers/register_fallback_values.dart';
 
 void main() {
@@ -56,12 +57,9 @@ void main() {
     final startAlarmNoSound = StartAlarm(ActivityDay(activityNoSound, day));
     const MethodChannel localNotificationChannel =
         MethodChannel('dexterous.com/flutter/local_notifications');
-    const MethodChannel audioPlayerChannel =
-        MethodChannel('xyz.luan/audioplayers');
-    final List<MethodCall> localNotificationLog = <MethodCall>[];
-    final List<MethodCall> audioLog = <MethodCall>[];
     List<ActiveNotification> activeNotifications = [];
     late MockUserFileBloc mockUserFileBloc;
+    late MockAudioPlayer mockAudioPlayer;
     late StreamController<Touch> touchStream;
 
     setUpAll(() {
@@ -70,7 +68,6 @@ void main() {
 
     setUp(() async {
       touchStream = StreamController<Touch>();
-      localNotificationLog.clear();
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(localNotificationChannel,
               (methodCall) async {
@@ -87,15 +84,7 @@ void main() {
         }
         return null;
       });
-      audioLog.clear();
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(audioPlayerChannel, (methodCall) async {
-        audioLog.add(methodCall);
-        if (methodCall.method == 'play') {
-          return Future.value(1);
-        }
-        return null;
-      });
+      mockAudioPlayer = mockAudioPlayerFactory();
       mockUserFileBloc = MockUserFileBloc();
       when(() => mockUserFileBloc.state)
           .thenReturn(const UserFilesLoaded([userFile]));
@@ -107,23 +96,22 @@ void main() {
       clearNotificationSubject();
     });
 
-    blocTest(
-      'emits nothing when nothing is added',
-      build: () => AlarmSpeechCubit(
-        now: () => startTime,
-        alarm: startAlarm,
-        alarmSettings: const AlarmSettings(),
-        touchStream: touchStream.stream,
-        soundBloc: SoundBloc(
-          storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
-          spamProtectionDelay: Duration.zero,
-        ),
-        remoteMessageStream: FakePushCubit().stream,
-      ),
-      expect: () => [],
-      verify: (_) => () => expect(audioLog, isEmpty),
-    );
+    blocTest('emits nothing when nothing is added',
+        build: () => AlarmSpeechCubit(
+              now: () => startTime,
+              alarm: startAlarm,
+              alarmSettings: const AlarmSettings(),
+              touchStream: touchStream.stream,
+              soundBloc: SoundBloc(
+                audioPlayer: mockAudioPlayer,
+                storage: FakeFileStorage(),
+                userFileBloc: mockUserFileBloc,
+                spamProtectionDelay: Duration.zero,
+              ),
+              remoteMessageStream: FakePushCubit().stream,
+            ),
+        expect: () => [],
+        verify: (_) => () => verifyNever(() => mockAudioPlayer.play(any())));
 
     blocTest(
       'emits AlarmPlayed when Alarm is No Alarm',
@@ -133,6 +121,7 @@ void main() {
         alarmSettings: const AlarmSettings(),
         touchStream: touchStream.stream,
         soundBloc: SoundBloc(
+          audioPlayer: mockAudioPlayer,
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
           spamProtectionDelay: Duration.zero,
@@ -140,10 +129,7 @@ void main() {
         remoteMessageStream: FakePushCubit().stream,
       ),
       expect: () => [AlarmSpeechState.played],
-      verify: (_) => () {
-        expect(audioLog, hasLength(1));
-        expect(audioLog.single.method, 'play');
-      },
+      verify: (_) => verify(() => mockAudioPlayer.play(any())),
     );
 
     blocTest(
@@ -163,6 +149,7 @@ void main() {
         touchStream: touchStream.stream,
         selectedNotificationStream: selectNotificationSubject..add(startAlarm),
         soundBloc: SoundBloc(
+          audioPlayer: mockAudioPlayer,
           storage: FakeFileStorage(),
           userFileBloc: mockUserFileBloc,
           spamProtectionDelay: Duration.zero,
@@ -171,141 +158,123 @@ void main() {
       ),
       wait: AlarmSpeechCubit.minSpeechDelay,
       expect: () => [AlarmSpeechState.played],
-      verify: (_) => () {
-        expect(audioLog, hasLength(1));
-        expect(audioLog.single.method, 'play');
-      },
+      verify: (_) => verify(() => mockAudioPlayer.play(any())),
     );
 
-    blocTest(
-      'emits nothing if active notification',
-      setUp: () => activeNotifications = [
-        ActiveNotification(
-          id: startAlarm.hashCode,
-          groupKey: 'channelId',
-          title: 'title',
-          body: 'body',
-        ),
-      ],
-      build: () => AlarmSpeechCubit(
-        now: () => startTime,
-        alarm: startAlarm,
-        alarmSettings: const AlarmSettings(),
-        touchStream: touchStream.stream,
-        selectedNotificationStream: selectNotificationSubject..add(startAlarm),
-        soundBloc: SoundBloc(
-          storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
-          spamProtectionDelay: Duration.zero,
-        ),
-        remoteMessageStream: FakePushCubit().stream,
-      ),
-      expect: () => [],
-      verify: (_) => () => expect(audioLog, isEmpty),
-    );
+    blocTest('emits nothing if active notification',
+        setUp: () => activeNotifications = [
+              ActiveNotification(
+                id: startAlarm.hashCode,
+                groupKey: 'channelId',
+                title: 'title',
+                body: 'body',
+              ),
+            ],
+        build: () => AlarmSpeechCubit(
+              now: () => startTime,
+              alarm: startAlarm,
+              alarmSettings: const AlarmSettings(),
+              touchStream: touchStream.stream,
+              selectedNotificationStream: selectNotificationSubject
+                ..add(startAlarm),
+              soundBloc: SoundBloc(
+                audioPlayer: mockAudioPlayer,
+                storage: FakeFileStorage(),
+                userFileBloc: mockUserFileBloc,
+                spamProtectionDelay: Duration.zero,
+              ),
+              remoteMessageStream: FakePushCubit().stream,
+            ),
+        expect: () => [],
+        verify: (_) => () => verifyNever(() => mockAudioPlayer.play(any())));
 
-    blocTest(
-      'emits AlarmPlayed after time is up',
-      build: () => AlarmSpeechCubit(
-        now: () => startTime,
-        alarm: startAlarm,
-        alarmSettings: const AlarmSettings(durationMs: 0),
-        touchStream: touchStream.stream,
-        soundBloc: SoundBloc(
-          storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
-          spamProtectionDelay: Duration.zero,
-        ),
-        remoteMessageStream: FakePushCubit().stream,
-      ),
-      wait: AlarmSpeechCubit.minSpeechDelay,
-      expect: () => [AlarmSpeechState.played],
-      verify: (_) => () {
-        expect(audioLog, hasLength(1));
-        expect(audioLog.single.method, 'play');
-      },
-    );
+    blocTest('emits AlarmPlayed after time is up',
+        build: () => AlarmSpeechCubit(
+              now: () => startTime,
+              alarm: startAlarm,
+              alarmSettings: const AlarmSettings(durationMs: 0),
+              touchStream: touchStream.stream,
+              soundBloc: SoundBloc(
+                audioPlayer: mockAudioPlayer,
+                storage: FakeFileStorage(),
+                userFileBloc: mockUserFileBloc,
+                spamProtectionDelay: Duration.zero,
+              ),
+              remoteMessageStream: FakePushCubit().stream,
+            ),
+        wait: AlarmSpeechCubit.minSpeechDelay,
+        expect: () => [AlarmSpeechState.played],
+        verify: (_) => () => verifyNever(() => mockAudioPlayer.play(any())));
 
-    blocTest(
-      'Late started bloc emits after shorter time',
-      build: () => AlarmSpeechCubit(
-        now: () => startTime.add(1.seconds()),
-        alarm: startAlarm,
-        alarmSettings: const AlarmSettings(durationMs: 0),
-        touchStream: touchStream.stream,
-        soundBloc: SoundBloc(
-          storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
-          spamProtectionDelay: Duration.zero,
-        ),
-        remoteMessageStream: FakePushCubit().stream,
-      ),
-      wait: AlarmSpeechCubit.minSpeechDelay - 1.seconds(),
-      expect: () => [AlarmSpeechState.played],
-      verify: (_) => () {
-        expect(audioLog, hasLength(1));
-        expect(audioLog.single.method, 'play');
-      },
-    );
+    blocTest('Late started bloc emits after shorter time',
+        build: () => AlarmSpeechCubit(
+              now: () => startTime.add(1.seconds()),
+              alarm: startAlarm,
+              alarmSettings: const AlarmSettings(durationMs: 0),
+              touchStream: touchStream.stream,
+              soundBloc: SoundBloc(
+                audioPlayer: mockAudioPlayer,
+                storage: FakeFileStorage(),
+                userFileBloc: mockUserFileBloc,
+                spamProtectionDelay: Duration.zero,
+              ),
+              remoteMessageStream: FakePushCubit().stream,
+            ),
+        wait: AlarmSpeechCubit.minSpeechDelay - 1.seconds(),
+        expect: () => [AlarmSpeechState.played],
+        verify: (_) => () => verify(() => mockAudioPlayer.play(any())));
 
-    blocTest(
-      'emits AlarmPlayed when screen is tapped',
-      build: () => AlarmSpeechCubit(
-        now: () => startTime,
-        alarm: startAlarm,
-        alarmSettings: const AlarmSettings(),
-        touchStream: (touchStream..add(Touch.down)).stream,
-        soundBloc: SoundBloc(
-          storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
-          spamProtectionDelay: Duration.zero,
-        ),
-        remoteMessageStream: FakePushCubit().stream,
-      ),
-      expect: () => [AlarmSpeechState.played],
-      verify: (_) => () {
-        expect(audioLog, hasLength(1));
-        expect(audioLog.single.method, 'play');
-      },
-    );
+    blocTest('emits AlarmPlayed when screen is tapped',
+        build: () => AlarmSpeechCubit(
+              now: () => startTime,
+              alarm: startAlarm,
+              alarmSettings: const AlarmSettings(),
+              touchStream: (touchStream..add(Touch.down)).stream,
+              soundBloc: SoundBloc(
+                audioPlayer: mockAudioPlayer,
+                storage: FakeFileStorage(),
+                userFileBloc: mockUserFileBloc,
+                spamProtectionDelay: Duration.zero,
+              ),
+              remoteMessageStream: FakePushCubit().stream,
+            ),
+        expect: () => [AlarmSpeechState.played],
+        verify: (_) => () => verify(() => mockAudioPlayer.play(any())));
 
-    blocTest(
-      'emits AlarmPlayed when notification tapped',
-      build: () => AlarmSpeechCubit(
-        now: () => startTime,
-        alarm: startAlarm,
-        alarmSettings: const AlarmSettings(),
-        touchStream: touchStream.stream,
-        selectedNotificationStream: selectNotificationSubject..add(startAlarm),
-        soundBloc: SoundBloc(
-          storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
-          spamProtectionDelay: Duration.zero,
-        ),
-        remoteMessageStream: FakePushCubit().stream,
-      ),
-      expect: () => [AlarmSpeechState.played],
-      verify: (_) => () {
-        expect(audioLog, hasLength(1));
-        expect(audioLog.single.method, 'play');
-      },
-    );
+    blocTest('emits AlarmPlayed when notification tapped',
+        build: () => AlarmSpeechCubit(
+              now: () => startTime,
+              alarm: startAlarm,
+              alarmSettings: const AlarmSettings(),
+              touchStream: touchStream.stream,
+              selectedNotificationStream: selectNotificationSubject
+                ..add(startAlarm),
+              soundBloc: SoundBloc(
+                audioPlayer: mockAudioPlayer,
+                storage: FakeFileStorage(),
+                userFileBloc: mockUserFileBloc,
+                spamProtectionDelay: Duration.zero,
+              ),
+              remoteMessageStream: FakePushCubit().stream,
+            ),
+        expect: () => [AlarmSpeechState.played],
+        verify: (_) => () => verify(() => mockAudioPlayer.play(any())));
 
-    blocTest(
-      'emits AlarmPlayed bloc played',
-      build: () => AlarmSpeechCubit(
-        now: () => startTime,
-        alarm: startAlarm,
-        alarmSettings: const AlarmSettings(),
-        touchStream: touchStream.stream,
-        soundBloc: SoundBloc(
-          storage: FakeFileStorage(),
-          userFileBloc: mockUserFileBloc,
-          spamProtectionDelay: Duration.zero,
-        )..add(PlaySound(speechFile)),
-        remoteMessageStream: FakePushCubit().stream,
-      ),
-      expect: () => [AlarmSpeechState.played],
-    );
+    blocTest('emits AlarmPlayed bloc played',
+        build: () => AlarmSpeechCubit(
+              now: () => startTime,
+              alarm: startAlarm,
+              alarmSettings: const AlarmSettings(),
+              touchStream: touchStream.stream,
+              soundBloc: SoundBloc(
+                audioPlayer: mockAudioPlayer,
+                storage: FakeFileStorage(),
+                userFileBloc: mockUserFileBloc,
+                spamProtectionDelay: Duration.zero,
+              )..add(PlaySound(speechFile)),
+              remoteMessageStream: FakePushCubit().stream,
+            ),
+        expect: () => [AlarmSpeechState.played],
+        verify: (_) => () => verify(() => mockAudioPlayer.play(any())));
   });
 }

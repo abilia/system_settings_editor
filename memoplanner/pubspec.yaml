@@ -11,7 +11,7 @@ dependencies:
   abilia_sync:
     path: ../packages/abilia_sync
   android_intent_plus: ^4.0.1
-  audioplayers: 4.0.1
+  audioplayers: ^5.1.0
   auth:
     path: ../packages/auth
   auto_size_text: ^3.0.0

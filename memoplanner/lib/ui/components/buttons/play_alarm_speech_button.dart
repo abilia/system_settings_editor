@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -14,6 +15,7 @@ class PlayAlarmSpeechButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => SoundBloc(
+          audioPlayer: GetIt.I<AudioPlayer>(),
           storage: GetIt.I<FileStorage>(),
           userFileBloc: context.read<UserFileBloc>(),
           spamProtectionDelay: GetIt.I<Delays>().spamProtectionDelay,

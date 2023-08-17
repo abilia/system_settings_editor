@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:calendar/all.dart';
 import 'package:flutter/widgets.dart';
@@ -42,6 +43,20 @@ class MockFlutterLocalNotificationsPlugin extends Mock
 
 class MockAndroidFlutterLocalNotificationsPlugin extends Mock
     implements AndroidFlutterLocalNotificationsPlugin {}
+
+class MockAudioPlayer extends Mock implements AudioPlayer {}
+
+MockAudioPlayer mockAudioPlayerFactory() {
+  final mockAudioPlayer = MockAudioPlayer();
+  when(() => mockAudioPlayer.play(any())).thenAnswer((invocation) async {});
+  when(() => mockAudioPlayer.onPlayerComplete)
+      .thenAnswer((invocation) => const Stream.empty());
+  when(() => mockAudioPlayer.onPositionChanged)
+      .thenAnswer((invocation) => const Stream.empty());
+  when(() => mockAudioPlayer.dispose()).thenAnswer((invocation) async {});
+  when(() => mockAudioPlayer.stop()).thenAnswer((invocation) async {});
+  return mockAudioPlayer;
+}
 
 // Misc
 

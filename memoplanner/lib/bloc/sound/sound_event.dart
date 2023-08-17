@@ -21,10 +21,6 @@ class StopSound extends SoundControlEvent {
   const StopSound();
 }
 
-class ResetPlayer extends SoundControlEvent {
-  const ResetPlayer();
-}
-
 class SoundCompleted extends SoundCallbackEvent {
   const SoundCompleted();
 }
