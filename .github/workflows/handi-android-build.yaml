@@ -35,7 +35,7 @@ jobs:
           distribution: 'temurin'
       - uses: subosito/flutter-action@v2.5.0
         with:
-          flutter-version: '3.10.6'
+          flutter-version: '3.13.0'
           channel: 'stable'
 
       - id: set_build_number
