@@ -91,7 +91,8 @@ class ClickableFullDayStack extends StatelessWidget {
                 }),
               ),
             ),
-            settings: RouteSettings(name: 'FullDayListPage $day'),
+            settings:
+                RouteSettings(name: 'FullDayListPage${day.toIso8601String()}'),
           ),
         );
       },
