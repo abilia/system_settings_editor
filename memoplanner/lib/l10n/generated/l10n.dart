@@ -30,7 +30,7 @@ class Lt {
     Locale.fromSubtags(languageCode: 'is'),
     Locale.fromSubtags(languageCode: 'nb'),
     Locale.fromSubtags(languageCode: 'nl'),
-    Locale.fromSubtags(languageCode: 'sv'),
+    Locale.fromSubtags(languageCode: 'sv')
   ];
 
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
@@ -40,27 +40,6 @@ class Lt {
     GlobalCupertinoLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
   ];
-
-  static Future<Lt> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
-    Lokalise.instance.metadata = _metadata;
-
-    return initializeMessages(localeName).then((_) {
-      Intl.defaultLocale = localeName;
-      final instance = Lt._internal();
-      return instance;
-    });
-  }
-
-  static Lt of(BuildContext context) {
-    final instance = Localizations.of<Lt>(context, Lt);
-    assert(instance != null,
-        'No instance of Lt present in the widget tree. Did you add Lt.delegate in localizationsDelegates?');
-    return instance!;
-  }
 
   static final Map<String, List<String>> _metadata = {
     'welcome': [],
@@ -568,6 +547,27 @@ class Lt {
     'newChecklist': [],
     'infoTypeNone': []
   };
+
+  static Future<Lt> load(Locale locale) {
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);
+    Lokalise.instance.metadata = _metadata;
+
+    return initializeMessages(localeName).then((_) {
+      Intl.defaultLocale = localeName;
+      final instance = Lt._internal();
+      return instance;
+    });
+  }
+
+  static Lt of(BuildContext context) {
+    final instance = Localizations.of<Lt>(context, Lt);
+    assert(instance != null,
+        'No instance of Lt present in the widget tree. Did you add Lt.delegate in localizationsDelegates?');
+    return instance!;
+  }
 
   /// `Welcome!`
   String get welcome {

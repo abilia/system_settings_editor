@@ -209,7 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'createAccountHeading': MessageLookupByLibrary.simpleMessage(
             'Stofnaðu reikning á myAbilia'),
         'createAccountHint': MessageLookupByLibrary.simpleMessage(
-            'Ertu ekki komin/n með myAbilia-reikning?'),
+            'Ertu ekki komin með myAbilia-reikning?'),
         'createAccountSubheading': MessageLookupByLibrary.simpleMessage(
             'Þú þarft myAbilia-reikning til að nota MEMOplanner'),
         'daily': MessageLookupByLibrary.simpleMessage('Daily'),
@@ -367,10 +367,10 @@ class MessageLookup extends MessageLookupByLibrary {
         'linesForEachHour': MessageLookupByLibrary.simpleMessage(
             'Línur fyrir hverja klukkustund'),
         'listView': MessageLookupByLibrary.simpleMessage('Listi'),
-        'loggedInUser': MessageLookupByLibrary.simpleMessage(
-            'Innskráð/ur á notandareikning'),
+        'loggedInUser':
+            MessageLookupByLibrary.simpleMessage('Innskráð á notandareikning'),
         'loggedOutMessage': MessageLookupByLibrary.simpleMessage(
-            'Þú hefur verið skráð/ur út. Skráðu þig inn aftur.'),
+            'Þú hefur verið skráð út. Skráðu þig inn aftur.'),
         'login': MessageLookupByLibrary.simpleMessage('Innskrá'),
         'loginHintMP': MessageLookupByLibrary.simpleMessage(
             'Notaðu myAbilia-reikninginn þinn til að skrá þig inn'),
@@ -518,7 +518,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'recurringDataEmptyErrorMessage': MessageLookupByLibrary.simpleMessage(
             'Veldu að minnsta kosti einn dag.'),
         'redirectToAndroidSettings': MessageLookupByLibrary.simpleMessage(
-            'Þú verður send/ur í stillingar fyrir Android.'),
+            'Þú verður send í stillingar fyrir Android.'),
         'reminder': MessageLookupByLibrary.simpleMessage('Áminning'),
         'reminders': MessageLookupByLibrary.simpleMessage('Áminningar'),
         'remove': MessageLookupByLibrary.simpleMessage('Fjarlægja'),
@@ -727,7 +727,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'unCheckActivityQuestion': MessageLookupByLibrary.simpleMessage(
             'Viltu afvelja þetta verkefni?'),
         'unauthorizedHeader':
-            MessageLookupByLibrary.simpleMessage('Þú hefur verið skráð/ur út.'),
+            MessageLookupByLibrary.simpleMessage('Þú hefur verið skráð út.'),
         'unauthorizedMessage': MessageLookupByLibrary.simpleMessage(
             'Það er líklegast vegna breytingar á lykilorði, prófaðu að skrá þig inn aftur.'),
         'undo': MessageLookupByLibrary.simpleMessage('Afturkalla'),
@@ -759,10 +759,10 @@ class MessageLookup extends MessageLookupByLibrary {
         'weekCalendar': MessageLookupByLibrary.simpleMessage('Vikudagatal'),
         'weekdays': MessageLookupByLibrary.simpleMessage('Vikudagar (5)'),
         'weekly': MessageLookupByLibrary.simpleMessage('Vikulega'),
-        'welcome': MessageLookupByLibrary.simpleMessage('Velkomin/nn!'),
+        'welcome': MessageLookupByLibrary.simpleMessage('Velkomin!'),
         'welcomeText': MessageLookupByLibrary.simpleMessage(
             'Þessi leiðarvísir inniheldur leiðbeiningar fyrir MEMOplanner.'),
-        'welcomeTo': MessageLookupByLibrary.simpleMessage('Velkomin/n í'),
+        'welcomeTo': MessageLookupByLibrary.simpleMessage('Velkomin í'),
         'wifi': MessageLookupByLibrary.simpleMessage('Wi-Fi'),
         'wifiNoInternet': MessageLookupByLibrary.simpleMessage(
             'Ekki var hægt að tengjast netinu í gegnum Wi-Fi, prófaðu annað net eða hafðu samband við netþjónustuna þína til að fá aðstoð.'),
