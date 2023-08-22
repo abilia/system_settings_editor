@@ -94,7 +94,6 @@ void main() {
   tearDown(() {
     GetIt.I.reset();
     activityResponse = () => [];
-    mockActivityDb.clear();
   });
 
   Future<void> navigateToActivityPage(WidgetTester tester) async {
