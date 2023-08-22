@@ -41,7 +41,7 @@ class ChecklistView extends StatelessWidget {
           );
         },
         separatorBuilder: (_, __) => SizedBox(
-          height: layout.formPadding.largeVerticalItemDistance,
+          height: layout.formPadding.verticalItemDistance,
         ),
       ),
     );
@@ -80,7 +80,7 @@ class EditChecklistWidget extends StatelessWidget {
                       itemBuilder: (context, i) =>
                           EditQuestionView(checklist.questions[i]),
                       separatorBuilder: (context, i) => SizedBox(
-                        height: layout.formPadding.largeVerticalItemDistance,
+                        height: layout.formPadding.verticalItemDistance,
                       ),
                     ),
                   ),
