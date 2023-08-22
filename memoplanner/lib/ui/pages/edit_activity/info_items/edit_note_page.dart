@@ -58,7 +58,7 @@ class _EditNotePageState extends State<EditNotePage> {
           backgroundColor: AbiliaColors.white,
           appBar: AbiliaAppBar(
             iconData: AbiliaIcons.edit,
-            title: translate.enterText,
+            title: translate.enterNote,
           ),
           bottomSheet: BottomNavigation(
             backNavigationWidget: const CancelButton(),
@@ -134,9 +134,9 @@ class _EditNotePageState extends State<EditNotePage> {
 
   Future<bool> _saveNoteWarning(BuildContext context) async {
     final showSaveNoteDialog = _textEditingController.text != widget.text;
-    if (showSaveNoteDialog) {
-      await _showSaveNoteWarningDialog(context);
-    }
+    showSaveNoteDialog
+        ? await _showSaveNoteWarningDialog(context)
+        : Navigator.of(context).pop();
     return false;
   }
 

@@ -249,7 +249,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Ladda ner röst för talstöd'),
         'duration': MessageLookupByLibrary.simpleMessage('Tidslängd'),
         'earlyMorning': MessageLookupByLibrary.simpleMessage('morgon'),
-        'earyMorning': MessageLookupByLibrary.simpleMessage('morgon'),
         'edge': MessageLookupByLibrary.simpleMessage('Flik'),
         'edit': MessageLookupByLibrary.simpleMessage('Ändra'),
         'editActivity': MessageLookupByLibrary.simpleMessage('Ändra aktivitet'),
@@ -276,10 +275,10 @@ class MessageLookup extends MessageLookupByLibrary {
         'enterNameForTimer':
             MessageLookupByLibrary.simpleMessage('Ange namn för timer'),
         'enterNewCode': MessageLookupByLibrary.simpleMessage('Ange ny kod'),
+        'enterNote': MessageLookupByLibrary.simpleMessage('Enter note'),
         'enterPassword':
             MessageLookupByLibrary.simpleMessage('Ange ditt lösenord'),
         'enterTask': MessageLookupByLibrary.simpleMessage('Ange uppgift'),
-        'enterText': MessageLookupByLibrary.simpleMessage('Skriv text'),
         'enterUsername':
             MessageLookupByLibrary.simpleMessage('Ange ditt användarnamn'),
         'enterYourCodeToAccess': MessageLookupByLibrary.simpleMessage(

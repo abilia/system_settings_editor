@@ -251,7 +251,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Sæktu rödd fyrir raddhjálp'),
         'duration': MessageLookupByLibrary.simpleMessage('Tímalengd'),
         'earlyMorning': MessageLookupByLibrary.simpleMessage('snemma morguns'),
-        'earyMorning': MessageLookupByLibrary.simpleMessage('snemma morguns'),
         'edge': MessageLookupByLibrary.simpleMessage('Brún'),
         'edit': MessageLookupByLibrary.simpleMessage('Breyta'),
         'editActivity': MessageLookupByLibrary.simpleMessage('Breyta verkefni'),
@@ -278,10 +277,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Sláðu inn nafn á tímamælinn'),
         'enterNewCode':
             MessageLookupByLibrary.simpleMessage('Sláðu inn nýjan kóða'),
+        'enterNote': MessageLookupByLibrary.simpleMessage('Enter note'),
         'enterPassword':
             MessageLookupByLibrary.simpleMessage('Sláðu inn lykilorð'),
         'enterTask': MessageLookupByLibrary.simpleMessage('Sláðu inn verk'),
-        'enterText': MessageLookupByLibrary.simpleMessage('Sláðu inn texta'),
         'enterUsername':
             MessageLookupByLibrary.simpleMessage('Sláðu inn notandanafn'),
         'enterYourCodeToAccess': MessageLookupByLibrary.simpleMessage(

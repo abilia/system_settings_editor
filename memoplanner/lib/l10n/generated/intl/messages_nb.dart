@@ -251,7 +251,6 @@ class MessageLookup extends MessageLookupByLibrary {
             'Last ned stemme for talestøtte'),
         'duration': MessageLookupByLibrary.simpleMessage('Varighet'),
         'earlyMorning': MessageLookupByLibrary.simpleMessage('morgen'),
-        'earyMorning': MessageLookupByLibrary.simpleMessage('morgen'),
         'edge': MessageLookupByLibrary.simpleMessage('Flik'),
         'edit': MessageLookupByLibrary.simpleMessage('Endre'),
         'editActivity': MessageLookupByLibrary.simpleMessage('Endre aktivitet'),
@@ -278,10 +277,10 @@ class MessageLookup extends MessageLookupByLibrary {
         'enterNameForTimer':
             MessageLookupByLibrary.simpleMessage('Angi navn på timer'),
         'enterNewCode': MessageLookupByLibrary.simpleMessage('Angi ny kode'),
+        'enterNote': MessageLookupByLibrary.simpleMessage('Enter note'),
         'enterPassword':
             MessageLookupByLibrary.simpleMessage('Angi ditt passord'),
         'enterTask': MessageLookupByLibrary.simpleMessage('Legg inn oppgave'),
-        'enterText': MessageLookupByLibrary.simpleMessage('Skriv inn tekst'),
         'enterUsername':
             MessageLookupByLibrary.simpleMessage('Angi ditt brukernavn'),
         'enterYourCodeToAccess': MessageLookupByLibrary.simpleMessage(

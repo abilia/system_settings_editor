@@ -27,7 +27,11 @@ class AddInfoTypePage extends StatelessWidget {
       body: Padding(
         padding: layout.templates.m6,
         child: Container(
-          decoration: whiteBoxDecoration,
+          decoration: whiteBoxDecoration.copyWith(
+              border: Border.fromBorderSide(
+            BorderSide(
+                color: AbiliaColors.white120, width: layout.borders.thin),
+          )),
           child: Padding(
             padding: layout.templates.m6,
             child: Column(
@@ -82,7 +86,9 @@ class AddInfoTypePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigation(
-        backNavigationWidget: PreviousButton(
+        backNavigationWidget: LightButton(
+          text: Lt.of(context).back,
+          icon: AbiliaIcons.navigationPrevious,
           onPressed: () async {
             editActivityCubit.setInfoItem(infoItem);
             await Navigator.of(context).maybePop();

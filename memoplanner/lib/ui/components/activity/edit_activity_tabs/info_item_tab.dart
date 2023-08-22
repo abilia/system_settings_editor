@@ -164,7 +164,7 @@ class NoteInfoItemPickFieldExtras extends StatelessWidget {
           note.text,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: bodyLarge,
+          style: bodyMedium,
         ),
       ),
     );

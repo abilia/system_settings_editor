@@ -68,19 +68,33 @@ class EditChecklistWidget extends StatelessWidget {
           listener: (context, state) =>
               context.read<EditActivityCubit>().removeInfoItem(),
           child: Expanded(
-            child: ScrollArrows.vertical(
-              controller: controller,
-              child: ListView.separated(
-                controller: controller,
-                padding: layout.checklist.listPadding,
-                itemCount: checklist.questions.length + 1,
-                itemBuilder: (context, i) => i < checklist.questions.length
-                    ? EditQuestionView(checklist.questions[i])
-                    : const AddNewQuestionButton(),
-                separatorBuilder: (_, __) => SizedBox(
-                  height: layout.formPadding.largeVerticalItemDistance,
+            child: Column(
+              children: [
+                Expanded(
+                  child: ScrollArrows.vertical(
+                    controller: controller,
+                    child: ListView.separated(
+                      controller: controller,
+                      shrinkWrap: true,
+                      itemCount: checklist.questions.length,
+                      itemBuilder: (context, i) =>
+                          EditQuestionView(checklist.questions[i]),
+                      separatorBuilder: (context, i) => SizedBox(
+                        height: layout.formPadding.largeVerticalItemDistance,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: layout.templates.s1.bottom),
+                  child: Divider(
+                      thickness: layout.checklist.dividerHeight, endIndent: 0),
+                ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: const AddNewQuestionButton(),
+                ),
+              ],
             ),
           ),
         );
@@ -96,8 +110,9 @@ class AddNewQuestionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
     _openNewQuestionOnEmpty(context);
+    final buttonText = translate.newTask;
     return Tts.data(
-      data: translate.newTask,
+      data: buttonText,
       child: RawMaterialButton(
         constraints: BoxConstraints(
           minHeight: layout.checklist.addNewButtonHeight,
@@ -124,7 +139,7 @@ class AddNewQuestionButton extends StatelessWidget {
               ),
             ),
             Text(
-              translate.addNew,
+              buttonText,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: AbiliaColors.white,
                   ),

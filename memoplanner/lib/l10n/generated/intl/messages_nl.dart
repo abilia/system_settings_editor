@@ -256,7 +256,6 @@ class MessageLookup extends MessageLookupByLibrary {
             'Dowload stem voor spraakondersteuning'),
         'duration': MessageLookupByLibrary.simpleMessage('Duur'),
         'earlyMorning': MessageLookupByLibrary.simpleMessage('ochtend'),
-        'earyMorning': MessageLookupByLibrary.simpleMessage('ochtend'),
         'edge': MessageLookupByLibrary.simpleMessage('Rand'),
         'edit': MessageLookupByLibrary.simpleMessage('Bewerken'),
         'editActivity':
@@ -285,10 +284,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Naam voor timer invoeren'),
         'enterNewCode':
             MessageLookupByLibrary.simpleMessage('Nieuwe code invoeren'),
+        'enterNote': MessageLookupByLibrary.simpleMessage('Enter note'),
         'enterPassword':
             MessageLookupByLibrary.simpleMessage('Wachtwoord invoeren'),
         'enterTask': MessageLookupByLibrary.simpleMessage('Voer taak in'),
-        'enterText': MessageLookupByLibrary.simpleMessage('Voer tekst in'),
         'enterUsername':
             MessageLookupByLibrary.simpleMessage('Gebruikersnaam invoeren'),
         'enterYourCodeToAccess': MessageLookupByLibrary.simpleMessage(

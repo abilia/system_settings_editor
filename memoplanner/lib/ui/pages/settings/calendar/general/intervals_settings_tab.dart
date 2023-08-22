@@ -97,7 +97,7 @@ class IntervalStepper extends StatelessWidget {
   ) {
     switch (part) {
       case DayPart.morning:
-        return translate.earyMorning;
+        return translate.earlyMorning;
       case DayPart.day:
         return translate.day;
       case DayPart.evening:

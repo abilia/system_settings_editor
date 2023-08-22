@@ -303,7 +303,6 @@ class Lt {
     'addChecklist': [],
     'addNote': [],
     'typeSomething': [],
-    'enterText': [],
     'clear': [],
     'selectFromLibrary': [],
     'addNew': [],
@@ -436,7 +435,6 @@ class Lt {
     'analogue': [],
     'digital': [],
     'timeline': [],
-    'earyMorning': [],
     'twelveHourFormat': [],
     'oneDot': [],
     'columnOfDots': [],
@@ -545,7 +543,8 @@ class Lt {
     'note': [],
     'newNote': [],
     'newChecklist': [],
-    'infoTypeNone': []
+    'infoTypeNone': [],
+    'enterNote': []
   };
 
   static Future<Lt> load(Locale locale) {
@@ -3179,16 +3178,6 @@ class Lt {
     );
   }
 
-  /// `Enter text`
-  String get enterText {
-    return Intl.message(
-      'Enter text',
-      name: 'enterText',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Clear`
   String get clear {
     return Intl.message(
@@ -4509,16 +4498,6 @@ class Lt {
     );
   }
 
-  /// `early morning`
-  String get earyMorning {
-    return Intl.message(
-      'early morning',
-      name: 'earyMorning',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `12 hours format`
   String get twelveHourFormat {
     return Intl.message(
@@ -5604,6 +5583,16 @@ class Lt {
     return Intl.message(
       '',
       name: 'infoTypeNone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter note`
+  String get enterNote {
+    return Intl.message(
+      'Enter note',
+      name: 'enterNote',
       desc: '',
       args: [],
     );

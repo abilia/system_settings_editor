@@ -13,7 +13,7 @@ class FormPaddingLayout {
   const FormPaddingLayout({
     this.smallVerticalItemDistance = 8,
     this.verticalItemDistance = 8,
-    this.largeVerticalItemDistance = 12,
+    this.largeVerticalItemDistance = 8,
     this.groupBottomDistance = 16,
     this.groupTopDistance = 24,
     this.horizontalItemDistance = 8,
@@ -29,7 +29,7 @@ class FormPaddingLayoutMedium extends FormPaddingLayout {
       : super(
           smallVerticalItemDistance: 8,
           verticalItemDistance: 12,
-          largeVerticalItemDistance: 18,
+          largeVerticalItemDistance: 12,
           groupBottomDistance: 24,
           groupTopDistance: 36,
           horizontalItemDistance: 12,

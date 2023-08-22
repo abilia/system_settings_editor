@@ -12,10 +12,8 @@ class ChecklistLibraryPage extends StatelessWidget {
           sortableBloc: BlocProvider.of<SortableBloc>(context),
         ),
         child: LibraryPage<ChecklistData>.selectable(
-          appBar: AbiliaAppBar(
-            iconData: AbiliaIcons.documents,
-            title: Lt.of(context).selectFromLibrary,
-          ),
+          useHeading: false,
+          appBar: _ChecklistLibraryAppBar(),
           libraryItemGenerator: (checklist) =>
               LibraryChecklist(checklist: checklist.data.checklist),
           selectedItemGenerator: (checklist) =>
@@ -60,6 +58,26 @@ class FullScreenChecklist extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         margin: layout.templates.m3,
         decoration: whiteBoxDecoration,
-        child: ChecklistView(checklist, padding: layout.templates.s1),
+        child: ChecklistView(checklist, padding: layout.templates.s2),
       );
+}
+
+class _ChecklistLibraryAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    final sortableState =
+        context.watch<SortableArchiveCubit<ChecklistData>>().state;
+
+    return AbiliaAppBar(
+      iconData: AbiliaIcons.documents,
+      title: Lt.of(context).fromTemplate,
+      breadcrumbs: sortableState.selected != null
+          ? [sortableState.selected!.data.checklist.name]
+          : sortableState.breadCrumbPath(),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(layout.appBar.smallHeight);
 }
