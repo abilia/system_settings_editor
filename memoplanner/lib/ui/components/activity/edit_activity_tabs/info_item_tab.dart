@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class InfoItemTab extends StatelessWidget with EditActivityTab {
+class InfoItemTab extends StatefulWidget with EditActivityTab {
   final bool showNote, showChecklist;
 
   const InfoItemTab({
@@ -13,8 +15,18 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
   }) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => InfoItemTabState();
+}
+
+class InfoItemTabState extends State<InfoItemTab> {
+  final Duration _time = const Duration(milliseconds: 6000);
+  bool _showErrorMessage = false;
+  late Timer? _timer;
+
+  @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
+
     return Padding(
       padding: layout.templates.m3,
       child: BlocSelector<EditActivityCubit, EditActivityState, InfoItem>(
@@ -24,35 +36,54 @@ class InfoItemTab extends StatelessWidget with EditActivityTab {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              if (showChecklist)
+              if (widget.showChecklist)
                 InfoItemPickField(
                   text: translate.checklist,
                   iconData: AbiliaIcons.ok,
                   infoItem: infoItem is Checklist ? infoItem : null,
                   infoItemType: Checklist,
-                  isClickable: infoItem is NoInfoItem || infoItem is Checklist,
+                  onTap: infoItem is! NoInfoItem && infoItem is! Checklist
+                      ? _setShowErrorMessage
+                      : null,
                 ),
               SizedBox(height: layout.formPadding.verticalItemDistance),
-              if (showNote)
+              if (widget.showNote)
                 InfoItemPickField(
                   text: translate.note,
                   iconData: AbiliaIcons.edit,
                   infoItem: infoItem is NoteInfoItem ? infoItem : null,
                   infoItemType: NoteInfoItem,
-                  isClickable:
-                      infoItem is NoInfoItem || infoItem is NoteInfoItem,
+                  onTap: infoItem is! NoInfoItem && infoItem is! NoteInfoItem
+                      ? _setShowErrorMessage
+                      : null,
                 ),
-              if (infoItem is! NoInfoItem) ...[
-                const Spacer(),
-                ErrorMessage(
-                  text: Text(Lt.of(context).onlyOneInfoItem),
-                ),
-              ],
+              const Spacer(),
+              CollapsableWidget(
+                collapsed: !_showErrorMessage,
+                padding: EdgeInsets.only(
+                    bottom: layout.formPadding.verticalItemDistance),
+                child: ErrorMessage(text: Text(Lt.of(context).onlyOneInfoItem)),
+              ),
             ],
           );
         },
       ),
     );
+  }
+
+  void _setShowErrorMessage() {
+    setState(() {
+      _showErrorMessage = true;
+      if (_showErrorMessage) {
+        _timer = Timer(_time, () => setState(() => _showErrorMessage = false));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }
 
@@ -61,14 +92,14 @@ class InfoItemPickField extends StatelessWidget {
   final Type infoItemType;
   final String text;
   final IconData iconData;
-  final bool isClickable;
+  final Function()? onTap;
 
   const InfoItemPickField({
     required this.infoItem,
     required this.infoItemType,
     required this.text,
     required this.iconData,
-    required this.isClickable,
+    required this.onTap,
     super.key,
   });
 
@@ -79,31 +110,31 @@ class InfoItemPickField extends StatelessWidget {
       children: [
         Expanded(
           child: PickField(
+            decoration: onTap != null ? disabledBoxDecoration : null,
             leading: Icon(iconData),
             text: Text(text),
             extras: infoItem != null
                 ? InfoItemPickFieldExtras(infoItem: infoItem)
                 : null,
-            onTap: isClickable
-                ? () async {
-                    final editActivityCubit = context.read<EditActivityCubit>();
-                    final providers = [
-                      ...copiedAuthProviders(context),
-                      BlocProvider.value(value: editActivityCubit)
-                    ];
-                    await Navigator.of(context).push<Type>(
-                      PersistentMaterialPageRoute(
-                        settings: (AddInfoTypePage).routeSetting(),
-                        builder: (context) => MultiBlocProvider(
-                          providers: providers,
-                          child: AddInfoTypePage(
-                            infoItemType: infoItemType,
-                          ),
+            onTap: onTap ??
+                () async {
+                  final editActivityCubit = context.read<EditActivityCubit>();
+                  final providers = [
+                    ...copiedAuthProviders(context),
+                    BlocProvider.value(value: editActivityCubit)
+                  ];
+                  await Navigator.of(context).push<Type>(
+                    PersistentMaterialPageRoute(
+                      settings: (AddInfoTypePage).routeSetting(),
+                      builder: (context) => MultiBlocProvider(
+                        providers: providers,
+                        child: AddInfoTypePage(
+                          infoItemType: infoItemType,
                         ),
                       ),
-                    );
-                  }
-                : null,
+                    ),
+                  );
+                },
           ),
         ),
         if (infoItem != null) ...[

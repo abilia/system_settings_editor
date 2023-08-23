@@ -13,6 +13,7 @@ class PickField extends StatelessWidget {
   final bool errorState;
   final String? semanticsLabel;
   final Text? trailingText, secondaryText;
+  final Decoration? decoration;
 
   const PickField({
     required this.text,
@@ -28,6 +29,7 @@ class PickField extends StatelessWidget {
     this.leadingPadding,
     this.verticalPadding,
     this.padding,
+    this.decoration,
   }) : super(key: key);
 
   @override
@@ -39,11 +41,12 @@ class PickField extends StatelessWidget {
     final verticalPadding =
         this.verticalPadding ?? layout.pickField.verticalPadding;
     final extras = this.extras;
-    final decoration = errorState
-        ? whiteErrorBoxDecoration
-        : onTap == null
-            ? disabledBoxDecoration
-            : whiteBoxDecoration;
+    final decoration = this.decoration ??
+        (errorState
+            ? whiteErrorBoxDecoration
+            : onTap == null
+                ? disabledBoxDecoration
+                : whiteBoxDecoration);
 
     return Tts.fromSemantics(
       SemanticsProperties(

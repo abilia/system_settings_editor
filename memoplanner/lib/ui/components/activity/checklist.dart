@@ -70,7 +70,7 @@ class EditChecklistWidget extends StatelessWidget {
           child: Expanded(
             child: Column(
               children: [
-                Expanded(
+                Flexible(
                   child: ScrollArrows.vertical(
                     controller: controller,
                     child: ListView.separated(
@@ -90,10 +90,7 @@ class EditChecklistWidget extends StatelessWidget {
                   child: Divider(
                       thickness: layout.checklist.dividerHeight, endIndent: 0),
                 ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: const AddNewQuestionButton(),
-                ),
+                const AddNewQuestionButton(),
               ],
             ),
           ),
