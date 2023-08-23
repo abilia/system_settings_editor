@@ -21,7 +21,7 @@ class InfoItemTab extends StatefulWidget with EditActivityTab {
 class InfoItemTabState extends State<InfoItemTab> {
   final Duration _time = const Duration(milliseconds: 6000);
   bool _showErrorMessage = false;
-  late Timer? _timer;
+  Timer? _timer;
 
   @override
   Widget build(BuildContext context) {
