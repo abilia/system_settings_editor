@@ -68,7 +68,7 @@ jobs:
         run: |
           if [ ! -z ${{inputs.release_type}} ];
           then
-            type=${{inputs.release}}
+            type=${{inputs.release_type}}
           elif [[ $GITHUB_REF == "refs/heads/release" ]]
           then
             type="release"
