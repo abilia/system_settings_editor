@@ -1142,7 +1142,8 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      expect(find.byType(InfoItemPickField), findsNWidgets(2));
+      expect(find.byType(InfoItemPickField<Checklist>), findsOneWidget);
+      expect(find.byType(InfoItemPickField<NoteInfoItem>), findsOneWidget);
       expect(find.text(translate.note), findsOneWidget);
       expect(find.text(translate.checklist), findsOneWidget);
     });
@@ -1183,7 +1184,8 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      expect(find.byType(InfoItemPickField), findsNWidgets(1));
+      expect(find.byType(InfoItemPickField<Checklist>), findsNothing);
+      expect(find.byType(InfoItemPickField<NoteInfoItem>), findsOneWidget);
       expect(find.text(translate.note), findsOneWidget);
       expect(find.text(translate.checklist), findsNothing);
 
@@ -1230,7 +1232,8 @@ void main() {
 
       expect(find.byType(ExtraFunctionWiz), findsOneWidget);
 
-      expect(find.byType(InfoItemPickField), findsNWidgets(1));
+      expect(find.byType(InfoItemPickField<Checklist>), findsOneWidget);
+      expect(find.byType(InfoItemPickField<NoteInfoItem>), findsNothing);
       expect(find.text(translate.note), findsNothing);
       expect(find.text(translate.checklist), findsOneWidget);
 
