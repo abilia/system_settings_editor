@@ -82,10 +82,7 @@ class FullScreenNote extends StatelessWidget {
           borderRadius: borderRadius,
           child: Container(
             decoration: whiteBoxDecoration,
-            child: NoteBlock(
-              text: noteData.text,
-              textWidget: Text(noteData.text),
-            ),
+            child: NoteBlock(text: noteData.text),
           ),
         ),
       );
@@ -96,12 +93,12 @@ class _NoteLibraryAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final sortableState = context.watch<SortableArchiveCubit<NoteData>>().state;
-
+    final selected = sortableState.selected;
     return AbiliaAppBar(
       iconData: AbiliaIcons.folder,
       title: Lt.of(context).fromTemplate,
-      breadcrumbs: sortableState.selected != null
-          ? [sortableState.selected!.data.name]
+      breadcrumbs: selected != null
+          ? [selected.data.name]
           : sortableState.breadCrumbPath(),
     );
   }
