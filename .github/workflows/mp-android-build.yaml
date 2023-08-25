@@ -5,6 +5,13 @@ on:
     inputs:
       track:
         description: 'Deploy to a specific Google play track, empty for default'
+      release_type:
+        description: 'Specify "dev" or "release" (on release branch this is ignored)'
+        default: 'dev'
+        type: choice
+        options:
+        - release
+        - dev
   push:
     branches:
       - master
@@ -64,7 +71,12 @@ jobs:
       - id: set_release_type
         name: Set release type
         run: |
-          type=$([[ $GITHUB_REF == "refs/heads/release" ]] && echo "release" || echo "dev")
+          if [[ $GITHUB_REF == "refs/heads/release" ]]
+          then
+            type="release"
+          else
+            type=${{inputs.release_type}}
+          fi
           echo "releasetype=$type" >> $GITHUB_OUTPUT
 
       - run: flutter pub get
