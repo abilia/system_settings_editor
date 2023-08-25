@@ -6,7 +6,12 @@ on:
       track:
         description: 'Deploy to a specific Google play track, empty for default'
       release_type:
-        description: 'specify as "dev" or "release", or empty for default'
+        description: 'Specify "dev" or "release" (on release branch this is ignored)'
+        default: 'dev'
+        type: choice
+        options:
+        - release
+        - dev
   push:
     branches:
       - master
@@ -66,14 +71,11 @@ jobs:
       - id: set_release_type
         name: Set release type
         run: |
-          if [ ! -z ${{inputs.release_type}} ];
-          then
-            type=${{inputs.release_type}}
-          elif [[ $GITHUB_REF == "refs/heads/release" ]]
+          if [[ $GITHUB_REF == "refs/heads/release" ]]
           then
             type="release"
           else
-            type="dev"
+            type=${{inputs.release_type}}
           fi
           echo "releasetype=$type" >> $GITHUB_OUTPUT
 
