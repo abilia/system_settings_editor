@@ -244,7 +244,6 @@ class MessageLookup extends MessageLookupByLibrary {
             'Download voice for speech support'),
         'duration': MessageLookupByLibrary.simpleMessage('Duration'),
         'earlyMorning': MessageLookupByLibrary.simpleMessage('early morning'),
-        'earyMorning': MessageLookupByLibrary.simpleMessage('early morning'),
         'edge': MessageLookupByLibrary.simpleMessage('Edge'),
         'edit': MessageLookupByLibrary.simpleMessage('Edit'),
         'editActivity': MessageLookupByLibrary.simpleMessage('Edit activity'),
@@ -271,9 +270,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'enterNameForTimer':
             MessageLookupByLibrary.simpleMessage('Enter name for timer'),
         'enterNewCode': MessageLookupByLibrary.simpleMessage('Enter new code'),
+        'enterNote': MessageLookupByLibrary.simpleMessage('Enter note'),
         'enterPassword': MessageLookupByLibrary.simpleMessage('Enter password'),
         'enterTask': MessageLookupByLibrary.simpleMessage('Enter task'),
-        'enterText': MessageLookupByLibrary.simpleMessage('Enter text'),
         'enterUsername': MessageLookupByLibrary.simpleMessage('Enter username'),
         'enterYourCodeToAccess':
             MessageLookupByLibrary.simpleMessage('Enter your code to access'),

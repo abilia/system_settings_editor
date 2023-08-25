@@ -13,15 +13,13 @@ class NoteLibraryPage extends StatelessWidget {
           sortableBloc: BlocProvider.of<SortableBloc>(context),
         ),
         child: LibraryPage<NoteData>.selectable(
-          appBar: AbiliaAppBar(
-            iconData: AbiliaIcons.documents,
-            title: Lt.of(context).selectFromLibrary,
-          ),
+          appBar: _NoteLibraryAppBar(),
           libraryItemGenerator: (note) => LibraryNote(content: note.data.text),
           selectedItemGenerator: (note) => FullScreenNote(noteData: note.data),
           emptyLibraryMessage: Lt.of(context).noNotes,
           onOk: (selected) => Navigator.of(context)
               .pop<InfoItem>(NoteInfoItem(selected.data.text)),
+          useHeading: false,
         ),
       );
 }
@@ -84,11 +82,27 @@ class FullScreenNote extends StatelessWidget {
           borderRadius: borderRadius,
           child: Container(
             decoration: whiteBoxDecoration,
-            child: NoteBlock(
-              text: noteData.text,
-              textWidget: Text(noteData.text),
-            ),
+            child: NoteBlock(text: noteData.text),
           ),
         ),
       );
+}
+
+class _NoteLibraryAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    final sortableState = context.watch<SortableArchiveCubit<NoteData>>().state;
+    final selected = sortableState.selected;
+    return AbiliaAppBar(
+      iconData: AbiliaIcons.folder,
+      title: Lt.of(context).fromTemplate,
+      breadcrumbs: selected != null
+          ? [selected.data.name]
+          : sortableState.breadCrumbPath(),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(layout.appBar.smallHeight);
 }

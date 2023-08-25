@@ -20,16 +20,7 @@ class EditNoteWidget extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         onTap: () async => _openEditText(context),
-        child: NoteBlock(
-          text: infoItem.text,
-          textWidget: infoItem.text.isEmpty
-              ? Text(
-                  Lt.of(context).typeSomething,
-                  style: abiliaTextTheme.bodyLarge
-                      ?.copyWith(color: AbiliaColors.white150),
-                )
-              : Text(infoItem.text),
-        ),
+        child: NoteBlock(text: infoItem.text),
       ),
     );
   }
@@ -69,14 +60,12 @@ class EditNoteWidget extends StatelessWidget {
 class NoteBlock extends StatefulWidget {
   final String text;
   final TextStyle? textStyle;
-  final Text? textWidget;
   final ScrollController? scrollController;
 
   const NoteBlock({
     Key? key,
     this.text = '',
     this.textStyle,
-    this.textWidget,
     this.scrollController,
   }) : super(key: key);
 
@@ -97,9 +86,8 @@ class _NoteBlockState extends State<NoteBlock> {
 
   @override
   Widget build(BuildContext context) {
-    final text = widget.textWidget;
     return Tts.data(
-      data: text?.data ?? '',
+      data: widget.text,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return DefaultTextStyle(
@@ -119,7 +107,7 @@ class _NoteBlockState extends State<NoteBlock> {
                         textScaleFactor: MediaQuery.of(context).textScaleFactor,
                       ),
                     ),
-                    if (text != null) text,
+                    Text(widget.text),
                   ],
                 ),
               ),

@@ -247,7 +247,6 @@ class MessageLookup extends MessageLookupByLibrary {
             'Download stemme til stemmerapport'),
         'duration': MessageLookupByLibrary.simpleMessage('Tidslængde'),
         'earlyMorning': MessageLookupByLibrary.simpleMessage('morgen'),
-        'earyMorning': MessageLookupByLibrary.simpleMessage('morgen'),
         'edge': MessageLookupByLibrary.simpleMessage('Flik'),
         'edit': MessageLookupByLibrary.simpleMessage('Ændre'),
         'editActivity':
@@ -276,10 +275,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Indtast navn på timer'),
         'enterNewCode':
             MessageLookupByLibrary.simpleMessage('Angiv nyt kodeord'),
+        'enterNote': MessageLookupByLibrary.simpleMessage('Enter note'),
         'enterPassword':
             MessageLookupByLibrary.simpleMessage('Angiv din adgangskode'),
         'enterTask': MessageLookupByLibrary.simpleMessage('Indtast opgave'),
-        'enterText': MessageLookupByLibrary.simpleMessage('Indtast tekst'),
         'enterUsername':
             MessageLookupByLibrary.simpleMessage('Angiv dit brugernavn'),
         'enterYourCodeToAccess': MessageLookupByLibrary.simpleMessage(

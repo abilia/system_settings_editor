@@ -253,7 +253,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Lataa ääni puhetukea varten'),
         'duration': MessageLookupByLibrary.simpleMessage('Kesto'),
         'earlyMorning': MessageLookupByLibrary.simpleMessage('aamu'),
-        'earyMorning': MessageLookupByLibrary.simpleMessage('aamu'),
         'edge': MessageLookupByLibrary.simpleMessage('Reuna'),
         'edit': MessageLookupByLibrary.simpleMessage('Muokkaa'),
         'editActivity':
@@ -281,9 +280,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'enterNameForTimer':
             MessageLookupByLibrary.simpleMessage('Lisää nimi ajastimeen'),
         'enterNewCode': MessageLookupByLibrary.simpleMessage('Anna uusi koodi'),
+        'enterNote': MessageLookupByLibrary.simpleMessage('Enter note'),
         'enterPassword': MessageLookupByLibrary.simpleMessage('Anna salasana'),
         'enterTask': MessageLookupByLibrary.simpleMessage('Syötä tehtävä'),
-        'enterText': MessageLookupByLibrary.simpleMessage('Kirjoita teksti'),
         'enterUsername':
             MessageLookupByLibrary.simpleMessage('Anna käyttäjätunnus'),
         'enterYourCodeToAccess': MessageLookupByLibrary.simpleMessage(

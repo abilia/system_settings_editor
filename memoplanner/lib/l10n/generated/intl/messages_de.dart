@@ -255,7 +255,6 @@ class MessageLookup extends MessageLookupByLibrary {
             'Stimme für Sprachunterstützung herunterladen'),
         'duration': MessageLookupByLibrary.simpleMessage('Dauer'),
         'earlyMorning': MessageLookupByLibrary.simpleMessage('frühmorgens'),
-        'earyMorning': MessageLookupByLibrary.simpleMessage('frühmorgens'),
         'edge': MessageLookupByLibrary.simpleMessage('Kante'),
         'edit': MessageLookupByLibrary.simpleMessage('Bearbeiten'),
         'editActivity':
@@ -285,10 +284,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Namen für den Timer angeben'),
         'enterNewCode':
             MessageLookupByLibrary.simpleMessage('Neuen Code eingeben'),
+        'enterNote': MessageLookupByLibrary.simpleMessage('Enter note'),
         'enterPassword':
             MessageLookupByLibrary.simpleMessage('Passwort eingeben'),
         'enterTask': MessageLookupByLibrary.simpleMessage('Aufgabe eingeben'),
-        'enterText': MessageLookupByLibrary.simpleMessage('Text eingeben'),
         'enterUsername':
             MessageLookupByLibrary.simpleMessage('Benutzername eingeben'),
         'enterYourCodeToAccess': MessageLookupByLibrary.simpleMessage(
