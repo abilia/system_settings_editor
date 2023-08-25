@@ -693,7 +693,8 @@ void main() {
       await tester.goToInfoItemTab();
 
       expect(find.byType(InfoItemTab), findsOneWidget);
-      expect(find.byType(InfoItemPickField), findsNWidgets(2));
+      expect(find.byType(InfoItemPickField<Checklist>), findsOneWidget);
+      expect(find.byType(InfoItemPickField<NoteInfoItem>), findsOneWidget);
       expect(find.text(translate.note), findsOneWidget);
       expect(find.text(translate.checklist), findsOneWidget);
     });
@@ -3002,7 +3003,8 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- Checklist option hidden
-      expect(find.byType(InfoItemPickField), findsNWidgets(1));
+      expect(find.byType(InfoItemPickField<Checklist>), findsNothing);
+      expect(find.byType(InfoItemPickField<NoteInfoItem>), findsOneWidget);
       expect(find.text(translate.note), findsOneWidget);
       expect(find.text(translate.checklist), findsNothing);
     });
@@ -3024,7 +3026,8 @@ text''';
       await tester.pumpAndSettle();
 
       // Assert -- Notes option hidden
-      expect(find.byType(InfoItemPickField), findsNWidgets(1));
+      expect(find.byType(InfoItemPickField<Checklist>), findsOneWidget);
+      expect(find.byType(InfoItemPickField<NoteInfoItem>), findsNothing);
       expect(find.text(translate.note), findsNothing);
       expect(find.text(translate.checklist), findsOneWidget);
     });
@@ -3517,9 +3520,9 @@ text''';
         await tester.pumpAndSettle();
         await tester.goToInfoItemTab();
 
-        await tester.verifyTts(find.byType(InfoItemPickField).first,
+        await tester.verifyTts(find.byType(InfoItemPickField<Checklist>),
             exact: translate.checklist);
-        await tester.verifyTts(find.byType(InfoItemPickField).last,
+        await tester.verifyTts(find.byType(InfoItemPickField<NoteInfoItem>),
             exact: translate.note);
       });
 

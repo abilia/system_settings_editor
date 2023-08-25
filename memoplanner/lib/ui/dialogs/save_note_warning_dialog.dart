@@ -26,12 +26,12 @@ class SaveNoteWarningDialog extends StatelessWidget {
       backNavigationWidget: LightGreyButton(
         text: translate.cancelChanges,
         icon: AbiliaIcons.closeProgram,
-        onPressed: () async => Navigator.of(context).pop(false),
+        onPressed: () => Navigator.of(context).pop(false),
       ),
       forwardNavigationWidget: GreenButton(
         text: translate.saveNote,
         icon: AbiliaIcons.ok,
-        onPressed: () async => Navigator.of(context).pop(true),
+        onPressed: () => Navigator.of(context).pop(true),
       ),
     );
   }

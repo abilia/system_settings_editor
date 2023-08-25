@@ -19,16 +19,14 @@ class InfoItemTab extends StatefulWidget with EditActivityTab {
 }
 
 class InfoItemTabState extends State<InfoItemTab> {
-  final Duration _time = const Duration(milliseconds: 6000);
-  bool _showErrorMessage = false;
-  Timer? _timer;
+  Timer? _showWarningToastTimer;
 
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
 
     return Padding(
-      padding: layout.templates.m3,
+      padding: layout.templates.m3.withoutBottom,
       child: BlocSelector<EditActivityCubit, EditActivityState, InfoItem>(
         selector: (state) => state.activity.infoItem,
         builder: (context, infoItem) {
@@ -37,31 +35,32 @@ class InfoItemTabState extends State<InfoItemTab> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               if (widget.showChecklist)
-                InfoItemPickField(
-                  text: translate.checklist,
-                  iconData: AbiliaIcons.ok,
-                  infoItem: infoItem is Checklist ? infoItem : null,
-                  infoItemType: Checklist,
+                GestureDetector(
                   onTap: infoItem is! NoInfoItem && infoItem is! Checklist
                       ? _setShowErrorMessage
                       : null,
+                  child: InfoItemPickField<Checklist>(
+                    text: translate.checklist,
+                    iconData: AbiliaIcons.ok,
+                    infoItem: infoItem,
+                  ),
                 ),
               SizedBox(height: layout.formPadding.verticalItemDistance),
               if (widget.showNote)
-                InfoItemPickField(
-                  text: translate.note,
-                  iconData: AbiliaIcons.edit,
-                  infoItem: infoItem is NoteInfoItem ? infoItem : null,
-                  infoItemType: NoteInfoItem,
+                GestureDetector(
                   onTap: infoItem is! NoInfoItem && infoItem is! NoteInfoItem
                       ? _setShowErrorMessage
                       : null,
+                  child: InfoItemPickField<NoteInfoItem>(
+                    text: translate.note,
+                    iconData: AbiliaIcons.edit,
+                    infoItem: infoItem,
+                  ),
                 ),
               const Spacer(),
               CollapsableWidget(
-                collapsed: !_showErrorMessage,
-                padding: EdgeInsets.only(
-                    bottom: layout.formPadding.verticalItemDistance),
+                collapsed: _showWarningToastTimer == null,
+                padding: EdgeInsets.only(bottom: layout.templates.m3.bottom),
                 child: ErrorMessage(text: Text(Lt.of(context).onlyOneInfoItem)),
               ),
             ],
@@ -73,35 +72,38 @@ class InfoItemTabState extends State<InfoItemTab> {
 
   void _setShowErrorMessage() {
     setState(() {
-      _showErrorMessage = true;
-      if (_showErrorMessage) {
-        _timer = Timer(_time, () => setState(() => _showErrorMessage = false));
-      }
+      _showWarningToastTimer = Timer(
+        const Duration(milliseconds: 6000),
+        () => setState(
+          () {
+            _showWarningToastTimer?.cancel();
+            _showWarningToastTimer = null;
+          },
+        ),
+      );
     });
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _showWarningToastTimer?.cancel();
     super.dispose();
   }
 }
 
-class InfoItemPickField extends StatelessWidget {
-  final InfoItem? infoItem;
-  final Type infoItemType;
+class InfoItemPickField<InfoItemType extends InfoItem> extends StatelessWidget {
+  final InfoItem infoItem;
   final String text;
   final IconData iconData;
-  final Function()? onTap;
 
   const InfoItemPickField({
     required this.infoItem,
-    required this.infoItemType,
     required this.text,
     required this.iconData,
-    required this.onTap,
     super.key,
   });
+
+  bool get ofCorrectType => infoItem is InfoItemType;
 
   @override
   Widget build(BuildContext context) {
@@ -110,34 +112,33 @@ class InfoItemPickField extends StatelessWidget {
       children: [
         Expanded(
           child: PickField(
-            decoration: onTap != null ? disabledBoxDecoration : null,
             leading: Icon(iconData),
             text: Text(text),
-            extras: infoItem != null
+            extras: ofCorrectType
                 ? InfoItemPickFieldExtras(infoItem: infoItem)
                 : null,
-            onTap: onTap ??
-                () async {
-                  final editActivityCubit = context.read<EditActivityCubit>();
-                  final providers = [
-                    ...copiedAuthProviders(context),
-                    BlocProvider.value(value: editActivityCubit)
-                  ];
-                  await Navigator.of(context).push<Type>(
-                    PersistentMaterialPageRoute(
-                      settings: (AddInfoTypePage).routeSetting(),
-                      builder: (context) => MultiBlocProvider(
-                        providers: providers,
-                        child: AddInfoTypePage(
-                          infoItemType: infoItemType,
+            onTap: infoItem is NoInfoItem || ofCorrectType
+                ? () async {
+                    final editActivityCubit = context.read<EditActivityCubit>();
+                    final providers = [
+                      ...copiedAuthProviders(context),
+                      BlocProvider.value(value: editActivityCubit)
+                    ];
+                    await Navigator.of(context).push<Type>(
+                      PersistentMaterialPageRoute(
+                        settings:
+                            (AddInfoTypePage<InfoItemType>).routeSetting(),
+                        builder: (context) => MultiBlocProvider(
+                          providers: providers,
+                          child: AddInfoTypePage<InfoItemType>(),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  }
+                : null,
           ),
         ),
-        if (infoItem != null) ...[
+        if (ofCorrectType) ...[
           SizedBox(
             width: layout.formPadding.verticalItemDistance,
           ),
@@ -192,7 +193,7 @@ class NoteInfoItemPickFieldExtras extends StatelessWidget {
       child: SizedBox(
         height: layout.note.previewExtrasHeight,
         child: Text(
-          note.text,
+          note.text.replaceAll('\n', ' '),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: bodyMedium,

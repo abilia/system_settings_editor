@@ -68,12 +68,13 @@ class _ChecklistLibraryAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     final sortableState =
         context.watch<SortableArchiveCubit<ChecklistData>>().state;
+    final selected = sortableState.selected;
 
     return AbiliaAppBar(
       iconData: AbiliaIcons.documents,
       title: Lt.of(context).fromTemplate,
-      breadcrumbs: sortableState.selected != null
-          ? [sortableState.selected!.data.checklist.name]
+      breadcrumbs: selected != null
+          ? [selected.data.checklist.name]
           : sortableState.breadCrumbPath(),
     );
   }

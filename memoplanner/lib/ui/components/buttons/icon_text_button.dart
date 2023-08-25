@@ -246,6 +246,20 @@ class CancelButton extends StatelessWidget {
   }
 }
 
+class BackButton extends StatelessWidget {
+  const BackButton({Key? key, this.onPressed}) : super(key: key);
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return LightButton(
+      text: Lt.of(context).back,
+      icon: AbiliaIcons.navigationPrevious,
+      onPressed: onPressed ?? Navigator.of(context).maybePop,
+    );
+  }
+}
+
 class CloseButton extends StatelessWidget {
   const CloseButton({
     Key? key,

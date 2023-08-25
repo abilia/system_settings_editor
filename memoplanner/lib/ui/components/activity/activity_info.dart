@@ -256,10 +256,7 @@ class Attachment extends StatelessWidget with ActivityMixin {
     final activity = alarm?.activity ?? activityDay.activity;
     final item = activity.infoItem;
     if (item is NoteInfoItem) {
-      return NoteBlock(
-        text: item.text,
-        textWidget: Text(item.text),
-      );
+      return NoteBlock(text: item.text);
     } else if (item is Checklist) {
       return ChecklistView(
         item,

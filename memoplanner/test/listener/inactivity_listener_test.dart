@@ -526,7 +526,7 @@ void main() {
           await tester.pumpAndSettle();
           clockStreamController.add(initialTime.add(2.minutes()));
           await tester.pumpAndSettle();
-          expect(find.byType(AddInfoTypePage), findsOneWidget);
+          expect(find.byType(AddInfoTypePage<NoteInfoItem>), findsOneWidget);
           await tester.tap(find.byIcon(AbiliaIcons.plus));
           await tester.pumpAndSettle();
           clockStreamController.add(initialTime.add(2.minutes()));
@@ -558,7 +558,7 @@ void main() {
           await tester.pumpAndSettle();
           clockStreamController.add(initialTime.add(2.minutes()));
           await tester.pumpAndSettle();
-          expect(find.byType(AddInfoTypePage), findsOneWidget);
+          expect(find.byType(AddInfoTypePage<NoteInfoItem>), findsOneWidget);
           await tester.tap(find.byIcon(AbiliaIcons.folder));
           await tester.pumpAndSettle();
           expect(find.byType(NoteLibraryPage), findsOneWidget);

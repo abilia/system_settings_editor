@@ -234,7 +234,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.byType(GreenButton));
         await tester.pumpAndSettle();
-        await tester.tap(find.text(translate.back));
+        await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();
 
         // SAVE
