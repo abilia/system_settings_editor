@@ -221,12 +221,12 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
   @override
   Widget build(BuildContext context) {
     final closeButton = CloseButton(
-      onPressed: () async => popAlarm(
+      onPressed: () async => syncActivitiesAndPopAlarm(
+        context: context,
+        alarm: alarm,
         activityRepository: context.read<LicenseCubit>().validLicense
             ? context.read<ActivityRepository>()
             : null,
-        navigator: Navigator.of(context),
-        alarm: alarm,
       ),
     );
     return BottomAppBar(
@@ -335,8 +335,8 @@ class TimerAlarmPage extends StatelessWidget with ActivityMixin {
         ),
         bottomNavigationBar: BottomNavigation(
           backNavigationWidget: CloseButton(
-            onPressed: () async => popAlarm(
-              navigator: Navigator.of(context),
+            onPressed: () async => syncActivitiesAndPopAlarm(
+              context: context,
               alarm: timerAlarm,
             ),
           ),

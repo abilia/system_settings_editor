@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/getit.dart';
@@ -45,6 +46,7 @@ class AlarmNavigator {
   }
 
   void popFullscreenRoute() => _popRoute(fullScreenActivityKey);
+
   void popScreensaverRoute() => _popRoute(_screensaverKey);
 
   void _popRoute(String key) {
@@ -53,6 +55,18 @@ class AlarmNavigator {
       log.info('route $route with key $key removed');
       route.navigator?.removeRoute(route);
     }
+  }
+
+  Future<void> popAlarmPageOrCloseApp(BuildContext context) async {
+    final navigator = Navigator.of(context);
+    if (navigator.canPop()) return navigator.pop();
+
+    if (Config.isMPGO) {
+      log.info('Could not pop route (root?) -> Will use SystemNavigator.pop');
+      return SystemNavigator.pop();
+    }
+
+    log.warning('Could not pop route (root?)');
   }
 
   void addScreensaver(MaterialPageRoute screensaverRoute) =>

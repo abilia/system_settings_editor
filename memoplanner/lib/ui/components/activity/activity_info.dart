@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -138,7 +138,7 @@ mixin ActivityMixin {
     return check;
   }
 
-  Future checkConfirmationAndRemoveAlarm(
+  Future<void> checkConfirmationAndRemoveAlarm(
     BuildContext context,
     ActivityDay activityDay, {
     ActivityAlarm? alarm,
@@ -149,7 +149,6 @@ mixin ActivityMixin {
             ? context.read<ActivityRepository>()
             : null;
 
-    final navigator = Navigator.of(context);
     final checked = await checkConfirmation(
       context,
       activityDay,
@@ -157,27 +156,25 @@ mixin ActivityMixin {
     );
     if (checked == true && alarm != null) {
       await cancelNotifications(uncheckedReminders(alarm.activityDay));
-      await popAlarm(
-        activityRepository: activityRepository,
-        navigator: navigator,
-        alarm: alarm,
-      );
+      if (context.mounted) {
+        await syncActivitiesAndPopAlarm(
+          context: context,
+          alarm: alarm,
+          activityRepository: activityRepository,
+        );
+      }
     }
   }
 
-  Future popAlarm({
-    required NavigatorState navigator,
+  Future<void> syncActivitiesAndPopAlarm({
+    required BuildContext context,
     required NotificationAlarm alarm,
     ActivityRepository? activityRepository,
   }) async {
-    _log.fine('pop Alarm: $alarm');
-    if (!await navigator.maybePop()) {
-      _log.info('Could not pop (root?) will -> SystemNavigator.pop');
-      try {
-        await activityRepository?.synchronize();
-      } finally {
-        await SystemNavigator.pop();
-      }
+    await activityRepository?.synchronize();
+    if (context.mounted) {
+      _log.fine('Popping alarm: $alarm');
+      await GetIt.I<AlarmNavigator>().popAlarmPageOrCloseApp(context);
     }
   }
 }
