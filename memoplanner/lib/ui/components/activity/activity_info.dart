@@ -1,4 +1,4 @@
-import 'package:get_it/get_it.dart';
+import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:memoplanner/background/all.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -174,8 +174,20 @@ mixin ActivityMixin {
     await activityRepository?.synchronize();
     if (context.mounted) {
       _log.fine('Popping alarm: $alarm');
-      await GetIt.I<AlarmNavigator>().popAlarmPageOrCloseApp(context);
+      await _popAlarmPageOrCloseApp(context);
     }
+  }
+
+  Future<void> _popAlarmPageOrCloseApp(BuildContext context) async {
+    final navigator = Navigator.of(context);
+    if (navigator.canPop()) return navigator.pop();
+
+    if (Config.isMPGO) {
+      _log.info('Could not pop route (root?) -> Will use SystemNavigator.pop');
+      return SystemNavigator.pop();
+    }
+
+    _log.warning('Could not pop route (root?)');
   }
 }
 
