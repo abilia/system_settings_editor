@@ -7,7 +7,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class AlarmListener extends StatelessWidget {
+class AlarmListener extends StatelessWidget with ActivityMixin {
   static final _log = Logger('AlarmListener');
   final Widget child;
   final NotificationAlarm? alarm;
@@ -43,17 +43,17 @@ class AlarmListener extends StatelessWidget {
             _log.fine('remote alarm stop: ${state.data}');
             final hash = state.stopAlarmSoundKey;
             final stackId = state.popAlarmKey;
+            if (hash != null) {
+              _log.info('canceling alarm with id: $hash');
+              await notificationPlugin.cancel(hash);
+            }
             if (stackId != null) {
               _log.info('trying to pop alarm with id: $stackId');
               final route =
                   GetIt.I<AlarmNavigator>().removedFromRoutes(stackId);
               if (route != null && context.mounted) {
-                Navigator.of(context).removeRoute(route);
+                await popAlarmPageOrCloseApp(context);
               }
-            }
-            if (hash != null) {
-              _log.info('canceling alarm with id: $hash');
-              return notificationPlugin.cancel(hash);
             }
           },
         ),
