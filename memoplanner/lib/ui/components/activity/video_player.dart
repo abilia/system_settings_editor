@@ -59,8 +59,8 @@ class _VideoPlayerState extends State<VideoPlayer> {
 
   @override
   Future<void> dispose() async {
-    await _controller?.dispose();
     super.dispose();
+    await _controller?.dispose();
   }
 
   @override
