@@ -261,7 +261,7 @@ class EditActivityButton extends StatelessWidget {
                     create: (context) => ActivityWizardCubit.edit(
                       activitiesCubit: context.read<ActivitiesCubit>(),
                       editActivityCubit: context.read<EditActivityCubit>(),
-                      clockBloc: context.read<ClockBloc>(),
+                      clockCubit: context.read<ClockCubit>(),
                       allowPassedStartTime: context
                           .read<MemoplannerSettingsBloc>()
                           .state

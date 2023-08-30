@@ -43,7 +43,7 @@ void main() {
       inactivityCubit = InactivityCubit(
         fakeTicker,
         mockSettingBloc,
-        DayPartCubit(mockSettingBloc, ClockBloc.withTicker(fakeTicker)),
+        DayPartCubit(mockSettingBloc, ClockCubit.withTicker(fakeTicker)),
         TouchDetectionCubit().stream,
         const Stream.empty(),
         const Stream.empty(),

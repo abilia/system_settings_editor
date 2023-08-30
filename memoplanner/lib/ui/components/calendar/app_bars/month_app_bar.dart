@@ -42,7 +42,7 @@ class MonthAppBarStepper extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MonthCalendarCubit, MonthCalendarState>(
-      builder: (context, state) => BlocBuilder<ClockBloc, DateTime>(
+      builder: (context, state) => BlocBuilder<ClockCubit, DateTime>(
         buildWhen: ((previous, current) => previous.day != current.day),
         builder: (context, now) {
           final currentMonth = state.occasion.isCurrent;

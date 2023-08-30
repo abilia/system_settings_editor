@@ -9,16 +9,16 @@ import '../../mocks/mock_bloc.dart';
 void main() {
   final now = DateTime(2023, 01, 02, 08, 00);
   final memoplannerSettingBloc = MockMemoplannerSettingBloc();
-  final clockBloc = ClockBloc.fixed(now);
-  final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+  final clockCubit = ClockCubit.fixed(now);
+  final dayPickerBloc = DayPickerBloc(clockCubit: clockCubit);
 
   setUpAll(() async {
     await Lokalise.initMock();
   });
 
   final providers = [
-    BlocProvider<ClockBloc>(
-      create: (context) => clockBloc,
+    BlocProvider<ClockCubit>(
+      create: (context) => clockCubit,
     ),
     BlocProvider<MemoplannerSettingsBloc>(
       create: (context) => memoplannerSettingBloc,

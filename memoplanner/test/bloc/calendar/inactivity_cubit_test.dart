@@ -33,7 +33,8 @@ void main() {
     activityDetectionCubit = TouchDetectionCubit();
     timers = StreamController<TimerAlarmState>();
     notificationAlarm = StreamController<NotificationAlarm?>();
-    dayPartCubit = DayPartCubit(settingsBloc, ClockBloc.withTicker(fakeTicker));
+    dayPartCubit =
+        DayPartCubit(settingsBloc, ClockCubit.withTicker(fakeTicker));
   });
 
   tearDown(() {

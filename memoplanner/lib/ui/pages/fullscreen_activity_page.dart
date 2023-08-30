@@ -22,7 +22,7 @@ class FullScreenActivityPage extends StatelessWidget {
         create: (context) => FullScreenActivityCubit(
           activitiesCubit: context.read<ActivitiesCubit>(),
           activityRepository: context.read<ActivityRepository>(),
-          clockBloc: context.read<ClockBloc>(),
+          clockCubit: context.read<ClockCubit>(),
           alarmCubit: context.read<AlarmCubit>(),
           startingActivity: alarm.activityDay,
         )..loadActivities(),
@@ -112,7 +112,7 @@ class FullScreenActivityTabItem extends StatelessWidget {
     final activityLayout = layout.ongoingFullscreen.activity;
     final selected = context.select((FullScreenActivityCubit bloc) =>
         activityOccasion.activity.id == bloc.state.selected.activity.id);
-    final current = context.select((ClockBloc bloc) =>
+    final current = context.select((ClockCubit bloc) =>
         activityOccasion.start.isAtSameMomentAs(bloc.state) ||
         activityOccasion.end.isAtSameMomentAs(bloc.state));
     final border = current || selected

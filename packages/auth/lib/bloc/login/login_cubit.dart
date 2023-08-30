@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:seagull_clock/clock_bloc.dart';
+import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 part 'login_state.dart';
@@ -13,7 +13,7 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit({
     required this.authenticationBloc,
     required this.pushService,
-    required this.clockBloc,
+    required this.clockCubit,
     required this.userRepository,
     required this.database,
     required this.allowExpiredLicense,
@@ -25,7 +25,7 @@ class LoginCubit extends Cubit<LoginState> {
   final Database database;
   final AuthenticationBloc authenticationBloc;
   final FirebasePushService pushService;
-  final ClockBloc clockBloc;
+  final ClockCubit clockCubit;
   final UserRepository userRepository;
   final bool allowExpiredLicense;
   final Product product;
@@ -70,7 +70,7 @@ class LoginCubit extends Cubit<LoginState> {
         username: state.username.trim(),
         password: state.password.trim(),
         pushToken: pushToken,
-        time: clockBloc.state,
+        time: clockCubit.state,
       );
       await userRepository.persistLoginInfo(loginInfo);
       await _checkValidLicense(licenseExpiredConfirmed);
@@ -113,7 +113,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> _checkValidLicense(bool licenseExpiredConfirmed) async {
     final licenses = await userRepository.getLicensesFromApi(product);
-    final hasValidLicense = licenses.anyValidLicense(clockBloc.state);
+    final hasValidLicense = licenses.anyValidLicense(clockCubit.state);
     final hasLicense = licenses.isNotEmpty;
     final hasLicenseAndLicenseExpiredConfirmed =
         allowExpiredLicense && hasLicense && licenseExpiredConfirmed;

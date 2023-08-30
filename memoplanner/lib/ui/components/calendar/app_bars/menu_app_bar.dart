@@ -13,7 +13,7 @@ class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
         context.select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
     final appBarSettings =
         context.select((MemoplannerSettingsBloc bloc) => bloc.state.dayAppBar);
-    final time = context.watch<ClockBloc>().state;
+    final time = context.watch<ClockCubit>().state;
 
     return CalendarAppBar(
       day: time,

@@ -14,7 +14,7 @@ import '../../../test_helpers/register_fallback_values.dart';
 void main() {
   late MockActivitiesCubit mockActivitiesCubit;
   late MockActivityRepository mockActivityRepository;
-  late ClockBloc clockBloc;
+  late ClockCubit clockCubit;
   final nowTime = DateTime(2000, 02, 22, 22, 30);
   final aTime = DateTime(2022, 02, 22, 22, 30);
   final aDay = DateTime(2022, 02, 22);
@@ -39,7 +39,7 @@ void main() {
     when(() => mockActivitiesCubit.updateRecurringActivity(any(), any()))
         .thenAnswer((_) => Future.value());
 
-    clockBloc = ClockBloc.fixed(nowTime);
+    clockCubit = ClockCubit.fixed(nowTime);
   });
 
   test('Initial edit state is', () {
@@ -47,7 +47,7 @@ void main() {
     final activityWizardCubit = ActivityWizardCubit.edit(
       activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: FakeEditActivityCubit(),
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       allowPassedStartTime: false,
     );
 
@@ -60,7 +60,7 @@ void main() {
     final activityWizardCubit = ActivityWizardCubit.newActivity(
       activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: FakeEditActivityCubit(),
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       addActivitySettings: const AddActivitySettings(),
       supportPersonsCubit: FakeSupportPersonsCubit(),
     );
@@ -89,7 +89,7 @@ void main() {
             DefaultsAddActivitySettings(alarm: Alarm.fromInt(noAlarm)),
         calendarId: calendarId,
       ),
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       addActivitySettings:
           const AddActivitySettings(mode: AddActivityMode.stepByStep),
     );
@@ -124,7 +124,7 @@ void main() {
     final activityWizardCubit = ActivityWizardCubit.edit(
       activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: FakeEditActivityCubit(),
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       allowPassedStartTime: false,
     );
 
@@ -153,7 +153,7 @@ void main() {
     final activityWizardCubit = ActivityWizardCubit.edit(
       activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       allowPassedStartTime: false,
     );
 
@@ -188,7 +188,7 @@ void main() {
       supportPersonsCubit: FakeSupportPersonsCubit(),
       activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       addActivitySettings: const AddActivitySettings(
         editActivity: EditActivitySettings(template: false),
       ),
@@ -304,7 +304,7 @@ void main() {
     final activityWizardCubit = ActivityWizardCubit.edit(
       activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       allowPassedStartTime: false,
     );
 
@@ -353,7 +353,7 @@ void main() {
       supportPersonsCubit: FakeSupportPersonsCubit(),
       activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       addActivitySettings: const AddActivitySettings(
         editActivity: EditActivitySettings(template: false),
       ),
@@ -479,7 +479,7 @@ void main() {
       final wizCubit = ActivityWizardCubit.edit(
         activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         allowPassedStartTime: true,
       );
 
@@ -572,7 +572,7 @@ void main() {
 
     final wizCubit = ActivityWizardCubit.edit(
       activitiesCubit: FakeActivitiesCubit(),
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       editActivityCubit: editActivityCubit,
       allowPassedStartTime: false,
     );
@@ -660,7 +660,7 @@ void main() {
     final wizCubit = ActivityWizardCubit.edit(
       activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       allowPassedStartTime: true,
     );
 
@@ -729,7 +729,7 @@ void main() {
       supportPersonsCubit: FakeSupportPersonsCubit(),
       activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       addActivitySettings: const AddActivitySettings(
         editActivity: EditActivitySettings(template: false),
       ),
@@ -802,7 +802,7 @@ void main() {
           supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(aTime.add(1.days())),
+          clockCubit: ClockCubit.fixed(aTime.add(1.days())),
           addActivitySettings: const AddActivitySettings(
               mode: AddActivityMode.stepByStep,
               editActivity: EditActivitySettings(template: false),
@@ -879,7 +879,7 @@ void main() {
           supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
+          clockCubit: ClockCubit.fixed(aTime.add(1.hours())),
           addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -975,7 +975,7 @@ void main() {
           supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(time),
+          clockCubit: ClockCubit.fixed(time),
           addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -1055,7 +1055,7 @@ void main() {
       });
 
       test('Trying to save recurring with errors yields warnings', () async {
-        final clockBloc = ClockBloc.fixed(aTime.add(1.hours()));
+        final clockCubit = ClockCubit.fixed(aTime.add(1.hours()));
         // Arrange
         final editActivityCubit = EditActivityCubit.newActivity(
           day: aDay,
@@ -1067,7 +1067,7 @@ void main() {
           supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: clockBloc,
+          clockCubit: clockCubit,
           addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -1079,7 +1079,7 @@ void main() {
         final originalActivity = editActivityCubit.state.activity;
         final activity1 = originalActivity.copyWith(title: 'null');
         final activity2 = activity1.copyWith(
-          recurs: Recurs.weeklyOnDay(clockBloc.state.weekday),
+          recurs: Recurs.weeklyOnDay(clockCubit.state.weekday),
         );
         final activity3 = activity2.copyWith(recurs: recursWeeklyEveryDay);
         final time = TimeOfDay.fromDateTime(aTime);
@@ -1170,7 +1170,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.edit(
           activitiesCubit: FakeActivitiesCubit(),
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
+          clockCubit: ClockCubit.fixed(aTime.add(1.hours())),
           allowPassedStartTime: true,
         );
 
@@ -1263,7 +1263,7 @@ void main() {
           supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
+          clockCubit: ClockCubit.fixed(aTime.subtract(1.hours())),
           addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -1354,7 +1354,7 @@ void main() {
           supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(aTime.add(1.hours())),
+          clockCubit: ClockCubit.fixed(aTime.add(1.hours())),
           addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -1442,7 +1442,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.edit(
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
+          clockCubit: ClockCubit.fixed(aTime.subtract(1.hours())),
           allowPassedStartTime: false,
         );
 
@@ -1506,7 +1506,7 @@ void main() {
           supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(aTime),
+          clockCubit: ClockCubit.fixed(aTime),
           addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -1570,7 +1570,7 @@ void main() {
           supportPersonsCubit: FakeSupportPersonsCubit(),
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
+          clockCubit: ClockCubit.fixed(aTime.subtract(1.hours())),
           addActivitySettings: const AddActivitySettings(
             editActivity: EditActivitySettings(template: false),
           ),
@@ -1643,7 +1643,7 @@ void main() {
         final wizCubit = ActivityWizardCubit.edit(
           activitiesCubit: mockActivitiesCubit,
           editActivityCubit: editActivityCubit,
-          clockBloc: ClockBloc.fixed(aTime.subtract(1.hours())),
+          clockCubit: ClockCubit.fixed(aTime.subtract(1.hours())),
           allowPassedStartTime: false,
         );
 
@@ -1701,7 +1701,7 @@ void main() {
     final wizCubit = ActivityWizardCubit.edit(
       activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       allowPassedStartTime: false,
     );
 
@@ -1778,7 +1778,7 @@ void main() {
     final wizCubit = ActivityWizardCubit.edit(
       activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       allowPassedStartTime: false,
     );
 
@@ -1839,7 +1839,7 @@ void main() {
     final wizCubit = ActivityWizardCubit.edit(
       activitiesCubit: mockActivitiesCubit,
       editActivityCubit: editActivityCubit,
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       allowPassedStartTime: false,
     );
 
@@ -1883,7 +1883,7 @@ void main() {
         supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
         activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         addActivitySettings:
             const AddActivitySettings(mode: AddActivityMode.stepByStep),
       );
@@ -1924,7 +1924,7 @@ void main() {
         supportPersonsCubit: FakeSupportPersonsCubit(),
         activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         addActivitySettings: const AddActivitySettings(
           mode: AddActivityMode.stepByStep,
           general: GeneralAddActivitySettings(addRecurringActivity: false),
@@ -1972,7 +1972,7 @@ void main() {
         supportPersonsCubit: FakeSupportPersonsCubit(),
         activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         addActivitySettings: const AddActivitySettings(
           mode: AddActivityMode.stepByStep,
           general: GeneralAddActivitySettings(
@@ -2023,7 +2023,7 @@ void main() {
         supportPersonsCubit: FakeSupportPersonsCubit(),
         activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         addActivitySettings: const AddActivitySettings(
           mode: AddActivityMode.stepByStep,
           general: GeneralAddActivitySettings(
@@ -2109,7 +2109,7 @@ void main() {
         supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
         activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         addActivitySettings: allWizStepsSettings,
       );
 
@@ -2136,7 +2136,7 @@ void main() {
         supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
         activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         addActivitySettings: allWizStepsSettings,
       );
 
@@ -2216,7 +2216,7 @@ void main() {
         supportPersonsCubit: FakeSupportPersonsCubit.withSupportPerson(),
         activitiesCubit: FakeActivitiesCubit(),
         editActivityCubit: editActivityCubit,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         addActivitySettings: allWizStepsSettings,
       );
 

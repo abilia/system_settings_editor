@@ -14,13 +14,13 @@ void main() {
   late ActivitiesCubit activitiesCubit;
   late TimerAlarmBloc timerAlarmBloc;
   late MockActivityRepository mockActivityRepository;
-  late ClockBloc clockBloc;
+  late ClockCubit clockCubit;
   late StreamController<DateTime> mockedTicker;
   final initialMinutes = DateTime(2021, 03, 12, 10, 00);
   group('WeekCalendarCubitTest', () {
     setUp(() {
       mockedTicker = StreamController<DateTime>();
-      clockBloc = ClockBloc(mockedTicker.stream, initialTime: initialMinutes);
+      clockCubit = ClockCubit(mockedTicker.stream, initialTime: initialMinutes);
       mockActivityRepository = MockActivityRepository();
       activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
@@ -44,7 +44,7 @@ void main() {
         activitiesCubit: activitiesCubit,
         timerAlarmBloc: timerAlarmBloc,
         activityRepository: mockActivityRepository,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
       );
     });
 
@@ -336,7 +336,7 @@ void main() {
         activitiesCubit: activitiesCubit,
         timerAlarmBloc: timerAlarmBloc,
         activityRepository: mockActivityRepository,
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
       );
 
       final timerOccasion = AbiliaTimer(

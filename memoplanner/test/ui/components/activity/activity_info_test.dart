@@ -39,8 +39,8 @@ void main() {
                 userFileRepository: FakeUserFileRepository(),
               ),
             ),
-            BlocProvider<ClockBloc>(
-              create: (context) => ClockBloc.fixed(startTime),
+            BlocProvider<ClockCubit>(
+              create: (context) => ClockCubit.fixed(startTime),
             ),
             BlocProvider<SpeechSettingsCubit>(
               create: (context) => FakeSpeechSettingsCubit(),

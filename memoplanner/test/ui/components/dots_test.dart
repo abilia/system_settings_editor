@@ -27,8 +27,8 @@ void main() {
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(
           providers: [
-            BlocProvider<ClockBloc>(
-              create: (context) => ClockBloc.fixed(startTime),
+            BlocProvider<ClockCubit>(
+              create: (context) => ClockCubit.fixed(startTime),
             ),
             BlocProvider<MemoplannerSettingsBloc>(
               create: (context) => mockMemoplannerSettingsBloc,

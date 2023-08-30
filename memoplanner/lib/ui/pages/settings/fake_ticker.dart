@@ -36,7 +36,7 @@ class _FakeTickerState extends State<FakeTicker> {
             collapsed: !useMockTime,
             child: Padding(
               padding: EdgeInsets.all(layout.formPadding.verticalItemDistance),
-              child: BlocBuilder<ClockBloc, DateTime>(
+              child: BlocBuilder<ClockCubit, DateTime>(
                 builder: (context, state) {
                   final time = TimeOfDay.fromDateTime(state);
                   return Column(

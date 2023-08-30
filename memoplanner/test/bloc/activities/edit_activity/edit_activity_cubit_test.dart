@@ -249,7 +249,7 @@ void main() {
       supportPersonsCubit: FakeSupportPersonsCubit(),
       activitiesCubit: FakeActivitiesCubit(),
       editActivityCubit: editActivityCubit,
-      clockBloc: ClockBloc.fixed(nowTime),
+      clockCubit: ClockCubit.fixed(nowTime),
       addActivitySettings: const AddActivitySettings(
         editActivity: EditActivitySettings(template: false),
       ),

@@ -9,27 +9,27 @@ import 'package:meta/meta.dart';
 part 'day_picker_event.dart';
 
 class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
-  final ClockBloc clockBloc;
-  late final StreamSubscription clockBlocSubscription;
+  final ClockCubit clockCubit;
+  late final StreamSubscription clockCubitSubscription;
 
   DayPickerBloc({
-    required this.clockBloc,
+    required this.clockCubit,
     DateTime? initialDay,
   }) : super(
           DayPickerState(
-            (initialDay ?? clockBloc.state).onlyDays(),
-            clockBloc.state,
+            (initialDay ?? clockCubit.state).onlyDays(),
+            clockCubit.state,
             const CurrentDay(),
           ),
         ) {
-    clockBlocSubscription =
-        clockBloc.stream.listen((now) => add(TimeChanged(now)));
+    clockCubitSubscription =
+        clockCubit.stream.listen((now) => add(TimeChanged(now)));
     on<NextDay>(
         (event, emit) => emit(_generateState(state.day.nextDay(), event)));
     on<PreviousDay>(
         (event, emit) => emit(_generateState(state.day.previousDay(), event)));
     on<CurrentDay>(
-        (event, emit) => emit(_generateState(clockBloc.state, event)));
+        (event, emit) => emit(_generateState(clockCubit.state, event)));
     on<GoTo>((event, emit) => emit(_generateState(event.day, event)));
     on<TimeChanged>((event, emit) {
       final moveToNextDay = event.now.isMidnight() &&
@@ -40,11 +40,11 @@ class DayPickerBloc extends Bloc<DayPickerEvent, DayPickerState> {
   }
 
   DayPickerState _generateState(DateTime day, DayPickerEvent lastEvent) =>
-      DayPickerState(day.onlyDays(), clockBloc.state, lastEvent);
+      DayPickerState(day.onlyDays(), clockCubit.state, lastEvent);
 
   @override
   Future<void> close() async {
-    await clockBlocSubscription.cancel();
+    await clockCubitSubscription.cancel();
     return super.close();
   }
 }

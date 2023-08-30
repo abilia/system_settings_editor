@@ -3,7 +3,7 @@ export 'package:calendar_events/bloc/all.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:generics/bloc/all.dart';
 export 'package:generics/repository/all.dart';
-export 'package:seagull_clock/clock_bloc.dart';
+export 'package:seagull_clock/clock_cubit.dart';
 export 'package:seagull_clock/ticker.dart';
 export 'package:sortables/bloc/all.dart';
 export 'package:sortables/repository/sortable_repository.dart';

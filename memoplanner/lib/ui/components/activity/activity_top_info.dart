@@ -77,7 +77,7 @@ class _ActivityTopInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activity = activityDay.activity;
-    return BlocBuilder<ClockBloc, DateTime>(
+    return BlocBuilder<ClockCubit, DateTime>(
       builder: (context, now) {
         return Padding(
           padding: layout.activityPage.timeRowPadding,

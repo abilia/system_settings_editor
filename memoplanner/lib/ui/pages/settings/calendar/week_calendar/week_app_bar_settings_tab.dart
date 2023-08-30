@@ -53,7 +53,7 @@ class WeekAppBarPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final weekCalendarSettings =
         context.watch<WeekCalendarSettingsCubit>().state;
-    final currentTime = context.watch<ClockBloc>().state;
+    final currentTime = context.watch<ClockCubit>().state;
     return AppBarPreview(
       showBrowseButtons: weekCalendarSettings.showBrowseButtons,
       showClock: weekCalendarSettings.showClock,

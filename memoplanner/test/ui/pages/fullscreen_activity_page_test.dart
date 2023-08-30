@@ -26,7 +26,7 @@ void main() {
   final fullScreenActivityPageFinder = find.byType(FullScreenActivityPage);
 
   final AlarmNavigator alarmNavigator = AlarmNavigator();
-  late ClockBloc clockBloc;
+  late ClockCubit clockCubit;
 
   final List<Activity> fakeActivities = [
     Activity.createNew(
@@ -67,7 +67,7 @@ void main() {
             alarm: AlarmSettings(showOngoingActivityInFullScreen: true))));
 
     mockActivitiesCubit = MockActivitiesCubit();
-    clockBloc = ClockBloc.fixed(initialMinutes);
+    clockCubit = ClockCubit.fixed(initialMinutes);
     mockTicker = StreamController<DateTime>();
 
     mockActivityRepository = MockActivityRepository();
@@ -115,8 +115,8 @@ void main() {
               BlocProvider<ActivitiesCubit>(
                 create: (context) => mockActivitiesCubit,
               ),
-              BlocProvider<ClockBloc>(
-                create: (context) => clockBloc,
+              BlocProvider<ClockCubit>(
+                create: (context) => clockCubit,
               ),
               BlocProvider<SpeechSettingsCubit>(
                 create: (context) => FakeSpeechSettingsCubit(),
@@ -131,7 +131,7 @@ void main() {
                 create: (context) => AlarmCubit(
                   selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
                   activityRepository: mockActivityRepository,
-                  clockBloc: clockBloc,
+                  clockCubit: clockCubit,
                   settingsBloc: mockMemoplannerSettingBloc,
                   timerAlarm: const Stream.empty(),
                 ),
@@ -165,7 +165,7 @@ void main() {
     group('Static timer', () {
       testWidgets('Fullpage activity shows, two activities in bottom bar',
           (WidgetTester tester) async {
-        clockBloc.emit(fakeActivities[1].startTime);
+        clockCubit.emit(fakeActivities[1].startTime);
         await tester.pumpWidget(
           wrapWithMaterialApp(
             PopAwareAlarmPage(
@@ -182,7 +182,7 @@ void main() {
       });
 
       testWidgets('Show activity two', (WidgetTester tester) async {
-        clockBloc.emit(fakeActivities[0].startTime);
+        clockCubit.emit(fakeActivities[0].startTime);
         await tester.pumpWidget(
           wrapWithMaterialApp(
             PopAwareAlarmPage(
@@ -194,7 +194,7 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
-        clockBloc.emit(fakeActivities[1].startTime);
+        clockCubit.emit(fakeActivities[1].startTime);
         await tester.pumpAndSettle();
         expect(fullScreenActivityPageFinder, findsOneWidget);
         expect(find.text(fakeActivities[1].title), findsNWidgets(2));
@@ -203,7 +203,7 @@ void main() {
 
       testWidgets('Tapping activity in bottom bar selects it',
           (WidgetTester tester) async {
-        clockBloc.emit(fakeActivities[1].startTime);
+        clockCubit.emit(fakeActivities[1].startTime);
         await tester.pumpWidget(
           wrapWithMaterialApp(
             PopAwareAlarmPage(

@@ -74,7 +74,7 @@ class CameraButton extends StatelessWidget {
             } else {
               final userFileBloc = context.read<UserFileBloc>();
               final sortableBloc = context.read<SortableBloc>();
-              final now = context.read<ClockBloc>().state;
+              final now = context.read<ClockCubit>().state;
               final name = DateFormat.yMd(Platform.localeName).format(now);
               final image =
                   await ImagePicker().pickImage(source: ImageSource.camera);

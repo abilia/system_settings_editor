@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:repository_base/data_repository.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:seagull_clock/clock_bloc.dart';
+import 'package:seagull_clock/clock_cubit.dart';
 
 part 'sync_event.dart';
 
@@ -22,7 +22,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final DataRepository sortableRepository;
   final DataRepository genericRepository;
   final LastSyncDb lastSyncDb;
-  final ClockBloc clockBloc;
+  final ClockCubit clockCubit;
   final Duration retryDelay;
   final Duration syncDelay;
 
@@ -42,7 +42,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.retryDelay,
     required this.syncDelay,
     required this.lastSyncDb,
-    required this.clockBloc,
+    required this.clockCubit,
   }) : super(Syncing(lastSynced: lastSyncDb.getLastSyncTime())) {
     _pushSubscription =
         pushCubit.stream.listen((message) => add(const SyncAll()));
@@ -69,7 +69,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       final didFetchData = await _sync(event);
       var lastSynced = state.lastSynced;
       if (licenseCubit.validLicense) {
-        lastSynced = clockBloc.state;
+        lastSynced = clockCubit.state;
         await lastSyncDb.setSyncTime(lastSynced);
       }
       if (isClosed) return;

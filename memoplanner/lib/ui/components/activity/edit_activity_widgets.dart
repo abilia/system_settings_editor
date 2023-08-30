@@ -143,7 +143,7 @@ class SelectPictureWidget extends StatelessWidget {
     final authProviders = copiedAuthProviders(context);
     final userFileBloc = context.read<UserFileBloc>();
     final sortableBloc = context.read<SortableBloc>();
-    final now = context.read<ClockBloc>().state;
+    final now = context.read<ClockCubit>().state;
     final imageAndName = await Navigator.of(context).push<ImageAndName>(
       PersistentMaterialPageRoute(
         builder: (_) => MultiBlocProvider(

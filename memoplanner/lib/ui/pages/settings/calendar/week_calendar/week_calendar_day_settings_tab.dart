@@ -57,7 +57,7 @@ class WeekCalendarDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final weekStart = context.read<ClockBloc>().state.firstInWeek();
+    final weekStart = context.read<ClockCubit>().state.firstInWeek();
     final days = context.select((WeekCalendarSettingsCubit cubit) =>
         cubit.state.weekDisplayDays.numberOfDays());
     return Container(

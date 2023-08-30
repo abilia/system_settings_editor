@@ -6,7 +6,7 @@ import 'package:memoplanner/models/all.dart';
 
 void main() {
   late DayPickerBloc dayPickerBloc;
-  late ClockBloc clockBloc;
+  late ClockCubit clockCubit;
   late StreamController<DateTime> clockStream;
   final theTime = DateTime(1987, 10, 06, 04, 34, 55, 55, 55);
   final theDay = DateTime(1987, 10, 06);
@@ -16,8 +16,8 @@ void main() {
 
   setUp(() {
     clockStream = StreamController();
-    clockBloc = ClockBloc(clockStream.stream, initialTime: theTime);
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+    clockCubit = ClockCubit(clockStream.stream, initialTime: theTime);
+    dayPickerBloc = DayPickerBloc(clockCubit: clockCubit);
   });
 
   test('initial state', () {
@@ -112,10 +112,10 @@ void main() {
     final dayLightSavingTime = DateTime(2020, 03, 29);
     final daysAfterDST = DateTime(2020, 03, 30);
 
-    clockBloc = ClockBloc.fixed(daybeforeDST);
+    clockCubit = ClockCubit.fixed(daybeforeDST);
 
     // Act
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc)
+    dayPickerBloc = DayPickerBloc(clockCubit: clockCubit)
       ..add(NextDay())
       ..add(NextDay());
 
@@ -142,10 +142,10 @@ void main() {
     final dayLightSavingTime = DateTime(2020, 03, 29);
     final daysAfterDST = DateTime(2020, 03, 30);
     final twoDaysAfterDST = DateTime(2020, 03, 31);
-    clockBloc = ClockBloc.fixed(twoDaysAfterDST);
+    clockCubit = ClockCubit.fixed(twoDaysAfterDST);
 
     // Act
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc)
+    dayPickerBloc = DayPickerBloc(clockCubit: clockCubit)
       ..add(PreviousDay())
       ..add(PreviousDay());
 
@@ -173,10 +173,10 @@ void main() {
     final dayLightSavingTime = DateTime(2020, 10, 25);
     final daysAfterDST = DateTime(2020, 10, 26);
 
-    clockBloc = ClockBloc.fixed(daybeforeDST);
+    clockCubit = ClockCubit.fixed(daybeforeDST);
 
     // Act
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc)
+    dayPickerBloc = DayPickerBloc(clockCubit: clockCubit)
       ..add(NextDay())
       ..add(NextDay());
 
@@ -203,10 +203,10 @@ void main() {
     final dayLightSavingTime = DateTime(2020, 10, 25);
     final daysAfterDST = DateTime(2020, 10, 26);
     final twoDaysAfterDST = DateTime(2020, 10, 27);
-    clockBloc = ClockBloc.fixed(twoDaysAfterDST);
+    clockCubit = ClockCubit.fixed(twoDaysAfterDST);
 
     // Act
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc)
+    dayPickerBloc = DayPickerBloc(clockCubit: clockCubit)
       ..add(PreviousDay())
       ..add(PreviousDay());
 
@@ -257,7 +257,7 @@ void main() {
     dayPickerBloc.add(PreviousDay());
     clockStream.add(theDayAfter);
     await Future.doWhile(() => Future.delayed(
-        const Duration(milliseconds: 10), () => clockBloc.state == theDay));
+        const Duration(milliseconds: 10), () => clockCubit.state == theDay));
     dayPickerBloc.add(const CurrentDay());
     await expectLater(
       dayPickerBloc.stream,
@@ -275,7 +275,7 @@ void main() {
   test('currentDay should change with clocks passing day after next', () async {
     clockStream.add(theDayAfterTomorrow);
     await Future.doWhile(() => Future.delayed(
-        const Duration(milliseconds: 10), () => clockBloc.state == theDay));
+        const Duration(milliseconds: 10), () => clockCubit.state == theDay));
     dayPickerBloc.add(const CurrentDay());
     await expectLater(
       dayPickerBloc.stream,

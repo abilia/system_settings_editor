@@ -93,7 +93,7 @@ class LogoutWarningModal extends StatelessWidget {
         if (lastSync == null) {
           return null;
         }
-        final daysAgo = context.read<ClockBloc>().state.difference(lastSync);
+        final daysAgo = context.read<ClockCubit>().state.difference(lastSync);
 
         final dateString =
             DateFormat.yMd(Platform.localeName).format(lastSync.onlyDays());

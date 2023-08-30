@@ -118,7 +118,7 @@ class DatePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
     final timeFormat = DateFormat.yMMMMd(locale.toLanguageTag());
-    return BlocBuilder<ClockBloc, DateTime>(
+    return BlocBuilder<ClockCubit, DateTime>(
       buildWhen: (previous, current) => previous.day != current.day,
       builder: (context, time) => PickField(
         onTap: onChange == null
@@ -130,13 +130,13 @@ class DatePicker extends StatelessWidget {
                       providers: [
                         BlocProvider(
                           create: (context) => DayPickerBloc(
-                            clockBloc: context.read<ClockBloc>(),
+                            clockCubit: context.read<ClockCubit>(),
                             initialDay: date,
                           ),
                         ),
                         BlocProvider(
                           create: (context) => MonthCalendarCubit(
-                            clockBloc: context.read<ClockBloc>(),
+                            clockCubit: context.read<ClockCubit>(),
                             initialDay: date,
                             dayPickerBloc: context.read<DayPickerBloc>(),
                           ),

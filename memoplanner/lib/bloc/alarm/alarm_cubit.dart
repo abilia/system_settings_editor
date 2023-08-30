@@ -17,12 +17,12 @@ class AlarmCubit extends Cubit<NotificationAlarm?> {
     required Stream<TimerAlarm> timerAlarm,
     required this.activityRepository,
     required this.settingsBloc,
-    required ClockBloc clockBloc,
+    required ClockCubit clockCubit,
   }) : super(null) {
     _selectedNotificationSubscription =
         selectedNotificationSubject.listen((payload) => emit(payload));
     _clockSubscription =
-        clockBloc.stream.listen((now) async => _newMinute(now));
+        clockCubit.stream.listen((now) async => _newMinute(now));
     _timerSubscription = timerAlarm.listen(emit);
   }
 

@@ -89,8 +89,8 @@ void main() {
         child: FakeAuthenticatedBlocsProvider(
           child: MultiBlocProvider(
             providers: [
-              BlocProvider<ClockBloc>(
-                create: (context) => ClockBloc.fixed(startTime),
+              BlocProvider<ClockCubit>(
+                create: (context) => ClockCubit.fixed(startTime),
               ),
               BlocProvider<MemoplannerSettingsBloc>.value(
                 value: mockMemoplannerSettingsBloc,
@@ -114,7 +114,7 @@ void main() {
                     ? ActivityWizardCubit.newActivity(
                         supportPersonsCubit: FakeSupportPersonsCubit(),
                         activitiesCubit: context.read<ActivitiesCubit>(),
-                        clockBloc: context.read<ClockBloc>(),
+                        clockCubit: context.read<ClockCubit>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         addActivitySettings: context
                             .read<MemoplannerSettingsBloc>()
@@ -123,7 +123,7 @@ void main() {
                       )
                     : ActivityWizardCubit.edit(
                         activitiesCubit: context.read<ActivitiesCubit>(),
-                        clockBloc: context.read<ClockBloc>(),
+                        clockCubit: context.read<ClockCubit>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         allowPassedStartTime: context
                             .read<MemoplannerSettingsBloc>()
@@ -137,7 +137,7 @@ void main() {
               BlocProvider<UserFileBloc>.value(value: mockUserFileBloc),
               BlocProvider<DayPickerBloc>(
                 create: (context) => DayPickerBloc(
-                  clockBloc: context.read<ClockBloc>(),
+                  clockCubit: context.read<ClockCubit>(),
                 ),
               ),
               BlocProvider<SpeechSettingsCubit>(

@@ -11,7 +11,7 @@ part 'timepillar_interval_calculator.dart';
 part 'timepillar_state.dart';
 
 class TimepillarCubit extends Cubit<TimepillarState> {
-  final ClockBloc clockBloc;
+  final ClockCubit clockCubit;
   final MemoplannerSettingsBloc memoSettingsBloc;
   final DayCalendarViewCubit dayCalendarViewCubit;
   final DayPickerBloc dayPickerBloc;
@@ -24,7 +24,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   late TimepillarState previousState = state;
 
   TimepillarCubit({
-    required this.clockBloc,
+    required this.clockCubit,
     required this.memoSettingsBloc,
     required this.dayCalendarViewCubit,
     required this.dayPickerBloc,
@@ -32,7 +32,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     required this.activitiesCubit,
     required this.dayPartCubit,
   }) : super(_initialEmptyState(
-          now: clockBloc.state,
+          now: clockCubit.state,
           selectedDay: dayPickerBloc.state.day,
           memoplannerSettings: memoSettingsBloc.state,
           dayCalendarViewOptionsSettings: dayCalendarViewCubit.state,
@@ -41,7 +41,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
           dayPart: dayPartCubit.state,
         )) {
     _streamSubscription = MergeStream([
-      clockBloc.stream,
+      clockCubit.stream,
       memoSettingsBloc.stream,
       dayPickerBloc.stream,
       activitiesCubit.stream,
@@ -63,7 +63,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
   Future<void> _onTimepillarConditionsChanged(
       {required bool showNightCalendar}) async {
     final interval = _getInterval(
-      now: clockBloc.state,
+      now: clockCubit.state,
       day: dayPickerBloc.state.day,
       calendarSettings: memoSettingsBloc.state.calendar,
       showNightCalendar: showNightCalendar,
@@ -76,7 +76,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     if (isClosed) return;
     emit(
       _generateState(
-        now: clockBloc.state,
+        now: clockCubit.state,
         selectedDay: dayPickerBloc.state.day,
         memoplannerSettings: memoSettingsBloc.state,
         dayCalendarViewOptionsSettings: dayCalendarViewCubit.state,
@@ -279,7 +279,7 @@ class TimepillarCubit extends Cubit<TimepillarState> {
     final isDayAndNight =
         viewOptions.calendarType == DayCalendarType.oneTimepillar &&
             viewOptions.intervalType == TimepillarIntervalType.dayAndNight;
-    final isNight = clockBloc.state.isNight(settings.calendar.dayParts);
+    final isNight = clockCubit.state.isNight(settings.calendar.dayParts);
 
     return isToday &&
         !isList &&
@@ -303,12 +303,12 @@ class TimepillarCubit extends Cubit<TimepillarState> {
 
     if (!_isTonight(
       day: dayPickerBloc.state.day,
-      now: clockBloc.state,
+      now: clockCubit.state,
       dayPart: dayPartCubit.state,
     )) return true;
 
     final isBeforeMidNight =
-        clockBloc.state.isNightBeforeMidnight(settings.calendar.dayParts);
+        clockCubit.state.isNightBeforeMidnight(settings.calendar.dayParts);
 
     final beforeMidnightGoingForwardOrAfterMidnightGoingBack =
         (forward ? isBeforeMidNight : !isBeforeMidNight) ==

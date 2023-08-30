@@ -12,7 +12,7 @@ import '../../../fakes/all.dart';
 import '../../../mocks/mock_bloc.dart';
 
 void main() {
-  late ClockBloc clockBloc;
+  late ClockCubit clockCubit;
   late ActivityRepository mockActivityRepository;
   late ActivitiesCubit activitiesCubit;
   late DayPickerBloc dayPickerBloc;
@@ -24,12 +24,12 @@ void main() {
 
   setUp(() async {
     clockStream = StreamController();
-    clockBloc = ClockBloc(clockStream.stream, initialTime: now);
+    clockCubit = ClockCubit(clockStream.stream, initialTime: now);
     activitiesCubit = MockActivitiesCubit();
     mockActivityRepository = MockActivityRepository();
     when(() => activitiesCubit.activityRepository)
         .thenReturn(mockActivityRepository);
-    dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+    dayPickerBloc = DayPickerBloc(clockCubit: clockCubit);
     dayCalendarViewCubit = DayCalendarViewCubit(
       DayCalendarViewDb(await FakeSharedPreferences.getInstance()),
       FakeGenericCubit(),
@@ -65,7 +65,7 @@ void main() {
     setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
         .thenAnswer((_) => Future.value([nowActivity, fullDayActivity])),
     build: () => TimepillarCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activitiesCubit: activitiesCubit,
         dayPickerBloc: dayPickerBloc,
         memoSettingsBloc: memoplannerSettingBloc,
@@ -107,7 +107,7 @@ void main() {
     setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
         .thenAnswer((_) => Future.value([removeAfter, removeAfterRecurring])),
     build: () => TimepillarCubit(
-      clockBloc: clockBloc,
+      clockCubit: clockCubit,
       activitiesCubit: activitiesCubit,
       dayPickerBloc: dayPickerBloc,
       memoSettingsBloc: memoplannerSettingBloc,

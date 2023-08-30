@@ -48,8 +48,8 @@ void main() {
             BlocProvider<MemoplannerSettingsBloc>(
               create: (context) => FakeMemoplannerSettingsBloc(),
             ),
-            BlocProvider<ClockBloc>(
-              create: (context) => ClockBloc.fixed(startTime),
+            BlocProvider<ClockCubit>(
+              create: (context) => ClockCubit.fixed(startTime),
             ),
           ],
           child: child,

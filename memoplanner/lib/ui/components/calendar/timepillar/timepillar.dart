@@ -350,7 +350,7 @@ class TimePillarHourDots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ClockBloc, DateTime>(
+    return BlocBuilder<ClockCubit, DateTime>(
       builder: (context, now) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(

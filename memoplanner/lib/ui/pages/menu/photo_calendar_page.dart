@@ -17,7 +17,7 @@ class PhotoCalendarPage extends StatelessWidget {
     final calendarDayColor = context
         .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     final weekday =
-        context.select((ClockBloc currentTime) => currentTime.state.weekday);
+        context.select((ClockCubit currentTime) => currentTime.state.weekday);
     final theme = weekdayTheme(
       dayColor: calendarDayColor,
       languageCode: Localizations.localeOf(context).languageCode,
@@ -162,7 +162,7 @@ class PhotoCalendarAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final settings = context.watch<MemoplannerSettingsBloc>().state;
-    final time = context.watch<ClockBloc>().state;
+    final time = context.watch<ClockCubit>().state;
     return CalendarAppBar(
       textStyle: Theme.of(context).textTheme.headlineMedium,
       day: time.onlyDays(),

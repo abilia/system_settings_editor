@@ -113,7 +113,7 @@ class PreviewTimePillar extends StatelessWidget {
         BlocProvider(
           create: (context) => TimepillarMeasuresCubit.fixed(state: measures),
         ),
-        BlocProvider(create: (context) => ClockBloc.fixed(_time)),
+        BlocProvider(create: (context) => ClockCubit.fixed(_time)),
       ],
       child: Provider(
         create: (_) => measures,

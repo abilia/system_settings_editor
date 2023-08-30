@@ -38,7 +38,7 @@ class LoginPage extends StatelessWidget {
       create: (context) => LoginCubit(
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
         pushService: GetIt.I<FirebasePushService>(),
-        clockBloc: BlocProvider.of<ClockBloc>(context),
+        clockCubit: BlocProvider.of<ClockCubit>(context),
         userRepository: context.read<UserRepository>(),
         database: GetIt.I<Database>(),
         allowExpiredLicense: Config.isMP,

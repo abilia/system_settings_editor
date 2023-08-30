@@ -50,7 +50,7 @@ class _MonthAppBarPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MonthCalendarSettingsCubit, MonthCalendarSettings>(
       builder: (context, monthCalendarSettings) =>
-          BlocBuilder<ClockBloc, DateTime>(
+          BlocBuilder<ClockCubit, DateTime>(
         builder: (context, currentTime) => AppBarPreview(
           showBrowseButtons: monthCalendarSettings.showBrowseButtons,
           showClock: monthCalendarSettings.showClock,

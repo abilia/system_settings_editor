@@ -8,7 +8,7 @@ class DigitalClock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ClockBloc, DateTime>(
+    return BlocBuilder<ClockCubit, DateTime>(
       builder: (context, time) => Tts(
         child: Text(
           hourAndMinuteFormat(context)(time),

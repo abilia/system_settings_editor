@@ -12,7 +12,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   FullScreenActivityCubit({
     required ActivitiesCubit activitiesCubit,
     required this.activityRepository,
-    required this.clockBloc,
+    required this.clockCubit,
     required AlarmCubit alarmCubit,
     required ActivityDay startingActivity,
   }) : super(
@@ -23,7 +23,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
     _activityBlocSubscription = activitiesCubit.stream.listen(
       (_) async => _updateState(),
     );
-    _clockBlocSubscription = clockBloc.stream.listen(
+    _clockCubitSubscription = clockCubit.stream.listen(
       (_) async => _updateState(),
     );
     _alarmCubitSubscription = alarmCubit.stream
@@ -32,21 +32,21 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   }
 
   final ActivityRepository activityRepository;
-  final ClockBloc clockBloc;
+  final ClockCubit clockCubit;
   late final StreamSubscription _activityBlocSubscription;
-  late final StreamSubscription _clockBlocSubscription;
+  late final StreamSubscription _clockCubitSubscription;
   late final StreamSubscription _alarmCubitSubscription;
 
   void loadActivities() => unawaited(_updateState());
 
   Future<void> _updateState() async {
-    final day = clockBloc.state.onlyDays();
+    final day = clockCubit.state.onlyDays();
     final activities = await activityRepository.allBetween(day, day.nextDay());
     if (isClosed) return;
     emit(
       _stateFrom(
         activities,
-        clockBloc.state,
+        clockCubit.state,
         state.selected,
       ),
     );
@@ -88,7 +88,7 @@ class FullScreenActivityCubit extends Cubit<FullScreenActivityState> {
   @override
   Future<void> close() async {
     await _activityBlocSubscription.cancel();
-    await _clockBlocSubscription.cancel();
+    await _clockCubitSubscription.cancel();
     await _alarmCubitSubscription.cancel();
     return super.close();
   }

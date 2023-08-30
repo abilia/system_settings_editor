@@ -97,8 +97,8 @@ void main() {
           .firstWhere((l) => l.languageCode == locale?.languageCode,
               orElse: () => supportedLocales.first),
       builder: (context, child) => MultiBlocProvider(providers: [
-            BlocProvider<ClockBloc>(
-              create: (context) => ClockBloc.fixed(startTime),
+            BlocProvider<ClockCubit>(
+              create: (context) => ClockCubit.fixed(startTime),
             ),
             BlocProvider<TimerCubit>(
               create: (context) => timerCubit,

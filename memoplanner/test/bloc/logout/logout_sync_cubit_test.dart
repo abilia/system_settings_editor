@@ -55,7 +55,7 @@ void main() {
       sortableRepository: sortableRepository,
       genericRepository: genericRepository,
       lastSyncDb: lastSyncDb,
-      clockBloc: ClockBloc.fixed(DateTime(2000)),
+      clockCubit: ClockCubit.fixed(DateTime(2000)),
       retryDelay: Duration.zero,
       syncDelay: Duration.zero,
     );

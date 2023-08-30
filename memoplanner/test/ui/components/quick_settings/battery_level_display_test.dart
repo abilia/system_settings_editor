@@ -39,8 +39,8 @@ void main() {
             .firstWhere((l) => l.languageCode == locale?.languageCode,
                 orElse: () => supportedLocales.first),
         home: MultiBlocProvider(providers: [
-          BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc.fixed(DateTime(1919)),
+          BlocProvider<ClockCubit>(
+            create: (context) => ClockCubit.fixed(DateTime(1919)),
           ),
           BlocProvider<MemoplannerSettingsBloc>(
             create: (context) => FakeMemoplannerSettingsBloc(),

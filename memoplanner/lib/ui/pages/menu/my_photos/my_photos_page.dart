@@ -137,7 +137,7 @@ class _AddPhotoButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final tabController = DefaultTabController.of(context);
     return BlocBuilder<PermissionCubit, PermissionState>(
-      builder: (context, permissionState) => BlocBuilder<ClockBloc, DateTime>(
+      builder: (context, permissionState) => BlocBuilder<ClockCubit, DateTime>(
         builder: (context, time) => AnimatedBuilder(
             animation: tabController,
             builder: (context, _) {

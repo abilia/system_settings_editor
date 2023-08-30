@@ -152,7 +152,7 @@ class WeekCalendarHeadingContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wLayout = layout.weekCalendar;
-    final occasion = context.select((ClockBloc c) => day.dayOccasion(c.state));
+    final occasion = context.select((ClockCubit c) => day.dayOccasion(c.state));
     final dayColor = context
         .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     final dayTheme = weekdayTheme(
@@ -205,7 +205,7 @@ class WeekCalendarHeadingContent extends StatelessWidget {
               Expanded(
                 child: Tts.data(
                   data: weekdayFormat.format(day),
-                  child: BlocBuilder<ClockBloc, DateTime>(
+                  child: BlocBuilder<ClockCubit, DateTime>(
                     buildWhen: (previous, current) =>
                         !previous.isAtSameDay(current),
                     builder: (context, now) => CrossOver(
@@ -323,7 +323,7 @@ class _WeekdayColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ClockBloc, DateTime>(
+    return BlocBuilder<ClockCubit, DateTime>(
       buildWhen: (previous, current) =>
           previous.isAtSameDay(day) != current.isAtSameDay(day),
       builder: (context, now) {
