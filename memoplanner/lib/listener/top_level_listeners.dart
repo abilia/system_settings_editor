@@ -24,7 +24,9 @@ class TopLevelListeners extends StatelessWidget {
         onPointerDown: context.read<TouchDetectionCubit>().onPointerDown,
         child: MultiBlocListener(
           listeners: [
-            BlocListener<ClockBloc, DateTime>(
+            BlocListener<ClockCubit, DateTime>(
+              listenWhen: (previous, current) =>
+                  previous.minute != 0 && current.minute == 0,
               listener: (context, state) async =>
                   GetIt.I<SeagullLogger>().maybeUploadLogs(),
             ),
