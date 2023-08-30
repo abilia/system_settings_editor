@@ -14,37 +14,21 @@ import 'package:utils/string_extensions.dart';
 
 export 'package:logging/logging.dart';
 
-enum LoggingType { file, print, crashReporting }
-
 class SeagullLogger {
   File? _logFile;
   final _uploadLock = Lock();
   final _logFileLock = Lock();
   final String app;
-  final Set<LoggingType> loggingType;
+  final bool printLogging;
   final List<StreamSubscription> loggingSubscriptions = [];
   final _log = Logger((SeagullLogger).toString());
   final String documentsDirectory;
   final SharedPreferences? preferences;
   final String supportId;
 
-  late final bool fileLogging = loggingType.contains(LoggingType.file);
-  late final bool printLogging = loggingType.contains(LoggingType.print);
-  late final bool crashReporting =
-      loggingType.contains(LoggingType.crashReporting);
-
   String get logFileName => '$app.log';
 
-  factory SeagullLogger.test() => SeagullLogger(
-        loggingType: const {LoggingType.print},
-        documentsDirectory: '',
-        supportId: '',
-        level: Level.ALL,
-        app: '',
-      );
-
-  factory SeagullLogger.nothing() => SeagullLogger(
-        loggingType: const {},
+  factory SeagullLogger.empty() => SeagullLogger(
         documentsDirectory: '',
         supportId: '',
         level: Level.OFF,
@@ -56,21 +40,15 @@ class SeagullLogger {
     required this.supportId,
     required this.app,
     this.preferences,
-    this.loggingType = const {
-      if (kDebugMode)
-        LoggingType.print
-      else ...{
-        LoggingType.file,
-        LoggingType.crashReporting,
-      }
-    },
+    this.printLogging = kDebugMode,
     Level level = kDebugMode ? Level.ALL : Level.FINE,
   }) {
-    if (loggingType.isNotEmpty) {
-      Logger.root.level = level;
-      if (fileLogging) _initFileLogging();
-      if (printLogging) _initPrintLogging();
-      if (crashReporting) _initCrashReporting();
+    Logger.root.level = level;
+    if (printLogging) {
+      _initPrintLogging();
+    } else {
+      _initFileLogging();
+      _initCrashReporting();
     }
   }
 
@@ -89,7 +67,7 @@ class SeagullLogger {
   }
 
   Future<void> maybeUploadLogs() async {
-    if (!fileLogging) return;
+    if (printLogging) return;
     await _uploadLock.synchronized(
       () async {
         final lastUpload = _getLastUploadTimeStamp();
@@ -105,7 +83,7 @@ class SeagullLogger {
   }
 
   Future<void> uploadLogsToBackend() async {
-    if (!fileLogging) return;
+    if (printLogging) return;
     _log.info('Uploading logs to backend');
     final time = DateFormat('yyyyMMdd-HHmmss').format(DateTime.now());
     final logArchivePath = '$documentsDirectory/$logArchiveDirectory';

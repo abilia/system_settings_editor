@@ -27,7 +27,6 @@ Future<void> initGetIt() async => initGetItWith(
       sharedPreferences: await SharedPreferences.getInstance(),
       database: await DatabaseRepository.createSqfliteDb(),
       directory: await getApplicationDocumentsDirectory(),
-      seagullLogger: SeagullLogger.test(),
       ttsHandler: await FlutterTtsHandler.implementation(),
     );
 
@@ -69,7 +68,7 @@ Future<void> initGetItWith({
     ..registerSingleton(userFileDb ?? UserFileDb(database))
     ..registerSingleton(lastSyncDb ?? LastSyncDb(sharedPreferences))
     ..registerSingleton(delays ?? const Delays())
-    ..registerSingleton(seagullLogger ?? SeagullLogger.nothing())
+    ..registerSingleton(seagullLogger ?? SeagullLogger.empty())
     ..registerSingleton<TtsHandler>(ttsHandler ?? FlutterTtsHandler())
     ..registerSingleton<SettingsDb>(settingsDb ?? SettingsDb(sharedPreferences))
     ..registerSingleton<SupportPersonsDb>(
