@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
+import 'package:video_compress/video_compress.dart';
 
 class InfoItemTab extends StatefulWidget with EditActivityTab {
   final bool showNote, showChecklist;
@@ -24,44 +27,80 @@ class InfoItemTabState extends State<InfoItemTab> {
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
+    final videoFeatureToggle = context.select((FeatureToggleCubit cubit) =>
+        cubit.state.isToggleEnabled(FeatureToggle.videoInActivity));
 
     return Padding(
       padding: layout.templates.m3.withoutBottom,
       child: BlocSelector<EditActivityCubit, EditActivityState, InfoItem>(
         selector: (state) => state.activity.infoItem,
         builder: (context, infoItem) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              if (widget.showChecklist)
-                GestureDetector(
-                  onTap: infoItem is! NoInfoItem && infoItem is! Checklist
-                      ? _setShowErrorMessage
-                      : null,
-                  child: InfoItemPickField<Checklist>(
-                    text: translate.checklist,
-                    iconData: AbiliaIcons.ok,
-                    infoItem: infoItem,
+          return Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (widget.showChecklist)
+                      GestureDetector(
+                        onTap: infoItem is! NoInfoItem && infoItem is! Checklist
+                            ? _setShowErrorMessage
+                            : null,
+                        child: InfoItemPickField<Checklist>(
+                          text: translate.checklist,
+                          iconData: AbiliaIcons.ok,
+                          infoItem: infoItem,
+                        ),
+                      ),
+                    SizedBox(height: layout.formPadding.verticalItemDistance),
+                    if (widget.showNote)
+                      GestureDetector(
+                        onTap:
+                            infoItem is! NoInfoItem && infoItem is! NoteInfoItem
+                                ? _setShowErrorMessage
+                                : null,
+                        child: InfoItemPickField<NoteInfoItem>(
+                          text: translate.note,
+                          iconData: AbiliaIcons.edit,
+                          infoItem: infoItem,
+                        ),
+                      ),
+                    SizedBox(height: layout.formPadding.verticalItemDistance),
+                    if (videoFeatureToggle || infoItem is VideoInfoItem) ...[
+                      InfoItemPickField<VideoInfoItem>(
+                        text: 'Video',
+                        iconData: AbiliaIcons.videoCall,
+                        infoItem: infoItem,
+                      ),
+                      SizedBox(height: layout.formPadding.verticalItemDistance),
+                      if (infoItem is VideoInfoItem) ...[
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: VideoPlayer(
+                              isEditActivity: true,
+                              fileId: infoItem.fileId,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                            height: layout.formPadding.verticalItemDistance),
+                      ],
+                    ],
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: CollapsableWidget(
+                  collapsed: _showWarningToastTimer == null,
+                  padding: EdgeInsets.only(bottom: layout.templates.m3.bottom),
+                  child: ErrorMessage(
+                    text: Text(Lt.of(context).onlyOneInfoItem),
                   ),
                 ),
-              SizedBox(height: layout.formPadding.verticalItemDistance),
-              if (widget.showNote)
-                GestureDetector(
-                  onTap: infoItem is! NoInfoItem && infoItem is! NoteInfoItem
-                      ? _setShowErrorMessage
-                      : null,
-                  child: InfoItemPickField<NoteInfoItem>(
-                    text: translate.note,
-                    iconData: AbiliaIcons.edit,
-                    infoItem: infoItem,
-                  ),
-                ),
-              const Spacer(),
-              CollapsableWidget(
-                collapsed: _showWarningToastTimer == null,
-                padding: EdgeInsets.only(bottom: layout.templates.m3.bottom),
-                child: ErrorMessage(text: Text(Lt.of(context).onlyOneInfoItem)),
               ),
             ],
           );
@@ -108,6 +147,7 @@ class InfoItemPickField<InfoItemType extends InfoItem> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final infoItem = this.infoItem;
+    final permissionState = context.watch<PermissionCubit>().state;
     return Row(
       children: [
         Expanded(
@@ -119,6 +159,9 @@ class InfoItemPickField<InfoItemType extends InfoItem> extends StatelessWidget {
                 : null,
             onTap: infoItem is NoInfoItem || ofCorrectType
                 ? () async {
+                    if (InfoItemType == VideoInfoItem) {
+                      return _recordNewVideo(context, permissionState);
+                    }
                     final editActivityCubit = context.read<EditActivityCubit>();
                     final providers = [
                       ...copiedAuthProviders(context),
@@ -152,6 +195,64 @@ class InfoItemPickField<InfoItemType extends InfoItem> extends StatelessWidget {
       ],
     );
   }
+
+  Future<void> _recordNewVideo(
+    BuildContext context,
+    PermissionState permissionState,
+  ) async {
+    if (permissionState.status[Permission.camera]?.isPermanentlyDenied ==
+        true) {
+      return;
+    }
+    try {
+      final video = await ImagePicker().pickVideo(
+        source: ImageSource.camera,
+        maxDuration: 5.minutes(),
+      );
+      if (video != null && context.mounted) {
+        return _addVideo(context, video.path);
+      }
+    } catch (e) {
+      return;
+    }
+  }
+
+  Future<void> _addVideo(
+    BuildContext context,
+    String path,
+  ) async {
+    final userFileBloc = context.read<UserFileBloc>();
+    final editActivityCubit = context.read<EditActivityCubit>();
+    File? file = File(path);
+    double sizeInMB = file.lengthSync() / 1024 / 1024;
+
+    if (sizeInMB > 10) {
+      final mediaInfo = await VideoCompress.compressVideo(
+        path,
+        quality: VideoQuality.LowQuality,
+        deleteOrigin: true,
+      );
+      file = mediaInfo?.file;
+    }
+
+    if (file != null) {
+      sizeInMB = file.lengthSync() / 1024 / 1024;
+      if (sizeInMB < 10) {
+        final abiliaFile = UnstoredAbiliaFile.newFile(file);
+        userFileBloc.add(
+          FileAdded(
+            abiliaFile,
+            isImage: false,
+          ),
+        );
+        editActivityCubit.replaceActivity(
+          editActivityCubit.state.activity.copyWith(
+            infoItem: VideoInfoItem(abiliaFile.id),
+          ),
+        );
+      }
+    }
+  }
 }
 
 class InfoItemPickFieldExtras extends StatelessWidget {
@@ -169,7 +270,8 @@ class InfoItemPickFieldExtras extends StatelessWidget {
       return NoteInfoItemPickFieldExtras(
         note: infoItem,
       );
-    } else if (infoItem is Checklist) {
+    }
+    if (infoItem is Checklist) {
       return ChecklistPickFieldExtras(
         checklist: infoItem,
       );
