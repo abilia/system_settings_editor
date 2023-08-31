@@ -110,7 +110,7 @@ void main() {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => ClockBloc.fixed(initialTime ?? startTime),
+              create: (context) => ClockCubit.fixed(initialTime ?? startTime),
             ),
             BlocProvider<SpeechSettingsCubit>(
               create: (context) => FakeSpeechSettingsCubit(),

@@ -157,7 +157,7 @@ class SideDots extends StatelessWidget {
   Widget build(BuildContext context) {
     final flat = startTime.roundToMinute(minutesPerDot, roundingMinute);
     return BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
-      builder: (context, measures) => BlocBuilder<ClockBloc, DateTime>(
+      builder: (context, measures) => BlocBuilder<ClockCubit, DateTime>(
         builder: (_, now) => Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
@@ -216,7 +216,7 @@ class ActivityInfoSideDots extends StatelessWidget {
       constraints: BoxConstraints(
         minWidth: layout.activityPage.horizontalInfoPadding.left,
       ),
-      child: BlocBuilder<ClockBloc, DateTime>(builder: (context, now) {
+      child: BlocBuilder<ClockCubit, DateTime>(builder: (context, now) {
         final onSameDay = day.isAtSameDay(now),
             notStarted = startTime.isAfter(now),
             isCurrent = activity.hasEndTime &&

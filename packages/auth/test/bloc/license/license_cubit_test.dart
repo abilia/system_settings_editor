@@ -3,7 +3,7 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:seagull_clock/clock_bloc.dart';
+import 'package:seagull_clock/clock_cubit.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:utils/utils.dart';
 
@@ -24,7 +24,7 @@ void main() {
     'Test initial state',
     build: () => LicenseCubit(
       userRepository: userRepository,
-      clockBloc: ClockBloc.fixed(time),
+      clockCubit: ClockCubit.fixed(time),
       pushCubit: FakePushCubit(),
       authenticationBloc: AuthenticationBloc(
         userRepository: userRepository,
@@ -50,7 +50,7 @@ void main() {
     ),
     build: () => LicenseCubit(
       userRepository: userRepository,
-      clockBloc: ClockBloc.fixed(time),
+      clockCubit: ClockCubit.fixed(time),
       pushCubit: FakePushCubit(),
       authenticationBloc: AuthenticationBloc(
         userRepository: userRepository,
@@ -77,7 +77,7 @@ void main() {
     ),
     build: () => LicenseCubit(
       userRepository: userRepository,
-      clockBloc: ClockBloc.fixed(time),
+      clockCubit: ClockCubit.fixed(time),
       pushCubit: FakePushCubit(),
       authenticationBloc: AuthenticationBloc(
         userRepository: userRepository,
@@ -97,7 +97,7 @@ void main() {
     ),
     build: () => LicenseCubit(
       userRepository: userRepository,
-      clockBloc: ClockBloc.fixed(time),
+      clockCubit: ClockCubit.fixed(time),
       pushCubit: FakePushCubit(),
       authenticationBloc: AuthenticationBloc(
         userRepository: userRepository,

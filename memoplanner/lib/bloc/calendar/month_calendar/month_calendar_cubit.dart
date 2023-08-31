@@ -13,7 +13,7 @@ part 'month_calendar_state.dart';
 class MonthCalendarCubit extends Cubit<MonthCalendarState> {
   final ActivityRepository? activityRepository;
   final TimerAlarmBloc? timerAlarmBloc;
-  final ClockBloc clockBloc;
+  final ClockCubit clockCubit;
   final DayPickerBloc dayPickerBloc;
   final SettingsDb? settingsDb;
   late final StreamSubscription? _activitiesSubscription;
@@ -25,7 +25,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
       state.firstDay.year == dayPickerBloc.state.day.year;
 
   MonthCalendarCubit({
-    required this.clockBloc,
+    required this.clockCubit,
     required this.dayPickerBloc,
     this.activityRepository, // ActivityRepository is null when this bloc is used for date picking
     this.timerAlarmBloc,
@@ -35,7 +35,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
     DateTime? initialDay,
   }) : super(
           MonthCalendarState(
-            firstDay: clockBloc.state,
+            firstDay: clockCubit.state,
             occasion: Occasion.current,
             weeks: [],
             isCollapsed: true,
@@ -43,7 +43,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         ) {
     _activitiesSubscription = activitiesCubit?.stream.listen(updateMonth);
     _timersSubscription = timerAlarmBloc?.stream.listen(updateMonth);
-    _clockSubscription = clockBloc.stream
+    _clockSubscription = clockCubit.stream
         .where((time) =>
             state.weeks
                 .expand((w) => w.days)
@@ -55,10 +55,10 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         .listen(updateMonth);
     emit(
       _mapToState(
-        (initialDay ?? clockBloc.state).firstDayOfMonth(),
+        (initialDay ?? clockCubit.state).firstDayOfMonth(),
         [],
         [],
-        clockBloc.state,
+        clockCubit.state,
       ),
     );
   }
@@ -74,7 +74,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         first,
         activities,
         timerAlarmBloc?.state.timers ?? [],
-        clockBloc.state,
+        clockCubit.state,
         true,
       ),
     );
@@ -91,15 +91,15 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         first,
         activities,
         timerAlarmBloc?.state.timers ?? [],
-        clockBloc.state,
+        clockCubit.state,
         true,
       ),
     );
   }
 
   Future<void> goToCurrentMonth() async {
-    dayPickerBloc.add(GoTo(day: clockBloc.state));
-    final first = clockBloc.state.firstDayOfMonth();
+    dayPickerBloc.add(GoTo(day: clockCubit.state));
+    final first = clockCubit.state.firstDayOfMonth();
     final last = first.nextMonth();
     final activities = await activityRepository?.allBetween(first, last) ?? [];
     if (isClosed) return;
@@ -108,16 +108,16 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         first,
         activities,
         timerAlarmBloc?.state.timers ?? [],
-        clockBloc.state,
+        clockCubit.state,
         true,
       ),
     );
   }
 
   void _maybeGoToCurrentDay(DateTime newFirstDay) {
-    if (newFirstDay.month == clockBloc.state.month &&
-        newFirstDay.year == clockBloc.state.year) {
-      dayPickerBloc.add(GoTo(day: clockBloc.state));
+    if (newFirstDay.month == clockCubit.state.month &&
+        newFirstDay.year == clockCubit.state.year) {
+      dayPickerBloc.add(GoTo(day: clockCubit.state));
     }
   }
 
@@ -131,7 +131,7 @@ class MonthCalendarCubit extends Cubit<MonthCalendarState> {
         first,
         activities,
         timerAlarmBloc?.state.timers ?? [],
-        clockBloc.state,
+        clockCubit.state,
       ),
     );
   }

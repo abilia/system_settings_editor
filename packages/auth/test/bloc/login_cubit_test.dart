@@ -2,7 +2,7 @@ import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:seagull_clock/clock_bloc.dart';
+import 'package:seagull_clock/clock_cubit.dart';
 import 'package:seagull_fakes/all.dart';
 
 void main() {
@@ -43,7 +43,7 @@ void main() {
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc.fixed(time),
+        clockCubit: ClockCubit.fixed(time),
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: false,
@@ -213,7 +213,7 @@ void main() {
       final loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc.fixed(time),
+        clockCubit: ClockCubit.fixed(time),
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: true,
@@ -262,7 +262,7 @@ void main() {
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc.fixed(time),
+        clockCubit: ClockCubit.fixed(time),
         userRepository: mockedUserRepository,
         database: mockDb,
         allowExpiredLicense: false,
@@ -372,7 +372,7 @@ void main() {
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc.fixed(time),
+        clockCubit: ClockCubit.fixed(time),
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: false,
@@ -429,7 +429,7 @@ void main() {
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc.fixed(time),
+        clockCubit: ClockCubit.fixed(time),
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: false,
@@ -475,7 +475,7 @@ void main() {
       loginCubit = LoginCubit(
         authenticationBloc: authenticationBloc,
         pushService: mockFirebasePushService,
-        clockBloc: ClockBloc.fixed(time),
+        clockCubit: ClockCubit.fixed(time),
         userRepository: mockUserRepository,
         database: mockDb,
         allowExpiredLicense: true,

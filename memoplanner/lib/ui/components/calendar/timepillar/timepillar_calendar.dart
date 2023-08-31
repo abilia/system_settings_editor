@@ -116,7 +116,7 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
           nightMode: nightMode,
         );
 
-        return BlocBuilder<ClockBloc, DateTime>(
+        return BlocBuilder<ClockCubit, DateTime>(
           builder: (context, now) {
             final timelineOffset =
                 currentDotMidPosition(now, measures, topMargin: topMargin) -

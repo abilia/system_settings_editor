@@ -4,7 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:seagull_clock/clock_bloc.dart';
+import 'package:seagull_clock/clock_cubit.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:utils/utils.dart';
 
@@ -38,7 +38,7 @@ void main() {
       sortableRepository: FakeDataRepository(),
       genericRepository: FakeDataRepository(),
       lastSyncDb: FakeLastSyncDb(),
-      clockBloc: ClockBloc.fixed(DateTime(2000)),
+      clockCubit: ClockCubit.fixed(DateTime(2000)),
       syncDelay: Duration.zero,
       retryDelay: Duration.zero,
     );

@@ -17,7 +17,7 @@ void main() {
   final previousDay = initialDay.previousDay();
 
   setUp(() {
-    dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(initialMinutes));
+    dayPickerBloc = DayPickerBloc(clockCubit: ClockCubit.fixed(initialMinutes));
     mockActivityRepository = MockActivityRepository();
     when(() => mockActivityRepository.allBetween(any(), any()))
         .thenAnswer((_) => Future.value([]));
@@ -774,7 +774,7 @@ void main() {
   group('Test from old DayActivitiesCubit', () {
     setUp(() {
       dayPickerBloc = DayPickerBloc(
-        clockBloc: ClockBloc.fixed(today),
+        clockCubit: ClockCubit.fixed(today),
       );
       mockActivityRepository = MockActivityRepository();
       when(() => mockActivityRepository.allBetween(any(), any()))
@@ -998,7 +998,7 @@ void main() {
     group('Recurring tests activity', () {
       final firstDay = DateTime(2006, 06, 01); // 2006-06-01 was a Thursday
       setUp(() {
-        dayPickerBloc = DayPickerBloc(clockBloc: ClockBloc.fixed(firstDay));
+        dayPickerBloc = DayPickerBloc(clockCubit: ClockCubit.fixed(firstDay));
         mockActivityRepository = MockActivityRepository();
         when(() => mockActivityRepository.allBetween(any(), any()))
             .thenAnswer((_) => Future.value([]));

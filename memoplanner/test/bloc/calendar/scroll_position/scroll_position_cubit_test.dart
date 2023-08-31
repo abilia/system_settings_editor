@@ -19,8 +19,8 @@ void main() {
 
   setUp(() {
     ticker = StreamController<DateTime>();
-    final clockBloc = ClockBloc(ticker.stream, initialTime: initialTime);
-    final dayPickerBloc = DayPickerBloc(clockBloc: clockBloc);
+    final clockCubit = ClockCubit(ticker.stream, initialTime: initialTime);
+    final dayPickerBloc = DayPickerBloc(clockCubit: clockCubit);
     mockScrollController = MockScrollController();
     mockScrollPosition = MockScrollPosition();
 

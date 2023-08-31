@@ -121,7 +121,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                     sortableRepository: context.read<SortableRepository>(),
                     genericRepository: context.read<GenericRepository>(),
                     lastSyncDb: GetIt.I<LastSyncDb>(),
-                    clockBloc: context.read<ClockBloc>(),
+                    clockCubit: context.read<ClockCubit>(),
                     retryDelay: GetIt.I<Delays>().retryDelay,
                     syncDelay: GetIt.I<Delays>().syncDelay,
                   )..add(const SyncAll())),
@@ -164,7 +164,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 activitiesCubit: context.read<ActivitiesCubit>(),
                 activityRepository: context.read<ActivityRepository>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
-                clockBloc: context.read<ClockBloc>(),
+                clockCubit: context.read<ClockCubit>(),
               )..goToCurrentWeek(),
             ),
             BlocProvider<UserFileBloc>(
@@ -206,14 +206,14 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<DayPickerBloc>(
               create: (context) => DayPickerBloc(
-                clockBloc: context.read<ClockBloc>(),
+                clockCubit: context.read<ClockCubit>(),
               ),
             ),
             BlocProvider<MonthCalendarCubit>(
               create: (context) => MonthCalendarCubit(
                 activitiesCubit: context.read<ActivitiesCubit>(),
                 activityRepository: context.read<ActivityRepository>(),
-                clockBloc: context.read<ClockBloc>(),
+                clockCubit: context.read<ClockCubit>(),
                 timerAlarmBloc: context.read<TimerAlarmBloc>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 settingsDb: GetIt.I<SettingsDb>(),
@@ -228,7 +228,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<AlarmCubit>(
               create: (context) => AlarmCubit(
-                clockBloc: context.read<ClockBloc>(),
+                clockCubit: context.read<ClockCubit>(),
                 activityRepository: context.read<ActivityRepository>(),
                 settingsBloc: context.read<MemoplannerSettingsBloc>(),
                 selectedNotificationSubject: selectNotificationSubject,
@@ -251,7 +251,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             BlocProvider<DayPartCubit>(
               create: (context) => DayPartCubit(
                 context.read<MemoplannerSettingsBloc>(),
-                context.read<ClockBloc>(),
+                context.read<ClockCubit>(),
               ),
             ),
             BlocProvider<DayCalendarViewCubit>(
@@ -263,7 +263,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<TimepillarCubit>(
               create: (context) => TimepillarCubit(
-                clockBloc: context.read<ClockBloc>(),
+                clockCubit: context.read<ClockCubit>(),
                 dayPickerBloc: context.read<DayPickerBloc>(),
                 memoSettingsBloc: context.read<MemoplannerSettingsBloc>(),
                 dayCalendarViewCubit: context.read<DayCalendarViewCubit>(),
@@ -404,8 +404,8 @@ class TopLevelProvider extends StatelessWidget {
                 pushCubit ??
                 PushCubit(backgroundMessageHandler: myBackgroundMessageHandler),
           ),
-          BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
+          BlocProvider<ClockCubit>(
+            create: (context) => ClockCubit.withTicker(GetIt.I<Ticker>()),
           ),
           BlocProvider<ConnectivityCubit>(
             create: (context) => ConnectivityCubit(
@@ -476,7 +476,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
             onLogout: () async => Future.wait<void>(
               [
                 DatabaseRepository.clearAll(GetIt.I<Database>()),
-                GetIt.I<SeagullLogger>().sendLogsToBackend(),
+                GetIt.I<SeagullLogger>().uploadLogsToBackend(),
                 clearNotificationSubject(),
                 notificationPlugin.cancelAll(),
                 GetIt.I<FileStorage>().deleteUserFolder(),
@@ -488,7 +488,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
         ),
         BlocProvider<LicenseCubit>(
           create: (context) => LicenseCubit(
-            clockBloc: context.read<ClockBloc>(),
+            clockCubit: context.read<ClockCubit>(),
             pushCubit: context.read<PushCubit>(),
             userRepository: context.read<UserRepository>(),
             authenticationBloc: context.read<AuthenticationBloc>(),

@@ -15,7 +15,7 @@ class WeekAppBar extends StatelessWidget implements PreferredSizeWidget {
         context.select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
     final weekCalendarSettings = context
         .select((MemoplannerSettingsBloc bloc) => bloc.state.weekCalendar);
-    final time = context.select((ClockBloc bloc) => bloc.state.onlyDays());
+    final time = context.select((ClockCubit bloc) => bloc.state.onlyDays());
     final currentWeekStart =
         context.select((WeekCalendarCubit bloc) => bloc.state.currentWeekStart);
     return CalendarAppBar(

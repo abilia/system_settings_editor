@@ -85,7 +85,7 @@ void main() {
         providers: [
           BlocProvider<SyncBloc>.value(value: mockSyncBloc),
           BlocProvider<LicenseCubit>.value(value: mockLicenseCubit),
-          BlocProvider<ClockBloc>(create: (context) => ClockBloc.fixed(now)),
+          BlocProvider<ClockCubit>(create: (context) => ClockCubit.fixed(now)),
           BlocProvider<LogoutSyncBloc>.value(value: mockLogoutSyncBloc),
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => FakeSpeechSettingsCubit(),
@@ -110,7 +110,7 @@ void main() {
         providers: [
           BlocProvider<SyncBloc>.value(value: mockSyncBloc),
           BlocProvider<LicenseCubit>.value(value: mockLicenseCubit),
-          BlocProvider<ClockBloc>(create: (context) => ClockBloc.fixed(now)),
+          BlocProvider<ClockCubit>(create: (context) => ClockCubit.fixed(now)),
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => FakeSpeechSettingsCubit(),
           ),

@@ -3,7 +3,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/data_repository.dart';
-import 'package:seagull_clock/clock_bloc.dart';
+import 'package:seagull_clock/clock_cubit.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:utils/utils.dart';
 
@@ -44,7 +44,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: lastSyncDb,
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         retryDelay: Duration.zero,
         syncDelay: Duration.zero,
       ),
@@ -62,7 +62,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: lastSyncDb,
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         retryDelay: Duration.zero,
         syncDelay: Duration.zero,
       ),
@@ -82,7 +82,7 @@ void main() {
         retryDelay: Duration.zero,
         syncDelay: Duration.zero,
         lastSyncDb: lastSyncDb,
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
       ),
       act: (SyncBloc syncBloc) => syncBloc.add(const SyncSortables()),
       verify: (bloc) async => verify(() => sortableRepository.synchronize()),
@@ -98,7 +98,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: lastSyncDb,
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         retryDelay: Duration.zero,
         syncDelay: Duration.zero,
       ),
@@ -116,7 +116,7 @@ void main() {
               sortableRepository: sortableRepository,
               genericRepository: genericRepository,
               lastSyncDb: lastSyncDb,
-              clockBloc: ClockBloc.fixed(DateTime(2000)),
+              clockCubit: ClockCubit.fixed(DateTime(2000)),
               retryDelay: Duration.zero,
               syncDelay: Duration.zero,
             ),
@@ -143,7 +143,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: lastSyncDb,
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         retryDelay: Duration.zero,
         syncDelay: Duration.zero,
       ),
@@ -182,7 +182,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         syncDelay: betweenSync,
         retryDelay: retryDelay,
       ),
@@ -203,7 +203,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         syncDelay: betweenSync,
         retryDelay: retryDelay,
       ),
@@ -224,7 +224,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         syncDelay: betweenSync,
         retryDelay: retryDelay,
       ),
@@ -245,7 +245,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         syncDelay: betweenSync,
         retryDelay: retryDelay,
       ),
@@ -278,7 +278,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         syncDelay: stallTime,
         retryDelay: stallTime,
       )
@@ -301,7 +301,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         syncDelay: stallTime,
         retryDelay: stallTime,
       )..add(const SyncActivities());
@@ -342,7 +342,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         syncDelay: stallTime,
         retryDelay: stallTime,
       )..add(const SyncActivities());

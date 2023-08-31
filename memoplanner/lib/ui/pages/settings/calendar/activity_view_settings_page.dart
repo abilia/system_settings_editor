@@ -154,7 +154,7 @@ class ActivityPagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final day = context.read<ClockBloc>().state.onlyDays();
+    final day = context.read<ClockCubit>().state.onlyDays();
     final startTime = day.add(const Duration(hours: 17));
     final time = startTime.subtract(const Duration(hours: 1, minutes: 4));
     return AbsorbPointer(
@@ -172,7 +172,7 @@ class ActivityPagePreview extends StatelessWidget {
                 width: layout.activityPreview.activityWidth,
                 height: layout.activityPreview.activityHeight,
                 child: BlocProvider(
-                  create: (context) => ClockBloc.fixed(time),
+                  create: (context) => ClockCubit.fixed(time),
                   child: ActivityPage(
                     activityDay: ActivityDay(
                       Activity(

@@ -14,7 +14,7 @@ import '../../mocks/mocks.dart';
 
 void main() {
   group('When time ticks', () {
-    late ClockBloc clockBloc;
+    late ClockCubit clockCubit;
     late ActivitiesCubit activitiesCubit;
     late GenericCubit genericCubit;
     late MemoplannerSettingsBloc memoplannerSettingBloc;
@@ -29,14 +29,14 @@ void main() {
     final day = thisMinute.onlyDays();
 
     Future<DateTime> tick() {
-      final nextMin = clockBloc.state.add(const Duration(minutes: 1));
+      final nextMin = clockCubit.state.add(const Duration(minutes: 1));
       mockedTicker.add(nextMin);
-      return clockBloc.stream.firstWhere((d) => d == nextMin);
+      return clockCubit.stream.firstWhere((d) => d == nextMin);
     }
 
     setUp(() {
       mockedTicker = StreamController<DateTime>();
-      clockBloc = ClockBloc(mockedTicker.stream, initialTime: thisMinute);
+      clockCubit = ClockCubit(mockedTicker.stream, initialTime: thisMinute);
       mockActivityRepository = MockActivityRepository();
       activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
@@ -66,7 +66,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -84,7 +84,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -101,7 +101,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([nowActivity])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -116,7 +116,7 @@ void main() {
     blocTest(
       'Next minute alarm does nothing',
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -131,7 +131,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([soonActivity])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -148,7 +148,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([soonActivity, soonActivity2])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -169,7 +169,7 @@ void main() {
           .thenAnswer((_) =>
               Future.value([inTwoMinActivity, nowActivity, soonActivity])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -195,7 +195,7 @@ void main() {
           .thenAnswer((_) => Future.value(
               [inTwoMinActivity, inOneMinuteWithoutAlarmActivity])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -214,7 +214,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([recursThursday])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -235,7 +235,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([recursTheThisDayOfMonth])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -254,7 +254,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([recursTheThisDayOfYear])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -272,7 +272,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([activityEnding])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -292,7 +292,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([nextAlarm, afterThatAlarm])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -316,7 +316,7 @@ void main() {
       setUp: () => when(() => mockActivityRepository.allBetween(any(), any()))
           .thenAnswer((_) => Future.value([remind1HourBefore])),
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -352,7 +352,7 @@ void main() {
         );
       },
       build: () => AlarmCubit(
-        clockBloc: clockBloc,
+        clockCubit: clockCubit,
         activityRepository: mockActivityRepository,
         settingsBloc: memoplannerSettingBloc,
         selectedNotificationSubject: ReplaySubject<ActivityAlarm>(),
@@ -368,7 +368,7 @@ void main() {
 
     tearDown(() {
       activitiesCubit.close();
-      clockBloc.close();
+      clockCubit.close();
       mockedTicker.close();
     });
   });
@@ -391,7 +391,7 @@ void main() {
 
       notificationBloc = AlarmCubit(
         activityRepository: MockActivityRepository(),
-        clockBloc: ClockBloc.fixed(aTime),
+        clockCubit: ClockCubit.fixed(aTime),
         settingsBloc: FakeMemoplannerSettingsBloc(),
         selectedNotificationSubject: notificationSelected,
         timerAlarm: const Stream.empty(),
@@ -447,7 +447,7 @@ void main() {
       'Timers are handled in the AlarmCubit',
       build: () => AlarmCubit(
         activityRepository: MockActivityRepository(),
-        clockBloc: ClockBloc.fixed(aTime),
+        clockCubit: ClockCubit.fixed(aTime),
         settingsBloc: FakeMemoplannerSettingsBloc(),
         selectedNotificationSubject: notificationSelected,
         timerAlarm: const Stream.empty(),

@@ -10,7 +10,7 @@ part 'week_calendar_state.dart';
 
 class WeekCalendarCubit extends Cubit<WeekCalendarState> {
   final ActivityRepository activityRepository;
-  final ClockBloc clockBloc;
+  final ClockCubit clockCubit;
   final TimerAlarmBloc timerAlarmBloc;
   late final StreamSubscription _activitiesSubscription;
   late final StreamSubscription _timersSubscription;
@@ -22,26 +22,26 @@ class WeekCalendarCubit extends Cubit<WeekCalendarState> {
     required ActivitiesCubit activitiesCubit,
     required this.activityRepository,
     required this.timerAlarmBloc,
-    required this.clockBloc,
-  }) : super(WeekCalendarInitial(clockBloc.state.firstInWeek())) {
+    required this.clockCubit,
+  }) : super(WeekCalendarInitial(clockCubit.state.firstInWeek())) {
     _activitiesSubscription = activitiesCubit.stream.listen(
-        (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
+        (_) async => _mapToState(state.currentWeekStart, clockCubit.state));
     _timersSubscription = timerAlarmBloc.stream.listen(
-        (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
-    _clockSubscription = clockBloc.stream.listen(
-        (_) async => _mapToState(state.currentWeekStart, clockBloc.state));
+        (_) async => _mapToState(state.currentWeekStart, clockCubit.state));
+    _clockSubscription = clockCubit.stream.listen(
+        (_) async => _mapToState(state.currentWeekStart, clockCubit.state));
   }
 
   Future<void> nextWeek() {
-    return _mapToState(state.currentWeekStart.nextWeek(), clockBloc.state);
+    return _mapToState(state.currentWeekStart.nextWeek(), clockCubit.state);
   }
 
   Future<void> previousWeek() {
-    return _mapToState(state.currentWeekStart.previousWeek(), clockBloc.state);
+    return _mapToState(state.currentWeekStart.previousWeek(), clockCubit.state);
   }
 
   Future<void> goToCurrentWeek() {
-    return _mapToState(clockBloc.state.firstInWeek(), clockBloc.state);
+    return _mapToState(clockCubit.state.firstInWeek(), clockCubit.state);
   }
 
   Future<void> _mapToState(

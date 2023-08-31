@@ -85,8 +85,8 @@ void main() {
               BlocProvider<ActivitiesCubit>(
                 create: (context) => mockActivitiesCubit,
               ),
-              BlocProvider<ClockBloc>(
-                create: (context) => ClockBloc.fixed(day),
+              BlocProvider<ClockCubit>(
+                create: (context) => ClockCubit.fixed(day),
               ),
               BlocProvider<SpeechSettingsCubit>(
                 create: (context) => FakeSpeechSettingsCubit(),

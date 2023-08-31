@@ -133,7 +133,7 @@ class _CategoriesPreview extends StatelessWidget {
         ),
         decoration: whiteBoxDecoration,
         child: BlocProvider(
-          create: (context) => ClockBloc.fixed(DateTime(2021, 1, 1, 8, 30)),
+          create: (context) => ClockCubit.fixed(DateTime(2021, 1, 1, 8, 30)),
           child: BlocBuilder<TimepillarMeasuresCubit, TimepillarMeasures>(
             builder: (context, measures) => LayoutBuilder(
               builder: (context, boxConstraints) {

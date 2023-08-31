@@ -7,21 +7,21 @@ import 'package:memoplanner/utils/all.dart';
 class DayPartCubit extends Cubit<DayPart> {
   DayPartCubit(
     this.settingsBloc,
-    this.clockBloc,
+    this.clockCubit,
   ) : super(
-          clockBloc.state.dayPart(settingsBloc.state.calendar.dayParts),
+          clockCubit.state.dayPart(settingsBloc.state.calendar.dayParts),
         ) {
-    _clockSubscription = clockBloc.stream.listen(_conditionChanged);
+    _clockSubscription = clockCubit.stream.listen(_conditionChanged);
     _dayPartsSubscription = settingsBloc.stream
         .map((state) => state.calendar.dayParts)
         .listen(_conditionChanged);
   }
-  final ClockBloc clockBloc;
+  final ClockCubit clockCubit;
   final MemoplannerSettingsBloc settingsBloc;
   late final StreamSubscription _clockSubscription, _dayPartsSubscription;
 
   void _conditionChanged([condition]) {
-    final now = condition is DateTime ? condition : clockBloc.state;
+    final now = condition is DateTime ? condition : clockCubit.state;
     final dayParts = condition is DayParts
         ? condition
         : settingsBloc.state.calendar.dayParts;

@@ -103,7 +103,7 @@ class _ProfilePictureNameAndEmailState
         if (user != null) ...[
           GestureDetector(
             onLongPress: () async =>
-                GetIt.I<SeagullLogger>().sendLogsToBackend(),
+                GetIt.I<SeagullLogger>().uploadLogsToBackend(),
             onDoubleTap: () => setState(() => showVersion = !showVersion),
             child: ProfilePicture(
               baseUrl,

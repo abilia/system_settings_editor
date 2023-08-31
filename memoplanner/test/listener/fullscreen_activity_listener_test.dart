@@ -21,7 +21,7 @@ void main() {
       FullScreenActivityCubit(
     activitiesCubit: FakeActivitiesCubit(),
     activityRepository: FakeActivityRepository(),
-    clockBloc: ClockBloc.fixed(time),
+    clockCubit: ClockCubit.fixed(time),
     alarmCubit: FakeAlarmCubit(),
     startingActivity: activityDay,
   );

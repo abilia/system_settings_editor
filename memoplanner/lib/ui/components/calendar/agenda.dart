@@ -68,7 +68,7 @@ class EventList extends StatelessWidget {
       downCollapseMargin: bottomPadding,
       controller: scrollController,
       child: Builder(builder: (context) {
-        final now = context.watch<ClockBloc>().state;
+        final now = context.watch<ClockCubit>().state;
 
         final todayNight = context.watch<NightMode>().state;
         final pastEvents = events.pastEvents(now);

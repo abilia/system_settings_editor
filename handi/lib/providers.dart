@@ -18,7 +18,7 @@ import 'package:handi/db/settings_db.dart';
 import 'package:handi/main.dart';
 import 'package:handi/models/delays.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:seagull_clock/clock_bloc.dart';
+import 'package:seagull_clock/clock_cubit.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortables/sortables.dart';
@@ -63,8 +63,8 @@ class TopLevelProviders extends StatelessWidget {
               backgroundMessageHandler: myBackgroundMessageHandler,
             ),
           ),
-          BlocProvider<ClockBloc>(
-            create: (context) => ClockBloc.withTicker(GetIt.I<Ticker>()),
+          BlocProvider<ClockCubit>(
+            create: (context) => ClockCubit.withTicker(GetIt.I<Ticker>()),
           ),
           BlocProvider(
             create: (context) => BaseUrlCubit(
@@ -106,7 +106,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
         ),
         BlocProvider<LicenseCubit>(
           create: (context) => LicenseCubit(
-            clockBloc: context.read<ClockBloc>(),
+            clockCubit: context.read<ClockCubit>(),
             pushCubit: context.read<PushCubit>(),
             userRepository: context.read<UserRepository>(),
             authenticationBloc: context.read<AuthenticationBloc>(),
@@ -207,7 +207,7 @@ class AuthenticatedProviders extends StatelessWidget {
               sortableRepository: context.read<SortableRepository>(),
               genericRepository: context.read<GenericRepository>(),
               lastSyncDb: GetIt.I<LastSyncDb>(),
-              clockBloc: context.read<ClockBloc>(),
+              clockCubit: context.read<ClockCubit>(),
               syncDelay: GetIt.I<Delays>().syncDelay,
               retryDelay: GetIt.I<Delays>().retryDelay,
             )..add(const SyncAll()),

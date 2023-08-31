@@ -62,7 +62,7 @@ class DayAppBarPreview extends StatelessWidget {
         .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayParts);
     final appBarSettings =
         context.select((DayCalendarSettingsCubit cubit) => cubit.state.appBar);
-    final currentTime = context.watch<ClockBloc>().state;
+    final currentTime = context.watch<ClockCubit>().state;
     return AppBarPreview(
       showBrowseButtons: appBarSettings.showBrowseButtons,
       showClock: appBarSettings.showClock,

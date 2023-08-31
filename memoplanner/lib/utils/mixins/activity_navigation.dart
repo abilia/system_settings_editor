@@ -95,7 +95,7 @@ mixin ActivityNavigation {
                     ? ActivityWizardCubit.newAdvanced(
                         activitiesCubit: context.read<ActivitiesCubit>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
-                        clockBloc: context.read<ClockBloc>(),
+                        clockCubit: context.read<ClockCubit>(),
                         allowPassedStartTime:
                             addActivitySettings.general.allowPassedStartTime,
                       )
@@ -103,7 +103,7 @@ mixin ActivityNavigation {
                         activitiesCubit: context.read<ActivitiesCubit>(),
                         editActivityCubit: context.read<EditActivityCubit>(),
                         supportPersonsCubit: supportPersonsCubit,
-                        clockBloc: context.read<ClockBloc>(),
+                        clockCubit: context.read<ClockCubit>(),
                         allowPassedStartTime:
                             addActivitySettings.general.allowPassedStartTime,
                         stepByStep: addActivitySettings.stepByStep,

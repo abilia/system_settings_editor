@@ -1461,7 +1461,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         retryDelay: Duration.zero,
         syncDelay: Duration.zero,
       );
@@ -1489,7 +1489,7 @@ void main() {
         sortableRepository: sortableRepository,
         genericRepository: genericRepository,
         lastSyncDb: FakeLastSyncDb(),
-        clockBloc: ClockBloc.fixed(DateTime(2000)),
+        clockCubit: ClockCubit.fixed(DateTime(2000)),
         retryDelay: Duration.zero,
         syncDelay: Duration.zero,
       );

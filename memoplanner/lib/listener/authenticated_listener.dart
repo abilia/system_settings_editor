@@ -54,7 +54,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
       await Future.wait([
         GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
             MediaQuery.of(context).alwaysUse24HourFormat),
-        context.read<ClockBloc>().setTime(DateTime.now()),
+        context.read<ClockCubit>().setTime(DateTime.now()),
         context.read<PermissionCubit>().checkAll(),
         _readScreenTimeOut(),
         _fetchDeviceLicense(),

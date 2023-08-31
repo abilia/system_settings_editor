@@ -103,7 +103,7 @@ class GetItInitializer {
   late Database _database;
   set database(Database database) => _database = database;
 
-  late SeagullLogger _seagullLogger = SeagullLogger.nothing();
+  late SeagullLogger _seagullLogger = SeagullLogger.empty();
   set seagullLogger(SeagullLogger seagullLogger) =>
       _seagullLogger = seagullLogger;
 

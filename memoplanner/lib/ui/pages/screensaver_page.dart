@@ -53,7 +53,7 @@ class _ScreensaverAppBar extends StatelessWidget {
     final dayParts = context
         .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayParts);
 
-    final time = context.watch<ClockBloc>().state;
+    final time = context.watch<ClockCubit>().state;
     return Padding(
       padding: layout.screensaver.titleBarPadding,
       child: AppBarTitle(

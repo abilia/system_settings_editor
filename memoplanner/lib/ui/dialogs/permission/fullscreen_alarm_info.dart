@@ -101,7 +101,7 @@ class ActivityAlarmPreview extends StatelessWidget {
               width: layout.activityPreview.activityWidth,
               height: layout.activityPreview.activityHeight,
               child: BlocProvider(
-                create: (context) => ClockBloc.fixed(startTime),
+                create: (context) => ClockCubit.fixed(startTime),
                 child: AlarmPage(
                   previewImage: const Image(
                     image: AssetImage('assets/graphics/cake.gif'),

@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/generated/l10n.dart';
 import 'package:repository_base/end_point.dart';
-import 'package:seagull_clock/clock_bloc.dart';
+import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ui/buttons/link_button.dart';
 
@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
       create: (context) => LoginCubit(
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
         pushService: GetIt.I<FirebasePushService>(),
-        clockBloc: context.read<ClockBloc>(),
+        clockCubit: context.read<ClockCubit>(),
         userRepository: context.read<UserRepository>(),
         database: GetIt.I<Database>(),
         allowExpiredLicense: false,
