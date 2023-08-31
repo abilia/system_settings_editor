@@ -92,7 +92,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                 rootHeading: rootHeading ?? '',
                 back: headerBackNavigation ? _back : null,
               )
-            else if (searchHeader == SearchHeader.searchBar)
+            else if (searchHeader == SearchHeader.searchBar && selected == null)
               const _SearchHeading(),
             Expanded(
               child: selected != null && selectedGenerator != null
@@ -151,16 +151,12 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     required this.sortableArchiveState,
     required this.rootHeading,
     this.showOnlyFolders = false,
-    this.showSearchButton = false,
-    this.onCancel,
     this.back,
     Key? key,
   }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
   final String rootHeading;
   final bool showOnlyFolders;
-  final bool showSearchButton;
-  final VoidCallback? onCancel;
   final Function(BuildContext, SortableArchiveState<T>)? back;
 
   @override
@@ -191,7 +187,6 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                     maxLines: 1,
                   ),
                 ),
-                if (showSearchButton) SearchButton(onCancel: onCancel),
               ],
             ),
           ),
@@ -203,15 +198,19 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 }
 
 class SearchButton extends StatelessWidget {
-  final VoidCallback? onCancel;
-  final ButtonStyle? style;
+  final Function(SelectedImageData) onImageSelected;
+  final ButtonStyle style;
 
-  const SearchButton({super.key, this.onCancel, this.style});
+  const SearchButton({
+    required this.onImageSelected,
+    required this.style,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return IconAndTextButton(
-      style: (style ?? actionButtonStyleDark)
+      style: style
           .withMinimumSize(
             layout.libraryPage.searchButtonSize,
           )
@@ -246,8 +245,8 @@ class SearchButton extends StatelessWidget {
             ),
           ),
         );
-        if (selectedImageData != null && context.mounted) {
-          Navigator.of(context).pop(selectedImageData);
+        if (selectedImageData != null) {
+          onImageSelected(selectedImageData);
         }
       },
     );

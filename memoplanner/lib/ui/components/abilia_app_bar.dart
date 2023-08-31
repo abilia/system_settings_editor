@@ -109,6 +109,7 @@ class AbiliaSearchAppBar extends StatelessWidget
   final String title;
   final List<String> breadcrumbs;
   final IconData iconData;
+  final Function(SelectedImageData) onImageSelected;
 
   @override
   final Size preferredSize;
@@ -116,6 +117,7 @@ class AbiliaSearchAppBar extends StatelessWidget
   AbiliaSearchAppBar({
     required this.title,
     required this.iconData,
+    required this.onImageSelected,
     this.breadcrumbs = const [],
     MainAxisAlignment? mainAxisAlignment,
     Key? key,
@@ -138,7 +140,10 @@ class AbiliaSearchAppBar extends StatelessWidget
                   iconData: iconData,
                 ),
               ),
-              SearchButton(style: actionButtonStyleLightLarge)
+              SearchButton(
+                onImageSelected: onImageSelected,
+                style: actionButtonStyleLightLarge,
+              )
             ],
           ),
         ),

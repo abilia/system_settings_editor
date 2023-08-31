@@ -68,19 +68,14 @@ class ImageArchiveAppBar extends StatelessWidget
     final sortableState =
         context.watch<SortableArchiveCubit<ImageArchiveData>>().state;
 
-    if (searchHeader == SearchHeader.searchBar) {
-      return AbiliaAppBar(
-        iconData: AbiliaIcons.find,
-        title: translate.searchImage,
-      );
-    }
-
     final title = translate.selectImage;
-    if (sortableState.isSelected) {
+    if (searchHeader == SearchHeader.searchBar || sortableState.isSelected) {
       return AbiliaAppBar(
-        iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
+        iconData: sortableState.isSelected
+            ? AbiliaIcons.pastPictureFromWindowsClipboard
+            : AbiliaIcons.find,
         breadcrumbs: [sortableState.selected?.data.name ?? ''],
-        title: title,
+        title: sortableState.isSelected ? title : translate.searchImage,
       );
     }
 
@@ -94,6 +89,8 @@ class ImageArchiveAppBar extends StatelessWidget
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
         breadcrumbs: breadcrumbs,
         title: title,
+        onImageSelected: (selectedImageData) =>
+            Navigator.of(context).pop(selectedImageData),
       );
     }
 
