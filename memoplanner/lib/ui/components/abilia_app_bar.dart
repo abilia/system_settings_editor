@@ -138,7 +138,7 @@ class AbiliaSearchAppBar extends StatelessWidget
                   iconData: iconData,
                 ),
               ),
-              SearchButton(style: actionButtonStyleLightLarge)
+              const SearchButton(),
             ],
           ),
         ),
