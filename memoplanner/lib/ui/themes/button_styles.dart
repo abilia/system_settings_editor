@@ -127,13 +127,14 @@ final buttonBackgroundGreen = MaterialStateProperty.resolveWith<Color>(
   },
 );
 
-final noBorderShape = RoundedRectangleBorder(
-  borderRadius: BorderRadius.all(Radius.circular(layout.actionButton.radius)),
-);
-final noBorder = MaterialStateProperty.all(noBorderShape);
+final mediumBorderRadius =
+    BorderRadius.all(Radius.circular(layout.actionButton.radius));
 
 final largeBorderRadius =
     BorderRadius.all(Radius.circular(layout.actionButton.largeRadius));
+
+final noBorderShape = RoundedRectangleBorder(borderRadius: mediumBorderRadius);
+final noBorder = MaterialStateProperty.all(noBorderShape);
 
 final baseButtonStyle = ButtonStyle(
   foregroundColor: MaterialStateProperty.all(AbiliaColors.white),
@@ -369,9 +370,9 @@ final actionButtonStyleLightLarge = actionButtonStyleLight.copyWith(
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled) ||
         states.contains(MaterialState.pressed)) {
-      return noBorderShape.copyWith(borderRadius: largeBorderRadius);
+      return noBorderShape.copyWith(borderRadius: mediumBorderRadius);
     }
-    return ligthShapeBorder.copyWith(borderRadius: largeBorderRadius);
+    return ligthShapeBorder.copyWith(borderRadius: mediumBorderRadius);
   }),
 );
 

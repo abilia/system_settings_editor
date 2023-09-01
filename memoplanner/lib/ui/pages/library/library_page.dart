@@ -151,7 +151,6 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     required this.sortableArchiveState,
     required this.rootHeading,
     this.showOnlyFolders = false,
-    this.showSearchButton = false,
     this.onCancel,
     this.back,
     Key? key,
@@ -159,7 +158,6 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
   final SortableArchiveState<T> sortableArchiveState;
   final String rootHeading;
   final bool showOnlyFolders;
-  final bool showSearchButton;
   final VoidCallback? onCancel;
   final Function(BuildContext, SortableArchiveState<T>)? back;
 
@@ -191,7 +189,6 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
                     maxLines: 1,
                   ),
                 ),
-                if (showSearchButton) SearchButton(onCancel: onCancel),
               ],
             ),
           ),
@@ -203,15 +200,12 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 }
 
 class SearchButton extends StatelessWidget {
-  final VoidCallback? onCancel;
-  final ButtonStyle? style;
-
-  const SearchButton({super.key, this.onCancel, this.style});
+  const SearchButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return IconAndTextButton(
-      style: (style ?? actionButtonStyleDark)
+      style: (actionButtonStyleLightLarge)
           .withMinimumSize(
             layout.libraryPage.searchButtonSize,
           )
