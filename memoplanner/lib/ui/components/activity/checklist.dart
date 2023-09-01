@@ -69,6 +69,7 @@ class EditChecklistWidget extends StatelessWidget {
               context.read<EditActivityCubit>().removeInfoItem(),
           child: Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Flexible(
                   child: ScrollArrows.vertical(
@@ -86,9 +87,11 @@ class EditChecklistWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: layout.templates.s1.bottom),
+                  padding: layout.templates.s1.onlyVertical,
                   child: Divider(
-                      thickness: layout.checklist.dividerHeight, endIndent: 0),
+                    thickness: layout.checklist.dividerHeight,
+                    endIndent: 0,
+                  ),
                 ),
                 const AddNewQuestionButton(),
               ],
@@ -107,42 +110,13 @@ class AddNewQuestionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
     _openNewQuestionOnEmpty(context);
-    final buttonText = translate.newTask;
     return Tts.data(
-      data: buttonText,
-      child: RawMaterialButton(
-        constraints: BoxConstraints(
-          minHeight: layout.checklist.addNewButtonHeight,
-        ),
-        shape: const RoundedRectangleBorder(
-          side: BorderSide(color: AbiliaColors.black),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        fillColor: AbiliaColors.black80,
-        elevation: 0,
-        focusElevation: 0,
-        highlightElevation: 0,
-        hoverElevation: 0,
+      data: translate.newTask,
+      child: IconAndTextButton(
+        style: actionButtonStyleBlack.copyWith(minimumSize: denseSize),
+        icon: AbiliaIcons.plus,
+        text: translate.newTask,
         onPressed: () async => _handleNewQuestion(context),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: layout.checklist.addNewQIconPadding,
-              child: Icon(
-                AbiliaIcons.plus,
-                size: layout.icon.small,
-                color: AbiliaColors.white,
-              ),
-            ),
-            Text(
-              buttonText,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AbiliaColors.white,
-                  ),
-            ),
-          ],
-        ),
       ),
     );
   }
