@@ -116,6 +116,7 @@ class AddNewQuestionButton extends StatelessWidget {
         style: actionButtonStyleBlack.copyWith(minimumSize: denseSize),
         icon: AbiliaIcons.plus,
         text: translate.newTask,
+        iconSize: layout.icon.smaller,
         onPressed: () async => _handleNewQuestion(context),
       ),
     );
