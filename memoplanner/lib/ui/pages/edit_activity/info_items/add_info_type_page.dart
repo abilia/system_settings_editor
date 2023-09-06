@@ -42,6 +42,7 @@ class AddInfoTypePage<InfoItemType extends InfoItem> extends StatelessWidget {
                         actionButtonStyleBlack.copyWith(minimumSize: denseSize),
                     icon: AbiliaIcons.plus,
                     text: data.buttonText,
+                    iconSize: layout.icon.smaller,
                     onPressed: () =>
                         editActivityCubit.createNewInfoItem(InfoItemType),
                   ),
@@ -51,6 +52,7 @@ class AddInfoTypePage<InfoItemType extends InfoItem> extends StatelessWidget {
                         actionButtonStyleDark.copyWith(minimumSize: denseSize),
                     icon: AbiliaIcons.folder,
                     text: translate.fromTemplate,
+                    iconSize: layout.icon.smaller,
                     onPressed: () async {
                       final editActivityCubit =
                           context.read<EditActivityCubit>();
