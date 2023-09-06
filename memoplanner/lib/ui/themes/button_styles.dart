@@ -7,6 +7,13 @@ final smallSize = MaterialStateProperty.all(
   ),
 );
 
+final denseSize = MaterialStateProperty.all(
+  Size(
+    layout.actionButton.denseSize,
+    layout.actionButton.denseSize,
+  ),
+);
+
 final mediumSize = MaterialStateProperty.all(
   Size(
     layout.actionButton.size,

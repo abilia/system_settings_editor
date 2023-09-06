@@ -60,7 +60,7 @@ class AppBarLayoutMedium extends AppBarLayout {
           smallHeight: 104,
           monthStepperHeight: monthStepperHeight ?? 116,
           titlesPadding: const EdgeInsets.symmetric(horizontal: 12),
-          titleSpacing: const EdgeInsets.symmetric(vertical: 12),
+          titleSpacing: const EdgeInsets.symmetric(vertical: 4),
           searchPadding: const EdgeInsets.only(left: 32, right: 12),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(32),

@@ -71,7 +71,7 @@ class _ChecklistLibraryAppBar extends StatelessWidget
     final selected = sortableState.selected;
 
     return AbiliaAppBar(
-      iconData: AbiliaIcons.documents,
+      iconData: AbiliaIcons.folder,
       title: Lt.of(context).fromTemplate,
       breadcrumbs: selected != null
           ? [selected.data.checklist.name]

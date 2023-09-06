@@ -326,8 +326,8 @@ class ChecklistPickFieldExtras extends StatelessWidget {
         color: AbiliaColors.white110,
       ),
       padding: checklistLayout.previewPadding,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: checklistLayout.previewTextPadding,
@@ -335,10 +335,17 @@ class ChecklistPickFieldExtras extends StatelessWidget {
               child: Text('${questions.length} ${translate.tasks}'),
             ),
           ),
-          ...questions
-              .map((question) =>
-                  CheckListPickFieldExtrasItem(question: question))
-              .toList()
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                ...questions
+                    .map((question) =>
+                        CheckListPickFieldExtrasItem(question: question))
+                    .toList()
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -357,7 +364,7 @@ class CheckListPickFieldExtrasItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final checklistLayout = layout.checklist;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.only(left: 8),
       margin: EdgeInsets.symmetric(
         horizontal: checklistLayout.previewItemSpacing,
       ),

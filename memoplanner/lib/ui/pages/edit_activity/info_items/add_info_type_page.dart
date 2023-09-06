@@ -20,7 +20,7 @@ class AddInfoTypePage<InfoItemType extends InfoItem> extends StatelessWidget {
         label: translate.newActivity,
       ),
       body: Padding(
-        padding: layout.templates.m6,
+        padding: layout.templates.s1,
         child: Container(
           decoration: whiteBoxDecoration.copyWith(
             border: Border.fromBorderSide(
@@ -38,17 +38,21 @@ class AddInfoTypePage<InfoItemType extends InfoItem> extends StatelessWidget {
               children: <Widget>[
                 if (InfoItemType != infoItem.runtimeType) ...[
                   IconAndTextButton(
-                    style: actionButtonStyleBlack,
+                    style:
+                        actionButtonStyleBlack.copyWith(minimumSize: denseSize),
                     icon: AbiliaIcons.plus,
                     text: data.buttonText,
+                    iconSize: layout.icon.smaller,
                     onPressed: () =>
                         editActivityCubit.createNewInfoItem(InfoItemType),
                   ),
                   SizedBox(height: layout.formPadding.verticalItemDistance),
                   IconAndTextButton(
-                    style: actionButtonStyleDark,
+                    style:
+                        actionButtonStyleDark.copyWith(minimumSize: denseSize),
                     icon: AbiliaIcons.folder,
                     text: translate.fromTemplate,
+                    iconSize: layout.icon.smaller,
                     onPressed: () async {
                       final editActivityCubit =
                           context.read<EditActivityCubit>();

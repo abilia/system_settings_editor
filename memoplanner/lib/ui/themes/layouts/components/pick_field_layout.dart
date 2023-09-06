@@ -18,7 +18,7 @@ class PickFieldLayout {
     this.leadingPadding = const EdgeInsets.only(right: 12),
     this.verticalPadding = const EdgeInsets.symmetric(vertical: 16),
     this.withExtrasPadding =
-        const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 20),
+        const EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 16),
   });
 }
 
