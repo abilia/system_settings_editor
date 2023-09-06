@@ -199,18 +199,16 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 
 class SearchButton extends StatelessWidget {
   final Function(SelectedImageData) onImageSelected;
-  final ButtonStyle style;
 
   const SearchButton({
     required this.onImageSelected,
-    required this.style,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return IconAndTextButton(
-      style: style
+      style: (actionButtonStyleLightLarge)
           .withMinimumSize(
             layout.libraryPage.searchButtonSize,
           )

@@ -68,18 +68,20 @@ class ImageArchiveAppBar extends StatelessWidget
     final sortableState =
         context.watch<SortableArchiveCubit<ImageArchiveData>>().state;
 
+    if (searchHeader == SearchHeader.searchBar) {
+      return AbiliaAppBar(
+        iconData: AbiliaIcons.find,
+        breadcrumbs: [sortableState.selected?.data.name ?? ''],
+        title: translate.searchImage,
+      );
+    }
+
     final title = translate.selectImage;
     if (sortableState.isSelected) {
       return AbiliaAppBar(
         iconData: AbiliaIcons.pastPictureFromWindowsClipboard,
         breadcrumbs: [sortableState.selected?.data.name ?? ''],
         title: title,
-      );
-    }
-    if (searchHeader == SearchHeader.searchBar) {
-      return AbiliaAppBar(
-        iconData: AbiliaIcons.find,
-        title: translate.searchImage,
       );
     }
 

@@ -142,7 +142,6 @@ class AbiliaSearchAppBar extends StatelessWidget
               ),
               SearchButton(
                 onImageSelected: onImageSelected,
-                style: actionButtonStyleLightLarge,
               )
             ],
           ),

@@ -74,8 +74,11 @@ jobs:
           if [[ $GITHUB_REF == "refs/heads/release" ]]
           then
             type="release"
-          else
+          elif [ ! -z ${{inputs.release_type}} ];
+          then
             type=${{inputs.release_type}}
+          else
+            type="dev"
           fi
           echo "releasetype=$type" >> $GITHUB_OUTPUT
 
