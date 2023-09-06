@@ -92,7 +92,7 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
                 rootHeading: rootHeading ?? '',
                 back: headerBackNavigation ? _back : null,
               )
-            else if (searchHeader == SearchHeader.searchBar)
+            else if (searchHeader == SearchHeader.searchBar && selected == null)
               const _SearchHeading(),
             Expanded(
               child: selected != null && selectedGenerator != null
@@ -151,14 +151,12 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     required this.sortableArchiveState,
     required this.rootHeading,
     this.showOnlyFolders = false,
-    this.onCancel,
     this.back,
     Key? key,
   }) : super(key: key);
   final SortableArchiveState<T> sortableArchiveState;
   final String rootHeading;
   final bool showOnlyFolders;
-  final VoidCallback? onCancel;
   final Function(BuildContext, SortableArchiveState<T>)? back;
 
   @override
@@ -200,7 +198,12 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
 }
 
 class SearchButton extends StatelessWidget {
-  const SearchButton({super.key});
+  final Function(SelectedImageData) onImageSelected;
+
+  const SearchButton({
+    required this.onImageSelected,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -240,8 +243,8 @@ class SearchButton extends StatelessWidget {
             ),
           ),
         );
-        if (selectedImageData != null && context.mounted) {
-          Navigator.of(context).pop(selectedImageData);
+        if (selectedImageData != null) {
+          onImageSelected(selectedImageData);
         }
       },
     );
