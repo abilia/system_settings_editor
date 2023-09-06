@@ -12,7 +12,7 @@ class IconLayout {
   const IconLayout({
     this.tiny = 20,
     this.small = 24,
-    this.smaller = 32,
+    this.smaller = 24,
     this.button = 28,
     this.normal = 32,
     this.large = 48,
