@@ -29,63 +29,42 @@ class BottomNavigation extends StatelessWidget {
             child: Padding(
               padding: layout.navigationBar.padding,
               child: verticalButtons
-                  ? _VerticalBottomNavigationButtons(
-                      backNavigationWidget: backNavigationWidget,
-                      forwardNavigationWidget: forwardNavigationWidget,
+                  ? _verticalBottomNavigationButtons(
+                      backNavigationWidget,
+                      forwardNavigationWidget,
                     )
-                  : _BottonNavigationButtons(
-                      backNavigationWidget: backNavigationWidget,
-                      forwardNavigationWidget: forwardNavigationWidget),
+                  : _bottomNavigationButtons(
+                      backNavigationWidget, forwardNavigationWidget),
             ),
           ),
         ),
       );
 }
 
-class _BottonNavigationButtons extends StatelessWidget {
-  final Widget backNavigationWidget;
-  final Widget? forwardNavigationWidget;
+Widget _bottomNavigationButtons(
+        Widget backNavigationWidget, Widget? forwardNavigationWidget) =>
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (forwardNavigationWidget != null) ...[
+          Expanded(child: backNavigationWidget),
+          SizedBox(width: layout.formPadding.horizontalItemDistance),
+          Expanded(child: forwardNavigationWidget),
+        ] else
+          Center(child: backNavigationWidget),
+      ],
+    );
 
-  const _BottonNavigationButtons({
-    required this.backNavigationWidget,
-    this.forwardNavigationWidget,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (forwardNavigationWidget != null) ...[
-            Expanded(child: backNavigationWidget),
-            SizedBox(width: layout.formPadding.horizontalItemDistance),
-            Expanded(child: forwardNavigationWidget!),
-          ] else
-            Center(child: backNavigationWidget),
-        ],
-      );
-}
-
-class _VerticalBottomNavigationButtons extends StatelessWidget {
-  final Widget backNavigationWidget;
-  final Widget? forwardNavigationWidget;
-
-  const _VerticalBottomNavigationButtons({
-    required this.backNavigationWidget,
-    this.forwardNavigationWidget,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (forwardNavigationWidget != null) ...[
-            Expanded(child: forwardNavigationWidget!),
-            SizedBox(height: layout.formPadding.verticalItemDistance),
-            Expanded(child: backNavigationWidget),
-          ] else
-            Center(child: backNavigationWidget),
-        ],
-      );
-}
+Widget _verticalBottomNavigationButtons(
+        Widget backNavigationWidget, Widget? forwardNavigationWidget) =>
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (forwardNavigationWidget != null) ...[
+          Expanded(child: forwardNavigationWidget),
+          SizedBox(height: layout.formPadding.verticalItemDistance),
+          Expanded(child: backNavigationWidget),
+        ] else
+          Center(child: backNavigationWidget),
+      ],
+    );
