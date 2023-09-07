@@ -22,6 +22,7 @@ class SaveNoteWarningDialog extends StatelessWidget {
           ),
         ],
       ),
+      verticalButtons: layout.go,
       bottomNavigationColor: ViewDialog.light,
       backNavigationWidget: LightGreyButton(
         text: translate.cancelChanges,
