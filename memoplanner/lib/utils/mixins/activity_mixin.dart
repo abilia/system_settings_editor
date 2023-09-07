@@ -68,11 +68,11 @@ mixin ActivityMixin {
     await activityRepository?.synchronize();
     if (context.mounted) {
       _log.fine('Popping alarm: $alarm');
-      await popAlarmPageOrCloseApp(context);
+      await _popAlarmPageOrCloseApp(context);
     }
   }
 
-  Future<void> popAlarmPageOrCloseApp(BuildContext context) =>
+  Future<void> _popAlarmPageOrCloseApp(BuildContext context) =>
       _popOrRemoveRouteOrCloseApp(context);
 
   Future<void> removeRouteOrCloseApp(
@@ -87,7 +87,8 @@ mixin ActivityMixin {
     final removeRoute = route != null;
     if (navigator.canPop()) {
       if (removeRoute) return navigator.removeRoute(route);
-      return navigator.pop();
+      await navigator.maybePop();
+      return;
     }
     if (Config.isMPGO) {
       _log.info(
