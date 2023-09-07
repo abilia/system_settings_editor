@@ -331,7 +331,7 @@ void main() {
         await tester.tap(find.byKey(TestKey.addPicture));
         await tester.pumpAndSettle();
         expect(find.byType(SelectPicturePage), findsOneWidget);
-        await tester.tap(find.byIcon(AbiliaIcons.closeProgram));
+        await tester.tap(find.byType(BackButton));
         await tester.pumpAndSettle();
         expect(find.byType(SelectPicturePage), findsNothing);
       });
