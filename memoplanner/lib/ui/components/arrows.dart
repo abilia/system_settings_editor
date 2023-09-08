@@ -83,6 +83,7 @@ class ScrollArrows extends StatelessWidget {
       valueListenable: maxScrollExtent,
       builder: (context, value, child) {
         assert(child != null, 'child should never be null');
+        final extentAfterValue = extentAfter.value;
         return Stack(
           children: [
             if (child != null)
@@ -121,8 +122,8 @@ class ScrollArrows extends StatelessWidget {
                 ),
               ),
             if (overflowDivider &&
-                extentAfter.value != null &&
-                extentAfter.value! > 0)
+                extentAfterValue != null &&
+                extentAfterValue > 0)
               Positioned.fill(
                 child: Align(
                   alignment: Alignment.bottomCenter,
