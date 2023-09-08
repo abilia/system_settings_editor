@@ -17,33 +17,46 @@ class BottomNavigation extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: color,
-        child: SafeArea(
-          top: useVerticalSafeArea,
-          bottom: useVerticalSafeArea,
-          child: SizedBox(
-            height: verticalButtons
-                ? layout.navigationBar.doubleHeight
-                : layout.navigationBar.height,
-            child: Padding(
-              padding: layout.navigationBar.padding,
-              child: verticalButtons
-                  ? _verticalBottomNavigationButtons(
-                      backNavigationWidget,
-                      forwardNavigationWidget,
-                    )
-                  : _bottomNavigationButtons(
-                      backNavigationWidget, forwardNavigationWidget),
-            ),
+  Widget build(BuildContext context) {
+    return Container(
+      color: color,
+      child: SafeArea(
+        top: useVerticalSafeArea,
+        bottom: useVerticalSafeArea,
+        child: SizedBox(
+          height: verticalButtons
+              ? layout.navigationBar.doubleHeight
+              : layout.navigationBar.height,
+          child: Padding(
+            padding: layout.navigationBar.padding,
+            child: verticalButtons
+                ? _VerticalBottomNavigationContainer(
+                    backNavigationWidget: backNavigationWidget,
+                    forwardNavigationWidget: forwardNavigationWidget,
+                  )
+                : _HorizontalBottomNavigationContainer(
+                    backNavigationWidget: backNavigationWidget,
+                    forwardNavigationWidget: forwardNavigationWidget,
+                  ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
-Widget _bottomNavigationButtons(
-        Widget backNavigationWidget, Widget? forwardNavigationWidget) =>
-    Row(
+class _HorizontalBottomNavigationContainer extends StatelessWidget {
+  final Widget backNavigationWidget;
+  final Widget? forwardNavigationWidget;
+
+  const _HorizontalBottomNavigationContainer(
+      {required this.backNavigationWidget,
+      required this.forwardNavigationWidget});
+
+  @override
+  Widget build(BuildContext context) {
+    final forwardNavigationWidget = this.forwardNavigationWidget;
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (forwardNavigationWidget != null) ...[
@@ -54,10 +67,22 @@ Widget _bottomNavigationButtons(
           Center(child: backNavigationWidget),
       ],
     );
+  }
+}
 
-Widget _verticalBottomNavigationButtons(
-        Widget backNavigationWidget, Widget? forwardNavigationWidget) =>
-    Column(
+class _VerticalBottomNavigationContainer extends StatelessWidget {
+  final Widget backNavigationWidget;
+  final Widget? forwardNavigationWidget;
+
+  const _VerticalBottomNavigationContainer({
+    required this.backNavigationWidget,
+    required this.forwardNavigationWidget,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final forwardNavigationWidget = this.forwardNavigationWidget;
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (forwardNavigationWidget != null) ...[
@@ -68,3 +93,5 @@ Widget _verticalBottomNavigationButtons(
           Center(child: backNavigationWidget),
       ],
     );
+  }
+}
