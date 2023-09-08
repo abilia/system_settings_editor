@@ -42,7 +42,7 @@ class SelectPicturePage extends StatelessWidget {
         },
       ),
       bottomNavigationBar: const BottomNavigation(
-        backNavigationWidget: CancelButton(),
+        backNavigationWidget: BackButton(),
       ),
     );
   }
