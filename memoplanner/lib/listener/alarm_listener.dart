@@ -52,7 +52,7 @@ class AlarmListener extends StatelessWidget with ActivityMixin {
               final route =
                   GetIt.I<AlarmNavigator>().removedFromRoutes(stackId);
               if (route != null && context.mounted) {
-                await popAlarmPageOrCloseApp(context);
+                await removeRouteOrCloseApp(context, route);
               }
             }
           },
