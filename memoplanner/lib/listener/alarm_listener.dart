@@ -7,7 +7,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class AlarmListener extends StatelessWidget with ActivityMixin {
+class AlarmListener extends StatelessWidget with ActivityAndAlarmsMixin {
   static final _log = Logger('AlarmListener');
   final Widget child;
   final NotificationAlarm? alarm;
@@ -32,6 +32,15 @@ class AlarmListener extends StatelessWidget with ActivityMixin {
                 context,
                 state.set(fullScreenActivity: fullScreenActivity),
               );
+              if (!context.mounted) return;
+
+              final isAlarmBackground = ModalRoute.of(context)?.settings.name ==
+                  'AlarmBackgroundPage';
+              final hasRoutesOnStack =
+                  GetIt.I<AlarmNavigator>().hasRoutesOnStack;
+              if (isAlarmBackground && !hasRoutesOnStack) {
+                await closeApp();
+              }
             }
           },
         ),

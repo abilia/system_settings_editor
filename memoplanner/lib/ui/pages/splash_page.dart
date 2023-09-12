@@ -5,3 +5,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(color: AbiliaColors.white110);
 }
+
+class AlarmBackgroundPage extends SplashPage {
+  const AlarmBackgroundPage({super.key});
+}
