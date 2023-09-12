@@ -7,8 +7,8 @@ import 'package:memoplanner/repository/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-mixin ActivityMixin {
-  static final _log = Logger((ActivityMixin).toString());
+mixin ActivityAndAlarmsMixin {
+  static final _log = Logger((ActivityAndAlarmsMixin).toString());
 
   Future<bool?> checkConfirmation(
     BuildContext context,
@@ -92,9 +92,17 @@ mixin ActivityMixin {
     }
     if (Config.isMPGO) {
       _log.info(
-          'Could not ${removeRoute ? 'remove' : 'pop'} route, root? -> Will use SystemNavigator.pop');
-      return SystemNavigator.pop();
+          'Could not ${removeRoute ? 'remove' : 'pop'} route, root? -> Will close app');
+      return closeApp();
     }
     _log.warning('Could not pop route, root?');
+  }
+
+  Future<void> closeApp() async {
+    if (Config.isMPGO) {
+      _log.info('Using SystemNavigator.pop');
+      return SystemNavigator.pop();
+    }
+    _log.warning('Attempted to use SystemNavigator.pop on MP');
   }
 }
