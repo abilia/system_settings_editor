@@ -188,7 +188,6 @@ class Attachment extends StatelessWidget with ActivityMixin {
       return ChecklistView(
         item,
         day: activityDay.day,
-        padding: layout.templates.s2,
         onTap: (question) async {
           final signedOff = item.signOff(question, activityDay.day);
           final updatedActivity = activity.copyWith(
