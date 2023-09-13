@@ -229,9 +229,9 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
             : null,
       ),
     );
-    return BottomAppBar(
-      child: Padding(
-        padding: layout.navigationBar.padding,
+    return SizedBox(
+      height: layout.navigationBar.height,
+      child: BottomAppBar(
         child: Row(
           mainAxisAlignment: _displayCheckButton
               ? MainAxisAlignment.spaceBetween

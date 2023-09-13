@@ -38,14 +38,11 @@ class FullScreenActivityPage extends StatelessWidget {
                   _FullScreenActivityTabBar(selectedActivityDay: selected),
                 ],
               ),
-              bottomNavigationBar: BottomAppBar(
-                child: SizedBox(
-                  height: layout.navigationBar.height,
-                  child: Padding(
-                    padding: layout.navigationBar.padding,
-                    child: const Align(
-                      child: CloseButton(),
-                    ),
+              bottomNavigationBar: SizedBox(
+                height: layout.navigationBar.height,
+                child: const BottomAppBar(
+                  child: Align(
+                    child: CloseButton(),
                   ),
                 ),
               ),

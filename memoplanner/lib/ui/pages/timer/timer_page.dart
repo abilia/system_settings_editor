@@ -158,9 +158,9 @@ class _TimerBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      child: SizedBox(
-        height: layout.toolbar.height,
+    return SizedBox(
+      height: layout.navigationBar.height,
+      child: BottomAppBar(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
