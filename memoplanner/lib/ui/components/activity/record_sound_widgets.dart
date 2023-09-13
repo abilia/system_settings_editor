@@ -173,7 +173,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                         );
                         soundBloc.add(const StopSound());
                         if (result is UnstoredAbiliaFile) {
-                          userFileBloc.add(FileAdded(result));
+                          userFileBloc.add(AddFile(result));
                         }
                         if (result != null) {
                           onResult.call(result);
