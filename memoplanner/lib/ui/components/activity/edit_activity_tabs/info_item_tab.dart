@@ -27,6 +27,8 @@ class InfoItemTabState extends State<InfoItemTab> {
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
+    final videoFeatureToggle = context.select((FeatureToggleCubit cubit) =>
+        cubit.state.isToggleEnabled(FeatureToggle.videoInActivity));
 
     return Padding(
       padding: layout.templates.m3.withoutBottom,
@@ -65,24 +67,27 @@ class InfoItemTabState extends State<InfoItemTab> {
                         ),
                       ),
                     SizedBox(height: layout.formPadding.verticalItemDistance),
-                    InfoItemPickField<VideoInfoItem>(
-                      text: 'Video',
-                      iconData: AbiliaIcons.videoCall,
-                      infoItem: infoItem,
-                    ),
-                    SizedBox(height: layout.formPadding.verticalItemDistance),
-                    if (infoItem is VideoInfoItem) ...[
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: VideoPlayer(
-                            isEditActivity: true,
-                            fileId: infoItem.fileId,
-                          ),
-                        ),
+                    if (videoFeatureToggle || infoItem is VideoInfoItem) ...[
+                      InfoItemPickField<VideoInfoItem>(
+                        text: 'Video',
+                        iconData: AbiliaIcons.videoCall,
+                        infoItem: infoItem,
                       ),
                       SizedBox(height: layout.formPadding.verticalItemDistance),
+                      if (infoItem is VideoInfoItem) ...[
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: VideoPlayer(
+                              isEditActivity: true,
+                              fileId: infoItem.fileId,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                            height: layout.formPadding.verticalItemDistance),
+                      ],
                     ],
                   ],
                 ),
@@ -235,10 +240,9 @@ class InfoItemPickField<InfoItemType extends InfoItem> extends StatelessWidget {
       if (sizeInMB < 10) {
         final abiliaFile = UnstoredAbiliaFile.newFile(file);
         userFileBloc.add(
-          AddFile(
+          FileAdded(
             abiliaFile,
             isImage: false,
-            saveFile: false,
           ),
         );
         editActivityCubit.replaceActivity(

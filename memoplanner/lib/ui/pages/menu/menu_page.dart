@@ -82,7 +82,7 @@ class CameraButton extends StatelessWidget {
                 final selectedImage =
                     UnstoredAbiliaFile.newFile(File(image.path));
                 userFileBloc.add(
-                  AddFile(
+                  FileAdded(
                     selectedImage,
                     isImage: true,
                   ),

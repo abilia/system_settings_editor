@@ -225,7 +225,7 @@ class _AddPhotoButton extends StatelessWidget {
     required bool includeInPhotoCalendar,
   }) {
     userFileBloc.add(
-      AddFile(
+      FileAdded(
         selectedImage,
         isImage: true,
       ),

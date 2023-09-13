@@ -33,7 +33,7 @@ class ImageWizSelectPictureWidget extends StatelessWidget {
             final now = context.read<ClockCubit>().state;
             final name = DateFormat.yMd(Platform.localeName).format(now);
             BlocProvider.of<UserFileBloc>(context).add(
-              AddFile(newImage, isImage: true),
+              FileAdded(newImage, isImage: true),
             );
             BlocProvider.of<SortableBloc>(context).add(
               ImageArchiveImageAdded(

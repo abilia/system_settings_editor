@@ -163,7 +163,7 @@ class SelectPictureWidget extends StatelessWidget {
       if (newSelectedImage is UnstoredAbiliaFile) {
         name = DateFormat.yMd(Platform.localeName).format(now);
         userFileBloc.add(
-          AddFile(
+          FileAdded(
             newSelectedImage,
             isImage: true,
           ),

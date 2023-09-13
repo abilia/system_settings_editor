@@ -172,7 +172,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
                 userFileRepository: context.read<UserFileRepository>(),
                 syncBloc: context.read<SyncBloc>(),
                 fileStorage: GetIt.I<FileStorage>(),
-              )..add(const LoadUserFiles()),
+              )..add(LoadUserFiles()),
               lazy: false,
             ),
             BlocProvider<SortableBloc>(
