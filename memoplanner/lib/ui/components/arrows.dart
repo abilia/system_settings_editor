@@ -3,18 +3,20 @@ import 'package:vector_math/vector_math_64.dart';
 
 class ScrollArrows extends StatelessWidget {
   final Widget child;
-  final bool upArrow, downArrow, leftArrow, rightArrow;
+  final bool upArrow, downArrow, leftArrow, rightArrow, overflowDivider;
   final double? upCollapseMargin, downCollapseMargin;
   final bool verticalScrollBar;
   final bool verticalScrollBarAlwaysShown;
   final ScrollController? verticalController, horizontalController;
   late final ValueNotifier<double?> maxScrollExtent = ValueNotifier(null);
+  late final ValueNotifier<double?> extentAfter = ValueNotifier(null);
 
   ScrollArrows.vertical({
     required this.child,
     required ScrollController? controller,
     this.upCollapseMargin,
     this.downCollapseMargin,
+    this.overflowDivider = false,
     bool hasScrollBar = true,
     bool scrollbarAlwaysShown = false,
     Key? key,
@@ -37,6 +39,7 @@ class ScrollArrows extends StatelessWidget {
     this.verticalScrollBarAlwaysShown = false,
     this.verticalController,
     this.horizontalController,
+    this.overflowDivider = false,
     Key? key,
   })  : assert(verticalController != null && horizontalController != null),
         upArrow = true,
@@ -48,6 +51,7 @@ class ScrollArrows extends StatelessWidget {
   ScrollArrows.horizontal({
     required this.child,
     required ScrollController? controller,
+    this.overflowDivider = false,
     Key? key,
   })  : assert(controller != null),
         upArrow = false,
@@ -69,6 +73,7 @@ class ScrollArrows extends StatelessWidget {
       onNotification: (scrollMetricNotification) {
         maxScrollExtent.value =
             scrollMetricNotification.metrics.maxScrollExtent;
+        extentAfter.value = scrollMetricNotification.metrics.extentAfter;
         return false;
       },
       child: child,
@@ -78,6 +83,7 @@ class ScrollArrows extends StatelessWidget {
       valueListenable: maxScrollExtent,
       builder: (context, value, child) {
         assert(child != null, 'child should never be null');
+        final extentAfterValue = extentAfter.value;
         return Stack(
           children: [
             if (child != null)
@@ -115,6 +121,18 @@ class ScrollArrows extends StatelessWidget {
                   controller: horizontalController,
                 ),
               ),
+            if (overflowDivider &&
+                extentAfterValue != null &&
+                extentAfterValue > 0)
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Divider(
+                    thickness: layout.checklist.dividerHeight,
+                    endIndent: 0,
+                  ),
+                ),
+              )
           ],
         );
       },
