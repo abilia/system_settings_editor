@@ -22,9 +22,8 @@ class TimerCubit extends Cubit<TimerState> {
 
   Future<void> addTimer(AbiliaTimer timer) async {
     await timerDb.insert(timer);
-    if (!isClosed) {
-      emit(TimerState(timers: [...state.timers, timer]));
-    }
+    if (isClosed) return;
+    emit(TimerState(timers: [...state.timers, timer]));
   }
 
   Future<void> deleteTimer(AbiliaTimer timer) async {
@@ -37,8 +36,7 @@ class TimerCubit extends Cubit<TimerState> {
 
   Future<void> loadTimers() async {
     final timers = await timerDb.getAllTimers();
-    if (!isClosed) {
-      emit(TimerState(timers: timers));
-    }
+    if (isClosed) return;
+    emit(TimerState(timers: timers));
   }
 }

@@ -3,18 +3,24 @@ import 'package:vector_math/vector_math_64.dart';
 
 class ScrollArrows extends StatelessWidget {
   final Widget child;
-  final bool upArrow, downArrow, leftArrow, rightArrow;
+  final bool upArrow, downArrow, leftArrow, rightArrow, verticalOverflowDivider;
+  final EdgeInsets overflowDividerPadding;
   final double? upCollapseMargin, downCollapseMargin;
   final bool verticalScrollBar;
   final bool verticalScrollBarAlwaysShown;
   final ScrollController? verticalController, horizontalController;
   late final ValueNotifier<double?> maxScrollExtent = ValueNotifier(null);
 
+  late final ValueNotifier<(double, double)?> scrollExtent =
+      ValueNotifier(null);
+
   ScrollArrows.vertical({
     required this.child,
     required ScrollController? controller,
     this.upCollapseMargin,
     this.downCollapseMargin,
+    this.verticalOverflowDivider = false,
+    this.overflowDividerPadding = const EdgeInsets.all(0.0),
     bool hasScrollBar = true,
     bool scrollbarAlwaysShown = false,
     Key? key,
@@ -37,8 +43,10 @@ class ScrollArrows extends StatelessWidget {
     this.verticalScrollBarAlwaysShown = false,
     this.verticalController,
     this.horizontalController,
+    this.verticalOverflowDivider = false,
     Key? key,
   })  : assert(verticalController != null && horizontalController != null),
+        overflowDividerPadding = const EdgeInsets.all(0.0),
         upArrow = true,
         downArrow = true,
         leftArrow = true,
@@ -48,8 +56,10 @@ class ScrollArrows extends StatelessWidget {
   ScrollArrows.horizontal({
     required this.child,
     required ScrollController? controller,
+    this.verticalOverflowDivider = false,
     Key? key,
   })  : assert(controller != null),
+        overflowDividerPadding = const EdgeInsets.all(0.0),
         upArrow = false,
         downArrow = false,
         leftArrow = true,
@@ -64,61 +74,94 @@ class ScrollArrows extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget scrollMetricsNotifyingChild =
-        NotificationListener<ScrollMetricsNotification>(
+    return NotificationListener<ScrollMetricsNotification>(
       onNotification: (scrollMetricNotification) {
         maxScrollExtent.value =
             scrollMetricNotification.metrics.maxScrollExtent;
+        final extentBefore = scrollMetricNotification.metrics.extentBefore;
+        final extentAfter = scrollMetricNotification.metrics.extentAfter;
+        scrollExtent.value = (
+          extentBefore,
+          extentAfter,
+        );
         return false;
       },
-      child: child,
-    );
-
-    return ValueListenableBuilder(
-      valueListenable: maxScrollExtent,
-      builder: (context, value, child) {
-        assert(child != null, 'child should never be null');
-        return Stack(
-          children: [
-            if (child != null)
-              if (verticalScrollBar)
-                AbiliaScrollBar(
-                  thumbVisibility: verticalScrollBarAlwaysShown,
-                  controller: verticalController,
-                  child: child,
-                )
-              else
-                child,
-            if (upArrow)
-              Positioned.fill(
-                child: _ArrowUp(
-                  controller: verticalController,
-                  collapseMargin: upCollapseMargin,
-                ),
-              ),
-            if (downArrow)
-              Positioned.fill(
-                child: _ArrowDown(
-                  controller: verticalController,
-                  collapseMargin: downCollapseMargin,
-                ),
-              ),
-            if (leftArrow)
-              Positioned.fill(
-                child: _ArrowLeft(
-                  controller: horizontalController,
-                ),
-              ),
-            if (rightArrow)
-              Positioned.fill(
-                child: _ArrowRight(
-                  controller: horizontalController,
-                ),
-              ),
-          ],
-        );
-      },
-      child: scrollMetricsNotifyingChild,
+      child: ValueListenableBuilder(
+        valueListenable: maxScrollExtent,
+        builder: (context, maxScrollExtentValue, __) {
+          return ValueListenableBuilder(
+            valueListenable: scrollExtent,
+            builder: (context, scrollExtentValue, __) {
+              final extentBeforeValue = scrollExtentValue?.$1;
+              final extentAfterValue = scrollExtentValue?.$2;
+              return Stack(
+                children: [
+                  if (verticalScrollBar)
+                    AbiliaScrollBar(
+                      thumbVisibility: verticalScrollBarAlwaysShown,
+                      controller: verticalController,
+                      child: child,
+                    )
+                  else
+                    child,
+                  if (upArrow)
+                    Positioned.fill(
+                      child: _ArrowUp(
+                        controller: verticalController,
+                        collapseMargin: upCollapseMargin,
+                      ),
+                    ),
+                  if (downArrow)
+                    Positioned.fill(
+                      child: _ArrowDown(
+                        controller: verticalController,
+                        collapseMargin: downCollapseMargin,
+                      ),
+                    ),
+                  if (leftArrow)
+                    Positioned.fill(
+                      child: _ArrowLeft(
+                        controller: horizontalController,
+                      ),
+                    ),
+                  if (rightArrow)
+                    Positioned.fill(
+                      child: _ArrowRight(
+                        controller: horizontalController,
+                      ),
+                    ),
+                  if (verticalOverflowDivider &&
+                      extentAfterValue != null &&
+                      extentAfterValue != 0)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: overflowDividerPadding,
+                        child: Divider(
+                          thickness: layout.checklist.dividerHeight,
+                          endIndent: 0,
+                        ),
+                      ),
+                    ),
+                  if (verticalOverflowDivider &&
+                      extentBeforeValue != null &&
+                      extentBeforeValue != 0)
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: overflowDividerPadding,
+                        child: Divider(
+                          thickness: layout.checklist.dividerHeight,
+                          endIndent: 0,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

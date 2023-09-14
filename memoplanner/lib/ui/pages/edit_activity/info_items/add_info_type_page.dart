@@ -31,7 +31,9 @@ class AddInfoTypePage<InfoItemType extends InfoItem> extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: layout.templates.m6,
+            padding: infoItem is Checklist
+                ? layout.templates.m6.onlyVertical
+                : layout.templates.m6,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
