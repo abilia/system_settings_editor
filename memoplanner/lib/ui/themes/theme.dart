@@ -333,5 +333,5 @@ final toggleableActiveColor =
   if (states.contains(MaterialState.selected)) {
     return AbiliaColors.green;
   }
-  return null;
+  return AbiliaColors.white140;
 });
