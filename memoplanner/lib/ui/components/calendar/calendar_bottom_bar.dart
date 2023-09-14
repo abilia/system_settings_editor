@@ -34,11 +34,8 @@ class CalendarBottomBar extends StatelessWidget {
           duration: const Duration(milliseconds: 250),
           height: height,
           child: BottomAppBar(
-            child: Container(
+            child: SizedBox(
               height: height,
-              padding: EdgeInsets.symmetric(
-                horizontal: layout.toolbar.horizontalPadding,
-              ),
               child: Stack(
                 children: <Widget>[
                   const Align(
