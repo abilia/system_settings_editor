@@ -75,9 +75,11 @@ class EditChecklistWidget extends StatelessWidget {
                   child: ScrollArrows.vertical(
                     controller: scrollController,
                     verticalOverflowDivider: true,
+                    overflowDividerPadding: layout.templates.m6.onlyHorizontal,
                     child: ListView.builder(
                       controller: scrollController,
                       shrinkWrap: true,
+                      padding: layout.templates.m6.onlyHorizontal,
                       itemCount: checklist.questions.length,
                       itemBuilder: (context, i) => Padding(
                         padding: EdgeInsets.only(
@@ -89,7 +91,9 @@ class EditChecklistWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: layout.templates.s1.onlyVertical.onlyTop,
+                  padding: layout.templates.s1.onlyVertical.onlyTop.add(
+                    layout.templates.m6.onlyHorizontal,
+                  ),
                   child: _AddNewQuestionButton(
                     scrollController: scrollController,
                   ),

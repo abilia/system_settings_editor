@@ -4,6 +4,7 @@ import 'package:vector_math/vector_math_64.dart';
 class ScrollArrows extends StatelessWidget {
   final Widget child;
   final bool upArrow, downArrow, leftArrow, rightArrow, verticalOverflowDivider;
+  final EdgeInsets overflowDividerPadding;
   final double? upCollapseMargin, downCollapseMargin;
   final bool verticalScrollBar;
   final bool verticalScrollBarAlwaysShown;
@@ -19,6 +20,7 @@ class ScrollArrows extends StatelessWidget {
     this.upCollapseMargin,
     this.downCollapseMargin,
     this.verticalOverflowDivider = false,
+    this.overflowDividerPadding = const EdgeInsets.all(0.0),
     bool hasScrollBar = true,
     bool scrollbarAlwaysShown = false,
     Key? key,
@@ -44,6 +46,7 @@ class ScrollArrows extends StatelessWidget {
     this.verticalOverflowDivider = false,
     Key? key,
   })  : assert(verticalController != null && horizontalController != null),
+        overflowDividerPadding = const EdgeInsets.all(0.0),
         upArrow = true,
         downArrow = true,
         leftArrow = true,
@@ -56,6 +59,7 @@ class ScrollArrows extends StatelessWidget {
     this.verticalOverflowDivider = false,
     Key? key,
   })  : assert(controller != null),
+        overflowDividerPadding = const EdgeInsets.all(0.0),
         upArrow = false,
         downArrow = false,
         leftArrow = true,
@@ -126,20 +130,26 @@ class ScrollArrows extends StatelessWidget {
                         controller: horizontalController,
                       ),
                     ),
-                  if (verticalOverflowDivider && extentAfterValue != 0)
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
+                  if (verticalOverflowDivider &&
+                      extentAfterValue != null &&
+                      extentAfterValue != 0)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: overflowDividerPadding,
                         child: Divider(
                           thickness: layout.checklist.dividerHeight,
                           endIndent: 0,
                         ),
                       ),
                     ),
-                  if (verticalOverflowDivider && extentBeforeValue != 0)
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.topCenter,
+                  if (verticalOverflowDivider &&
+                      extentBeforeValue != null &&
+                      extentBeforeValue != 0)
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: overflowDividerPadding,
                         child: Divider(
                           thickness: layout.checklist.dividerHeight,
                           endIndent: 0,
