@@ -58,7 +58,7 @@ class FullScreenChecklist extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         margin: layout.templates.m3,
         decoration: whiteBoxDecoration,
-        child: ChecklistView(checklist, padding: layout.templates.s2),
+        child: ChecklistView(checklist),
       );
 }
 

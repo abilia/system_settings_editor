@@ -54,7 +54,8 @@ class FullScreenActivityPage extends StatelessWidget {
   }
 }
 
-class _FullScreenActivityTabBar extends StatelessWidget with ActivityMixin {
+class _FullScreenActivityTabBar extends StatelessWidget
+    with ActivityAndAlarmsMixin {
   final ActivityDay selectedActivityDay;
   final scrollController = ScrollController();
 

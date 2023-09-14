@@ -9,47 +9,47 @@ class ChecklistView extends StatelessWidget {
   final Checklist checklist;
   final DateTime? day;
   final Function(Question)? onTap;
-  final EdgeInsetsGeometry padding;
   final bool preview;
 
   const ChecklistView(
     this.checklist, {
     this.day,
     this.onTap,
-    this.padding = EdgeInsets.zero,
     Key? key,
   })  : preview = day == null,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = ScrollController();
+    final scrollController = ScrollController();
     return ScrollArrows.vertical(
-      controller: controller,
-      child: ListView.separated(
-        controller: controller,
-        padding: padding,
+      controller: scrollController,
+      child: ListView.builder(
+        controller: scrollController,
+        padding: layout.templates.s2.withoutBottom,
         itemCount: checklist.questions.length,
         itemBuilder: (context, i) {
           final day = this.day;
           final question = checklist.questions[i];
-          return QuestionView(
-            question,
-            onTap: onTap,
-            signedOff: day != null && checklist.isSignedOff(question, day),
-            inactive: preview,
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: layout.formPadding.verticalItemDistance,
+            ),
+            child: QuestionView(
+              question,
+              onTap: onTap,
+              signedOff: day != null && checklist.isSignedOff(question, day),
+              inactive: preview,
+            ),
           );
         },
-        separatorBuilder: (_, __) => SizedBox(
-          height: layout.formPadding.verticalItemDistance,
-        ),
       ),
     );
   }
 }
 
 class EditChecklistWidget extends StatelessWidget {
-  const EditChecklistWidget({Key? key}) : super(key: key);
+  const EditChecklistWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class EditChecklistWidget extends StatelessWidget {
         context.read<EditActivityCubit>(),
       ),
       child: Builder(builder: (context) {
-        final controller = ScrollController();
+        final scrollController = ScrollController();
         final checklist =
             context.select((EditChecklistCubit cubit) => cubit.state.checklist);
         return BlocListener<EditChecklistCubit, EditChecklistState>(
@@ -73,23 +73,30 @@ class EditChecklistWidget extends StatelessWidget {
               children: [
                 Flexible(
                   child: ScrollArrows.vertical(
-                    controller: controller,
-                    overflowDivider: true,
-                    child: ListView.separated(
-                      controller: controller,
+                    controller: scrollController,
+                    verticalOverflowDivider: true,
+                    overflowDividerPadding: layout.templates.m6.onlyHorizontal,
+                    child: ListView.builder(
+                      controller: scrollController,
                       shrinkWrap: true,
+                      padding: layout.templates.m6.onlyHorizontal,
                       itemCount: checklist.questions.length,
-                      itemBuilder: (context, i) =>
-                          EditQuestionView(checklist.questions[i]),
-                      separatorBuilder: (context, i) => SizedBox(
-                        height: layout.formPadding.verticalItemDistance,
+                      itemBuilder: (context, i) => Padding(
+                        padding: EdgeInsets.only(
+                          bottom: layout.formPadding.verticalItemDistance,
+                        ),
+                        child: EditQuestionView(checklist.questions[i]),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: layout.templates.s1.onlyVertical.onlyTop,
-                  child: const AddNewQuestionButton(),
+                  padding: layout.templates.s1.onlyVertical.onlyTop.add(
+                    layout.templates.m6.onlyHorizontal,
+                  ),
+                  child: _AddNewQuestionButton(
+                    scrollController: scrollController,
+                  ),
                 ),
               ],
             ),
@@ -100,8 +107,10 @@ class EditChecklistWidget extends StatelessWidget {
   }
 }
 
-class AddNewQuestionButton extends StatelessWidget {
-  const AddNewQuestionButton({Key? key}) : super(key: key);
+class _AddNewQuestionButton extends StatelessWidget {
+  final ScrollController scrollController;
+
+  const _AddNewQuestionButton({required this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +148,8 @@ class AddNewQuestionButton extends StatelessWidget {
     );
 
     if (result != null && result.isNotEmpty) {
-      return editChecklistCubit.newQuestion(result);
+      editChecklistCubit.newQuestion(result);
+      return scrollController.jumpTo(scrollController.position.maxScrollExtent);
     }
     if (context.mounted &&
         editChecklistCubit.state.checklist.questions.isEmpty) {

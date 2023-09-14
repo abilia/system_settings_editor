@@ -57,7 +57,8 @@ class ActivityPage extends StatelessWidget {
   }
 }
 
-class _ActivityBottomAppBar extends StatelessWidget with ActivityMixin {
+class _ActivityBottomAppBar extends StatelessWidget
+    with ActivityAndAlarmsMixin {
   const _ActivityBottomAppBar({
     required this.activityDay,
     Key? key,

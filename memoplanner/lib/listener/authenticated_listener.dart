@@ -11,11 +11,8 @@ import 'package:memoplanner/utils/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
 class AuthenticatedListener extends StatefulWidget {
-  final bool newlyLoggedIn;
-
   const AuthenticatedListener({
     required this.child,
-    required this.newlyLoggedIn,
     Key? key,
   }) : super(key: key);
 

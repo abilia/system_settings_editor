@@ -195,7 +195,8 @@ class _PopAwareAlarmPageState extends State<PopAwareAlarmPage> {
       );
 }
 
-class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
+class AlarmBottomNavigationBar extends StatelessWidget
+    with ActivityAndAlarmsMixin {
   const AlarmBottomNavigationBar({
     required this.alarm,
     Key? key,
@@ -262,7 +263,7 @@ class AlarmBottomNavigationBar extends StatelessWidget with ActivityMixin {
   }
 }
 
-class TimerAlarmPage extends StatelessWidget with ActivityMixin {
+class TimerAlarmPage extends StatelessWidget with ActivityAndAlarmsMixin {
   final TimerAlarm timerAlarm;
 
   const TimerAlarmPage({
