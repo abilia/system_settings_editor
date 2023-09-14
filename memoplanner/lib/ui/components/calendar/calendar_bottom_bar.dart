@@ -30,9 +30,10 @@ class CalendarBottomBar extends StatelessWidget {
           ),
         ];
 
-        return BottomAppBar(
-          child: AnimatedSize(
-            duration: const Duration(milliseconds: 250),
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          height: height,
+          child: BottomAppBar(
             child: Container(
               height: height,
               padding: EdgeInsets.symmetric(

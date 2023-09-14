@@ -59,9 +59,9 @@ class PhotoPage extends StatelessWidget {
               ),
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
-            child: SizedBox(
-              height: layout.toolbar.height,
+          bottomNavigationBar: SizedBox(
+            height: layout.toolbar.height,
+            child: BottomAppBar(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

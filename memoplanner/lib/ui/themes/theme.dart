@@ -55,6 +55,7 @@ final abiliaTheme = ThemeData(
     thickness: layout.borders.thin,
     space: 0,
   ),
+  useMaterial3: true,
 );
 
 final abiliaWhiteTheme =
