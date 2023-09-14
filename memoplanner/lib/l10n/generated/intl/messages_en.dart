@@ -466,7 +466,7 @@ class MessageLookup extends MessageLookupByLibrary {
             'Only applies to MEMOplanner Go'),
         'onlyMe': MessageLookupByLibrary.simpleMessage('Only me'),
         'onlyOneInfoItem': MessageLookupByLibrary.simpleMessage(
-            'You can only have one extra function in this activity'),
+            'You can only have one extra function in this activity.'),
         'onlyThisDay': MessageLookupByLibrary.simpleMessage('Only this day'),
         'password': MessageLookupByLibrary.simpleMessage('Password'),
         'passwordHint': MessageLookupByLibrary.simpleMessage(
