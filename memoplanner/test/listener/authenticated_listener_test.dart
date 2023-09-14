@@ -119,9 +119,8 @@ void main() {
                     create: (c) => FakeSpeechSettingsCubit(),
                   ),
                 ],
-                child: AuthenticatedListener(
-                  newlyLoggedIn: state.newlyLoggedIn,
-                  child: const SizedBox.shrink(),
+                child: const AuthenticatedListener(
+                  child: SizedBox.shrink(),
                 ),
               ),
             ),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auth/auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:memoplanner/bloc/all.dart';
@@ -40,10 +42,9 @@ class TopLevelListeners extends StatelessWidget {
                     MaterialPageRoute<void>(
                       builder: (_) => AuthenticatedBlocsProvider(
                         authenticatedState: state,
-                        child: AlarmListener(
+                        child: const AlarmListener(
                           child: AuthenticatedListener(
-                            newlyLoggedIn: state.newlyLoggedIn,
-                            child: const CalendarPage(),
+                            child: CalendarPage(),
                           ),
                         ),
                       ),
@@ -52,12 +53,26 @@ class TopLevelListeners extends StatelessWidget {
                     (_) => false,
                   );
                 } else {
-                  await navigator.pushAndRemoveUntil(
-                      GetIt.I<AlarmNavigator>().getFullscreenAlarmRoute(
-                        authenticatedState: state,
-                        alarm: alarm,
+                  unawaited(
+                    navigator.pushAndRemoveUntil<void>(
+                      MaterialPageRoute<void>(
+                        builder: (_) => AuthenticatedBlocsProvider(
+                          authenticatedState: state,
+                          child: const AlarmListener(
+                            child: AlarmBackgroundPage(),
+                          ),
+                        ),
+                        settings: (AlarmBackgroundPage).routeSetting(),
                       ),
-                      (_) => false);
+                      (_) => false,
+                    ),
+                  );
+                  await navigator.push(
+                    GetIt.I<AlarmNavigator>().getFullscreenAlarmRoute(
+                      authenticatedState: state,
+                      alarm: alarm,
+                    ),
+                  );
                 }
               },
               onUnauthenticated: (context, navigator, state) async {

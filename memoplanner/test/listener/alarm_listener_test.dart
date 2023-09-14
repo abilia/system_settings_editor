@@ -404,7 +404,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(scheduleNotificationsCalls, 1);
+      expect(scheduleNotificationsCalls, 2);
     });
 
     testWidgets('SGC-843 Alarm page Close button cancels alarm',

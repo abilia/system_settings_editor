@@ -42,7 +42,7 @@ class ActivityInfoWithDots extends StatelessWidget {
   }
 }
 
-class ActivityInfo extends StatelessWidget with ActivityMixin {
+class ActivityInfo extends StatelessWidget with ActivityAndAlarmsMixin {
   final ActivityDay activityDay;
   final Widget? previewImage;
   final ActivityAlarm? alarm;
@@ -168,7 +168,7 @@ class ActivityContainer extends StatelessWidget {
   }
 }
 
-class Attachment extends StatelessWidget with ActivityMixin {
+class Attachment extends StatelessWidget with ActivityAndAlarmsMixin {
   final ActivityDay activityDay;
   final ActivityAlarm? alarm;
 

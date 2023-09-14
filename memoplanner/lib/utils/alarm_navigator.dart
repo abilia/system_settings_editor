@@ -13,6 +13,8 @@ class AlarmNavigator {
   final _routesOnStack = <String, MaterialPageRoute>{};
   static final log = Logger((AlarmNavigator).toString());
 
+  bool get hasRoutesOnStack => _routesOnStack.isNotEmpty;
+
   @visibleForTesting
   void addRouteOnStack(MaterialPageRoute route) {
     _routesOnStack[fullScreenActivityKey] = route;
