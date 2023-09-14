@@ -74,7 +74,7 @@ class EditChecklistWidget extends StatelessWidget {
                 Flexible(
                   child: ScrollArrows.vertical(
                     controller: scrollController,
-                    overflowDivider: true,
+                    verticalOverflowDivider: true,
                     child: ListView.builder(
                       controller: scrollController,
                       shrinkWrap: true,
