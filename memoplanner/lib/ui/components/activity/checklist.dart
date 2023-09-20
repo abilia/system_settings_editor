@@ -89,7 +89,7 @@ class EditChecklistWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: layout.templates.s1.onlyVertical.onlyTop,
+                  padding: layout.templates.s2.onlyVertical.onlyTop,
                   child: _AddNewQuestionButton(
                     scrollController: scrollController,
                   ),
