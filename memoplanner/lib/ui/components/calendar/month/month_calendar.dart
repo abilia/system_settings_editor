@@ -246,7 +246,7 @@ class MonthDayView extends StatelessWidget {
         onTap: () {
           final currentDay = context.read<DayPickerBloc>().state.day;
           currentDay.isAtSameDay(monthDay.day)
-              ? DefaultTabController.of(context).animateTo(0)
+              ? DefaultTabController.maybeOf(context)?.animateTo(0)
               : BlocProvider.of<DayPickerBloc>(context)
                   .add(GoTo(day: monthDay.day));
           context.read<MonthCalendarCubit>().setCollapsed(false);
