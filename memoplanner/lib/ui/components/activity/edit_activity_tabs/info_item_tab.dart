@@ -329,21 +329,20 @@ class ChecklistPickFieldExtras extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: checklistLayout.previewTextPadding,
-            child: Center(
-              child: Text('${questions.length} ${translate.tasks}'),
-            ),
-          ),
+          Text('${questions.length} ${translate.tasks}'),
           Expanded(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                ...questions
-                    .map((question) =>
-                        CheckListPickFieldExtrasItem(question: question))
-                    .toList()
-              ],
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: checklistLayout.previewListPadding),
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ...questions
+                      .map((question) =>
+                          CheckListPickFieldExtrasItem(question: question))
+                      .toList()
+                ],
+              ),
             ),
           ),
         ],
