@@ -25,6 +25,7 @@ void main() {
     activitiesCubit = ActivitiesCubit(
       activityRepository: mockActivityRepository,
       syncBloc: FakeSyncBloc(),
+      analytics: FakeSeagullAnalytics(),
     );
     dayEventsCubit = DayEventsCubit(
       dayPickerBloc: dayPickerBloc,
@@ -783,6 +784,7 @@ void main() {
       activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
+        analytics: FakeSeagullAnalytics(),
       );
       final ticker = Ticker.fake(initialTime: initialMinutes);
 
@@ -1005,6 +1007,7 @@ void main() {
         activitiesCubit = ActivitiesCubit(
           activityRepository: mockActivityRepository,
           syncBloc: FakeSyncBloc(),
+          analytics: FakeSeagullAnalytics(),
         );
         final ticker = Ticker.fake(initialTime: today);
         dayEventsCubit = DayEventsCubit(

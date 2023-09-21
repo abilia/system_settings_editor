@@ -18,6 +18,7 @@ import 'package:handi/db/settings_db.dart';
 import 'package:handi/main.dart';
 import 'package:handi/models/delays.dart';
 import 'package:repository_base/repository_base.dart';
+import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:seagull_clock/ticker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -216,6 +217,7 @@ class AuthenticatedProviders extends StatelessWidget {
             create: (context) => ActivitiesCubit(
               activityRepository: context.read<ActivityRepository>(),
               syncBloc: context.read<SyncBloc>(),
+              analytics: SeagullAnalytics.empty(),
             ),
           ),
           BlocProvider<UserFileBloc>(
