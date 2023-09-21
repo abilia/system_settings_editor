@@ -10,13 +10,13 @@ class ActivitiesChanged {}
 class ActivitiesCubit extends Cubit<ActivitiesChanged> with EditRecurringMixin {
   final ActivityRepository activityRepository;
   final SyncBloc syncBloc;
-  final SeagullAnalytics? analytics;
+  final SeagullAnalytics analytics;
   late final StreamSubscription _syncSubscription;
 
   ActivitiesCubit({
     required this.activityRepository,
     required this.syncBloc,
-    this.analytics,
+    required this.analytics,
   }) : super(ActivitiesChanged()) {
     _syncSubscription = syncBloc.stream
         .where((state) => state is Synced && state.didFetchData)
@@ -32,7 +32,7 @@ class ActivitiesCubit extends Cubit<ActivitiesChanged> with EditRecurringMixin {
   Future<void> updateActivity(Activity activity) => _saveActivities([activity]);
 
   Future<void> addActivity(Activity activity) async {
-    analytics?.trackEvent(
+    analytics.trackEvent(
       AnalyticsEvents.activityCreated,
       properties: activity.properties,
     );

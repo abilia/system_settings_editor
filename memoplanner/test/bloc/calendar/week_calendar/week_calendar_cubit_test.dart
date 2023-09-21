@@ -25,6 +25,7 @@ void main() {
       activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
+        analytics: FakeSeagullAnalytics(),
       );
       final timerDb = MockTimerDb();
       final timerCubit = TimerCubit(
@@ -39,6 +40,7 @@ void main() {
       activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
+        analytics: FakeSeagullAnalytics(),
       );
       weekCalendarBloc = WeekCalendarCubit(
         activitiesCubit: activitiesCubit,
