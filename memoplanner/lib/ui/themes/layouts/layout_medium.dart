@@ -162,8 +162,12 @@ class MediumLayout extends Layout {
           ),
           switchField: const SwitchFieldLayout(
             height: 84,
-            toggleSize: 72,
-            padding: EdgeInsets.only(left: 18.0, right: 6.0),
+            padding: EdgeInsets.only(left: 18.0, right: 24.0),
+            switchLayout: SwitchLayout(
+              width: 51,
+              height: 21,
+              thumbSize: 30,
+            ),
           ),
           login: const LoginLayout(
             topFormDistance: 48,
