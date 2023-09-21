@@ -26,15 +26,14 @@ class _HiddenSettingState extends State<HiddenSetting> {
             } else if (rightTapped) {
               leftTapped = false;
               rightTapped = false;
-              final navigator = Navigator.of(context);
               final authProviders = copiedAuthProviders(context);
               final accessGranted = await codeProtectAccess(
                 context,
                 restricted: (codeSettings) => codeSettings.protectSettings,
                 name: Lt.of(context).settings,
               );
-              if (accessGranted) {
-                await navigator.push(
+              if (accessGranted && context.mounted) {
+                await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => MultiBlocProvider(
                       providers: authProviders,

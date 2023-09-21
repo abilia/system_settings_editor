@@ -10,7 +10,6 @@ mixin ActivityNavigation {
     List<BlocProvider> authProviders,
     DefaultsAddActivitySettings defaultsSettings,
   ) async {
-    final navigator = Navigator.of(context);
     final day = context.read<DayPickerBloc>().state.day;
     final calendarId = context.read<CalendarCubit>().state;
     final basicActivityData =
@@ -28,10 +27,10 @@ mixin ActivityNavigation {
         settings: (BasicActivityPickerPage).routeSetting(),
       ),
     );
-    if (basicActivityData is BasicActivityDataItem) {
+    if (basicActivityData is BasicActivityDataItem && context.mounted) {
       await _navigateToActivityWizard(
         authProviders: authProviders,
-        navigator: navigator,
+        context: context,
         defaultsSettings: defaultsSettings,
         day: day,
         calendarId: calendarId ?? '',
@@ -51,7 +50,7 @@ mixin ActivityNavigation {
     final defaultsSettings = settings.addActivity.defaults;
     return _navigateToActivityWizard(
       authProviders: authProviders,
-      navigator: Navigator.of(context),
+      context: context,
       defaultsSettings: defaultsSettings,
       calendarId: calendarId ?? '',
       day: context.read<DayPickerBloc>().state.day,
@@ -61,7 +60,7 @@ mixin ActivityNavigation {
   }
 
   Future<void> _navigateToActivityWizard({
-    required NavigatorState navigator,
+    required BuildContext context,
     required DateTime day,
     required DefaultsAddActivitySettings defaultsSettings,
     required List<BlocProvider> authProviders,
@@ -69,7 +68,7 @@ mixin ActivityNavigation {
     BasicActivityDataItem? basicActivity,
     AddActivityMode? addActivityMode,
   }) async {
-    final activityCreated = await navigator.push<bool>(
+    final activityCreated = await Navigator.of(context).push<bool>(
       createSlideRoute<bool>(
         settings: (ActivityWizardPage).routeSetting(),
         page: MultiBlocProvider(
@@ -118,7 +117,9 @@ mixin ActivityNavigation {
         ),
       ),
     );
-    if (activityCreated == true) await navigator.maybePop();
+    if (activityCreated == true && context.mounted) {
+      await Navigator.of(context).maybePop();
+    }
   }
 }
 

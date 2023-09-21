@@ -30,7 +30,6 @@ class MenuSettingsPage extends StatelessWidget {
                     final showSettingsChangeToDisable =
                         settings.menu.showSettings &&
                             !menuSettingsCubit.state.showSettings;
-                    final navigator = Navigator.of(context);
                     if (showSettingsChangeToDisable) {
                       final answer = await showViewDialog<bool>(
                         context: context,
@@ -40,7 +39,7 @@ class MenuSettingsPage extends StatelessWidget {
                       if (answer != true) return;
                     }
                     await menuSettingsCubit.save();
-                    navigator.pop();
+                    if (context.mounted) Navigator.of(context).pop();
                   },
                 ),
               ),
