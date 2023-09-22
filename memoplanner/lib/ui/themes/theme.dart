@@ -43,12 +43,7 @@ final abiliaTheme = ThemeData(
   cupertinoOverrideTheme: const CupertinoThemeData(
     primaryColor: AbiliaColors.black,
   ),
-  switchTheme: SwitchThemeData(
-    thumbColor: toggleableActiveColor,
-    trackColor: toggleableActiveColor,
-  ),
-  radioTheme: RadioThemeData(fillColor: toggleableActiveColor),
-  checkboxTheme: CheckboxThemeData(fillColor: toggleableActiveColor),
+  radioTheme: RadioThemeData(fillColor: radioFillColor),
   dividerTheme: DividerThemeData(
     color: AbiliaColors.white120,
     endIndent: layout.templates.m1.right,
@@ -73,6 +68,7 @@ final inputDecorationTheme = InputDecorationTheme(
     fillColor: AbiliaColors.white);
 
 final outerRadius = layout.radius;
+
 Radius innerRadiusFromBorderSize(double borderSize) =>
     Radius.circular(outerRadius - borderSize);
 final radius = Radius.circular(outerRadius);
@@ -325,7 +321,7 @@ final lightIconThemeData = IconThemeData(
   color: AbiliaColors.white,
 );
 
-final toggleableActiveColor =
+final radioFillColor =
     MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
   if (states.contains(MaterialState.disabled)) {
     return null;
