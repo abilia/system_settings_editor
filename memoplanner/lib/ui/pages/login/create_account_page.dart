@@ -27,14 +27,15 @@ class CreateAccountPage extends StatelessWidget {
           BlocListener<CreateAccountCubit, CreateAccountState>(
             listenWhen: (previous, current) => current is AccountCreated,
             listener: (context, state) async {
-              final navigator = Navigator.of(context);
               await showViewDialog(
                 context: context,
                 wrapWithAuthProviders: false,
                 builder: (context) => const AccountCreatedDialog(),
                 routeSettings: (AccountCreatedDialog).routeSetting(),
               );
-              navigator.pop(state.username);
+              if (context.mounted) {
+                Navigator.of(context).pop(state.username);
+              }
             },
           ),
           BlocListener<CreateAccountCubit, CreateAccountState>(

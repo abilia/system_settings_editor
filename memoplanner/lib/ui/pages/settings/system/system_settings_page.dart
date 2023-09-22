@@ -20,14 +20,13 @@ class SystemSettingsPage extends StatelessWidget {
           text: Text(translate.codeProtect),
           onTap: () async {
             final authProviders = copiedAuthProviders(context);
-            final navigator = Navigator.of(context);
             final accessGranted = await codeProtectAccess(
               context,
               restricted: (codeSettings) => codeSettings.protectCodeProtect,
               name: translate.codeProtect,
             );
-            if (accessGranted) {
-              await navigator.push(
+            if (accessGranted && context.mounted) {
+              await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => MultiBlocProvider(
                     providers: authProviders,
