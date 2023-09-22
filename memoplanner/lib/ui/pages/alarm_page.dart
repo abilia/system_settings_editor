@@ -233,6 +233,7 @@ class AlarmBottomNavigationBar extends StatelessWidget
     return SizedBox(
       height: layout.navigationBar.height,
       child: BottomAppBar(
+        padding: EdgeInsets.zero,
         child: Row(
           mainAxisAlignment: _displayCheckButton
               ? MainAxisAlignment.spaceBetween
