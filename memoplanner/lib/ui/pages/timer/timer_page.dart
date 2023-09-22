@@ -161,6 +161,7 @@ class _TimerBottomBar extends StatelessWidget {
     return SizedBox(
       height: layout.navigationBar.height,
       child: BottomAppBar(
+        padding: EdgeInsets.zero,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[

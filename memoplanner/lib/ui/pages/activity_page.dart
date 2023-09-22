@@ -89,6 +89,7 @@ class _ActivityBottomAppBar extends StatelessWidget
     return SizedBox(
       height: layout.toolbar.height,
       child: BottomAppBar(
+        padding: EdgeInsets.zero,
         child: Row(
           children: <Widget>[
             if (displayUncheckButton)
