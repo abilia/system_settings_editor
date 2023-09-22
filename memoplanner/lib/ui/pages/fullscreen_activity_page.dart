@@ -168,12 +168,10 @@ class FullScreenActivityTabItem extends StatelessWidget {
                     ),
                     AnimatedContainer(
                       duration: _animationDuration,
-                      decoration: activityOccasion.activity.hasImage
-                          ? const BoxDecoration()
-                          : BoxDecoration(
-                              borderRadius: innerBorder,
-                              color: AbiliaColors.white,
-                            ),
+                      decoration: BoxDecoration(
+                        borderRadius: innerBorder,
+                        color: AbiliaColors.white,
+                      ),
                       margin: EdgeInsets.all(border),
                       child: activityOccasion.activity.hasImage
                           ? FadeInAbiliaImage(

@@ -46,6 +46,7 @@ void main() {
     activitiesCubit = ActivitiesCubit(
       activityRepository: mockActivityRepository,
       syncBloc: mockSyncBloc,
+      analytics: FakeSeagullAnalytics(),
     );
   });
 
@@ -64,6 +65,7 @@ void main() {
         build: () => ActivitiesCubit(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
+              analytics: FakeSeagullAnalytics(),
             ),
         act: (ActivitiesCubit cubit) async {
           cubit.notifyChange();
@@ -82,6 +84,7 @@ void main() {
         build: () => ActivitiesCubit(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
+              analytics: FakeSeagullAnalytics(),
             ),
         act: (ActivitiesCubit cubit) async =>
             cubit.addActivity(updatedActivity1),
@@ -98,6 +101,7 @@ void main() {
         build: () => ActivitiesCubit(
               activityRepository: mockActivityRepository,
               syncBloc: mockSyncBloc,
+              analytics: FakeSeagullAnalytics(),
             ),
         act: (ActivitiesCubit cubit) async {
           cubit.notifyChange();
@@ -117,6 +121,7 @@ void main() {
       activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: syncBloc,
+        analytics: FakeSeagullAnalytics(),
       );
 
       // Act
@@ -136,6 +141,7 @@ void main() {
       activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: syncBloc,
+        analytics: FakeSeagullAnalytics(),
       );
 
       // Act
@@ -156,6 +162,7 @@ void main() {
         activitiesCubit = ActivitiesCubit(
           activityRepository: mockActivityRepository,
           syncBloc: syncBloc,
+          analytics: FakeSeagullAnalytics(),
         );
         syncBloc.emit(const Synced(didFetchData: false));
         return activitiesCubit;

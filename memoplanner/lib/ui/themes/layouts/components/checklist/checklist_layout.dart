@@ -5,24 +5,20 @@ part 'checklist_question_layout.dart';
 
 class ChecklistLayout {
   final ChecklistQuestionLayout question;
-  final EdgeInsets addNewQButtonPadding,
-      addNewQIconPadding,
-      previewPadding,
-      previewTextPadding;
+  final EdgeInsets previewPadding;
   final double addNewButtonHeight,
       previewCornerRadius,
       previewItemCornerRadius,
       previewImageSize,
       previewItemSpacing,
-      previewExtrasHeight;
+      previewExtrasHeight,
+      previewListPadding;
   final double previewImageBorderRadius;
   final double dividerHeight;
 
   const ChecklistLayout({
     this.question = const ChecklistQuestionLayout(),
-    this.addNewQButtonPadding = const EdgeInsets.fromLTRB(12, 8, 12, 12),
-    this.addNewQIconPadding = const EdgeInsets.symmetric(horizontal: 12),
-    this.previewTextPadding = const EdgeInsets.only(left: 12, right: 8),
+    this.previewListPadding = 8,
     this.previewPadding = const EdgeInsets.only(
       top: 4,
       bottom: 4,
@@ -45,9 +41,7 @@ class ChecklistLayoutMedium extends ChecklistLayout {
     ChecklistQuestionLayout? question,
   }) : super(
           question: question ?? const ChecklistQuestionLayoutMedium(),
-          addNewQButtonPadding: const EdgeInsets.fromLTRB(18, 12, 18, 18),
-          addNewQIconPadding: const EdgeInsets.only(left: 22, right: 16),
-          previewTextPadding: const EdgeInsets.only(left: 16, right: 12),
+          previewListPadding: 12,
           previewPadding: const EdgeInsets.only(
             top: 8,
             bottom: 8,

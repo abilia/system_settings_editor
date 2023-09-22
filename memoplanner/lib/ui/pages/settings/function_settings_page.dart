@@ -6,6 +6,7 @@ import 'package:memoplanner/utils/all.dart';
 
 class FunctionSettingsPage extends StatelessWidget {
   const FunctionSettingsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -47,7 +48,6 @@ class FunctionSettingsPage extends StatelessWidget {
                 onPressed: () async {
                   final functionSettingsCubit =
                       context.read<FunctionSettingsCubit>();
-                  final navigator = Navigator.of(context);
                   final displayMenuChangedToDisabled =
                       !functionSettingsCubit.state.display.menuValue &&
                           settings.functions.display.menuValue;
@@ -60,7 +60,7 @@ class FunctionSettingsPage extends StatelessWidget {
                     if (answer != true) return;
                   }
                   await functionSettingsCubit.save();
-                  navigator.pop();
+                  if (context.mounted) Navigator.of(context).pop();
                 },
               ),
             ),
@@ -94,6 +94,7 @@ class _SettingsTab extends StatelessWidget {
   }) : super(key: key);
   final List<Widget> children;
   final String hint;
+
   @override
   Widget build(BuildContext context) => SettingsTab(children: [
         Padding(
@@ -107,6 +108,7 @@ class _SettingsTab extends StatelessWidget {
 
 class ToolbarSettingsTab extends StatelessWidget {
   const ToolbarSettingsTab({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -174,6 +176,7 @@ class ToolbarSettingsTab extends StatelessWidget {
 class HomeScreenSettingsTab extends StatelessWidget {
   const HomeScreenSettingsTab({Key? key}) : super(key: key);
   final widgets = const <Widget>[];
+
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -233,6 +236,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
 class TimeoutSettingsTab extends StatelessWidget {
   const TimeoutSettingsTab({Key? key}) : super(key: key);
   final widgets = const <Widget>[];
+
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);

@@ -59,7 +59,10 @@ class PickField extends StatelessWidget {
             decoration: decoration,
             child: Padding(
               padding: extras != null
-                  ? layout.pickField.withExtrasPadding.onlyVertical
+                  ? layout.pickField.withExtrasPadding.onlyVertical.subtract(
+                      // this is to compensate for some built in padding in TextStyle or IconTheme
+                      const EdgeInsets.only(top: 4),
+                    )
                   : verticalPadding,
               child: Column(
                 children: [

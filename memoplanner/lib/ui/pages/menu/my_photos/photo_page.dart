@@ -196,16 +196,15 @@ Future _deletePhoto(
   Sortable<ImageArchiveData> sortable,
 ) async {
   final sortableBloc = context.read<SortableBloc>();
-  final navigator = Navigator.of(context);
   final result = await showViewDialog<bool>(
     context: context,
     builder: (_) => const DeletePhotoDialog(),
     routeSettings: (DeletePhotoDialog).routeSetting(),
   );
 
-  if (result == true) {
+  if (result == true && context.mounted) {
     sortableBloc.add(SortableUpdated(sortable.copyWith(deleted: true)));
-    await navigator.maybePop();
+    await Navigator.of(context).maybePop();
   }
 }
 

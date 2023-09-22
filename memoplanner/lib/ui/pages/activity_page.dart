@@ -145,7 +145,6 @@ class _ActivityBottomAppBar extends StatelessWidget
   ) async {
     final activity = activityDay.activity;
     final authProviders = copiedAuthProviders(context);
-    final navigator = Navigator.of(context);
     final activitiesCubit = context.read<ActivitiesCubit>();
     final result = await Navigator.of(context).push<Activity>(
       PersistentMaterialPageRoute(
@@ -161,8 +160,8 @@ class _ActivityBottomAppBar extends StatelessWidget
     );
 
     if (result != null) {
-      if (activity.isNoneSingleInstanceRecurring) {
-        final applyTo = await navigator.push<ApplyTo>(
+      if (activity.isNoneSingleInstanceRecurring && context.mounted) {
+        final applyTo = await Navigator.of(context).push<ApplyTo>(
           PersistentMaterialPageRoute(
             settings: (SelectRecurrentTypePage).routeSetting(),
             builder: (_) => SelectRecurrentTypePage(
@@ -194,15 +193,14 @@ class _ActivityBottomAppBar extends StatelessWidget
     Activity activity,
   ) async {
     final activitiesCubit = context.read<ActivitiesCubit>();
-    final navigator = Navigator.of(context);
     final shouldDelete = await showViewDialog<bool>(
       context: context,
       builder: (_) => const DeleteActivityDialog(),
       routeSettings: (DeleteActivityDialog).routeSetting(),
     );
-    if (shouldDelete == true) {
+    if (shouldDelete == true && context.mounted) {
       if (activity.isNoneSingleInstanceRecurring) {
-        final applyTo = await navigator.push<ApplyTo>(
+        final applyTo = await Navigator.of(context).push<ApplyTo>(
           MaterialPageRoute(
             builder: (_) => SelectRecurrentTypePage(
               heading: Lt.of(context).deleteRecurringActivity,
@@ -217,7 +215,8 @@ class _ActivityBottomAppBar extends StatelessWidget
       } else {
         await activitiesCubit.updateActivity(activity.copyWith(deleted: true));
       }
-      await navigator.maybePop();
+      if (!context.mounted) return;
+      await Navigator.of(context).maybePop();
     }
   }
 }

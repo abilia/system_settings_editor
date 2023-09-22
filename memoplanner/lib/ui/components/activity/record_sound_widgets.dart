@@ -138,7 +138,6 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                       }
                     : () async {
                         final authProviders = copiedAuthProviders(context);
-                        final navigator = Navigator.of(context);
                         final soundBloc = context.read<SoundBloc>();
                         final userFileBloc = context.read<UserFileBloc>();
                         final audio = recordedAudio;
@@ -148,7 +147,9 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                                 ? await soundBloc.resolveFile(recordedAudio)
                                 : null;
 
-                        final result = await navigator.push<AbiliaFile>(
+                        if (!context.mounted) return;
+                        final result =
+                            await Navigator.of(context).push<AbiliaFile>(
                           PersistentMaterialPageRoute(
                             builder: (_) => MultiBlocProvider(
                               providers: authProviders,

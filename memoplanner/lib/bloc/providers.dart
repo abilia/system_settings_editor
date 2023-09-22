@@ -131,6 +131,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               create: (context) => ActivitiesCubit(
                 activityRepository: context.read<ActivityRepository>(),
                 syncBloc: context.read<SyncBloc>(),
+                analytics: GetIt.I<SeagullAnalytics>(),
               ),
             ),
             BlocProvider<TimerCubit>(

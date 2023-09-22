@@ -41,6 +41,7 @@ void main() {
       activitiesCubit = ActivitiesCubit(
         activityRepository: mockActivityRepository,
         syncBloc: FakeSyncBloc(),
+        analytics: FakeSeagullAnalytics(),
       );
       mockGenericRepository = MockGenericRepository();
       when(() => mockGenericRepository.getAll())
