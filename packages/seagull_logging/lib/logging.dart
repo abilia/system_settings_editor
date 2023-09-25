@@ -130,17 +130,14 @@ class SeagullLogger {
     loggingSubscriptions.add(
       Logger.root.onRecord.listen(
         (record) async {
-          if (record.level > Level.WARNING) {
-            if (record.error != null) {
-              await FirebaseCrashlytics.instance.recordError(
-                record.error,
-                record.stackTrace,
-                reason: format(record),
-              );
-            } else {
-              await FirebaseCrashlytics.instance.log(format(record));
-            }
+          if (record.level > Level.WARNING && record.error != null) {
+            return FirebaseCrashlytics.instance.recordError(
+              record.error,
+              record.stackTrace,
+              reason: format(record),
+            );
           }
+          await FirebaseCrashlytics.instance.log(format(record));
         },
       ),
     );
