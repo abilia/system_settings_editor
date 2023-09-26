@@ -3,6 +3,7 @@ import 'package:carymessenger/getit_initializer.dart';
 import 'package:carymessenger/l10n/all.dart';
 import 'package:carymessenger/listeners/top_level_listener.dart';
 import 'package:carymessenger/providers.dart';
+import 'package:carymessenger/ui/pages/splash_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -46,11 +47,7 @@ class CaryMobileApp extends StatelessWidget {
           child: MaterialApp(
             navigatorKey: _navigatorKey,
             localizationsDelegates: const [Lt.delegate],
-            home: Scaffold(
-              body: Center(
-                child: Text('${appName.toUpperCase()}!'),
-              ),
-            ),
+            home: const SplashPage(),
           ),
         ),
       ),

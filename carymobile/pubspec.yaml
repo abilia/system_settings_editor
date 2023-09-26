@@ -50,6 +50,7 @@ dependencies:
   sqflite: ^2.2.5
   sqflite_common_ffi: ^2.2.5
   timezone: ^0.9.0
+  transparent_image: ^2.0.0
   user_files:
     path: ../packages/user_files
   utils:
@@ -69,3 +70,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/graphics/
+  fonts:
+    - family: AbiliaFont
+      fonts:
+        - asset: assets/fonts/AbiliaFont.ttf

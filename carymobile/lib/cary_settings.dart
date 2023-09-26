@@ -1,19 +1,19 @@
 import 'package:carymessenger/db/settings_db.dart';
 
-class HandiSettings {
+class CarySettings {
   final bool textToSpeech;
 
-  const HandiSettings._({
+  const CarySettings._({
     this.textToSpeech = false,
   });
 
-  factory HandiSettings.fromDb(SettingsDb settingsDb) =>
-      HandiSettings._(textToSpeech: settingsDb.tts);
+  factory CarySettings.fromDb(SettingsDb settingsDb) =>
+      CarySettings._(textToSpeech: settingsDb.tts);
 
-  HandiSettings copyWith({
+  CarySettings copyWith({
     bool? textToSpeech,
   }) =>
-      HandiSettings._(
+      CarySettings._(
         textToSpeech: textToSpeech ?? this.textToSpeech,
       );
 }
