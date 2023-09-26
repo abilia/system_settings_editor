@@ -21,9 +21,8 @@ class SwitchField extends StatelessWidget {
     this.decoration,
     this.padding,
     this.ttsData,
-    Key? key,
-  })  : assert(child is Text || ttsData != null),
-        super(key: key);
+    super.key,
+  }) : assert(child is Text || ttsData != null);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class SwitchField extends StatelessWidget {
         toggled: value,
       ),
       child: InkWell(
-        onTap: () => onChanged?.call(!value),
+        onTap: onChanged != null ? () => onChanged?.call(!value) : null,
         borderRadius: borderRadius,
         child: Container(
           height: heigth ?? defaultHeight,
@@ -73,11 +72,10 @@ class SwitchField extends StatelessWidget {
               ),
               SizedBox(
                 height: layout.switchField.height,
-                child: _MemoplannerSwitch(
+                child: MemoplannerSwitch(
                   value: value,
-                  onToggle: (val) {
-                    onChanged?.call(val);
-                  },
+                  onChanged: onChanged,
+                  key: ObjectKey(key),
                 ),
               ),
             ],
@@ -88,20 +86,21 @@ class SwitchField extends StatelessWidget {
   }
 }
 
-class _MemoplannerSwitch extends StatefulWidget {
+class MemoplannerSwitch extends StatefulWidget {
   final bool value;
-  final ValueChanged<bool> onToggle;
+  final ValueChanged<bool>? onChanged;
 
-  const _MemoplannerSwitch({
+  const MemoplannerSwitch({
     required this.value,
-    required this.onToggle,
+    required this.onChanged,
+    super.key,
   });
 
   @override
-  _MemoplannerSwitchState createState() => _MemoplannerSwitchState();
+  MemoplannerSwitchState createState() => MemoplannerSwitchState();
 }
 
-class _MemoplannerSwitchState extends State<_MemoplannerSwitch>
+class MemoplannerSwitchState extends State<MemoplannerSwitch>
     with SingleTickerProviderStateMixin {
   late final Animation _toggleAnimation;
   late final AnimationController _animationController;
@@ -132,7 +131,7 @@ class _MemoplannerSwitchState extends State<_MemoplannerSwitch>
   }
 
   @override
-  void didUpdateWidget(_MemoplannerSwitch oldWidget) {
+  void didUpdateWidget(MemoplannerSwitch oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value == widget.value) return;
     _toggleAnimationController();
@@ -141,6 +140,16 @@ class _MemoplannerSwitchState extends State<_MemoplannerSwitch>
   @override
   Widget build(BuildContext context) {
     final switchLayout = layout.switchField.switchLayout;
+    final switchColor = widget.onChanged == null
+        ? AbiliaColors.white120
+        : widget.value
+            ? AbiliaColors.green
+            : AbiliaColors.black;
+    final thumbColor = widget.onChanged == null
+        ? AbiliaColors.white120
+        : widget.value
+            ? AbiliaColors.green
+            : AbiliaColors.white;
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
@@ -150,7 +159,7 @@ class _MemoplannerSwitchState extends State<_MemoplannerSwitch>
             child: GestureDetector(
               onTap: () {
                 _toggleAnimationController();
-                widget.onToggle(!widget.value);
+                widget.onChanged?.call(!widget.value);
               },
               child: Stack(
                 children: <Widget>[
@@ -161,9 +170,7 @@ class _MemoplannerSwitchState extends State<_MemoplannerSwitch>
                       width: switchLayout.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: widget.value
-                            ? AbiliaColors.green.withOpacity(0.38)
-                            : AbiliaColors.black.withOpacity(0.38),
+                        color: switchColor.withOpacity(0.38),
                       ),
                     ),
                   ),
@@ -175,9 +182,7 @@ class _MemoplannerSwitchState extends State<_MemoplannerSwitch>
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         boxShadow: kElevationToShadow[2],
-                        color: widget.value
-                            ? AbiliaColors.green
-                            : AbiliaColors.white,
+                        color: thumbColor,
                       ),
                     ),
                   ),

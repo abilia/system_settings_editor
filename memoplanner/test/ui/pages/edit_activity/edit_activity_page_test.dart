@@ -419,7 +419,7 @@ void main() {
       // Assert -- Full day switch is off
       expect(
           tester
-              .widget<Switch>(
+              .widget<MemoplannerSwitch>(
                   find.byKey(const ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isFalse);
@@ -443,7 +443,7 @@ void main() {
       // Assert -- Full day switch is on,
       expect(
           tester
-              .widget<Switch>(
+              .widget<MemoplannerSwitch>(
                   find.byKey(const ObjectKey(TestKey.fullDaySwitch)))
               .value,
           isTrue);
@@ -461,7 +461,7 @@ void main() {
         await tester.goToAlarmTab();
         expect(
             tester
-                .widget<Switch>(
+                .widget<MemoplannerSwitch>(
                     find.byKey(const ObjectKey(TestKey.alarmAtStartSwitch)))
                 .value,
             isFalse);
@@ -471,7 +471,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(
             tester
-                .widget<Switch>(
+                .widget<MemoplannerSwitch>(
                     find.byKey(const ObjectKey(TestKey.alarmAtStartSwitch)))
                 .value,
             isTrue);
@@ -547,7 +547,7 @@ void main() {
       await tester.scrollDown();
       expect(
           tester
-              .widget<Switch>(
+              .widget<MemoplannerSwitch>(
                   find.byKey(const ObjectKey(TestKey.checkableSwitch)))
               .value,
           isFalse);
@@ -557,7 +557,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(
           tester
-              .widget<Switch>(
+              .widget<MemoplannerSwitch>(
                   find.byKey(const ObjectKey(TestKey.checkableSwitch)))
               .value,
           isTrue);
@@ -569,7 +569,7 @@ void main() {
       await tester.scrollDown();
       expect(
           tester
-              .widget<Switch>(
+              .widget<MemoplannerSwitch>(
                   find.byKey(const ObjectKey(TestKey.deleteAfterSwitch)))
               .value,
           isFalse);
@@ -579,7 +579,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(
           tester
-              .widget<Switch>(
+              .widget<MemoplannerSwitch>(
                   find.byKey(const ObjectKey(TestKey.deleteAfterSwitch)))
               .value,
           isTrue);
