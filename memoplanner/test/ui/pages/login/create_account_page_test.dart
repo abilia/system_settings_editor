@@ -59,8 +59,8 @@ void main() {
             find.byKey(TestKey.createAccountPasswordConfirm), password);
         expect(find.byKey(TestKey.acceptTermsOfUse), findsOneWidget);
         expect(find.byKey(TestKey.acceptPrivacyPolicy), findsOneWidget);
-        await tester.tap(find.byType(Switch).first);
-        await tester.tap(find.byType(Switch).last);
+        await tester.tap(find.byType(MemoplannerSwitch).first);
+        await tester.tap(find.byType(MemoplannerSwitch).last);
         await tester.pumpAndSettle();
         await tester.tap(find.byType(CreateAccountButton));
         await tester.pumpAndSettle();
@@ -119,12 +119,12 @@ void main() {
 
         await expectErrorDialog(tester, translate.confirmTermsOfUse);
 
-        await tester.tap(find.byType(Switch).first);
+        await tester.tap(find.byType(MemoplannerSwitch).first);
         await tester.pumpAndSettle();
 
         await expectErrorDialog(tester, translate.confirmPrivacyPolicy);
 
-        await tester.tap(find.byType(Switch).last);
+        await tester.tap(find.byType(MemoplannerSwitch).last);
         await tester.pumpAndSettle();
 
         await expectErrorDialog(tester, translate.usernameTaken);
