@@ -1,0 +1,88 @@
+name: CARY Mobile Android Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'carymobile/**'
+      - '!carymobile/ios/**'
+      - 'packages/**'
+      - '!**/test*/**'
+      - '!**.md'
+      - '!**.yaml'
+jobs:
+  analyze_and_test_packages:
+    uses: ./.github/workflows/packages-analyze.yaml
+
+  analyze_and_test_carymobile:
+    uses: ./.github/workflows/carymobile-analyze.yaml
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [analyze_and_test_carymobile, analyze_and_test_packages]
+    defaults:
+      run:
+        working-directory: ./carymobile
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - uses: subosito/flutter-action@v2.5.0
+        with:
+          flutter-version: '3.13.0'
+          channel: 'stable'
+
+      - id: set_build_number
+        name: Set build number
+        run: |
+          version=$(( $GITHUB_RUN_NUMBER + 1))
+          echo "buildnumber=$version" >> $GITHUB_OUTPUT
+
+      - name: Build artifact
+        run: |
+          flutter build appbundle \
+            --build-number=${{ steps.set_build_number.outputs.buildnumber }} \
+
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.APPCENTER_KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.APPCENTER_KEY_PASSWORD }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release
+          path: carymobile/build/app/outputs/bundle/release/app-release.aab
+          retention-days: 1
+
+  upload:
+    name: Upload to Google play
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app-release
+      - name: Upload artifact to Google play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
+          packageName: 'com.abilia.carymessenger'
+          releaseFiles: ./app-release.aab
+          track: 'debug'
+          status: completed
+        env:
+          SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+
+      - name: Clean up uploaded artifacts from GitHub storage
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: app-release
