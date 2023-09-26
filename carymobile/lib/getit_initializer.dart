@@ -5,6 +5,7 @@ import 'package:auth/auth.dart';
 import 'package:calendar/all.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/db/settings_db.dart';
+import 'package:carymessenger/delays.dart';
 import 'package:carymessenger/main.dart';
 import 'package:file_storage/file_storage.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ Future<void> initGetItWith({
   GenericDb? genericDb,
   UserFileDb? userFileDb,
   LastSyncDb? lastSyncDb,
+  Delays? delays,
   SeagullLogger? seagullLogger,
   SettingsDb? settingsDb,
 }) async {
@@ -61,6 +63,7 @@ Future<void> initGetItWith({
     ..registerSingleton(genericDb ?? GenericDb(database))
     ..registerSingleton(userFileDb ?? UserFileDb(database))
     ..registerSingleton(lastSyncDb ?? LastSyncDb(sharedPreferences))
+    ..registerSingleton(delays ?? const Delays())
     ..registerSingleton(seagullLogger ?? SeagullLogger.empty())
     ..registerSingleton<SettingsDb>(settingsDb ?? SettingsDb(sharedPreferences))
     ..registerSingleton(
@@ -71,5 +74,7 @@ Future<void> initGetItWith({
             name: appName,
             version: GetIt.I<PackageInfo>().version,
           ),
-    );
+    )
+    ..registerSingleton<FirebasePushService>(
+        firebasePushService ?? FirebasePushService());
 }

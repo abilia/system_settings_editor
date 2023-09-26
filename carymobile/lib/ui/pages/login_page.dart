@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
+import 'package:carymessenger/l10n/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -16,6 +17,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Lt.of(context);
     final reason = unauthenticatedState.loggedOutReason;
     if (reason != LoggedOutReason.logOut) {
       Future(
@@ -75,9 +77,9 @@ class LoginPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Username'),
+                      Text(translate.username_email),
                       Tooltip(
-                        message: 'Username',
+                        message: translate.username_email,
                         child: TextField(
                           onChanged: context.read<LoginCubit>().usernameChanged,
                         ),

@@ -1,0 +1,360 @@
+{
+  "project_info": {
+    "project_number": "340774293730",
+    "firebase_url": "https://whalewhale2013.firebaseio.com",
+    "project_id": "whalewhale2013",
+    "storage_bucket": "whalewhale2013.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340774293730:android:1c4f68b6c0398038198ebb",
+        "android_client_info": {
+          "package_name": "com.abilia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340774293730-3e7cu95j54qcb0l5ro62m30nt3681qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.abilia.handi-calendar",
+                "app_store_id": "939312242"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340774293730:android:7ee6d8c05b151b9e198ebb",
+        "android_client_info": {
+          "package_name": "com.abilia.carymessenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340774293730-3e7cu95j54qcb0l5ro62m30nt3681qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.abilia.handi-calendar",
+                "app_store_id": "939312242"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340774293730:android:63d9925258a52cf3198ebb",
+        "android_client_info": {
+          "package_name": "com.abilia.gewa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340774293730-3e7cu95j54qcb0l5ro62m30nt3681qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.abilia.handi-calendar",
+                "app_store_id": "939312242"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340774293730:android:ca2fa22ca317366c",
+        "android_client_info": {
+          "package_name": "com.abilia.handicalendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340774293730-2d5k7dr9cgl2re8chbk85ltjh05s2v6v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abilia.handicalendar",
+            "certificate_hash": "448d63965fdd552429f0f6540bb4428af4dd66be"
+          }
+        },
+        {
+          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340774293730-3e7cu95j54qcb0l5ro62m30nt3681qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.abilia.handi-calendar",
+                "app_store_id": "939312242"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340774293730:android:9f95eb10fe3e4a88198ebb",
+        "android_client_info": {
+          "package_name": "com.abilia.handicalendar6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340774293730-3e7cu95j54qcb0l5ro62m30nt3681qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.abilia.handi-calendar",
+                "app_store_id": "939312242"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340774293730:android:12f0258eeaa6633d198ebb",
+        "android_client_info": {
+          "package_name": "com.abilia.memoplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340774293730-3e7cu95j54qcb0l5ro62m30nt3681qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.abilia.handi-calendar",
+                "app_store_id": "939312242"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340774293730:android:ae0eea2d101ee529198ebb",
+        "android_client_info": {
+          "package_name": "com.abilia.memoplannergo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340774293730-3e7cu95j54qcb0l5ro62m30nt3681qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.abilia.handi-calendar",
+                "app_store_id": "939312242"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340774293730:android:11e8a035274725d5",
+        "android_client_info": {
+          "package_name": "se.abilia.memoplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340774293730-3e7cu95j54qcb0l5ro62m30nt3681qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.abilia.handi-calendar",
+                "app_store_id": "939312242"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340774293730:android:6d76f98a9118bfef",
+        "android_client_info": {
+          "package_name": "se.handitek"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340774293730-o8jjlvkp863d10vprf0hvmi202ctino4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "se.handitek",
+            "certificate_hash": "448d63965fdd552429f0f6540bb4428af4dd66be"
+          }
+        },
+        {
+          "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL3FquIzdCRq22J56lYdhR-RUA-DtITHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340774293730-oamup7lmuesddk6q63r5h8fmseagg495.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340774293730-3e7cu95j54qcb0l5ro62m30nt3681qb1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.abilia.handi-calendar",
+                "app_store_id": "939312242"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

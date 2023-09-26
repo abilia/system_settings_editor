@@ -5,6 +5,7 @@ import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:calendar/all.dart';
 import 'package:calendar_events/calendar_events.dart';
+import 'package:carymessenger/background/background.dart';
 import 'package:carymessenger/delays.dart';
 import 'package:carymessenger/main.dart';
 import 'package:file_storage/file_storage.dart';
@@ -57,7 +58,7 @@ class TopLevelProviders extends StatelessWidget {
           BlocProvider<PushCubit>(
             lazy: false,
             create: (context) => PushCubit(
-              backgroundMessageHandler: (_) async {},
+              backgroundMessageHandler: myBackgroundMessageHandler,
             ),
           ),
           BlocProvider<ClockCubit>(

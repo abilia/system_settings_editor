@@ -1,6 +1,10 @@
+import 'package:carymessenger/firebase_options.dart';
 import 'package:carymessenger/getit_initializer.dart';
+import 'package:carymessenger/l10n/all.dart';
 import 'package:carymessenger/listeners/top_level_listener.dart';
 import 'package:carymessenger/providers.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
@@ -20,8 +24,11 @@ void main() async {
 Future<void> initServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureLocalTimeZone(log: _log);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.instance.isAutoInitEnabled;
   Bloc.observer =
       BlocLoggingObserver(SeagullAnalytics.empty(), isRelease: false);
+  await initLokalise();
   await initGetIt();
 }
 
@@ -38,6 +45,7 @@ class CaryMobileApp extends StatelessWidget {
           navigatorKey: _navigatorKey,
           child: MaterialApp(
             navigatorKey: _navigatorKey,
+            localizationsDelegates: const [Lt.delegate],
             home: Scaffold(
               body: Center(
                 child: Text('${appName.toUpperCase()}!'),

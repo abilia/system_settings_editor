@@ -18,6 +18,9 @@ dependencies:
   equatable: ^2.0.3
   file_storage:
     path: ../packages/file_storage
+  firebase_core: ^2.11.0
+  firebase_crashlytics: ^3.0.4
+  firebase_messaging: ^14.5.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
