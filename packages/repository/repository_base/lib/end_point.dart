@@ -2,8 +2,10 @@ const prod = 'https://myabilia.com', prodName = 'PROD', testName = 'TEST';
 
 const backendEnvironments = {
   prod: prodName,
-  'https://whale.abilia-gbg.se': 'STAGING',
-  'https://t1.abilia-gbg.se': testName,
+  'https://staging.myabilia.com': 'STAGING',
+  'https://test.myabilia.com': testName,
+  'https://whale.abilia-gbg.se': 'Whale',
+  'https://t1.abilia-gbg.se': 'T1',
 };
 
 String backendName(String endpoint, [String fallback = 'LOCAL']) =>
