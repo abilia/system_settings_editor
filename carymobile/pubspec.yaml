@@ -11,10 +11,12 @@ dependencies:
     path: ../packages/abilia_sync
   auth:
     path: ../packages/auth
+  bloc: ^8.0.2
   calendar:
     path: ../packages/calendar
   calendar_events:
     path: ../packages/calendar_events
+  collection: ^1.17.0
   equatable: ^2.0.3
   file_storage:
     path: ../packages/file_storage
@@ -32,6 +34,7 @@ dependencies:
   intl: ^0.18.0
   logging: ^1.1.0
   lokalise_flutter_sdk: ^1.1.1
+  meta: ^1.9.1
   package_info_plus: ^4.1.0
   path_provider: ^2.0.5
   permission_handler: ^10.2.0
