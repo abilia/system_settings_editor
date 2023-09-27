@@ -41,7 +41,7 @@ jobs:
       - id: set_build_number
         name: Set build number
         run: |
-          version=$(( $GITHUB_RUN_NUMBER + 1))
+          version=$(( $GITHUB_RUN_NUMBER + 1000))
           echo "buildnumber=$version" >> $GITHUB_OUTPUT
 
       - name: Build artifact
