@@ -100,6 +100,7 @@ class MemoplannerSwitch extends StatefulWidget {
   MemoplannerSwitchState createState() => MemoplannerSwitchState();
 }
 
+@visibleForTesting
 class MemoplannerSwitchState extends State<MemoplannerSwitch>
     with SingleTickerProviderStateMixin {
   late final Animation _toggleAnimation;
