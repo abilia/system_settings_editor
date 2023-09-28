@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:seagull_clock/clock_cubit.dart';
+part of 'home_page.dart';
 
 class ClockAndDate extends StatelessWidget {
   const ClockAndDate({super.key});

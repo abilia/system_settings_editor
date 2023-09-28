@@ -4,9 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:utils/utils.dart';
+
+part 'agenda_state.dart';
 
 class AgendaCubit extends Cubit<AgendaState> {
   final ActivityRepository activityRepository;
@@ -14,17 +15,23 @@ class AgendaCubit extends Cubit<AgendaState> {
   late final StreamSubscription activitySubscription,
       daySubscription,
       clockSubscription;
+
   AgendaCubit({
     required Stream onActivityUpdate,
     required this.clock,
     required this.activityRepository,
-  }) : super(AgendaLoading(day: clock.state.onlyDays())) {
+  }) : super(const AgendaLoading()) {
+    final day = clock.state.onlyDays();
     activitySubscription =
         onActivityUpdate.listen((event) async => _load(clock.state));
     daySubscription =
-        clock.stream.where((now) => !state.day.isAtSameDay(now)).listen(_load);
+        clock.stream.where((now) => !day.isAtSameDay(now)).listen(_load);
     clockSubscription = clock.stream.listen((now) {
-      _stateOccasion(state.occasions.values.flattened, now);
+      switch (state) {
+        case AgendaLoaded(occasions: final occasions):
+          _stateOccasion(occasions.values.flattened, now);
+        case AgendaLoading():
+      }
     });
     unawaited(_load(clock.state));
   }
@@ -61,34 +68,4 @@ class AgendaCubit extends Cubit<AgendaState> {
     clockSubscription.cancel();
     return super.close();
   }
-}
-
-@immutable
-sealed class AgendaState extends Equatable {
-  const AgendaState({
-    required this.occasions,
-    required this.day,
-  });
-  final DateTime day;
-  final Map<Occasion, List<ActivityDay>> occasions;
-
-  List<ActivityDay> get pastActivities => occasions[Occasion.past] ?? [];
-  List<ActivityDay> get notPastActivities => [
-        ...occasions[Occasion.current] ?? [],
-        ...occasions[Occasion.future] ?? []
-      ];
-
-  @override
-  List<Object?> get props => [occasions, day];
-}
-
-@immutable
-final class AgendaLoading extends AgendaState {
-  const AgendaLoading({required DateTime day})
-      : super(day: day, occasions: const {});
-}
-
-@immutable
-final class AgendaLoaded extends AgendaState {
-  const AgendaLoaded({required super.occasions, required super.day});
 }

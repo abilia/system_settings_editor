@@ -6,15 +6,13 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:calendar/all.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/background/background.dart';
-import 'package:carymessenger/delays.dart';
 import 'package:carymessenger/main.dart';
+import 'package:carymessenger/models/delays.dart';
 import 'package:file_storage/file_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:generics/generics.dart';
 import 'package:get_it/get_it.dart';
-
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_clock/clock_cubit.dart';

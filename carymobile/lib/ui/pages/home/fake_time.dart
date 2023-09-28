@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
-import 'package:seagull_clock/seagull_clock.dart';
-import 'package:utils/date_time_extensions.dart';
+part of 'home_page.dart';
 
 class FakeTime extends StatelessWidget {
   FakeTime({super.key});
