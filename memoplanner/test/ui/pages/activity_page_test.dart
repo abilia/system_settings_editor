@@ -654,7 +654,7 @@ void main() {
       // Assert -- alarm At Start Switch and ok button is disabled
       expect(
           tester
-              .widget<Switch>(
+              .widget<MemoplannerSwitch>(
                   find.byKey(const ObjectKey(TestKey.alarmAtStartSwitch)))
               .onChanged,
           isNull);
