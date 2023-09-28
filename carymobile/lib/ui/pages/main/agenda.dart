@@ -1,7 +1,21 @@
-part of 'home_page.dart';
+part of 'main_page.dart';
 
 class Agenda extends StatelessWidget {
   const Agenda({super.key});
+
+  @override
+  Widget build(BuildContext context) => BlocProvider(
+        create: (context) => AgendaCubit(
+          onActivityUpdate: context.read<ActivitiesCubit>().stream,
+          clock: context.read<ClockCubit>(),
+          activityRepository: context.read<ActivityRepository>(),
+        ),
+        child: const AgendaList(),
+      );
+}
+
+class AgendaList extends StatelessWidget {
+  const AgendaList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +70,8 @@ class AgendaTile extends StatelessWidget {
           imageFileId: imageFile.id,
           imagePath: imageFile.path,
         ),
+        errorBuilder: (context, error, stackTrace) =>
+            Image.memory(kTransparentImage),
         headers: authHeader(GetIt.I<LoginDb>().getToken()),
       );
     }

@@ -20,10 +20,10 @@ part 'fake_time.dart';
 
 part 'clock_and_date.dart';
 
-class HomePage extends StatelessWidget {
+class MainPage extends StatelessWidget {
   final Authenticated authenticated;
 
-  const HomePage({
+  const MainPage({
     required this.authenticated,
     super.key,
   });
@@ -39,16 +39,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               const ClockAndDate(),
-              Expanded(
-                child: BlocProvider(
-                  create: (context) => AgendaCubit(
-                    onActivityUpdate: context.read<ActivitiesCubit>().stream,
-                    clock: context.read<ClockCubit>(),
-                    activityRepository: context.read<ActivityRepository>(),
-                  ),
-                  child: const Agenda(),
-                ),
-              ),
+              const Expanded(child: Agenda()),
               FilledButton(
                 onPressed: () =>
                     context.read<AuthenticationBloc>().add(const LoggedOut()),

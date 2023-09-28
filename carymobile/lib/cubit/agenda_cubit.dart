@@ -21,11 +21,13 @@ class AgendaCubit extends Cubit<AgendaState> {
     required this.clock,
     required this.activityRepository,
   }) : super(const AgendaLoading()) {
-    final day = clock.state.onlyDays();
     activitySubscription =
         onActivityUpdate.listen((event) async => _load(clock.state));
-    daySubscription =
-        clock.stream.where((now) => !day.isAtSameDay(now)).listen(_load);
+    daySubscription = clock.stream.where((now) {
+      final s = state;
+      if (s is! AgendaLoaded) return false;
+      return !s.day.isAtSameDay(now);
+    }).listen(_load);
     clockSubscription = clock.stream.listen((now) {
       switch (state) {
         case AgendaLoaded(occasions: final occasions):
