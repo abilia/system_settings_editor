@@ -1,8 +1,7 @@
 # The Seagull Project
 
-[:calendar: memoplanner](https://github.com/abilia/seagull/tree/master/memoplanner/)
-
-[:blue_book: handi](https://github.com/abilia/seagull/tree/master/handi/)
+| [:calendar: memoplanner](https://github.com/abilia/seagull/tree/master/memoplanner/)|[:blue_book: handi](https://github.com/abilia/seagull/tree/master/handi/)|[:phone: CARY Mobile](https://github.com/abilia/seagull/tree/master/carymobile/)|
+--- | --- | ---
 
 ## Workflow
 
@@ -26,13 +25,13 @@ We're using [lokalise](https://app.lokalise.com) and [lokalise_flutter_sdk](http
 
 - Under Advanced settings in the Download tab, change 'Empty translations' to 'Replace with base language'
 - Download all languages as arb files in the format `intl_%LANG_ISO%.arb`
-- Put the files in the l10n folder [:calendar:](https://github.com/abilia/seagull/tree/master/memoplanner/lib/l10n)[:blue_book:](https://github.com/abilia/seagull/tree/master/handi/lib/l10n)
+- Put the files in the l10n folder [:calendar:](https://github.com/abilia/seagull/tree/master/memoplanner/lib/l10n) [:blue_book:](https://github.com/abilia/seagull/tree/master/handi/lib/l10n) [:phone:](https://github.com/abilia/seagull/tree/master/carymobile/lib/l10n)
 
 - Run `$ dart run lokalise_flutter_sdk:gen-lok-l10n` to generate the translations as a dart file
 
 ### Add new language for iOS
 
-Add the supported language to `ios/Runner/Info.plist`[:calendar:](https://github.com/abilia/seagull/blob/master/memoplanner/ios/Runner/Info.plist)[:blue_book:](https://github.com/abilia/seagull/tree/master/handi/ios/Runner/Info.plist)
+Add the supported language to `ios/Runner/Info.plist`[:calendar:](https://github.com/abilia/seagull/blob/master/memoplanner/ios/Runner/Info.plist) [:blue_book:](https://github.com/abilia/seagull/tree/master/handi/ios/Runner/Info.plist)
 For more info read <https://flutter.dev/docs/development/accessibility-and-localization/internationalization#localizing-for-ios-updating-the-ios-app-bundle>
 
 ## Version numbering
@@ -49,7 +48,7 @@ For more info read <https://flutter.dev/docs/development/accessibility-and-local
 
 - When a release period starts there should not be any stories in "Ready for test" or "Test".
 
-- All strings are translated. [:calendar:](https://app.lokalise.com/project/5478615164886d27c51a59.58833679/?view=multi&filter=builtin_1) [:blue_book:](https://app.lokalise.com/project/49319703649a92c05413c1.00679798/?view=multi&filter=builtin_1)
+- All strings are translated. [:calendar:](https://app.lokalise.com/project/5478615164886d27c51a59.58833679/?view=multi&filter=builtin_1) [:blue_book:](https://app.lokalise.com/project/49319703649a92c05413c1.00679798/?view=multi&filter=builtin_1) [:phone:](https://app.lokalise.com/project/158729946512a6bdac3206.14573411/?view=multi&filter=builtin_1)
 
 ### Alternatively
 

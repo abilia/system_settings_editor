@@ -19,6 +19,13 @@
       "flutterMode": "debug",
     },
     {
+      "name": "CARY Mobile",
+      "cwd": "carymobile",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+    },
+    {
       "name": "MEMOplanner Go",
       "cwd": "memoplanner",
       "request": "launch",
