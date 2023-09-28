@@ -1,7 +1,7 @@
 import 'package:carymessenger/l10n/all.dart';
 import 'package:carymessenger/main.dart';
+import 'package:carymessenger/ui/pages/home/home_page.dart';
 import 'package:carymessenger/ui/pages/login_page.dart';
-import 'package:carymessenger/ui/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -43,6 +43,6 @@ void main() {
     );
     await tester.tap(loginButtonFinder);
     await tester.pumpAndSettle();
-    expect(find.byType(MainPage), findsOneWidget);
+    expect(find.byType(HomePage), findsOneWidget);
   });
 }

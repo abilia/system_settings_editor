@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:carymessenger/delays.dart';
 import 'package:carymessenger/getit_initializer.dart';
+import 'package:carymessenger/models/delays.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:seagull_fakes/all.dart';
 
