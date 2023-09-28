@@ -141,8 +141,7 @@ class LogoWithChangeServer extends StatelessWidget {
       child: Image.asset('assets/graphics/cary_login.png'),
       onLongPress: () async => showModalBottomSheet(
         context: context,
-        builder: (context) => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        builder: (context) => Wrap(
           children: [
             ...backendEnvironments.entries.map(
               (kvp) => Builder(

@@ -12,8 +12,11 @@ import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/seagull_clock.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:user_files/user_files.dart';
+import 'package:utils/date_time_extensions.dart';
 
 part 'agenda.dart';
+
+part 'fake_time.dart';
 
 part 'clock_and_date.dart';
 
@@ -28,6 +31,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: FakeTime(),
+      drawerEdgeDragWidth: 60,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24.0),
