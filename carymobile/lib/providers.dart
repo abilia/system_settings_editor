@@ -6,6 +6,7 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:calendar/all.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/background/background.dart';
+import 'package:carymessenger/cubit/alarm_cubit.dart';
 import 'package:carymessenger/main.dart';
 import 'package:carymessenger/models/delays.dart';
 import 'package:file_storage/file_storage.dart';
@@ -202,11 +203,12 @@ class AuthenticatedProviders extends StatelessWidget {
             ),
           ),
           BlocProvider<UserFileBloc>(
+            lazy: false,
             create: (context) => UserFileBloc(
               userFileRepository: context.read<UserFileRepository>(),
               syncBloc: context.read<SyncBloc>(),
               fileStorage: GetIt.I<FileStorage>(),
-            ),
+            )..add(LoadUserFiles()),
           ),
           BlocProvider<SortableBloc>(
             create: (context) => SortableBloc(
@@ -219,6 +221,12 @@ class AuthenticatedProviders extends StatelessWidget {
             create: (context) => GenericCubit(
               genericRepository: context.read<GenericRepository>(),
               syncBloc: context.read<SyncBloc>(),
+            ),
+          ),
+          BlocProvider<AlarmCubit>(
+            create: (context) => AlarmCubit(
+              clockCubit: context.read<ClockCubit>(),
+              activityRepository: context.read<ActivityRepository>(),
             ),
           ),
         ],
