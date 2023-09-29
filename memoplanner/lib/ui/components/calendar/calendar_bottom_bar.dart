@@ -30,79 +30,76 @@ class CalendarBottomBar extends StatelessWidget {
           ),
         ];
 
-        return BottomAppBar(
-          child: AnimatedSize(
-            duration: const Duration(milliseconds: 250),
-            child: Container(
-              height: height,
-              padding: EdgeInsets.symmetric(
-                horizontal: layout.toolbar.horizontalPadding,
-              ),
-              child: Stack(
-                children: <Widget>[
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: AddButton(),
-                  ),
-                  if (!display.onlyDayCalendar)
-                    Align(
-                      alignment: Alignment.center,
-                      child: AbiliaTabs(
-                        tabs: tabItems,
-                        useOffset: false,
-                        collapsedCondition: (i) {
-                          switch (i) {
-                            case 1:
-                              return !display.week;
-                            case 2:
-                              return !display.month;
-                            default:
-                              return false;
-                          }
-                        },
-                        onTabTap: (index) async {
-                          context.read<DayPickerBloc>().add(const CurrentDay());
-                          switch (index) {
-                            case 0:
+        return AnimatedSize(
+          duration: const Duration(milliseconds: 250),
+          child: BottomAppBar(
+            height: height,
+            padding: EdgeInsets.symmetric(
+                horizontal: layout.appBar.horizontalPadding),
+            child: Stack(
+              children: <Widget>[
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: AddButton(),
+                ),
+                if (!display.onlyDayCalendar)
+                  Align(
+                    alignment: Alignment.center,
+                    child: AbiliaTabs(
+                      tabs: tabItems,
+                      useOffset: false,
+                      collapsedCondition: (i) {
+                        switch (i) {
+                          case 1:
+                            return !display.week;
+                          case 2:
+                            return !display.month;
+                          default:
+                            return false;
+                        }
+                      },
+                      onTabTap: (index) async {
+                        context.read<DayPickerBloc>().add(const CurrentDay());
+                        switch (index) {
+                          case 0:
+                            return context
+                                .read<ScrollPositionCubit>()
+                                .goToNow();
+                          case 1:
+                            if (display.week) {
                               return context
-                                  .read<ScrollPositionCubit>()
-                                  .goToNow();
-                            case 1:
-                              if (display.week) {
-                                return context
-                                    .read<WeekCalendarCubit>()
-                                    .goToCurrentWeek();
-                              }
-                              break;
-                          }
-                          final monthCalendarCubit = context
-                              .read<MonthCalendarCubit>()
-                            ..setCollapsed(true);
-                          return monthCalendarCubit.goToCurrentMonth();
-                        },
-                      ),
-                    )
-                  else
-                    Align(
-                      alignment: Alignment.center,
-                      child: TabControlledButton(
-                        translate.day.capitalize(),
-                        AbiliaIcons.day,
-                        tabIndex: 0,
-                      ),
+                                  .read<WeekCalendarCubit>()
+                                  .goToCurrentWeek();
+                            }
+                            break;
+                        }
+                        final monthCalendarCubit = context
+                            .read<MonthCalendarCubit>()
+                          ..setCollapsed(true);
+                        return monthCalendarCubit.goToCurrentMonth();
+                      },
                     ),
-                  if (Config.isMPGO)
-                    const Align(
-                      alignment: Alignment.centerRight,
-                      child: MpGoMenuButton(),
-                    )
-                  else if (display.menu)
-                    const Align(
-                      alignment: Alignment.centerRight,
-                      child: MenuButton(),
+                  )
+                else
+                  Align(
+                    alignment: Alignment.center,
+                    child: TabControlledButton(
+                      translate.day.capitalize(),
+                      AbiliaIcons.day,
+                      tabIndex: 0,
                     ),
-                ],
-              ),
+                  ),
+                if (Config.isMPGO)
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: MpGoMenuButton(),
+                  )
+                else if (display.menu)
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: MenuButton(),
+                  ),
+              ],
             ),
           ),
         );

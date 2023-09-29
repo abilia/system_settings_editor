@@ -14,6 +14,7 @@ Future<T?> showAbiliaBottomSheet<T>({
     enableDrag: false,
     routeSettings: routeSettings,
     context: context,
+    constraints: const BoxConstraints(),
     barrierColor: AbiliaColors.transparentBlack90,
     builder: (_) => providers != null && providers.isNotEmpty
         ? MultiBlocProvider(
