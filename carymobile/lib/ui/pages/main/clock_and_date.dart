@@ -1,4 +1,4 @@
-part of 'home_page.dart';
+part of 'main_page.dart';
 
 class ClockAndDate extends StatelessWidget {
   const ClockAndDate({super.key});

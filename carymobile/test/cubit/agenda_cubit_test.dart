@@ -74,13 +74,13 @@ void main() {
           initialDay.previousDay(),
           initialDay.nextDay(),
         ),
-      );
+      ).called(1);
       verify(
         () => activityRepository.allBetween(
           initialDay,
           initialDay.nextDay().nextDay(),
         ),
-      );
+      ).called(1);
     },
     expect: () => [
       AgendaLoaded(occasions: const {}, day: initialDay),
