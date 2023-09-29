@@ -28,6 +28,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   flutter_localizations:
     sdk: flutter
+  flutter_ringtone_player: ^3.2.0
   generics:
     path: ../packages/generics
   get_it: ^7.2.0
@@ -58,6 +59,7 @@ dependencies:
     path: ../packages/user_files
   utils:
     path: ../packages/utils
+  wakelock_plus: ^1.1.1
 
 dev_dependencies:
   bloc_test: ^9.0.3
