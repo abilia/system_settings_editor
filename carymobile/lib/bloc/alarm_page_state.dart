@@ -10,6 +10,6 @@ final class AlarmPageOpen extends AlarmPageState {
   const AlarmPageOpen(super.activity);
 }
 
-final class CloseAlarmPage extends AlarmPageState {
-  const CloseAlarmPage(super.activity);
+final class AlarmPageClosed extends AlarmPageState {
+  const AlarmPageClosed(super.activity);
 }

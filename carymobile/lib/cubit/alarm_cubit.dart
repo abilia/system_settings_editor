@@ -38,6 +38,12 @@ class AlarmCubit extends Cubit<ActivityDay?> {
     }
   }
 
+  // Todo: remove this
+  void fakeAlarm(ActivityDay activityDay) {
+    emit(activityDay);
+    emit(null);
+  }
+
   @override
   Future<void> close() async {
     await _clockSubscription.cancel();
