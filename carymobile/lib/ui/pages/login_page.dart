@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
     final reason = unauthenticatedState.loggedOutReason;
-    if (reason != LoggedOutReason.logOut) showLoggedOutAlart(context);
+    if (reason != LoggedOutReason.logOut) _showLoggedOutAlert(context);
     return BlocProvider(
       create: (context) => LoginCubit(
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
@@ -42,8 +42,9 @@ class LoginPage extends StatelessWidget {
                 );
               }
             },
-            child: BlocBuilder<LoginCubit, LoginState>(
-              builder: (context, state) => Padding(
+            child: BlocSelector<LoginCubit, LoginState, bool>(
+              selector: (state) => state.isFormValid,
+              builder: (context, isFormValid) => Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -88,7 +89,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     const Spacer(),
                     FilledButton(
-                      onPressed: state.isFormValid
+                      onPressed: isFormValid
                           ? context.read<LoginCubit>().loginButtonPressed
                           : null,
                       child: const Text('Sign in'),
@@ -103,7 +104,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void showLoggedOutAlart(BuildContext context) {
+  void _showLoggedOutAlert(BuildContext context) {
     Future(
       () async => showDialog(
         context: context,
