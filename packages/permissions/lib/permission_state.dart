@@ -22,16 +22,6 @@ abstract class PermissionState extends Equatable {
     );
   }
 
-  bool get notificationDenied =>
-      status[Permission.notification]?.isDeniedOrPermanentlyDenied ?? false;
-
-  bool get fullscreenNotGranted =>
-      PermissionCubit.allPermissions.contains(Permission.systemAlertWindow) &&
-      !(status[Permission.systemAlertWindow]?.isGranted ?? false);
-
-  bool get importantPermissionMissing =>
-      notificationDenied || fullscreenNotGranted;
-
   @override
   List<Object> get props => [status];
 

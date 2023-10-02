@@ -34,7 +34,7 @@ class TopLevelListeners extends StatelessWidget {
             ),
             AuthenticationListener(
               navigatorKey: navigatorKey,
-              onAuthenticated: (navigator, state) async {
+              onAuthenticated: (context, navigator, state) async {
                 await Permission.notification.request();
                 final alarm = payload;
                 if (alarm == null) {

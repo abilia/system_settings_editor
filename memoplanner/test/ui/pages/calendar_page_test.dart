@@ -262,7 +262,9 @@ void main() {
         await tester.pumpWidget(const App());
         await tester.pumpAndSettle();
         expect(
-            find.byType(NotificationPermissionWarningDialog), findsOneWidget);
+          find.byType(NotificationPermissionWarningDialog),
+          findsOneWidget,
+        );
         await tester.tap(find.byType(CloseButton));
         expect(find.byType(OrangePermissioinDot), findsOneWidget);
         expect(find.byType(ErrorMessage), findsOneWidget);

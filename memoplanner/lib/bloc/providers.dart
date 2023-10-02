@@ -247,7 +247,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
             ),
             BlocProvider<PermissionCubit>(
               create: (context) => PermissionCubit()
-                ..checkAllAndRequestPermissions([Permission.notification]),
+                ..checkStatus(allPermissions)
+                ..request([Permission.notification]),
             ),
             BlocProvider<DayPartCubit>(
               create: (context) => DayPartCubit(

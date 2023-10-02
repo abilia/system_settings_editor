@@ -1,6 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:memoplanner/bloc/permission/permission_cubit.dart';
-import 'package:seagull_fakes/all.dart';
+import 'package:permissions/permission_cubit.dart';
+
+import 'fakes/permissions.dart';
+
+final allPermissions = {
+  Permission.notification,
+  Permission.microphone,
+  Permission.systemAlertWindow,
+  Permission.ignoreBatteryOptimizations,
+  Permission.photos,
+  Permission.camera,
+};
 
 void main() {
   setUp(TestWidgetsFlutterBinding.ensureInitialized);
@@ -25,8 +35,7 @@ void main() {
 
   test('requesting a permission requests the permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
-    final permissionCubit = PermissionCubit()
-      ..requestPermissions([Permission.camera]);
+    final permissionCubit = PermissionCubit()..request([Permission.camera]);
     await expectLater(
       permissionCubit.stream,
       emits(PermissionsUnchecked()
@@ -38,13 +47,12 @@ void main() {
 
   test('requesting multiple permission requests the permissions', () async {
     final permissionSet = {
-      for (var key in PermissionCubit.allPermissions)
-        key: PermissionStatus.granted
+      for (var key in allPermissions) key: PermissionStatus.granted
     };
 
     setupPermissions(permissionSet);
     final permissionCubit = PermissionCubit()
-      ..requestPermissions(permissionSet.keys.toList());
+      ..request(permissionSet.keys.toList());
     await expectLater(
       permissionCubit.stream,
       emits(PermissionsUnchecked().update(permissionSet)),
@@ -55,8 +63,7 @@ void main() {
 
   test('checking a permission', () async {
     setupPermissions({Permission.camera: PermissionStatus.granted});
-    final permissionCubit = PermissionCubit()
-      ..checkStatusForPermissions([Permission.camera]);
+    final permissionCubit = PermissionCubit()..checkStatus([Permission.camera]);
     await expectLater(
       permissionCubit.stream,
       emits(PermissionsUnchecked()
@@ -68,12 +75,11 @@ void main() {
 
   test('check multiple permissions', () async {
     final permissionSet = {
-      for (var key in PermissionCubit.allPermissions)
-        key: PermissionStatus.granted
+      for (var key in allPermissions) key: PermissionStatus.granted
     };
     setupPermissions(permissionSet);
     final permissionCubit = PermissionCubit()
-      ..checkStatusForPermissions(permissionSet.keys.toList());
+      ..checkStatus(permissionSet.keys.toList());
     await expectLater(
       permissionCubit.stream,
       emits(PermissionsUnchecked().update(permissionSet)),

@@ -201,7 +201,8 @@ void main() {
                 create: (context) => FakeSpeechSettingsCubit(),
               ),
               BlocProvider<PermissionCubit>(
-                create: (context) => PermissionCubit()..checkAll(),
+                create: (context) =>
+                    PermissionCubit()..checkStatus(allPermissions),
               ),
               BlocProvider<WakeLockCubit>(
                 create: (context) => WakeLockCubit(

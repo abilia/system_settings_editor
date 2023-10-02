@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 typedef OnAuthenticated = void Function(
+  BuildContext context,
   NavigatorState navigator,
   Authenticated state,
 );
@@ -36,7 +37,7 @@ class AuthenticationListener
               return;
             }
             if (state is Authenticated) {
-              onAuthenticated(navigator, state);
+              onAuthenticated(context, navigator, state);
             } else if (state is Unauthenticated) {
               onUnauthenticated(context, navigator, state);
             }

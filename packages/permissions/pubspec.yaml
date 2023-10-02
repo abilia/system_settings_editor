@@ -1,0 +1,22 @@
+name: permissions
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  collection: any
+  equatable: any
+  flutter:
+    sdk: flutter
+  flutter_bloc: any
+  meta: any
+  permission_handler: any
+  seagull_logging:
+    path: ../seagull_logging
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  seagull_lints:
+    path: ../seagull_lints

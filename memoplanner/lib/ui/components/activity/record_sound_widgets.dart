@@ -134,7 +134,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
                     ? () async {
                         await context
                             .read<PermissionCubit>()
-                            .requestPermissions([Permission.microphone]);
+                            .request([Permission.microphone]);
                       }
                     : () async {
                         final authProviders = copiedAuthProviders(context);

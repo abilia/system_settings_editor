@@ -52,7 +52,7 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
         GetIt.I<SettingsDb>().setAlwaysUse24HourFormat(
             MediaQuery.of(context).alwaysUse24HourFormat),
         context.read<ClockCubit>().setTime(DateTime.now()),
-        context.read<PermissionCubit>().checkAll(),
+        context.read<PermissionCubit>().checkStatus(allPermissions),
         _readScreenTimeOut(),
         _fetchDeviceLicense(),
       ]);
