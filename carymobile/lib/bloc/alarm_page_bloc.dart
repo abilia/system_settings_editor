@@ -15,24 +15,23 @@ class AlarmPageBloc extends Bloc<_AlarmPageEvent, AlarmPageState> {
   late final Timer closeAlarmPageTimer;
 
   AlarmPageBloc(ActivityDay activity) : super(AlarmPageOpen(activity)) {
-    on<_CloseAlarmPageEvent>(
-        (event, emit) => emit(CloseAlarmPage(state.activity)));
-    on<_PlayAlarmSoundEvent>(
+    on<_CloseAlarmPage>((event, emit) => emit(AlarmPageClosed(state.activity)));
+    on<_PlayAlarmSound>(
         (event, emit) async => FlutterRingtonePlayer.playNotification());
 
-    on<AlarmPageTouchedEvent>((event, emit) async {
+    on<StopAlarmSound>((event, emit) async {
       await FlutterRingtonePlayer.stop();
       alarmLoopTimer.cancel();
     });
 
     alarmLoopTimer = Timer.periodic(
       const Duration(minutes: 5),
-      (t) => add(_PlayAlarmSoundEvent()),
+      (t) => add(_PlayAlarmSound()),
     );
     closeAlarmPageTimer =
-        Timer(const Duration(minutes: 30), () => add(_CloseAlarmPageEvent()));
+        Timer(const Duration(minutes: 30), () => add(_CloseAlarmPage()));
     unawaited(WakelockPlus.enable());
-    add(_PlayAlarmSoundEvent());
+    add(_PlayAlarmSound());
   }
 
   @override

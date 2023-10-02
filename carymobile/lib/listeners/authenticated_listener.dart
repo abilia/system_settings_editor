@@ -1,6 +1,7 @@
 import 'package:auth/bloc/authentication/authentication_bloc.dart';
 import 'package:auth/bloc/license/license_cubit.dart';
 import 'package:calendar_events/calendar_events.dart';
+import 'package:carymessenger/bloc/alarm_page_bloc.dart';
 import 'package:carymessenger/copied_providers.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
 import 'package:carymessenger/ui/pages/alarm_page.dart';
@@ -33,9 +34,17 @@ class AuthenticatedListener extends StatelessWidget {
               final authProviders = copiedAuthProviders(context);
               await Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute<void>(
-                  builder: (_) => AlarmPage(
-                    activityDay: state,
-                    providers: authProviders,
+                  builder: (_) => MultiBlocProvider(
+                    providers: [
+                      ...authProviders,
+                      BlocProvider(
+                        create: (context) => AlarmPageBloc(state),
+                      ),
+                    ],
+                    child: AlarmPage(
+                      activityDay: state,
+                      providers: authProviders,
+                    ),
                   ),
                 ),
                 (route) => route.isFirst,

@@ -37,22 +37,14 @@ class AgendaList extends StatelessWidget {
 }
 
 class AgendaTile extends StatelessWidget {
-  const AgendaTile({required this.activity, super.key});
   final ActivityDay activity;
+
+  const AgendaTile({required this.activity, super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onLongPress: () async {
-        final authProviders = copiedAuthProviders(context);
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => AlarmPage(
-              activityDay: activity,
-              providers: authProviders,
-            ),
-          ),
-        );
-      },
+      onLongPress: () => context.read<AlarmCubit>().fakeAlarm(activity),
       leading: activity.hasImage
           ? AbiliaImage(
               activity.image,
