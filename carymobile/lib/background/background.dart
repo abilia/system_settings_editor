@@ -67,6 +67,7 @@ Future<void> firebaseBackgroundMessageHandler(RemoteMessage message) async {
     await configureLocalTimeZone();
     final activities = await activityRepository.allAfter(now);
     final alarm = findNextAlarm(activities, now);
+    if (alarm == null) return;
     final notification = await initFlutterLocalNotificationsPlugin();
     await scheduleNextAlarm(notification, alarm);
   } catch (e) {

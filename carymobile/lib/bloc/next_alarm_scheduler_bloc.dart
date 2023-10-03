@@ -42,7 +42,8 @@ class NextAlarmSchedulerBloc extends Bloc<ScheduleNextAlarm, ActivityDay?>
   ) async {
     final now = DateTime.now().nextMinute().onlyMinutes();
     final activities = await activityRepository.allAfter(now);
-    emit(findNextAlarm(activities, now));
+    final nextAlarm = findNextAlarm(activities, now);
+    emit(nextAlarm);
   }
 
   EventTransformer<Event> _debounceTime<Event>(Duration time) =>
