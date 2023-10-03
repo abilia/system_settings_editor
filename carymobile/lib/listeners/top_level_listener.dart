@@ -20,7 +20,7 @@ class TopLevelListener extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthenticationListener(
       navigatorKey: navigatorKey,
-      onAuthenticated: (navigator, state) async {
+      onAuthenticated: (context, navigator, state) async {
         await navigator.pushAndRemoveUntil<void>(
           MaterialPageRoute<void>(
             builder: (_) => AuthenticatedProviders(
