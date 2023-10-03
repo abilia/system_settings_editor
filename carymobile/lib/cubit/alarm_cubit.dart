@@ -30,7 +30,6 @@ class AlarmCubit extends Cubit<ActivityDay?> {
             includeMidnight: true,
           ),
         )
-        .where((ad) => ad.activity.alarm.shouldAlarm)
         .where((a) => a.start.isAtSameMomentAs(now));
 
     for (final alarm in startTimeAlarms) {
