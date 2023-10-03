@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:carymessenger/l10n/generated/l10n.dart';
+import 'package:carymessenger/ui/pages/widgets/open_settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -155,6 +156,7 @@ class LogoWithChangeServer extends StatelessWidget {
                 ),
               ),
             ),
+            const OpenSettingsButton()
           ],
         ),
       ),
