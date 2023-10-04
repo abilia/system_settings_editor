@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:auth/auth.dart';
 import 'package:calendar_events/calendar_events.dart';
+import 'package:carymessenger/background/notification.dart';
 import 'package:carymessenger/firebase_options.dart';
 import 'package:carymessenger/main.dart';
+import 'package:carymessenger/utils/find_next_alarm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utils/utils.dart';
 
 @pragma('vm:entry-point')
-Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
+Future<void> firebaseBackgroundMessageHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final documentDirectory = await getApplicationDocumentsDirectory();
@@ -38,8 +40,6 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       return;
     }
 
-    await configureLocalTimeZone();
-
     final loginDb = LoginDb(preferences);
     final user = UserDb(preferences).getUser();
     final token = loginDb.getToken();
@@ -48,19 +48,28 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       log.severe('No user or token: {token $token} {user $user}');
       return;
     }
-
-    await ActivityRepository(
+    final version =
+        await PackageInfo.fromPlatform().then((value) => value.version);
+    final db = await DatabaseRepository.createSqfliteDb();
+    final activityRepository = ActivityRepository(
       baseUrlDb: BaseUrlDb(preferences),
       client: ClientWithDefaultHeaders(
         loginDb: loginDb,
         deviceDb: deviceDb,
-        version:
-            await PackageInfo.fromPlatform().then((value) => value.version),
+        version: version,
         name: appName,
       ),
-      activityDb: ActivityDb(await DatabaseRepository.createSqfliteDb()),
+      activityDb: ActivityDb(db),
       userId: user.id,
-    ).fetchIntoDatabase();
+    );
+    await activityRepository.fetchIntoDatabase();
+
+    await configureLocalTimeZone();
+    final activities = await activityRepository.allAfter(now);
+    final alarm = findNextAlarm(activities, now);
+    if (alarm == null) return;
+    final notification = await initFlutterLocalNotificationsPlugin();
+    await scheduleNextAlarm(notification, alarm);
   } catch (e) {
     log.severe('Exception when running background handler', e);
   } finally {

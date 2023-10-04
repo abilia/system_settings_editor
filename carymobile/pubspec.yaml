@@ -1,5 +1,5 @@
 name: carymessenger
-description: A new Flutter project.
+description: CARY Mobile as part of the CARY Messenger
 publish_to: 'none'
 version: 0.1.0
 
@@ -10,6 +10,7 @@ dependencies:
   abilia_sync:
     path: ../packages/abilia_sync
   android_intent_plus: ^4.0.1
+  async: ^2.11.0
   auth:
     path: ../packages/auth
   bloc: ^8.0.2
@@ -27,6 +28,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  flutter_local_notifications:
+    git:
+      url: https://github.com/abilia/flutter_local_notifications.git
+      ref: flutter_local_notifications-v14.1.0-fork-3.5
+      path: flutter_local_notifications/
   flutter_localizations:
     sdk: flutter
   flutter_ringtone_player: ^3.2.0

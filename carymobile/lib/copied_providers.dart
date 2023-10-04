@@ -1,5 +1,4 @@
 import 'package:abilia_sync/abilia_sync.dart';
-import 'package:calendar/all.dart';
 import 'package:calendar_events/bloc/all.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
@@ -17,7 +16,6 @@ List<BlocProvider> copiedAuthProviders(BuildContext blocContext) => [
       _tryGetBloc<UserFileBloc>(blocContext),
       _tryGetBloc<SortableBloc>(blocContext),
       _tryGetBloc<GenericCubit>(blocContext),
-      _tryGetBloc<CalendarCubit>(blocContext),
     ].whereNotNull().toList();
 
 final _copyBlocLog = Logger('CopiedProvider');

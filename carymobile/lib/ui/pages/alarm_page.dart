@@ -1,6 +1,6 @@
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/bloc/alarm_page_bloc.dart';
-import 'package:carymessenger/ui/pages/widgets/abilia_image.dart';
+import 'package:carymessenger/ui/widgets/abilia_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -6,6 +6,8 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:calendar/all.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/background/background.dart';
+import 'package:carymessenger/background/notification.dart';
+import 'package:carymessenger/bloc/next_alarm_scheduler_bloc.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
 import 'package:carymessenger/main.dart';
 import 'package:carymessenger/models/delays.dart';
@@ -39,7 +41,7 @@ class TopLevelProviders extends StatelessWidget {
             client: GetIt.I<ListenableClient>(),
           ),
         ),
-        RepositoryProvider<UserRepository>(
+        RepositoryProvider(
           create: (context) => UserRepository(
             baseUrlDb: GetIt.I<BaseUrlDb>(),
             client: GetIt.I<ListenableClient>(),
@@ -54,13 +56,13 @@ class TopLevelProviders extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<PushCubit>(
+          BlocProvider(
             lazy: false,
             create: (context) => PushCubit(
-              backgroundMessageHandler: myBackgroundMessageHandler,
+              backgroundMessageHandler: firebaseBackgroundMessageHandler,
             ),
           ),
-          BlocProvider<ClockCubit>(
+          BlocProvider(
             create: (context) => ClockCubit.withTicker(GetIt.I<Ticker>()),
           ),
           BlocProvider(
@@ -87,7 +89,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthenticationBloc>(
+        BlocProvider(
           create: (context) => AuthenticationBloc(
             userRepository: context.read<UserRepository>(),
             client: GetIt.I<ListenableClient>(),
@@ -100,7 +102,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
             ),
           )..add(CheckAuthentication()),
         ),
-        BlocProvider<LicenseCubit>(
+        BlocProvider(
           create: (context) => LicenseCubit(
             clockCubit: context.read<ClockCubit>(),
             pushCubit: context.read<PushCubit>(),
@@ -141,7 +143,7 @@ class AuthenticatedProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<ActivityRepository>(
+        RepositoryProvider(
           create: (context) => ActivityRepository(
             baseUrlDb: GetIt.I<BaseUrlDb>(),
             client: GetIt.I<ListenableClient>(),
@@ -149,7 +151,7 @@ class AuthenticatedProviders extends StatelessWidget {
             userId: userId,
           ),
         ),
-        RepositoryProvider<UserFileRepository>(
+        RepositoryProvider(
           create: (context) => UserFileRepository(
             client: GetIt.I<ListenableClient>(),
             baseUrlDb: GetIt.I<BaseUrlDb>(),
@@ -160,7 +162,7 @@ class AuthenticatedProviders extends StatelessWidget {
             multipartRequestBuilder: GetIt.I<MultipartRequestBuilder>(),
           ),
         ),
-        RepositoryProvider<SortableRepository>(
+        RepositoryProvider(
           create: (context) => SortableRepository(
             baseUrlDb: GetIt.I<BaseUrlDb>(),
             client: GetIt.I<ListenableClient>(),
@@ -168,7 +170,7 @@ class AuthenticatedProviders extends StatelessWidget {
             userId: userId,
           ),
         ),
-        RepositoryProvider<GenericRepository>(
+        RepositoryProvider(
           create: (context) => GenericRepository(
             baseUrlDb: GetIt.I<BaseUrlDb>(),
             client: GetIt.I<ListenableClient>(),
@@ -202,7 +204,7 @@ class AuthenticatedProviders extends StatelessWidget {
               analytics: SeagullAnalytics.empty(),
             ),
           ),
-          BlocProvider<UserFileBloc>(
+          BlocProvider(
             lazy: false,
             create: (context) => UserFileBloc(
               userFileRepository: context.read<UserFileRepository>(),
@@ -210,24 +212,36 @@ class AuthenticatedProviders extends StatelessWidget {
               fileStorage: GetIt.I<FileStorage>(),
             )..add(LoadUserFiles()),
           ),
-          BlocProvider<SortableBloc>(
+          BlocProvider(
             create: (context) => SortableBloc(
               sortableRepository: context.read<SortableRepository>(),
               syncBloc: context.read<SyncBloc>(),
               fileStorageFolder: FileStorage.folder,
             ),
           ),
-          BlocProvider<GenericCubit>(
+          BlocProvider(
             create: (context) => GenericCubit(
               genericRepository: context.read<GenericRepository>(),
               syncBloc: context.read<SyncBloc>(),
             ),
           ),
-          BlocProvider<AlarmCubit>(
+          BlocProvider(
             create: (context) => AlarmCubit(
               clockCubit: context.read<ClockCubit>(),
               activityRepository: context.read<ActivityRepository>(),
             ),
+          ),
+          BlocProvider<NextAlarmSchedulerBloc>(
+            create: (context) => NextAlarmSchedulerBloc(
+              activityRepository: context.read<ActivityRepository>(),
+              ticker: GetIt.I<Ticker>(),
+              scheduleNotificationsDelay:
+                  GetIt.I<Delays>().scheduleNotificationsDelay,
+              rescheduleStreams: [
+                context.read<ActivitiesCubit>().stream,
+                notificationStream,
+              ],
+            )..add(const ScheduleNextAlarm('On create')),
           ),
         ],
         child: child,

@@ -1,12 +1,16 @@
 import 'package:auth/bloc/authentication/authentication_bloc.dart';
 import 'package:auth/bloc/license/license_cubit.dart';
 import 'package:calendar_events/calendar_events.dart';
+import 'package:carymessenger/background/notification.dart';
 import 'package:carymessenger/bloc/alarm_page_bloc.dart';
+import 'package:carymessenger/bloc/next_alarm_scheduler_bloc.dart';
 import 'package:carymessenger/copied_providers.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
 import 'package:carymessenger/ui/pages/alarm_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
 
 class AuthenticatedListener extends StatelessWidget {
   final Widget child;
@@ -49,6 +53,14 @@ class AuthenticatedListener extends StatelessWidget {
                 ),
                 (route) => route.isFirst,
               );
+            }
+          },
+        ),
+        BlocListener<NextAlarmSchedulerBloc, ActivityDay?>(
+          listener: (context, state) async {
+            if (state != null) {
+              final plugin = GetIt.I<FlutterLocalNotificationsPlugin>();
+              await scheduleNextAlarm(plugin, state);
             }
           },
         ),
