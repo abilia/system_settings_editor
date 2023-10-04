@@ -1,4 +1,5 @@
 export 'package:calendar_events/utils/all.dart';
+export 'package:connectivity/myabilia_connection.dart';
 export 'package:generics/utils/all.dart';
 export 'package:utils/utils.dart';
 
@@ -10,6 +11,5 @@ export 'dots_definition.dart';
 export 'extensions/all.dart';
 export 'logout_messages.dart';
 export 'mixins/all.dart';
-export 'myabilia_connection.dart';
 export 'spoken_text_edit_controller.dart';
 export 'timeformat.dart';

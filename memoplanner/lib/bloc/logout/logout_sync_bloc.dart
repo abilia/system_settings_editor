@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:abilia_sync/abilia_sync.dart';
 import 'package:collection/collection.dart';
+import 'package:connectivity/myabilia_connection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/db/all.dart';
 import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/myabilia_connection.dart';
 import 'package:seagull_logging/seagull_logging.dart';
 
 part 'logout_sync_state.dart';

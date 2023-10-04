@@ -1,5 +1,6 @@
 export 'package:auth/bloc/all.dart';
 export 'package:calendar_events/bloc/all.dart';
+export 'package:connectivity/connectivity_cubit.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:generics/bloc/all.dart';
 export 'package:generics/repository/all.dart';
@@ -21,7 +22,6 @@ export 'android/action_intent_cubit.dart';
 export 'authenticated_dialog/authenticated_dialog_cubit.dart';
 export 'calendar/all.dart';
 export 'calendar/day_part_cubit.dart';
-export 'connectivity/connectivity_cubit.dart';
 export 'events/day_events_cubit.dart';
 export 'events/events_state.dart';
 export 'feature_toggle/feature_toggle_cubit.dart';
