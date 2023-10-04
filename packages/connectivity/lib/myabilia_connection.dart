@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:http/http.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/utils/all.dart';
+import 'package:repository_base/repository_base.dart';
 
 class MyAbiliaConnection {
   MyAbiliaConnection({
@@ -12,7 +11,7 @@ class MyAbiliaConnection {
   final BaseUrlDb baseUrlDb;
   final Client client;
   Future<bool> hasConnection() async {
-    final url = '${baseUrlDb.baseUrl}/open/v1/monitor/basic'.toUri();
+    final url = Uri.parse('${baseUrlDb.baseUrl}/open/v1/monitor/basic');
     try {
       final response = await client.head(url);
       return response.statusCode == 200;
