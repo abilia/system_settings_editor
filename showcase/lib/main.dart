@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui/buttons/link_button.dart';
+import 'package:ui/buttons/buttons.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 void main() {
@@ -24,6 +24,21 @@ class HotreloadWidgetbook extends StatelessWidget {
         WidgetbookComponent(
           name: 'Buttons',
           useCases: [
+            WidgetbookUseCase(
+              name: 'Action Button',
+              builder: (context) => Center(
+                child: ActionButton(
+                  onPressed: context.knobs
+                          .boolean(label: 'Enabled', initialValue: true)
+                      ? () {}
+                      : null,
+                  title: context.knobs.string(
+                    label: 'Button title',
+                    initialValue: 'Title',
+                  ),
+                ),
+              ),
+            ),
             WidgetbookUseCase(
               name: 'Link Button',
               builder: (context) => Center(

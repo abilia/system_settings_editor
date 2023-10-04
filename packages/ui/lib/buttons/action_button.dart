@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class IconAndTextButton extends StatelessWidget {
+class ActionButton extends StatelessWidget {
   final String text;
   final IconData icon;
   final ButtonStyle style;
@@ -9,7 +9,7 @@ class IconAndTextButton extends StatelessWidget {
   final double iconSize, spacing;
   final bool iconLeft;
 
-  const IconAndTextButton({
+  const ActionButton({
     required this.text,
     required this.icon,
     required this.style,
@@ -25,7 +25,6 @@ class IconAndTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final iconWidget = Icon(
       icon,
-      size: iconSize,
     );
     return TextButton(
       style: style,

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:handi/ui/layout/tokens/colors.dart';
+import 'package:ui/tokens/colors.dart';
 
 const FontWeight weightMedium = FontWeight.w400;
 const int weightSemiBold = 500;

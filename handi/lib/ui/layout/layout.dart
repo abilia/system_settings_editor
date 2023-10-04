@@ -1,4 +1,4 @@
-import 'package:handi/ui/layout/buttons.dart';
+import 'package:ui/layout/buttons.dart';
 
 Layout getLayout() => const Layout();
 

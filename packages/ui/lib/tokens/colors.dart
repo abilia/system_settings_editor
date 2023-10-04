@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HandiColors {
-  HandiColors._();
+class AbiliaColors {
+  AbiliaColors._();
 
   static const MaterialColor peach = MaterialColor(
     _peachAccentValue,
