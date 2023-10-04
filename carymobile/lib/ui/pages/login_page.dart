@@ -4,6 +4,7 @@ import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:carymessenger/l10n/generated/l10n.dart';
 import 'package:carymessenger/ui/widgets/open_settings_button.dart';
+import 'package:carymessenger/ui/widgets/version_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -145,6 +146,7 @@ class LogoWithChangeServer extends StatelessWidget {
         context: context,
         builder: (context) => Wrap(
           children: [
+            const Center(child: VersionText()),
             ...backendEnvironments.entries.map(
               (kvp) => Builder(
                 builder: (context) => RadioMenuButton(
@@ -156,7 +158,7 @@ class LogoWithChangeServer extends StatelessWidget {
                 ),
               ),
             ),
-            const OpenSettingsButton()
+            const Center(child: OpenSettingsButton()),
           ],
         ),
       ),

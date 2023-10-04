@@ -6,8 +6,10 @@ ActivityDay? findNextAlarm(Iterable<Activity> activities, DateTime now) {
   if (noneFullDay.isEmpty) return null;
 
   final List<ActivityDay> next = [];
-
-  for (var day = now.onlyDays(); next.isEmpty; day = day.nextDay()) {
+  var daysIntoTheFuture = 0;
+  for (var day = now.onlyDays();
+      next.isEmpty && daysIntoTheFuture < 90;
+      day = day.nextDay(), daysIntoTheFuture++) {
     next.addAll(
       noneFullDay
           .expand(

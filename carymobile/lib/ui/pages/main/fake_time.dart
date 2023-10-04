@@ -41,6 +41,13 @@ class FakeTime extends StatelessWidget {
           onPressed: ticker.reset,
           child: const Text('Reset'),
         ),
+        Container(
+          decoration: const ShapeDecoration(
+            color: Colors.white,
+            shape: StadiumBorder(),
+          ),
+          child: const VersionText(),
+        ),
         const OpenSettingsButton(),
       ],
     );

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:async/async.dart' show StreamGroup;
 import 'package:calendar_events/models/all.dart';
 import 'package:calendar_events/repository/activity_repository.dart';
 import 'package:carymessenger/utils/find_next_alarm.dart';
@@ -22,13 +23,13 @@ class NextAlarmSchedulerBloc extends Bloc<ScheduleNextAlarm, ActivityDay?>
     required this.activityRepository,
     required Duration scheduleNotificationsDelay,
     required Ticker ticker,
-    required Stream rescheduleStream,
+    required List<Stream> rescheduleStreams,
   }) : super(null) {
     on<ScheduleNextAlarm>(
       _scheduleNotifications,
       transformer: _debounceTime(scheduleNotificationsDelay),
     );
-    _rescheduleStreamSubscription = rescheduleStream
+    _rescheduleStreamSubscription = StreamGroup.merge(rescheduleStreams)
         .listen((_) => add(const ScheduleNextAlarm('From listener')));
   }
 

@@ -6,6 +6,7 @@ import 'package:auth/repository/user_repository.dart';
 import 'package:calendar/all.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/background/background.dart';
+import 'package:carymessenger/background/notification.dart';
 import 'package:carymessenger/bloc/next_alarm_scheduler_bloc.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
 import 'package:carymessenger/main.dart';
@@ -236,7 +237,10 @@ class AuthenticatedProviders extends StatelessWidget {
               ticker: GetIt.I<Ticker>(),
               scheduleNotificationsDelay:
                   GetIt.I<Delays>().scheduleNotificationsDelay,
-              rescheduleStream: context.read<ActivitiesCubit>().stream,
+              rescheduleStreams: [
+                context.read<ActivitiesCubit>().stream,
+                notificationStream,
+              ],
             )..add(const ScheduleNextAlarm('On create')),
           ),
         ],

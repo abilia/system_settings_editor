@@ -10,6 +10,7 @@ dependencies:
   abilia_sync:
     path: ../packages/abilia_sync
   android_intent_plus: ^4.0.1
+  async: ^2.11.0
   auth:
     path: ../packages/auth
   bloc: ^8.0.2
