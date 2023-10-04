@@ -34,6 +34,7 @@ dependencies:
   intl: ^0.18.0
   logging: ^1.1.0
   lokalise_flutter_sdk: ^1.1.1
+  material_design_icons_flutter: ^7.0.7296
   package_info_plus: ^4.1.0
   path_provider: ^2.0.5
   permission_handler: ^10.2.0
