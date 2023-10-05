@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/generated/l10n.dart';
-import 'package:handi/ui/layout/layout.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
@@ -19,7 +18,6 @@ class LoginPage extends StatelessWidget {
   const LoginPage({required this.unauthenticatedState, super.key});
 
   final Unauthenticated unauthenticatedState;
-  final Layout _layout = const Layout();
 
   @override
   Widget build(BuildContext context) {
@@ -122,15 +120,12 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                   ActionButton(
-                    padding: _layout.actionButtonLayout.padding,
                     text: translate.signIn,
-                    iconSize: _layout.actionButtonLayout.iconSize,
                     style: actionButtonStyleLarge,
                     onPressed: state.isFormValid
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,
                     icon: MdiIcons.login,
-                    spacing: _layout.actionButtonLayout.spacing,
                   )
                 ],
               ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/fonts.dart';
 import 'package:ui/tokens/numericals.dart';
-import 'package:ui/tokens/paddings.dart';
 
 final actionButtonStyleLarge = ButtonStyle(
   iconSize: MaterialStateProperty.all(numerical800),
@@ -27,11 +26,11 @@ final actionButtonStyleLarge = ButtonStyle(
   ),
   textStyle: MaterialStateProperty.all(primary525),
   minimumSize:
-      MaterialStateProperty.all(const Size(numerical000, numerical1000)),
+      MaterialStateProperty.all(const Size(numerical000, numerical000)),
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     return const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(numerical200)));
   }),
-  padding: MaterialStateProperty.all(buttonHorizontalPadding),
-  // textStyle: MaterialStateProperty.all(primary525),
+  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+      horizontal: numerical600, vertical: numerical300)),
 );
