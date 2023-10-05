@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:memoplanner/bloc/settings/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_config.dart';
 import 'package:memoplanner/ui/components/timer/timer_wheel/timer_wheel_painters.dart';

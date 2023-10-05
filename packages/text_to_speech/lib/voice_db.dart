@@ -1,5 +1,4 @@
 import 'package:logging/logging.dart';
-import 'package:memoplanner/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VoiceDb {
@@ -16,13 +15,14 @@ class VoiceDb {
   };
 
   final SharedPreferences preferences;
+  final bool ttsDefault;
 
-  const VoiceDb(this.preferences);
+  const VoiceDb(this.preferences, {this.ttsDefault = true});
 
   Future<void> setTextToSpeech(bool textToSpeech) =>
       preferences.setBool(textToSpeechRecord, textToSpeech);
 
-  bool get textToSpeech => _tryGetBool(textToSpeechRecord, Config.isMPGO);
+  bool get textToSpeech => _tryGetBool(textToSpeechRecord, ttsDefault);
 
   Future setSpeechRate(double speechRate) =>
       preferences.setDouble(_speechRate, speechRate);

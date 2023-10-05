@@ -13,7 +13,7 @@ dependencies:
   http: any
   logging: any
   repository_base:
-    path: ../repository/repository_base
+    path: ../repository_base
 
 dev_dependencies:
   seagull_lints:

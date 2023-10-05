@@ -196,7 +196,9 @@ class GetItInitializer {
       ..registerSingleton<PackageInfo>(_packageInfo)
       ..registerSingleton<Battery>(_battery)
       ..registerSingleton<TtsHandler>(_ttsHandler)
-      ..registerSingleton<VoiceDb>(_voiceDb ?? VoiceDb(_sharedPreferences))
+      ..registerSingleton<VoiceDb>(
+        _voiceDb ?? VoiceDb(_sharedPreferences, ttsDefault: Config.isMPGO),
+      )
       ..registerSingleton<ActionIntentStream>(_actionIntentStream)
       ..registerSingleton<SupportPersonsDb>(
           _supportPersonsDb ?? SupportPersonsDb(_sharedPreferences))

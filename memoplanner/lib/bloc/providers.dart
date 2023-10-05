@@ -448,7 +448,8 @@ class TopLevelProvider extends StatelessWidget {
               create: (context) => VoicesCubit(
                 speechSettingsCubit: context.read<SpeechSettingsCubit>(),
                 voiceRepository: context.read<VoiceRepository>(),
-                localeCubit: context.read<LocaleCubit>(),
+                localeChangeStream: context.read<LocaleCubit>().stream,
+                languageCode: context.read<LocaleCubit>().state.languageCode,
               )..initialize(),
               lazy: false,
             ),

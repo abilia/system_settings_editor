@@ -18,7 +18,7 @@ dependencies:
   logging: any
   meta: any
   repository_base:
-    path: ../repository/repository_base
+    path: ../repository_base
   seagull_clock:
     path: ../seagull_clock
   shared_preferences: any
