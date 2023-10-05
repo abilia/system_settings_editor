@@ -25,8 +25,6 @@ final actionButtonStyleLarge = ButtonStyle(
     },
   ),
   textStyle: MaterialStateProperty.all(primary525),
-  minimumSize:
-      MaterialStateProperty.all(const Size(numerical000, numerical000)),
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     return const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(numerical200)));
