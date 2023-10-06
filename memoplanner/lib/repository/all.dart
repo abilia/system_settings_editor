@@ -5,7 +5,6 @@ export 'package:support_persons/repository/support_persons_repository.dart';
 export 'package:text_to_speech/voice_repository.dart';
 
 export 'device_repository.dart';
-export 'directories.dart';
 export 'factory_reset_repository.dart';
 export 'feature_toggle_repository.dart';
 export 'remote_alarm.dart';
