@@ -3,16 +3,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsDb {
   static final _log = Logger((SettingsDb).toString());
-  static const String _ttsSettingsRecord = 'settings_tts';
+  static const String productionGuideDoneRecord = 'cary_production_guide_done';
 
   final SharedPreferences preferences;
 
   SettingsDb(this.preferences);
 
-  Future setTts(bool alwaysUse24HourFormat) =>
-      preferences.setBool(_ttsSettingsRecord, alwaysUse24HourFormat);
+  Future setProductionGuideDone() =>
+      preferences.setBool(productionGuideDoneRecord, true);
 
-  bool get tts => _tryGetBool(_ttsSettingsRecord, false);
+  bool get productionGuideDone => _tryGetBool(productionGuideDoneRecord, false);
 
   bool _tryGetBool(String key, bool fallback) {
     try {

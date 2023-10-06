@@ -9,13 +9,18 @@ import 'package:carymessenger/background/background.dart';
 import 'package:carymessenger/background/notification.dart';
 import 'package:carymessenger/bloc/next_alarm_scheduler_bloc.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
+import 'package:carymessenger/cubit/production_guide_cubit.dart';
+import 'package:carymessenger/db/settings_db.dart';
 import 'package:carymessenger/main.dart';
 import 'package:carymessenger/models/delays.dart';
+import 'package:connectivity/connectivity_cubit.dart';
+import 'package:connectivity/myabilia_connection.dart';
 import 'package:file_storage/file_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:generics/generics.dart';
 import 'package:get_it/get_it.dart';
+import 'package:permissions/permission_cubit.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_clock/clock_cubit.dart';
@@ -23,6 +28,7 @@ import 'package:seagull_clock/ticker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortables/sortables.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 import 'package:user_files/user_files.dart';
 
 class TopLevelProviders extends StatelessWidget {
@@ -53,6 +59,16 @@ class TopLevelProviders extends StatelessWidget {
             name: appName,
           ),
         ),
+        RepositoryProvider(
+          create: (context) => VoiceRepository(
+            baseUrlDb: GetIt.I<BaseUrlDb>(),
+            ttsHandler: GetIt.I<TtsHandler>(),
+            client: GetIt.I<ListenableClient>(),
+            tempDirectory: GetIt.I<Directories>().temp,
+            applicationSupportDirectory:
+                GetIt.I<Directories>().applicationSupport,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -69,7 +85,39 @@ class TopLevelProviders extends StatelessWidget {
             create: (context) => BaseUrlCubit(
               baseUrlDb: GetIt.I<BaseUrlDb>(),
             ),
-          )
+          ),
+          BlocProvider<PermissionCubit>(
+            create: (context) => PermissionCubit()
+              ..checkStatus([Permission.ignoreBatteryOptimizations]),
+            lazy: false,
+          ),
+          BlocProvider<ConnectivityCubit>(
+            create: (context) => ConnectivityCubit(
+              connectivity: GetIt.I<Connectivity>(),
+              baseUrlDb: GetIt.I<BaseUrlDb>(),
+              myAbiliaConnection: GetIt.I<MyAbiliaConnection>(),
+            )..checkConnectivity(),
+            lazy: false,
+          ),
+          BlocProvider<ProductionGuideCubit>(
+            create: (context) => ProductionGuideCubit(
+              settingsDb: GetIt.I<SettingsDb>(),
+            ),
+          ),
+          BlocProvider<SpeechSettingsCubit>(
+            create: (context) => SpeechSettingsCubit(
+              voiceDb: GetIt.I<VoiceDb>(),
+              acapelaTts: GetIt.I<TtsHandler>(),
+            ),
+          ),
+          BlocProvider<VoicesCubit>(
+            create: (context) => VoicesCubit(
+              speechSettingsCubit: context.read<SpeechSettingsCubit>(),
+              voiceRepository: context.read<VoiceRepository>(),
+              languageCode: 'sv',
+              localeChangeStream: const Stream.empty(),
+            )..initialize(),
+          ),
         ],
         child: child,
       ),

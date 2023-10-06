@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:abilia_sync/abilia_sync.dart';
 import 'package:auth/auth.dart';
 import 'package:calendar/all.dart';
@@ -8,6 +6,8 @@ import 'package:carymessenger/background/notification.dart';
 import 'package:carymessenger/db/settings_db.dart';
 import 'package:carymessenger/main.dart';
 import 'package:carymessenger/models/delays.dart';
+import 'package:connectivity/connectivity_cubit.dart';
+import 'package:connectivity/myabilia_connection.dart';
 import 'package:file_storage/file_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -21,21 +21,24 @@ import 'package:seagull_logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sortables/db/sortable_db.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 import 'package:user_files/db/user_file_db.dart';
 
 Future<void> initGetIt() async {
-  final directory = await getApplicationDocumentsDirectory();
+  final directories = Directories(
+    applicationSupport: await getApplicationSupportDirectory(),
+    documents: await getApplicationDocumentsDirectory(),
+    temp: await getTemporaryDirectory(),
+  );
   final sharedPreferences = await SharedPreferences.getInstance();
-  final deviceDb = DeviceDb(sharedPreferences);
-  final supportId = await deviceDb.getSupportId();
+  final supportId = await DeviceDb(sharedPreferences).getSupportId();
   await initGetItWith(
     sharedPreferences: sharedPreferences,
     database: await DatabaseRepository.createSqfliteDb(),
-    directory: directory,
-    deviceDb: deviceDb,
+    directories: directories,
     notificationsPlugin: await initFlutterLocalNotificationsPlugin(),
     seagullLogger: SeagullLogger(
-      documentsDirectory: directory.path,
+      documentsDirectory: directories.documents.path,
       supportId: supportId,
       app: appName,
     ),
@@ -46,7 +49,7 @@ Future<void> initGetIt() async {
 Future<void> initGetItWith({
   required SharedPreferences sharedPreferences,
   required Database database,
-  required Directory directory,
+  required Directories directories,
   required FlutterLocalNotificationsPlugin notificationsPlugin,
   ListenableClient? listenableClient,
   PackageInfo? packageInfo,
@@ -55,33 +58,33 @@ Future<void> initGetItWith({
   SortableDb? sortableDb,
   GenericDb? genericDb,
   UserFileDb? userFileDb,
-  LastSyncDb? lastSyncDb,
-  DeviceDb? deviceDb,
   Delays? delays,
   SeagullLogger? seagullLogger,
-  SettingsDb? settingsDb,
+  TtsHandler? ttsHandler,
 }) async {
   GetIt.I
+    ..registerSingleton(directories)
     ..registerSingleton(sharedPreferences)
     ..registerSingleton(database)
     ..registerSingleton(BaseUrlDb(sharedPreferences))
     ..registerSingleton(LoginDb(sharedPreferences))
     ..registerSingleton(CalendarDb(database))
-    ..registerSingleton(deviceDb ?? DeviceDb(sharedPreferences))
+    ..registerSingleton(DeviceDb(sharedPreferences))
     ..registerSingleton(LicenseDb(sharedPreferences))
     ..registerSingleton(UserDb(sharedPreferences))
+    ..registerSingleton(VoiceDb(sharedPreferences, ttsDefault: false))
     ..registerSingleton(Ticker(initialTime: DateTime.now()))
     ..registerSingleton(MultipartRequestBuilder())
     ..registerSingleton(packageInfo ?? await PackageInfo.fromPlatform())
-    ..registerSingleton(FileStorage.inDirectory(directory.path))
+    ..registerSingleton(FileStorage.inDirectory(directories.documents.path))
     ..registerSingleton(activityDb ?? ActivityDb(database))
     ..registerSingleton(sortableDb ?? SortableDb(database))
     ..registerSingleton(genericDb ?? GenericDb(database))
     ..registerSingleton(userFileDb ?? UserFileDb(database))
-    ..registerSingleton(lastSyncDb ?? LastSyncDb(sharedPreferences))
+    ..registerSingleton(LastSyncDb(sharedPreferences))
     ..registerSingleton(delays ?? const Delays())
     ..registerSingleton(seagullLogger ?? SeagullLogger.empty())
-    ..registerSingleton<SettingsDb>(settingsDb ?? SettingsDb(sharedPreferences))
+    ..registerSingleton<SettingsDb>(SettingsDb(sharedPreferences))
     ..registerSingleton(
       listenableClient ??
           ClientWithDefaultHeaders(
@@ -91,7 +94,21 @@ Future<void> initGetItWith({
             version: GetIt.I<PackageInfo>().version,
           ),
     )
-    ..registerSingleton<FirebasePushService>(
-        firebasePushService ?? FirebasePushService())
-    ..registerSingleton(notificationsPlugin);
+    ..registerSingleton(firebasePushService ?? FirebasePushService())
+    ..registerSingleton(notificationsPlugin)
+    ..registerSingleton(Connectivity())
+    ..registerSingleton(
+      MyAbiliaConnection(
+        baseUrlDb: GetIt.I<BaseUrlDb>(),
+        client: GetIt.I<ListenableClient>(),
+      ),
+    )
+    ..registerSingleton<TtsHandler>(
+      ttsHandler ??
+          await AcapelaTtsHandler.implementation(
+            voicesPath: directories.applicationSupport.path,
+            voice: GetIt.I<VoiceDb>().voice,
+            speechRate: GetIt.I<VoiceDb>().speechRate,
+          ),
+    );
 }
