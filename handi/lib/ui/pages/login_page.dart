@@ -6,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/generated/l10n.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:ui/buttons/action_button.dart';
 import 'package:ui/buttons/link_button.dart';
+import 'package:ui/styles/styles.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({required this.unauthenticatedState, super.key});
@@ -116,11 +119,13 @@ class LoginPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  LinkButton(
+                  ActionButton(
+                    text: translate.signIn,
+                    style: actionButtonPrimary1000,
                     onPressed: state.isFormValid
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,
-                    title: (translate.signIn),
+                    icon: MdiIcons.login,
                   )
                 ],
               ),
