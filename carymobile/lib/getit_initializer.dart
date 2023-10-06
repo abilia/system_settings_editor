@@ -60,7 +60,7 @@ Future<void> initGetItWith({
   UserFileDb? userFileDb,
   Delays? delays,
   SeagullLogger? seagullLogger,
-  AcapelaTtsHandler? acapelaTtsHandler,
+  TtsHandler? ttsHandler,
 }) async {
   GetIt.I
     ..registerSingleton(directories)
@@ -104,7 +104,7 @@ Future<void> initGetItWith({
       ),
     )
     ..registerSingleton<TtsHandler>(
-      acapelaTtsHandler ??
+      ttsHandler ??
           await AcapelaTtsHandler.implementation(
             voicesPath: directories.applicationSupport.path,
             voice: GetIt.I<VoiceDb>().voice,

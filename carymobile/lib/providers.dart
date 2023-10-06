@@ -62,7 +62,7 @@ class TopLevelProviders extends StatelessWidget {
         RepositoryProvider(
           create: (context) => VoiceRepository(
             baseUrlDb: GetIt.I<BaseUrlDb>(),
-            ttsHandler: GetIt.I<AcapelaTtsHandler>(),
+            ttsHandler: GetIt.I<TtsHandler>(),
             client: GetIt.I<ListenableClient>(),
             tempDirectory: GetIt.I<Directories>().temp,
             applicationSupportDirectory:
@@ -107,7 +107,7 @@ class TopLevelProviders extends StatelessWidget {
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => SpeechSettingsCubit(
               voiceDb: GetIt.I<VoiceDb>(),
-              acapelaTts: GetIt.I<AcapelaTtsHandler>(),
+              acapelaTts: GetIt.I<TtsHandler>(),
             ),
           ),
           BlocProvider<VoicesCubit>(

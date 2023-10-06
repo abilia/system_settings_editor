@@ -34,5 +34,5 @@ Future<void> initGetItFakes() async => initGetItWith(
         version: '',
       ),
       notificationsPlugin: FakeFlutterLocalNotificationsPlugin(),
-      acapelaTtsHandler: FakeAcapelaTtsHandler(),
+      ttsHandler: FakeAcapelaTtsHandler(),
     );
