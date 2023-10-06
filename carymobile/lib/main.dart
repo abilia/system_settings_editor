@@ -53,7 +53,9 @@ class CaryMobileApp extends StatelessWidget {
           ProductionGuideDone() => AuthenticationBlocProvider(
               child: TopLevelListener(
                 navigatorKey: _navigatorKey,
-                child: const MaterialAppWrapper(home: SplashPage()),
+                child: const MaterialAppWrapper(
+                  home: SplashPage(),
+                ),
               ),
             ),
         },
@@ -64,6 +66,7 @@ class CaryMobileApp extends StatelessWidget {
 
 class MaterialAppWrapper extends StatelessWidget {
   const MaterialAppWrapper({this.home, super.key});
+
   final Widget? home;
 
   @override

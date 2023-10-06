@@ -103,7 +103,7 @@ Future<void> initGetItWith({
         client: GetIt.I<ListenableClient>(),
       ),
     )
-    ..registerSingleton<AcapelaTtsHandler>(
+    ..registerSingleton<TtsHandler>(
       acapelaTtsHandler ??
           await AcapelaTtsHandler.implementation(
             voicesPath: directories.applicationSupport.path,
