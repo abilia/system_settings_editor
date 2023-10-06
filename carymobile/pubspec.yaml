@@ -19,6 +19,8 @@ dependencies:
   calendar_events:
     path: ../packages/calendar_events
   collection: ^1.17.0
+  connectivity:
+    path: ../packages/connectivity
   equatable: ^2.0.3
   file_storage:
     path: ../packages/file_storage
@@ -46,6 +48,8 @@ dependencies:
   package_info_plus: ^4.1.0
   path_provider: ^2.0.5
   permission_handler: ^10.2.0
+  permissions:
+    path: ../packages/permissions
   repository_base:
     path: ../packages/repository_base
   rxdart: ^0.27.1
@@ -60,6 +64,8 @@ dependencies:
     path: ../packages/sortables
   sqflite: ^2.2.5
   sqflite_common_ffi: ^2.2.5
+  text_to_speech:
+    path: ../packages/text_to_speech
   timezone: ^0.9.0
   transparent_image: ^2.0.0
   user_files:

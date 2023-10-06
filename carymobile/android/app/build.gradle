@@ -43,7 +43,6 @@ android {
     defaultConfig {
         applicationId "com.abilia.carymessenger"
         minSdkVersion 26
-        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
