@@ -1,7 +1,7 @@
 import 'package:auth/listeners/authentication_listener.dart';
 import 'package:carymessenger/listeners/authenticated_listener.dart';
 import 'package:carymessenger/providers.dart';
-import 'package:carymessenger/ui/pages/login_page.dart';
+import 'package:carymessenger/ui/pages/login/login_page.dart';
 import 'package:carymessenger/ui/pages/main/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
