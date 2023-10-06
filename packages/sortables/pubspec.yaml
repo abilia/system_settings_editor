@@ -22,7 +22,7 @@ dependencies:
   logging: any
   meta: any
   repository_base:
-    path: ../repository/repository_base
+    path: ../repository_base
   shared_preferences: any
   sqflite: any
   synchronized: any

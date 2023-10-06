@@ -1,3 +1,4 @@
+export 'package:text_to_speech/voice_data.dart';
 export 'activity_view_settings.dart';
 export 'add_activity/all.dart';
 export 'alarm_settings.dart';
@@ -11,6 +12,5 @@ export 'memoplanner_settings_enums.dart';
 export 'menu_settings.dart';
 export 'month_calendar_settings.dart';
 export 'photo_menu_settings.dart';
-export 'speech_support/voice_data.dart';
 export 'timepillar_interval.dart';
 export 'week_calendar_settings.dart';

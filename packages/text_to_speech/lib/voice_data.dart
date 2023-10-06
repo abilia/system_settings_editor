@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:memoplanner/utils/all.dart';
 
 class VoiceData extends Equatable {
   final String name, lang, countryCode;
@@ -38,7 +37,7 @@ class VoiceFile extends Equatable {
     required String downloadUrl,
     required this.md5,
     required this.size,
-  }) : downloadUrl = downloadUrl.toUri();
+  }) : downloadUrl = Uri.parse(downloadUrl);
 
   factory VoiceFile.fromJson(Map<String, dynamic> json) => VoiceFile(
         downloadUrl: json['downloadUrl'],

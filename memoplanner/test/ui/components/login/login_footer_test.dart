@@ -52,10 +52,8 @@ void main() {
     voicesCubit = VoicesCubit(
       speechSettingsCubit: speechSettingsCubit,
       voiceRepository: voiceRepository,
-      localeCubit: LocaleCubit(
-        settingsDb: FakeSettingsDb(),
-        seagullAnalytics: FakeSeagullAnalytics(),
-      ),
+      localeChangeStream: const Stream.empty(),
+      languageCode: 'en',
     );
 
     deviceRepository = MockDeviceRepository();

@@ -7,11 +7,10 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/utils/all.dart';
 import 'package:path/path.dart' as p;
+import 'package:repository_base/repository_base.dart';
 import 'package:text_to_speech/text_to_speech.dart';
+import 'package:utils/utils.dart';
 
 class VoiceRepository {
   VoiceRepository({

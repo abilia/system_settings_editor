@@ -779,7 +779,7 @@ packages:
   repository_base:
     dependency: "direct main"
     description:
-      path: "../packages/repository/repository_base"
+      path: "../packages/repository_base"
       relative: true
     source: path
     version: "0.0.0"

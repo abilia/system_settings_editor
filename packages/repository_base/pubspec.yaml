@@ -15,13 +15,13 @@ dependencies:
   sqflite_common_ffi: any
   synchronized: any
   utils:
-    path: ../../utils
+    path: ../utils
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: any
   seagull_fakes:
-    path: ../../seagull_fakes
+    path: ../seagull_fakes
   seagull_lints:
-    path: ../../seagull_lints
+    path: ../seagull_lints

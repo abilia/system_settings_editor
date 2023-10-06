@@ -1,12 +1,14 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
-import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/db/all.dart';
-import 'package:memoplanner/models/all.dart';
-import 'package:memoplanner/repository/all.dart';
+import 'package:text_to_speech/speech_settings_cubit.dart';
+import 'package:text_to_speech/voice_data.dart';
+import 'package:text_to_speech/voice_db.dart';
+import 'package:text_to_speech/voice_repository.dart';
 
 part 'voices_state.dart';
 
@@ -14,9 +16,10 @@ class VoicesCubit extends Cubit<VoicesState> {
   VoicesCubit({
     required this.speechSettingsCubit,
     required this.voiceRepository,
-    required LocaleCubit localeCubit,
-  }) : super(VoicesLoading(languageCode: localeCubit.state.languageCode)) {
-    _localeSubscription = localeCubit.stream
+    required String languageCode,
+    required Stream<Locale> localeChangeStream,
+  }) : super(VoicesLoading(languageCode: languageCode)) {
+    _localeSubscription = localeChangeStream
         .map((locale) => locale.languageCode)
         .listen(_onLanguageChanged);
   }
