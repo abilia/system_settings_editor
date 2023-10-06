@@ -2,6 +2,7 @@ import 'package:carymessenger/cubit/production_guide_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permissions/permission_cubit.dart';
+import 'package:text_to_speech/speech_settings_cubit.dart';
 import 'package:text_to_speech/voices_cubit.dart';
 
 class ProductionGuidePage extends StatelessWidget {
@@ -23,7 +24,7 @@ class ProductionGuidePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (!batteryOptimizationGranted) const BatteryOptimizationButton(),
-          if (!voiceIsDownloaded) const Expanded(child: Voices()),
+          const Expanded(child: Voices()),
           FilledButton(
             onPressed: batteryOptimizationGranted && voiceIsDownloaded
                 ? productionGuideCubit.setDone
@@ -56,26 +57,42 @@ class Voices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final voicesCubit = context.watch<VoicesCubit>();
+    final selectedVoice =
+        context.select((SpeechSettingsCubit cubit) => cubit.state.voice);
     final voicesState = voicesCubit.state;
     final swedish = voicesState.availableByLanguage['sv']?.toList() ?? [];
-    final downloadning = voicesState.downloading;
-    final isDownloadning = voicesState.downloading.isNotEmpty;
+    final downloaded = voicesState.downloaded;
+    final downloading = voicesState.downloading;
+    final isDownloading = voicesState.downloading.isNotEmpty;
 
     return ListView.builder(
       itemCount: swedish.length,
       itemBuilder: (context, index) {
-        final v = swedish[index];
+        final voice = swedish[index];
+        final isDownloadingVoice = downloading.contains(voice.name);
+        final voiceIsDownloaded = downloaded.contains(voice.name);
+        final isSelectedVoice = selectedVoice == voice.name;
         return TextButton(
-          onPressed:
-              isDownloadning ? null : () async => voicesCubit.downloadVoice(v),
+          onPressed: isDownloading || voiceIsDownloaded
+              ? null
+              : () async => voicesCubit.downloadVoice(voice),
           child: Row(
             children: [
-              if (downloadning.contains(v.name))
-                const CircularProgressIndicator()
+              if (isDownloadingVoice)
+                const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(),
+                )
+              else if (isSelectedVoice)
+                const Icon(Icons.done_all)
+              else if (voiceIsDownloaded)
+                const Icon(Icons.check)
               else
                 const Icon(Icons.download),
+              const SizedBox(width: 8),
               Text(
-                  '${v.name} ${v.lang}-${v.countryCode} ${v.file.sizeInMB} MB'),
+                  '${voice.name} ${voice.lang}-${voice.countryCode} ${voice.file.sizeInMB} MB'),
             ],
           ),
         );
