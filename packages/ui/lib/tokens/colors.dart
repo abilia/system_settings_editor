@@ -93,6 +93,7 @@ class AbiliaColors {
     100: secondary100,
     200: secondary200,
     300: secondary300,
+    400: secondary400,
     500: secondary500,
     600: secondary600,
     700: secondary700,
@@ -102,6 +103,7 @@ class AbiliaColors {
   static const secondary100 = Color(_secondaryValue);
   static const secondary200 = Color(0xFFC5F0E6);
   static const secondary300 = Color(0xFFB6E5DA);
+  static const secondary400 = Color(0xFF027B5E);
   static const secondary500 = Color(0xFF027B5E);
   static const secondary600 = Color(0xFF016C53);
   static const secondary700 = Color(0xFF005F48);

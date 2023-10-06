@@ -121,7 +121,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   ActionButton(
                     text: translate.signIn,
-                    style: actionButtonStyleLarge,
+                    style: actionButtonPrimary1000,
                     onPressed: state.isFormValid
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,
