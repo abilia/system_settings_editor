@@ -229,6 +229,7 @@ class AuthenticatedProviders extends StatelessWidget {
             create: (context) => AlarmCubit(
               clockCubit: context.read<ClockCubit>(),
               activityRepository: context.read<ActivityRepository>(),
+              checkAlarmStream: notificationStream,
             ),
           ),
           BlocProvider<NextAlarmSchedulerBloc>(
