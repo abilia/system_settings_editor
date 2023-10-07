@@ -41,6 +41,7 @@ dependencies:
   generics:
     path: ../packages/generics
   get_it: ^7.2.0
+  google_fonts: ^6.1.0
   intl: ^0.18.0
   logging: ^1.1.0
   lokalise_flutter_sdk: ^1.1.1
@@ -90,6 +91,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/graphics/
+    - assets/google_fonts/
   fonts:
     - family: AbiliaFont
       fonts:

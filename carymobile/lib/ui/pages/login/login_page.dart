@@ -1,8 +1,10 @@
-import 'dart:async';
-
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:carymessenger/l10n/generated/l10n.dart';
+import 'package:carymessenger/ui/abilia_icons.dart';
+import 'package:carymessenger/ui/themes/colors.dart';
+import 'package:carymessenger/ui/themes/text_styles.dart';
+import 'package:carymessenger/ui/widgets/buttons/action.dart';
 import 'package:carymessenger/ui/widgets/open_settings_button.dart';
 import 'package:carymessenger/ui/widgets/version_text.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,13 @@ import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 
+part 'login_error_listener.dart';
+
 part 'logo_with_change_server.dart';
+
+part 'password_input_field.dart';
+
+part 'username_input_field.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({required this.unauthenticatedState, super.key});
@@ -21,9 +29,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translate = Lt.of(context);
-    final reason = unauthenticatedState.loggedOutReason;
-    if (reason != LoggedOutReason.logOut) _showLoggedOutAlert(context);
     return BlocProvider(
       create: (context) => LoginCubit(
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
@@ -36,102 +41,58 @@ class LoginPage extends StatelessWidget {
       ),
       child: Scaffold(
         body: SafeArea(
-          child: BlocListener<LoginCubit, LoginState>(
-            listener: (context, state) {
-              if (state is LoginFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.cause.name),
-                  ),
-                );
-              }
-            },
+          child: LoginErrorListener(
             child: BlocSelector<LoginCubit, LoginState, bool>(
               selector: (state) => state.isFormValid,
-              builder: (context, isFormValid) => Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 24),
-                    const LogoWithChangeServer(),
-                    const SizedBox(height: 24),
-                    const Text('Connect to myAbilia'),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Make sure that CARY Base is connected to myAbilia.'
-                      ' Log in here with the same account.',
+              builder: (context, isFormValid) => Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      top: 24,
+                      left: 16,
+                      right: 16,
+                      bottom: 40,
                     ),
-                    const SizedBox(height: 24),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(translate.username_email),
-                        Tooltip(
-                          message: translate.username_email,
-                          child: TextField(
-                            onChanged:
-                                context.read<LoginCubit>().usernameChanged,
-                          ),
+                        LogoWithChangeServer(),
+                        SizedBox(height: 24),
+                        Text(
+                          'Connect to myAbilia',
+                          style: headline4,
+                          textAlign: TextAlign.center,
                         ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Make sure that CARY Base is connected to myAbilia.'
+                          ' Log in here with the same account.',
+                          style: body,
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 24),
+                        UsernameInputField(),
+                        SizedBox(height: 12),
+                        PasswordInputField(),
                       ],
                     ),
-                    const SizedBox(height: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Password'),
-                        Tooltip(
-                          message: 'Password',
-                          child: TextField(
-                            onChanged:
-                                context.read<LoginCubit>().passwordChanged,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    FilledButton(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ActionButtonGreen(
                       onPressed: isFormValid
                           ? context.read<LoginCubit>().loginButtonPressed
                           : null,
-                      child: const Text('Sign in'),
-                    )
-                  ],
-                ),
+                      leading: const Icon(AbiliaIcons.ok),
+                      text: 'Log in',
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  void _showLoggedOutAlert(BuildContext context) {
-    Future(
-      () async => showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Unauthorized'),
-            content: const SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text('Logged out'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).maybePop();
-                },
-                child: const Text('Ok'),
-              ),
-            ],
-          );
-        },
       ),
     );
   }
