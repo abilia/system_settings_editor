@@ -6,10 +6,12 @@ import 'package:carymessenger/listeners/top_level_listener.dart';
 import 'package:carymessenger/providers.dart';
 import 'package:carymessenger/ui/pages/production_guide_page.dart';
 import 'package:carymessenger/ui/pages/splash_page.dart';
+import 'package:carymessenger/ui/themes/theme.dart';
 import 'package:carymessenger/ui/widgets/backend_banner.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_logging/bloc_logging_observer.dart';
@@ -74,8 +76,13 @@ class MaterialAppWrapper extends StatelessWidget {
     return MaterialApp(
       navigatorKey: _navigatorKey,
       localizationsDelegates: const [Lt.delegate],
-      builder: (context, child) =>
-          child != null ? BackendBanner(child: child) : const SplashPage(),
+      theme: caryLightTheme,
+      builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark.copyWith(
+          statusBarColor: Colors.transparent,
+        ),
+        child: child != null ? BackendBanner(child: child) : const SplashPage(),
+      ),
       home: home,
     );
   }

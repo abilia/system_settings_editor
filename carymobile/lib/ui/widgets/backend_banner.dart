@@ -1,4 +1,6 @@
 import 'package:auth/bloc/base_url/base_url_cubit.dart';
+import 'package:carymessenger/ui/themes/colors.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repository_base/end_point.dart';
@@ -15,6 +17,7 @@ class BackendBanner extends StatelessWidget {
     return Banner(
       message: backend,
       location: BannerLocation.topStart,
+      color: abiliaGreen100,
       child: child,
     );
   }
