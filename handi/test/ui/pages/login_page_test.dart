@@ -35,11 +35,8 @@ void main() {
     await tester.pumpAndSettle();
     final loginButtonFinder =
         find.widgetWithText(ActionButton, translate.signIn);
-    final loginButtonFinder =
-        find.widgetWithText(ActionButton, translate.signIn);
     expect(loginButtonFinder, findsOneWidget);
     expect(
-      tester.widget<ActionButton>(loginButtonFinder).onPressed,
       tester.widget<ActionButton>(loginButtonFinder).onPressed,
       isNull,
     );
@@ -47,7 +44,6 @@ void main() {
     await tester.enterText(find.byTooltip('Password'), 'pword');
     await tester.pumpAndSettle();
     expect(
-      tester.widget<ActionButton>(loginButtonFinder).onPressed,
       tester.widget<ActionButton>(loginButtonFinder).onPressed,
       isNotNull,
     );
