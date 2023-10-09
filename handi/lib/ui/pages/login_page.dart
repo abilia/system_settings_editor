@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/generated/l10n.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:ui/buttons/link_button.dart';
+import 'package:ui/components/buttons/action_button.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({required this.unauthenticatedState, super.key});
@@ -35,8 +36,8 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                LinkButton(
-                  title: 'Ok',
+                ActionButton(
+                  text: 'Ok',
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
@@ -69,60 +70,68 @@ class LoginPage extends StatelessWidget {
             }
           },
           child: BlocBuilder<LoginCubit, LoginState>(
-            builder: (context, state) => Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Username'),
-                      Tooltip(
-                        message: 'Username',
-                        child: TextField(
-                          onChanged: context.read<LoginCubit>().usernameChanged,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Password'),
-                      Tooltip(
-                        message: 'Password',
-                        child: TextField(
-                          onChanged: context.read<LoginCubit>().passwordChanged,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ...backendEnvironments.entries.map(
-                        (kvp) => Builder(
-                          builder: (context) => RadioMenuButton(
-                            value: kvp.key,
-                            onChanged: (s) async => context
-                                .read<BaseUrlCubit>()
-                                .updateBaseUrl(kvp.key),
-                            groupValue: context.watch<BaseUrlCubit>().state,
-                            child: Text(kvp.value),
+            builder: (context, state) => SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Username'),
+                        Tooltip(
+                          message: 'Username',
+                          child: TextField(
+                            onChanged:
+                                context.read<LoginCubit>().usernameChanged,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  LinkButton(
-                    onPressed: state.isFormValid
-                        ? context.read<LoginCubit>().loginButtonPressed
-                        : null,
-                    title: (translate.signIn),
-                  )
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Password'),
+                        Tooltip(
+                          message: 'Password',
+                          child: TextField(
+                            onChanged:
+                                context.read<LoginCubit>().passwordChanged,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ...backendEnvironments.entries.map(
+                          (kvp) => Builder(
+                            builder: (context) => RadioMenuButton(
+                              value: kvp.key,
+                              onChanged: (s) async => context
+                                  .read<BaseUrlCubit>()
+                                  .updateBaseUrl(kvp.key),
+                              groupValue: context.watch<BaseUrlCubit>().state,
+                              child: Text(kvp.value),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    ActionButton(
+                      text: translate.signIn,
+                      onPressed: state.isFormValid
+                          ? context.read<LoginCubit>().loginButtonPressed
+                          : null,
+                      leadingIcon: MdiIcons.login,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

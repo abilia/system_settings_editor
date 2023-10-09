@@ -5,7 +5,7 @@ import 'package:handi/main.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
 import 'package:handi/ui/pages/login_page.dart';
 import 'package:seagull_fakes/all.dart';
-import 'package:ui/buttons/link_button.dart';
+import 'package:ui/components/buttons/action_button.dart';
 
 import '../../fakes/fake_getit.dart';
 
@@ -33,17 +33,18 @@ void main() {
   testWidgets('can login', (tester) async {
     await tester.pumpWidget(const HandiApp());
     await tester.pumpAndSettle();
-    final loginButtonFinder = find.widgetWithText(LinkButton, translate.signIn);
+    final loginButtonFinder =
+        find.widgetWithText(ActionButton, translate.signIn);
     expect(loginButtonFinder, findsOneWidget);
     expect(
-      tester.widget<LinkButton>(loginButtonFinder).onPressed,
+      tester.widget<ActionButton>(loginButtonFinder).onPressed,
       isNull,
     );
     await tester.enterText(find.byTooltip('Username'), 'uname');
     await tester.enterText(find.byTooltip('Password'), 'pword');
     await tester.pumpAndSettle();
     expect(
-      tester.widget<LinkButton>(loginButtonFinder).onPressed,
+      tester.widget<ActionButton>(loginButtonFinder).onPressed,
       isNotNull,
     );
     await tester.tap(loginButtonFinder);
