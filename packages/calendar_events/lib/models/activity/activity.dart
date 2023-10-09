@@ -1,7 +1,7 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:calendar_events/calendar_events.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:repository_base/repository_base.dart';
@@ -51,11 +51,16 @@ class Activity extends DataModel {
     );
   }
 
-  final String seriesId, title, fileId, icon, timezone, calendarId;
+  final String seriesId, title, fileId, icon, timezone, calendarId, description;
   final DateTime startTime;
   final Duration duration;
   final int category, alarmType;
-  final bool fullDay, checkable, removeAfter, secret;
+  final bool fullDay,
+      checkable,
+      removeAfter,
+      secret,
+      textToSpeech,
+      showInDayplan;
   final UnmodifiableListView<int> reminderBefore;
   final UnmodifiableSetView<String> signedOffDates;
   final String infoItemString;
@@ -93,6 +98,9 @@ class Activity extends DataModel {
     required this.extras,
     required this.calendarId,
     required this.secretExemptions,
+    required this.description,
+    required this.textToSpeech,
+    required this.showInDayplan,
   })  : assert(alarmType >= 0),
         assert(category >= 0);
 
@@ -116,6 +124,9 @@ class Activity extends DataModel {
     Set<String> signedOffDates = const {},
     Extras extras = Extras.empty,
     Set<int> secretExemptions = const {},
+    String description = '',
+    bool textToSpeech = false,
+    bool showInDayplan = true,
   }) {
     final id = const Uuid().v4();
     return Activity._(
@@ -141,10 +152,13 @@ class Activity extends DataModel {
       extras: extras,
       calendarId: calendarId,
       secretExemptions: UnmodifiableSetView(secretExemptions),
+      description: description,
+      textToSpeech: textToSpeech,
+      showInDayplan: showInDayplan,
     );
   }
 
-  Map<String, dynamic> get properties => {
+  Map<String, dynamic> get analyticsProperties => {
         'title': hasTitle,
         'image': hasImage,
         'startTime': startTime.toIso8601String(),
@@ -165,6 +179,9 @@ class Activity extends DataModel {
         'recurring': recurs.recurrence.name,
         'recurringHasNoEnd': recurs.hasNoEnd,
         'infoItem': infoItem.typeId,
+        'description': description.isNotEmpty,
+        'textToSpeech': textToSpeech,
+        'showInDayplan': showInDayplan,
       };
 
   @visibleForTesting
@@ -188,6 +205,9 @@ class Activity extends DataModel {
     Extras extras = Extras.empty,
     String calendarId = '',
     Set<int> secretExemptions = const {},
+    String description = '',
+    bool textToSpeech = false,
+    bool showInDayplan = true,
   }) =>
       Activity(
         title: title,
@@ -209,6 +229,9 @@ class Activity extends DataModel {
         extras: extras,
         calendarId: calendarId,
         secretExemptions: secretExemptions,
+        description: description,
+        textToSpeech: textToSpeech,
+        showInDayplan: showInDayplan,
       );
 
   factory Activity.fromBaseActivity({
@@ -293,6 +316,9 @@ class Activity extends DataModel {
     Extras? extras,
     String? calendarId,
     Set<int>? secretExemptions,
+    String? description,
+    bool? textToSpeech,
+    bool? showInDayplan,
   }) =>
       Activity._(
         id: newId ? const Uuid().v4() : id,
@@ -328,6 +354,9 @@ class Activity extends DataModel {
         secretExemptions: secretExemptions != null
             ? UnmodifiableSetView(secretExemptions)
             : this.secretExemptions,
+        description: description ?? this.description,
+        textToSpeech: textToSpeech ?? this.textToSpeech,
+        showInDayplan: showInDayplan ?? this.showInDayplan,
       );
 
   static Recurs _newRecurrence(
@@ -365,6 +394,9 @@ class Activity extends DataModel {
         extras: other.extras,
         calendarId: other.calendarId,
         secretExemptions: other.secretExemptions,
+        description: other.description,
+        textToSpeech: other.textToSpeech,
+        showInDayplan: other.showInDayplan,
       );
 
   @override
@@ -391,6 +423,9 @@ class Activity extends DataModel {
         extras,
         calendarId,
         secretExemptions,
+        description,
+        textToSpeech,
+        showInDayplan,
       ];
 
   @override

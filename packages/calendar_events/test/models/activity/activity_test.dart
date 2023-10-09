@@ -109,7 +109,10 @@ void main() {
           "checkable" : true,
           "removeAfter" : false,
           "secret" : false,
-          "fileId" : null
+          "fileId" : null,
+          "description": null,
+          "textToSpeech": null,
+          "showInDayplan": null
         } ]''';
     final resultList = (json.decode(response) as List)
         .map((e) => DbActivity.fromJson(e))
@@ -125,6 +128,10 @@ void main() {
     expect(result.fileId, '');
     expect(result.timezone, localTimezoneName);
     expect(result.extras, Extras.empty);
+    expect(result.description, isEmpty);
+    expect(result.textToSpeech, false);
+    expect(result.showInDayplan, true);
+
     for (var p in result.props) {
       expect(p, isNotNull);
     }
@@ -234,13 +241,11 @@ void main() {
     expect(resultList.length, 1);
     final result = resultList.first.activity;
 
-    // expect(result.groupActivityId, null);
     expect(result.icon, '');
     expect(result.signedOffDates, []);
     expect(result.infoItem, InfoItem.none);
     expect(result.reminderBefore, []);
     expect(result.reminders, []);
-    // expect(result.extras, null);
     expect(result.fileId, '');
     expect(result.extras, Extras.empty);
   });
@@ -328,19 +333,21 @@ void main() {
       fileId: 'fileId',
       icon: 'icon',
       extras: Extras.createNew(
-          startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm')),
+        startTimeExtraAlarm: AbiliaFile.from(path: 'startTimeExtraAlarm'),
+      ),
       timezone: 'time/zone',
     );
     final dbModel = a.wrapWithDbModel();
-    final json = dbModel.toJson()..remove('secretExemptions');
-    final db = dbModel.toMapForDb()
-      ..remove('dirty')
-      ..remove('secret_exemptions');
+    final json = dbModel.toJson();
+    final db = dbModel.toMapForDb()..remove('dirty');
     final jsonWithoutBool = json.values
         .map((value) => value is bool ? (value ? 1 : 0) : value)
         .toList();
+    final dbWithNullsOnEmpty = db.values
+        .map((value) => value is String && value.isEmpty ? null : value)
+        .toList();
 
-    expect(jsonWithoutBool, containsAll(db.values));
+    expect(jsonWithoutBool, containsAll(dbWithNullsOnEmpty));
   });
 
   test('infoItem is null or empty (Bug SGC-328)', () {
@@ -414,7 +421,15 @@ void main() {
       "secretExemptions" : [],
       "fileId": null
 }''';
-    final decoded = json.decode(response) as Map<String, dynamic>;
+    final decoded = (json.decode(response) as Map<String, dynamic>).map(
+      (key, value) => MapEntry(
+        key,
+        (value is String && value.isEmpty ||
+                (value is Iterable && value.isEmpty))
+            ? null
+            : value,
+      ),
+    );
     final parsed = DbActivity.fromJson(decoded);
     final dbMap = parsed.toMapForDb();
     final fromDBmap = DbActivity.fromDbMap(dbMap);
