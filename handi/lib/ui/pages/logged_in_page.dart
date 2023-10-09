@@ -9,7 +9,7 @@ import 'package:handi/l10n/generated/l10n.dart';
 import 'package:handi/ui/components/tts.dart';
 import 'package:sortables/sortables.dart';
 import 'package:support_persons/bloc/support_persons_cubit.dart';
-import 'package:ui/buttons/link_button.dart';
+import 'package:ui/components/buttons/link_button.dart';
 import 'package:user_files/user_files.dart';
 
 class LoggedInPage extends StatelessWidget {

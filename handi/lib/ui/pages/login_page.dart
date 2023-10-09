@@ -10,8 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:ui/buttons/action_button.dart';
-import 'package:ui/buttons/link_button.dart';
+import 'package:ui/components/buttons/buttons.dart';
 import 'package:ui/styles/styles.dart';
 
 class LoginPage extends StatelessWidget {

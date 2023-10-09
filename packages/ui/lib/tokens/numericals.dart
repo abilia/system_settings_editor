@@ -32,5 +32,6 @@ const numerical3000 = 1440.0;
 const numerical3100 = 1520.0;
 const numerical3200 = 1600.0;
 
-// Officially there is no 2 pixel numerical, but it's still used in the design.
-const numerical2 = 2.0;
+// These are used in the design, but are not officially recognized.
+const numerical1px = 1.0;
+const numerical2px = 2.0;

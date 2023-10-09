@@ -5,7 +5,7 @@ import 'package:handi/main.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
 import 'package:handi/ui/pages/login_page.dart';
 import 'package:seagull_fakes/all.dart';
-import 'package:ui/buttons/action_button.dart';
+import 'package:ui/components/buttons/buttons.dart';
 
 import '../../fakes/fake_getit.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui/buttons/buttons.dart';
+import 'package:ui/components/buttons/buttons.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 void main() {
@@ -32,7 +32,7 @@ class HotreloadWidgetbook extends StatelessWidget {
                           .boolean(label: 'Enabled', initialValue: true)
                       ? () {}
                       : null,
-                  title: context.knobs.string(
+                  text: context.knobs.string(
                     label: 'Button title',
                     initialValue: 'Title',
                   ),
