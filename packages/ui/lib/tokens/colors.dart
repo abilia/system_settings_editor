@@ -112,6 +112,15 @@ class AbiliaColors {
 class FontColors {
   FontColors._();
 
-  static const Color primary = Color(0xFF252626);
-  static const Color secondary = Color(0xFF575859);
+  static const Color primary = AbiliaColors.greyscale900;
+  static const Color secondary = AbiliaColors.greyscale700;
+}
+
+class BorderColors {
+  BorderColors._();
+
+  static const primary = AbiliaColors.primary200;
+  static const secondary = AbiliaColors.greyscale300;
+  static const active = AbiliaColors.primary500;
+  static const focus = AbiliaColors.peach300;
 }

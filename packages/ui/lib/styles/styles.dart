@@ -134,3 +134,32 @@ final actionButtonTertiary800 = actionButtonTertiary900.copyWith(
       }
       return _roundBorder;
     }));
+
+final inputBorder = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(
+      Radius.circular(numerical300),
+    ),
+    borderSide: borderSideGrey300.copyWith(width: numerical1px));
+final activeBorder = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(
+      Radius.circular(numerical300),
+    ),
+    borderSide: borderSideGrey300.copyWith(
+        width: numerical1px, color: BorderColors.active));
+final errorBorder = OutlineInputBorder(
+  borderRadius: const BorderRadius.all(
+    Radius.circular(numerical300),
+  ),
+  borderSide: borderSideGrey300.copyWith(
+      width: numerical1px, color: BorderColors.focus),
+);
+final textFieldInputTheme900 = InputDecorationTheme(
+  border: inputBorder,
+  errorBorder: errorBorder,
+  focusedBorder: OutlineInputBorder(
+    borderRadius: const BorderRadius.all(
+      Radius.circular(numerical300),
+    ),
+    borderSide: borderSideGrey300.copyWith(width: numerical1px),
+  ),
+);

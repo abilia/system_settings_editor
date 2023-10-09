@@ -11,6 +11,7 @@ import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ui/components/buttons/buttons.dart';
+import 'package:ui/components/combobox.dart';
 import 'package:ui/styles/styles.dart';
 
 class LoginPage extends StatelessWidget {
@@ -77,29 +78,19 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Username'),
-                      Tooltip(
-                        message: 'Username',
-                        child: TextField(
-                          onChanged: context.read<LoginCubit>().usernameChanged,
-                        ),
-                      ),
-                    ],
+                  Tooltip(
+                    message: 'Username',
+                    child: Combobox(
+                      hintText: 'Username',
+                      onChanged: context.read<LoginCubit>().usernameChanged,
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Password'),
-                      Tooltip(
-                        message: 'Password',
-                        child: TextField(
-                          onChanged: context.read<LoginCubit>().passwordChanged,
-                        ),
-                      ),
-                    ],
+                  Tooltip(
+                    message: 'Password',
+                    child: Combobox(
+                      hintText: 'Password',
+                      onChanged: context.read<LoginCubit>().passwordChanged,
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -120,11 +111,9 @@ class LoginPage extends StatelessWidget {
                   ),
                   ActionButton(
                     text: translate.signIn,
-                    style: actionButtonPrimary1000,
                     onPressed: state.isFormValid
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,
-                    icon: MdiIcons.login,
                   )
                 ],
               ),
