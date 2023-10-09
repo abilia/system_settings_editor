@@ -23,7 +23,7 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     const spacing = numerical200;
     return TextButton(
-      style: style ?? actionButtonPrimary1000,
+      style: style ?? actionButtonPrimary900,
       onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

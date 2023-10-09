@@ -29,7 +29,7 @@ final backgroundGrey =
   return AbiliaColors.greyscale000;
 });
 
-final actionButtonPrimary1000 = ButtonStyle(
+final actionButtonPrimary900 = ButtonStyle(
   iconSize: MaterialStateProperty.all(numerical800),
   backgroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {
@@ -56,7 +56,7 @@ final actionButtonPrimary1000 = ButtonStyle(
       return AbiliaColors.greyscale000;
     },
   ),
-  textStyle: MaterialStateProperty.all(AbiliaFonts.primary525),
+  textStyle: MaterialStateProperty.all(AbiliaFonts.primary425),
   shape: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
     if (states.contains(MaterialState.focused)) {
       return baseBorder.copyWith(side: borderSidePeach400);
@@ -64,16 +64,10 @@ final actionButtonPrimary1000 = ButtonStyle(
     return baseBorder;
   }),
   padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
-      horizontal: numerical600, vertical: numerical300)),
-);
-
-final actionButtonPrimary900 = actionButtonPrimary1000.copyWith(
-  textStyle: MaterialStateProperty.all(AbiliaFonts.primary425),
-  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
       horizontal: numerical400, vertical: numerical300)),
 );
 
-final actionButtonSecondary1000 = actionButtonPrimary1000.copyWith(
+final actionButtonSecondary900 = actionButtonPrimary900.copyWith(
   backgroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
@@ -90,13 +84,7 @@ final actionButtonSecondary1000 = actionButtonPrimary1000.copyWith(
   ),
 );
 
-final actionButtonSecondary900 = actionButtonSecondary1000.copyWith(
-  textStyle: MaterialStateProperty.all(AbiliaFonts.primary425),
-  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
-      horizontal: numerical400, vertical: numerical300)),
-);
-
-final actionButtonTertiary1000 = actionButtonPrimary1000.copyWith(
+final actionButtonTertiary900 = actionButtonPrimary900.copyWith(
     backgroundColor: backgroundGrey,
     foregroundColor: MaterialStateProperty.resolveWith<Color>(
       (Set<MaterialState> states) {
@@ -115,12 +103,6 @@ final actionButtonTertiary1000 = actionButtonPrimary1000.copyWith(
       }
       return baseBorder;
     }));
-
-final actionButtonTertiary900 = actionButtonTertiary1000.copyWith(
-  textStyle: MaterialStateProperty.all(AbiliaFonts.primary425),
-  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
-      horizontal: numerical400, vertical: numerical300)),
-);
 
 final actionButtonTertiary800 = actionButtonTertiary900.copyWith(
     padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
