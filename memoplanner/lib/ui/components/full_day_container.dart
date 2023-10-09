@@ -4,15 +4,18 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class FullDayContainer extends StatelessWidget {
+class FullDayContainer extends StatelessWidget implements PreferredSizeWidget {
+  final List<ActivityOccasion> fullDayActivities;
+  final DateTime day;
+
   const FullDayContainer({
     required this.fullDayActivities,
     required this.day,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
-  final List<ActivityOccasion> fullDayActivities;
-  final DateTime day;
+  @override
+  Size get preferredSize => CalendarAppBar.size;
 
   @override
   Widget build(BuildContext context) {
@@ -20,46 +23,40 @@ class FullDayContainer extends StatelessWidget {
         .select((MemoplannerSettingsBloc bloc) => bloc.state.calendar.dayColor);
     final nightMode = context.watch<NightMode>().state;
 
-    return Theme(
-      data: weekdayTheme(
-        dayColor: nightMode ? DayColor.noColors : dayColor,
-        languageCode: Localizations.localeOf(context).languageCode,
-        weekday: day.weekday,
-      ).theme,
-      child: Builder(
-        builder: (context) => Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).appBarTheme.backgroundColor,
-          ),
-          child: Padding(
-            padding: layout.commonCalendar.fullDayPadding,
-            child: SafeArea(
-              child: Row(
-                children: [
-                  ...fullDayActivities.take(2).mapIndexed<Widget>(
-                        (i, fd) => Flexible(
-                          child: Padding(
-                            padding: i > 0
-                                ? EdgeInsets.only(
-                                    left: layout.eventCard.marginSmall,
-                                  )
-                                : EdgeInsets.zero,
-                            child: ActivityCard(
-                              activityOccasion: fd,
-                              useOpacity: nightMode,
-                            ),
-                          ),
-                        ),
+    final theme = weekdayTheme(
+      dayColor: nightMode ? DayColor.noColors : dayColor,
+      languageCode: Localizations.localeOf(context).languageCode,
+      weekday: day.weekday,
+    );
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.color,
+      ),
+      child: Padding(
+        padding: layout.commonCalendar.fullDayPadding,
+        child: Row(
+          children: [
+            ...fullDayActivities.take(2).mapIndexed<Widget>(
+                  (i, fd) => Flexible(
+                    child: Padding(
+                      padding: i > 0
+                          ? EdgeInsets.only(
+                              left: layout.eventCard.marginSmall,
+                            )
+                          : EdgeInsets.zero,
+                      child: ActivityCard(
+                        activityOccasion: fd,
+                        useOpacity: nightMode,
                       ),
-                  if (fullDayActivities.length >= 3)
-                    FullDayActivitiesButton(
-                      numberOfFullDayActivities: fullDayActivities.length,
-                      day: day,
-                    )
-                ],
-              ),
-            ),
-          ),
+                    ),
+                  ),
+                ),
+            if (fullDayActivities.length >= 3)
+              FullDayActivitiesButton(
+                numberOfFullDayActivities: fullDayActivities.length,
+                day: day,
+              )
+          ],
         ),
       ),
     );

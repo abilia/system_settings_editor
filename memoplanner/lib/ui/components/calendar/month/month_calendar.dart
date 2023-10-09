@@ -4,21 +4,26 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class MonthCalendarTab extends StatelessWidget {
-  const MonthCalendarTab({Key? key}) : super(key: key);
+class MonthCalendarTab extends CalendarTab {
+  const MonthCalendarTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  PreferredSizeWidget get appBar => const MonthAppBar();
+
+  @override
+  Widget floatingActionButton(BuildContext context) {
     final isCollapsed = context.select(
         (MonthCalendarCubit cubit) => layout.go && cubit.state.isCollapsed);
     final showPreview =
         context.select((MonthCalendarCubit cubit) => cubit.showPreview);
-    return Scaffold(
-      appBar: const MonthAppBar(),
-      floatingActionButton:
-          FloatingActions(useBottomPadding: isCollapsed && showPreview),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: const MonthCalendar(usePreview: true),
+    return FloatingActions(useBottomPadding: isCollapsed && showPreview);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: const MonthCalendar(usePreview: true),
     );
   }
 }

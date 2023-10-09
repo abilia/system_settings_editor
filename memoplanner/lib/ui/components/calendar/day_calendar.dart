@@ -3,30 +3,24 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class DayCalendarTab extends StatelessWidget {
+class DayCalendarTab extends CalendarTab {
   static const transitionDuration = Duration(milliseconds: 300);
 
-  const DayCalendarTab({Key? key}) : super(key: key);
+  const DayCalendarTab({super.key});
+
+  @override
+  PreferredSizeWidget get appBar => const DayCalendarAppBar();
+
+  @override
+  Widget floatingActionButton(BuildContext context) {
+    final displayEyeButton = context
+        .select((DayCalendarViewCubit bloc) => bloc.state.displayEyeButton);
+    return FloatingActions(displayEyeButton: displayEyeButton);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final day = context.select((DayPickerBloc bloc) => bloc.state.day);
-    final calendarSettings =
-        context.select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
-    final isNight = context.watch<NightMode>().state;
-
-    final dayTheme = weekdayTheme(
-      dayColor: isNight ? DayColor.noColors : calendarSettings.dayColor,
-      languageCode: Localizations.localeOf(context).languageCode,
-      weekday: day.weekday,
-    );
-    return Scaffold(
-      backgroundColor: dayTheme.theme.appBarTheme.backgroundColor,
-      appBar: const DayCalendarAppBar(),
-      floatingActionButton: const FloatingActions(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: const Calendars(),
-    );
+    return const Calendars();
   }
 }
 
@@ -93,30 +87,20 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
                   : dayEventsCubit.state;
               return Column(
                 children: [
-                  Builder(
-                    builder: (context) {
-                      if (eventsState.fullDayActivities.isEmpty) {
-                        return const SizedBox.shrink();
-                      }
-                      return FullDayContainer(
-                        fullDayActivities: eventsState.fullDayActivities,
-                        day: eventsState.day,
-                      );
-                    },
-                  ),
-                  Builder(
-                    builder: (context) {
-                      return Expanded(
-                        child: Container(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          child: isAgenda
-                              ? Agenda(eventsState: eventsState)
-                              : CachedTimepillar(
-                                  inPageTransition: inPageTransition,
-                                ),
-                        ),
-                      );
-                    },
+                  if (eventsState.fullDayActivities.isNotEmpty)
+                    FullDayContainer(
+                      fullDayActivities: eventsState.fullDayActivities,
+                      day: eventsState.day,
+                    ),
+                  Expanded(
+                    child: Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: isAgenda
+                          ? Agenda(eventsState: eventsState)
+                          : CachedTimepillar(
+                              inPageTransition: inPageTransition,
+                            ),
+                    ),
                   ),
                 ],
               );
@@ -127,12 +111,12 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
               // Ensures position of categories and hidden settings
               BlocSelector<DayEventsCubit, EventsState, bool>(
                 selector: (state) => state.fullDayActivities.isNotEmpty,
-                builder: (context, hasFullday) => AnimatedSize(
+                builder: (context, hasFullDay) => AnimatedSize(
                   duration: animationDuration,
                   curve: animationCurve,
                   child: SafeArea(
                     child: SizedBox(
-                      height: hasFullday
+                      height: hasFullDay
                           ? layout.commonCalendar.fullDayPadding.vertical +
                               layout.eventCard.height
                           : null,

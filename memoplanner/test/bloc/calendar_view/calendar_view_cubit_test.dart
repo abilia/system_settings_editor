@@ -23,7 +23,9 @@ void main() {
     expect(
         calendarViewBloc.state,
         const CalendarViewState(
-            expandLeftCategory: true, expandRightCategory: true));
+          expandLeftCategory: true,
+          expandRightCategory: true,
+        ));
   });
 
   test('initial state other', () {
@@ -33,7 +35,9 @@ void main() {
     expect(
       calendarViewBloc.state,
       const CalendarViewState(
-          expandLeftCategory: false, expandRightCategory: false),
+        expandLeftCategory: false,
+        expandRightCategory: false,
+      ),
     );
   });
 
