@@ -10,11 +10,11 @@ enum ActionButtonStyle {
   ButtonStyle get style {
     switch (this) {
       case ActionButtonStyle.primary:
-        return actionButtonPrimary1000;
+        return actionButtonPrimary900;
       case ActionButtonStyle.secondary:
-        return actionButtonSecondary1000;
+        return actionButtonSecondary900;
       case ActionButtonStyle.tertiary:
-        return actionButtonTertiary1000;
+        return actionButtonTertiary900;
     }
   }
 }
