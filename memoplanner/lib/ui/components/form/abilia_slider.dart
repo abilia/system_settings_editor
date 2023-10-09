@@ -54,6 +54,7 @@ class AbiliaSlider extends StatelessWidget {
                   outerBorder: layout.slider.outerBorder,
                 ),
                 trackHeight: layout.slider.trackHeight,
+                inactiveTrackColor: AbiliaColors.white120,
               ),
               child: Slider(
                 divisions: divisions,

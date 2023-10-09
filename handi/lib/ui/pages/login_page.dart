@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/generated/l10n.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
@@ -121,9 +122,13 @@ class LoginPage extends StatelessWidget {
                   ActionButton(
                     text: translate.signIn,
                     style: actionButtonPrimary1000,
+                  ActionButton(
+                    text: translate.signIn,
+                    style: actionButtonPrimary1000,
                     onPressed: state.isFormValid
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,
+                    icon: MdiIcons.login,
                     icon: MdiIcons.login,
                   )
                 ],

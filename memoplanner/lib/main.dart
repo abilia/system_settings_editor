@@ -60,7 +60,7 @@ Future<void> initServices() async {
   );
   await configureLocalTimeZone(log: _log);
   final applicationSupportDirectory = await getApplicationSupportDirectory();
-  final voiceDb = VoiceDb(preferences);
+  final voiceDb = VoiceDb(preferences, ttsDefault: Config.isMPGO);
   await initLokalise();
   await initializeNotificationPlugin();
   GetItInitializer()

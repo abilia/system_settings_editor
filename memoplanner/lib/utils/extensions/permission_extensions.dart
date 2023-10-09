@@ -1,8 +1,27 @@
+import 'dart:collection';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:memoplanner/bloc/all.dart';
+import 'package:memoplanner/config.dart';
 import 'package:memoplanner/l10n/all.dart';
 import 'package:memoplanner/ui/components/all.dart';
 import 'package:memoplanner/ui/themes/all.dart';
+
+final allPermissions = UnmodifiableSetView(
+  {
+    Permission.notification,
+    Permission.microphone,
+    if (Config.isMPGO && !Platform.isIOS) ...{
+      Permission.systemAlertWindow,
+      Permission.ignoreBatteryOptimizations,
+    },
+    if (!Platform.isAndroid) ...{
+      Permission.photos,
+      Permission.camera,
+    }
+  },
+);
 
 extension PermissionExtension on Permission {
   String translate(Lt translate) {
@@ -34,6 +53,18 @@ extension PermissionExtension on Permission {
     }
     return AbiliaIcons.quickSettings;
   }
+}
+
+extension PermissionSateExtension on PermissionState {
+  bool get notificationDenied =>
+      status[Permission.notification]?.isDeniedOrPermanentlyDenied ?? false;
+
+  bool get fullscreenNotGranted =>
+      allPermissions.contains(Permission.systemAlertWindow) &&
+      !(status[Permission.systemAlertWindow]?.isGranted ?? false);
+
+  bool get importantPermissionMissing =>
+      notificationDenied || fullscreenNotGranted;
 }
 
 extension PermissionStatusExtension on PermissionStatus {

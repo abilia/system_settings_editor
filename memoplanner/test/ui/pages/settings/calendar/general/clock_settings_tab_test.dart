@@ -165,8 +165,8 @@ void main() {
         const Offset(0, -100),
       );
 
-      final toggle = tester
-          .widget<Switch>(find.byKey(const ObjectKey(TestKey.use12hSwitch)));
+      final toggle = tester.widget<MemoplannerSwitch>(
+          find.byKey(const ObjectKey(TestKey.use12hSwitch)));
       expect(toggle.onChanged, isNull);
       expect(toggle.value, isTrue);
       expect(find.text('1'), findsOneWidget);
@@ -181,8 +181,8 @@ void main() {
         const Offset(0, -100),
       );
 
-      final toggle = tester
-          .widget<Switch>(find.byKey(const ObjectKey(TestKey.use12hSwitch)));
+      final toggle = tester.widget<MemoplannerSwitch>(
+          find.byKey(const ObjectKey(TestKey.use12hSwitch)));
 
       expect(toggle.onChanged, isNotNull);
       expect(toggle.value, isFalse);

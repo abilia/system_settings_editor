@@ -18,7 +18,7 @@ dependencies:
   http: any
   logging: any
   repository_base:
-    path: ../repository/repository_base
+    path: ../repository_base
   sqflite: any
   utils:
     path: ../utils

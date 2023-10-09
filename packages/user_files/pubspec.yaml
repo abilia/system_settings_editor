@@ -25,7 +25,7 @@ dependencies:
   meta: any
   mime: any
   repository_base:
-    path: ../repository/repository_base
+    path: ../repository_base
   rxdart: any
   shared_preferences: any
   sqflite: any

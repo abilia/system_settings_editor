@@ -39,7 +39,7 @@ dependencies:
   path_provider: ^2.0.5
   permission_handler: ^10.2.0
   repository_base:
-    path: ../packages/repository/repository_base
+    path: ../packages/repository_base
   rxdart: ^0.27.1
   seagull_analytics:
     path: ../packages/seagull_analytics

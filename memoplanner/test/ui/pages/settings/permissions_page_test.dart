@@ -81,6 +81,9 @@ void main() {
               BlocProvider<SessionsCubit>(
                 create: (_) => FakeSessionsCubit(),
               ),
+              BlocProvider(
+                create: (_) => PermissionCubit()..checkStatus(allPermissions),
+              )
             ],
             child: child!,
           ),
@@ -138,18 +141,15 @@ void main() {
 
     testWidgets('Permission has switches all denied',
         (WidgetTester tester) async {
-      setupPermissions({
-        for (var key in PermissionCubit.allPermissions)
-          key: PermissionStatus.denied
-      });
+      setupPermissions(
+          {for (var key in allPermissions) key: PermissionStatus.denied});
       await tester.pumpWidget(wrapWithMaterialApp(const MpGoMenuPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
       // Assert - all Permission present
-      expect(permissionSwitchFinder,
-          findsNWidgets(PermissionCubit.allPermissions.length));
+      expect(permissionSwitchFinder, findsNWidgets(allPermissions.length));
       final permissionSwitches =
           tester.widgetList<SwitchField>(find.byType(SwitchField));
       // Assert - Switches is off
@@ -160,10 +160,8 @@ void main() {
 
     testWidgets('Permission has switches all granted',
         (WidgetTester tester) async {
-      setupPermissions({
-        for (var key in PermissionCubit.allPermissions)
-          key: PermissionStatus.granted
-      });
+      setupPermissions(
+          {for (var key in allPermissions) key: PermissionStatus.granted});
       await tester.pumpWidget(wrapWithMaterialApp(const MpGoMenuPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
@@ -182,7 +180,7 @@ void main() {
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      for (final permission in PermissionCubit.allPermissions) {
+      for (final permission in allPermissions) {
         // Asssert - All has tts
         await tester.verifyTts(find.byKey(ObjectKey(permission)),
             exact: permission.translate(translate));
@@ -197,37 +195,35 @@ void main() {
     testWidgets(
         'Permission has switches denied tapped calls for request permission',
         (WidgetTester tester) async {
-      final allPermissions = PermissionCubit.allPermissions.toSet()
+      final permissions = allPermissions.toSet()
         ..remove(Permission.systemAlertWindow)
         ..remove(Permission.notification);
 
-      setupPermissions(
-          {for (var k in allPermissions) k: PermissionStatus.denied});
+      setupPermissions({for (var k in permissions) k: PermissionStatus.denied});
       await tester.pumpWidget(wrapWithMaterialApp(const MpGoMenuPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      for (final permission in allPermissions) {
+      for (final permission in permissions) {
         await tester.tap(find.byKey(ObjectKey(permission)));
         await tester.pumpAndSettle();
       }
 
-      expect(requestedPermissions, containsAll(allPermissions));
+      expect(requestedPermissions, containsAll(permissions));
     });
 
     testWidgets('Permission perma denied tapped opens settings',
         (WidgetTester tester) async {
       setupPermissions({
-        for (var key in PermissionCubit.allPermissions)
-          key: PermissionStatus.permanentlyDenied
+        for (var key in allPermissions) key: PermissionStatus.permanentlyDenied
       });
       await tester.pumpWidget(wrapWithMaterialApp(const MpGoMenuPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      final perms = PermissionCubit.allPermissions;
+      final perms = allPermissions;
 
       for (final permission in perms) {
         await tester.scrollTo(find.byKey(ObjectKey(permission)));
@@ -240,16 +236,14 @@ void main() {
 
     testWidgets('Permission granted, except notifcation, tapped calls settings',
         (WidgetTester tester) async {
-      setupPermissions({
-        for (var key in PermissionCubit.allPermissions)
-          key: PermissionStatus.granted
-      });
+      setupPermissions(
+          {for (var key in allPermissions) key: PermissionStatus.granted});
       await tester.pumpWidget(wrapWithMaterialApp(const MpGoMenuPage()));
       await tester.pumpAndSettle();
       await tester.tap(permissionButtonFinder);
       await tester.pumpAndSettle();
 
-      final allExceptNotifcation = PermissionCubit.allPermissions.toSet()
+      final allExceptNotifcation = allPermissions.toSet()
         ..remove(Permission.notification)
         ..remove(Permission.systemAlertWindow);
 

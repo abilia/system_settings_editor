@@ -31,7 +31,7 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
                 text: Lt.of(context).allow,
                 onPressed: () async => context
                     .read<PermissionCubit>()
-                    .requestPermissions([Permission.systemAlertWindow]))
+                    .request([Permission.systemAlertWindow]))
             : null,
         body: Column(
           children: [

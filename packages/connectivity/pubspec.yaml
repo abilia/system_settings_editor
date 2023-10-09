@@ -1,0 +1,20 @@
+name: connectivity
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: '>=2.0.0'
+
+dependencies:
+  connectivity_plus: ^4.0.1
+  equatable: any
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.0.1
+  http: any
+  logging: any
+  repository_base:
+    path: ../repository_base
+
+dev_dependencies:
+  seagull_lints:
+    path: ../seagull_lints

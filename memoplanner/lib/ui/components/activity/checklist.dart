@@ -83,7 +83,9 @@ class EditChecklistWidget extends StatelessWidget {
                       itemCount: checklist.questions.length,
                       itemBuilder: (context, i) => Padding(
                         padding: EdgeInsets.only(
-                          bottom: layout.formPadding.verticalItemDistance,
+                          bottom: i < checklist.questions.length - 1
+                              ? layout.formPadding.verticalItemDistance
+                              : 0,
                         ),
                         child: EditQuestionView(checklist.questions[i]),
                       ),
@@ -91,7 +93,7 @@ class EditChecklistWidget extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: layout.templates.s2.onlyVertical.onlyTop.add(
+                  padding: layout.templates.m6.onlyVertical.onlyTop.add(
                     layout.templates.m6.onlyHorizontal,
                   ),
                   child: _AddNewQuestionButton(

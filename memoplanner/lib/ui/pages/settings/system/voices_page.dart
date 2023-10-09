@@ -1,6 +1,6 @@
 import 'package:memoplanner/bloc/all.dart';
-import 'package:memoplanner/models/settings/speech_support/voice_data.dart';
 import 'package:memoplanner/ui/all.dart';
+import 'package:text_to_speech/voice_data.dart';
 
 class VoicesPage extends StatelessWidget {
   const VoicesPage({Key? key}) : super(key: key);

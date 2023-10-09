@@ -761,8 +761,8 @@ void main() {
         expect(find.byType(TermsOfUseDialog), findsOneWidget);
 
         // Act - Accept terms of use
-        await tester.tap(find.byType(Switch).first);
-        await tester.tap(find.byType(Switch).last);
+        await tester.tap(find.byType(MemoplannerSwitch).first);
+        await tester.tap(find.byType(MemoplannerSwitch).last);
         await tester.pumpAndSettle();
         await tester.tap(find.byType(NextButton));
         await tester.pumpAndSettle();
@@ -811,8 +811,8 @@ void main() {
         expect(find.byType(TermsOfUseDialog), findsOneWidget);
 
         // Act - Accept terms of use
-        await tester.tap(find.byType(Switch).first);
-        await tester.tap(find.byType(Switch).last);
+        await tester.tap(find.byType(MemoplannerSwitch).first);
+        await tester.tap(find.byType(MemoplannerSwitch).last);
         await tester.pumpAndSettle();
 
         // Act - If MPGO, next button is shown as full screen alarm is still to be shown.

@@ -74,5 +74,8 @@ class _SelectRecurrentTypePageState extends State<SelectRecurrentTypePage> {
     );
   }
 
-  void _radioChanged(v) => setState(() => applyTo = v);
+  void _radioChanged(ApplyTo? applyTo) {
+    if (applyTo == null) return;
+    setState(() => this.applyTo = applyTo);
+  }
 }

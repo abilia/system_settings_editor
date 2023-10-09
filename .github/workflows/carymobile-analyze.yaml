@@ -1,0 +1,53 @@
+name: CARY Mobile Analyze and Test
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  pull_request:
+    branches:
+      - master
+      - release*
+    paths:
+      - 'carymobile/**'
+      - '!carymobile/ios/**'
+      - '!carymobile/android/**'
+      - 'packages/**'
+      - '!**.md'
+      - '!**.yaml'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: ./carymobile
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.5.0
+        with:
+          flutter-version: '3.13.0'
+          channel: 'stable'
+
+      - run: flutter pub get
+      - run: flutter analyze .
+      - run: dart format --set-exit-if-changed .
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: analyze
+    defaults:
+      run:
+        working-directory: ./carymobile
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.5.0
+        with:
+          flutter-version: '3.13.0'
+          channel: 'stable'
+
+      - run: |
+          flutter test --reporter github

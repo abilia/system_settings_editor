@@ -154,10 +154,9 @@ class _ProductionGuidePageState extends State<ProductionGuidePage>
                             value: batteryOptimizationsDisabled,
                             child: const Text('Disabled battery optimizations'),
                             onChanged: (_) async {
-                              await context
-                                  .read<PermissionCubit>()
-                                  .requestPermissions(
-                                      [Permission.ignoreBatteryOptimizations]);
+                              await context.read<PermissionCubit>().request([
+                                Permission.ignoreBatteryOptimizations,
+                              ]);
                             },
                           ),
                           const SizedBox(height: 50),

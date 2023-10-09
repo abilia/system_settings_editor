@@ -17,7 +17,7 @@ class PermissionsPage extends StatelessWidget {
         builder: (context, state) => ListView(
           padding: layout.templates.m1,
           children: state.status.entries
-              .where((p) => PermissionCubit.allPermissions.contains(p.key))
+              .where((p) => allPermissions.contains(p.key))
               .map((e) => PermissionSetting(e))
               .expand((e) => [
                     e,
@@ -73,7 +73,7 @@ class PermissionSwitch extends StatelessWidget {
           await openAppSettings();
           return;
         }
-        await context.read<PermissionCubit>().requestPermissions([permission]);
+        await context.read<PermissionCubit>().request([permission]);
       },
       child: Text(permission.translate(Lt.of(context))),
     );
@@ -117,9 +117,7 @@ class NotificationPermissionSwitch extends StatelessWidget {
                         (NotificationPermissionOffWarningDialog).routeSetting(),
                   );
                 } else {
-                  await context
-                      .read<PermissionCubit>()
-                      .requestPermissions([permission]);
+                  await context.read<PermissionCubit>().request([permission]);
                 }
               },
               child: Text(permission.translate(translate)),
@@ -202,7 +200,7 @@ class FullscreenPermissionSwitch extends StatelessWidget {
                       } else {
                         await context
                             .read<PermissionCubit>()
-                            .requestPermissions([Permission.systemAlertWindow]);
+                            .request([Permission.systemAlertWindow]);
                       }
                     },
                     child: Text(permission.translate(translate)),
