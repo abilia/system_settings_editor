@@ -41,7 +41,7 @@ final backgroundGrey = MaterialStateProperty.resolveWith<Color>(
 );
 
 final actionButtonPrimary900 = ButtonStyle(
-  iconSize: MaterialStateProperty.all(numerical800),
+  iconSize: MaterialStateProperty.all(numerical600),
   backgroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
@@ -67,7 +67,7 @@ final actionButtonPrimary900 = ButtonStyle(
       return AbiliaColors.greyscale000;
     },
   ),
-  textStyle: MaterialStateProperty.all(AbiliaFonts.primary525),
+  textStyle: MaterialStateProperty.all(AbiliaFonts.primary425),
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.focused)) {
@@ -78,7 +78,7 @@ final actionButtonPrimary900 = ButtonStyle(
   ),
   padding: MaterialStateProperty.all(
     const EdgeInsets.symmetric(
-      horizontal: numerical600,
+      horizontal: numerical400,
       vertical: numerical300,
     ),
   ),
@@ -125,8 +125,12 @@ final actionButtonTertiary900 = actionButtonPrimary900.copyWith(
 );
 
 final actionButtonTertiary800 = actionButtonTertiary900.copyWith(
-  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
-      horizontal: numerical300, vertical: numerical200)),
+  padding: MaterialStateProperty.all(
+    const EdgeInsets.symmetric(
+      horizontal: numerical300,
+      vertical: numerical200,
+    ),
+  ),
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.focused)) {

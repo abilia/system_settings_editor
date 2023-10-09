@@ -5,7 +5,10 @@ import 'package:ui/tokens/numericals.dart';
 enum ActionButtonStyle {
   primary,
   secondary,
-  tertiary;
+  tertiary,
+  tertiarySmall;
+
+  bool get isSmall => this == ActionButtonStyle.tertiarySmall;
 
   ButtonStyle get style {
     switch (this) {
@@ -15,6 +18,8 @@ enum ActionButtonStyle {
         return actionButtonSecondary900;
       case ActionButtonStyle.tertiary:
         return actionButtonTertiary900;
+      case ActionButtonStyle.tertiarySmall:
+        return actionButtonTertiary800;
     }
   }
 }
@@ -24,34 +29,33 @@ class ActionButton extends StatelessWidget {
   final IconData? leadingIcon;
   final IconData? trailingIcon;
   final VoidCallback? onPressed;
-  final ButtonStyle _style;
+  final ActionButtonStyle actionButtonStyle;
 
-  ActionButton({
+  const ActionButton({
     required this.text,
     required this.onPressed,
     this.leadingIcon,
     this.trailingIcon,
-    ActionButtonStyle actionButtonStyle = ActionButtonStyle.primary,
+    this.actionButtonStyle = ActionButtonStyle.primary,
     super.key,
-  }) : _style = actionButtonStyle.style;
+  });
 
   @override
   Widget build(BuildContext context) {
-    const spacing = numerical200;
+    final spacing = actionButtonStyle.isSmall ? numerical100 : numerical200;
     final leadingIcon = this.leadingIcon;
     final trailingIcon = this.trailingIcon;
     return TextButton(
-      style: _style,
+      style: actionButtonStyle.style,
       onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (leadingIcon != null)
-            Padding(
-              padding: const EdgeInsets.only(right: spacing),
-              child: Icon(leadingIcon),
-            ),
+          if (leadingIcon != null) ...[
+            Icon(leadingIcon),
+            SizedBox(width: spacing),
+          ],
           Flexible(
             child: Text(
               text,
@@ -59,11 +63,10 @@ class ActionButton extends StatelessWidget {
               maxLines: 1,
             ),
           ),
-          if (trailingIcon != null)
-            Padding(
-              padding: const EdgeInsets.only(left: spacing),
-              child: Icon(trailingIcon),
-            ),
+          if (trailingIcon != null) ...[
+            SizedBox(width: spacing),
+            Icon(trailingIcon),
+          ],
         ],
       ),
     );

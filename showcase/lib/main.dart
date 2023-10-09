@@ -27,43 +27,46 @@ class WidgetBook extends StatelessWidget {
           useCases: [
             WidgetbookUseCase(
               name: 'Action Button',
-              builder: (context) => Center(
-                child: SizedBox(
-                  width: context.knobs.boolean(
-                    label: 'Expanded',
-                    initialValue: false,
-                  )
-                      ? double.infinity
-                      : null,
-                  child: ActionButton(
-                    text: context.knobs.string(
-                      label: 'Button title',
-                      initialValue: 'Title',
-                    ),
-                    actionButtonStyle: context.knobs.list(
-                      label: 'Button style',
-                      options: ActionButtonStyle.values,
-                      initialOption: ActionButtonStyle.primary,
-                      labelBuilder: (style) => style.name,
-                    ),
-                    onPressed: context.knobs.boolean(
-                      label: 'Enabled',
-                      initialValue: true,
-                    )
-                        ? () {}
-                        : null,
-                    leadingIcon: context.knobs.boolean(
-                      label: 'Leading icon',
-                      initialValue: true,
-                    )
-                        ? Icons.add
-                        : null,
-                    trailingIcon: context.knobs.boolean(
-                      label: 'Trailing icon',
+              builder: (context) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: SizedBox(
+                    width: context.knobs.boolean(
+                      label: 'Expanded',
                       initialValue: false,
                     )
-                        ? Icons.add
+                        ? double.infinity
                         : null,
+                    child: ActionButton(
+                      text: context.knobs.string(
+                        label: 'Button title',
+                        initialValue: 'Title',
+                      ),
+                      actionButtonStyle: context.knobs.list(
+                        label: 'Button style',
+                        options: ActionButtonStyle.values,
+                        initialOption: ActionButtonStyle.primary,
+                        labelBuilder: (style) => style.name,
+                      ),
+                      onPressed: context.knobs.boolean(
+                        label: 'Enabled',
+                        initialValue: true,
+                      )
+                          ? () {}
+                          : null,
+                      leadingIcon: context.knobs.boolean(
+                        label: 'Leading icon',
+                        initialValue: true,
+                      )
+                          ? Icons.login
+                          : null,
+                      trailingIcon: context.knobs.boolean(
+                        label: 'Trailing icon',
+                        initialValue: false,
+                      )
+                          ? Icons.login
+                          : null,
+                    ),
                   ),
                 ),
               ),
