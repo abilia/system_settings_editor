@@ -2,37 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:ui/styles/styles.dart';
 import 'package:ui/tokens/numericals.dart';
 
+enum ActionButtonStyle {
+  primary,
+  secondary,
+  tertiary;
+
+  ButtonStyle get style {
+    switch (this) {
+      case ActionButtonStyle.primary:
+        return actionButtonPrimary1000;
+      case ActionButtonStyle.secondary:
+        return actionButtonSecondary1000;
+      case ActionButtonStyle.tertiary:
+        return actionButtonTertiary1000;
+    }
+  }
+}
+
 class ActionButton extends StatelessWidget {
   final String text;
-  final IconData? icon;
-  final ButtonStyle? style;
+  final IconData? leadingIcon;
+  final IconData? trailingIcon;
   final VoidCallback? onPressed;
-  final bool showIconLeft, showIconRight;
+  final ButtonStyle _style;
 
-  const ActionButton({
+  ActionButton({
     required this.text,
     required this.onPressed,
-    this.icon,
-    this.style,
-    this.showIconLeft = true,
-    this.showIconRight = false,
-    Key? key,
-  }) : super(key: key);
+    this.leadingIcon,
+    this.trailingIcon,
+    ActionButtonStyle actionButtonStyle = ActionButtonStyle.primary,
+    super.key,
+  }) : _style = actionButtonStyle.style;
 
   @override
   Widget build(BuildContext context) {
     const spacing = numerical200;
+    final leadingIcon = this.leadingIcon;
+    final trailingIcon = this.trailingIcon;
     return TextButton(
-      style: style ?? actionButtonPrimary900,
+      style: _style,
       onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null && showIconLeft)
+          if (leadingIcon != null)
             Padding(
               padding: const EdgeInsets.only(right: spacing),
-              child: Icon(icon),
+              child: Icon(leadingIcon),
             ),
           Flexible(
             child: Text(
@@ -41,10 +59,10 @@ class ActionButton extends StatelessWidget {
               maxLines: 1,
             ),
           ),
-          if (icon != null && showIconRight)
+          if (trailingIcon != null)
             Padding(
               padding: const EdgeInsets.only(left: spacing),
-              child: Icon(icon),
+              child: Icon(trailingIcon),
             ),
         ],
       ),
