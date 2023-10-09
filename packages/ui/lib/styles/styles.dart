@@ -84,16 +84,6 @@ final actionButtonPrimary900 = ButtonStyle(
   ),
 );
 
-final actionButtonPrimary900 = actionButtonPrimary1000.copyWith(
-  textStyle: MaterialStateProperty.all(AbiliaFonts.primary425),
-  padding: MaterialStateProperty.all(
-    const EdgeInsets.symmetric(
-      horizontal: numerical400,
-      vertical: numerical300,
-    ),
-  ),
-);
-
 final actionButtonSecondary900 = actionButtonPrimary900.copyWith(
   backgroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {
