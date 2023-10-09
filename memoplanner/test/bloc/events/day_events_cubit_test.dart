@@ -33,7 +33,6 @@ void main() {
       timerAlarmBloc: TimerAlarmBloc(
         timerCubit: TimerCubit(
           timerDb: MockTimerDb(),
-          ticker: ticker,
           analytics: FakeSeagullAnalytics(),
         ),
         ticker: ticker,
@@ -794,7 +793,6 @@ void main() {
         timerAlarmBloc: TimerAlarmBloc(
           timerCubit: TimerCubit(
             timerDb: MockTimerDb(),
-            ticker: ticker,
             analytics: FakeSeagullAnalytics(),
           ),
           ticker: ticker,
@@ -1016,7 +1014,6 @@ void main() {
           timerAlarmBloc: TimerAlarmBloc(
             timerCubit: TimerCubit(
               timerDb: MockTimerDb(),
-              ticker: ticker,
               analytics: FakeSeagullAnalytics(),
             ),
             ticker: ticker,

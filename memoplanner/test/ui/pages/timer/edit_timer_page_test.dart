@@ -55,7 +55,6 @@ void main() {
     final analytics = MockSeagullAnalytics();
     timerCubit = TimerCubit(
       timerDb: timerDb,
-      ticker: fakeTicker,
       analytics: analytics,
     );
     editTimerCubit = EditTimerCubit(

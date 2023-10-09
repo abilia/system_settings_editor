@@ -1121,7 +1121,6 @@ void main() {
       final ticker = Ticker.fake(initialTime: initial);
       final timerCubit = TimerCubit(
         timerDb: MockTimerDb(),
-        ticker: ticker,
         analytics: FakeSeagullAnalytics(),
       );
       final timerAlarmBloc = TimerAlarmBloc(

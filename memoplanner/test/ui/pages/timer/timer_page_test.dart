@@ -73,7 +73,6 @@ void main() {
     final analytics = MockSeagullAnalytics();
     timerCubit = TimerCubit(
       timerDb: mockTimerDb,
-      ticker: Ticker.fake(initialTime: startTime),
       analytics: analytics,
     );
     GetItInitializer()
