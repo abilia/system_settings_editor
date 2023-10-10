@@ -9,14 +9,18 @@ import 'package:utils/utils.dart';
 
 class AlarmCubit extends Cubit<ActivityDay?> {
   late final StreamSubscription _clockSubscription;
+  late final StreamSubscription _checkAlarmSubscription;
   final ActivityRepository activityRepository;
 
   AlarmCubit({
     required this.activityRepository,
     required ClockCubit clockCubit,
+    required Stream checkAlarmStream,
   }) : super(null) {
     _clockSubscription =
         clockCubit.stream.listen((now) async => _newMinute(now));
+    _checkAlarmSubscription =
+        checkAlarmStream.listen((event) async => _newMinute(clockCubit.state));
   }
 
   Future<void> _newMinute(DateTime now) async {
@@ -46,6 +50,7 @@ class AlarmCubit extends Cubit<ActivityDay?> {
   @override
   Future<void> close() async {
     await _clockSubscription.cancel();
+    await _checkAlarmSubscription.cancel();
     return super.close();
   }
 }

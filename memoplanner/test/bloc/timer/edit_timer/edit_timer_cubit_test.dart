@@ -24,7 +24,6 @@ void main() {
       translate: translate,
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
-        ticker: ticker,
         analytics: FakeSeagullAnalytics(),
       ),
     );
@@ -46,7 +45,6 @@ void main() {
       ).toBasicTimerDataItem(),
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
-        ticker: ticker,
         analytics: FakeSeagullAnalytics(),
       ),
     );
@@ -60,7 +58,6 @@ void main() {
       translate: translate,
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
-        ticker: ticker,
         analytics: FakeSeagullAnalytics(),
       ),
     )..updateDuration(5.minutes(), TimerSetType.inputField);
@@ -120,7 +117,6 @@ void main() {
       translate: translate,
       timerCubit: TimerCubit(
         timerDb: MockTimerDb(),
-        ticker: ticker,
         analytics: FakeSeagullAnalytics(),
       ),
     )..updateDuration(10.minutes(), TimerSetType.inputField);

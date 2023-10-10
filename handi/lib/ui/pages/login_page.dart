@@ -10,9 +10,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:ui/components/buttons/buttons.dart';
+import 'package:ui/components/buttons/action_button.dart';
 import 'package:ui/components/combobox.dart';
-import 'package:ui/styles/styles.dart';
+import 'package:ui/tokens/numericals.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({required this.unauthenticatedState, super.key});
@@ -38,8 +38,8 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                LinkButton(
-                  title: 'Ok',
+                ActionButton(
+                  text: 'Ok',
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
@@ -72,50 +72,54 @@ class LoginPage extends StatelessWidget {
             }
           },
           child: BlocBuilder<LoginCubit, LoginState>(
-            builder: (context, state) => Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Tooltip(
-                    message: 'Username',
-                    child: Combobox(
-                      hintText: 'Username',
-                      onChanged: context.read<LoginCubit>().usernameChanged,
+            builder: (context, state) => SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(numerical600),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Tooltip(
+                      message: 'Username',
+                      child: Combobox(
+                        label: 'Username',
+                        onChanged: context.read<LoginCubit>().usernameChanged,
+                      ),
                     ),
-                  ),
-                  Tooltip(
-                    message: 'Password',
-                    child: Combobox(
-                      hintText: 'Password',
-                      onChanged: context.read<LoginCubit>().passwordChanged,
+                    Tooltip(
+                      message: 'Password',
+                      child: Combobox(
+                        label: 'Password',
+                        onChanged: context.read<LoginCubit>().passwordChanged,
+                      ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ...backendEnvironments.entries.map(
-                        (kvp) => Builder(
-                          builder: (context) => RadioMenuButton(
-                            value: kvp.key,
-                            onChanged: (s) async => context
-                                .read<BaseUrlCubit>()
-                                .updateBaseUrl(kvp.key),
-                            groupValue: context.watch<BaseUrlCubit>().state,
-                            child: Text(kvp.value),
+                    const SizedBox(height: numerical600),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ...backendEnvironments.entries.map(
+                          (kvp) => Builder(
+                            builder: (context) => RadioMenuButton(
+                              value: kvp.key,
+                              onChanged: (s) async => context
+                                  .read<BaseUrlCubit>()
+                                  .updateBaseUrl(kvp.key),
+                              groupValue: context.watch<BaseUrlCubit>().state,
+                              child: Text(kvp.value),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  ActionButton(
-                    text: translate.signIn,
-                    onPressed: state.isFormValid
-                        ? context.read<LoginCubit>().loginButtonPressed
-                        : null,
-                  )
-                ],
+                      ],
+                    ),
+                    ActionButton(
+                      text: translate.signIn,
+                      onPressed: state.isFormValid
+                          ? context.read<LoginCubit>().loginButtonPressed
+                          : null,
+                      leadingIcon: MdiIcons.login,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:seagull_clock/ticker.dart';
 import 'package:seagull_fakes/all.dart';
 
 void main() {
@@ -40,7 +39,6 @@ void main() {
     'loadTimers returns one timer',
     build: () => TimerCubit(
       timerDb: mockTimerDb,
-      ticker: Ticker.fake(initialTime: now),
       analytics: FakeSeagullAnalytics(),
     ),
     act: (timerBloc) async => timerBloc.loadTimers(),
@@ -51,7 +49,6 @@ void main() {
     'deleteTimer emits no timers',
     build: () => TimerCubit(
       timerDb: mockTimerDb,
-      ticker: Ticker.fake(initialTime: now),
       analytics: FakeSeagullAnalytics(),
     ),
     act: (timerBloc) async {
@@ -71,7 +68,6 @@ void main() {
     'addTimer returns two timers',
     build: () => TimerCubit(
       timerDb: mockTimerDb,
-      ticker: Ticker.fake(initialTime: now),
       analytics: FakeSeagullAnalytics(),
     ),
     act: (timerBloc) async {

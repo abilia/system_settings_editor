@@ -25,7 +25,7 @@ class AlarmPageBloc extends Bloc<_AlarmPageEvent, AlarmPageState> {
     });
 
     alarmLoopTimer = Timer.periodic(
-      const Duration(minutes: 5),
+      const Duration(minutes: 3),
       (t) => add(_PlayAlarmSound()),
     );
     closeAlarmPageTimer =

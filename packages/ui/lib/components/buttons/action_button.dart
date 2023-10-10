@@ -2,38 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:ui/styles/styles.dart';
 import 'package:ui/tokens/numericals.dart';
 
+enum ActionButtonStyle {
+  primary,
+  secondary,
+  tertiary,
+  tertiarySmall;
+
+  bool get isSmall => this == ActionButtonStyle.tertiarySmall;
+
+  ButtonStyle get style {
+    switch (this) {
+      case ActionButtonStyle.primary:
+        return actionButtonPrimary900;
+      case ActionButtonStyle.secondary:
+        return actionButtonSecondary900;
+      case ActionButtonStyle.tertiary:
+        return actionButtonTertiary900;
+      case ActionButtonStyle.tertiarySmall:
+        return actionButtonTertiary800;
+    }
+  }
+}
+
 class ActionButton extends StatelessWidget {
   final String text;
-  final IconData? icon;
-  final ButtonStyle? style;
+  final IconData? leadingIcon;
+  final IconData? trailingIcon;
   final VoidCallback? onPressed;
-  final bool showIconLeft, showIconRight;
+  final ActionButtonStyle actionButtonStyle;
 
   const ActionButton({
     required this.text,
     required this.onPressed,
-    this.icon,
-    this.style,
-    this.showIconLeft = true,
-    this.showIconRight = false,
-    Key? key,
-  }) : super(key: key);
+    this.leadingIcon,
+    this.trailingIcon,
+    this.actionButtonStyle = ActionButtonStyle.primary,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    const spacing = numerical200;
+    final spacing = actionButtonStyle.isSmall ? numerical100 : numerical200;
+    final leadingIcon = this.leadingIcon;
+    final trailingIcon = this.trailingIcon;
     return TextButton(
-      style: style ?? actionButtonPrimary1000,
+      style: actionButtonStyle.style,
       onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null && showIconLeft)
-            Padding(
-              padding: const EdgeInsets.only(right: spacing),
-              child: Icon(icon),
-            ),
+          if (leadingIcon != null) ...[
+            Icon(leadingIcon),
+            SizedBox(width: spacing),
+          ],
           Flexible(
             child: Text(
               text,
@@ -41,11 +63,10 @@ class ActionButton extends StatelessWidget {
               maxLines: 1,
             ),
           ),
-          if (icon != null && showIconRight)
-            Padding(
-              padding: const EdgeInsets.only(left: spacing),
-              child: Icon(icon),
-            ),
+          if (trailingIcon != null) ...[
+            SizedBox(width: spacing),
+            Icon(trailingIcon),
+          ],
         ],
       ),
     );
