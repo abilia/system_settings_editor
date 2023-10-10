@@ -13,7 +13,7 @@ sealed class ActionButton extends StatelessWidget {
   final IconData? leadingIcon;
   final IconData? trailingIcon;
   final VoidCallback? onPressed;
-  final ActionButtonTheme Function(BuildContext) themeBuilder;
+  final ActionButtonTheme Function(AbiliaTheme) themeBuilder;
 
   const ActionButton({
     required this.themeBuilder,
@@ -28,7 +28,8 @@ sealed class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final leadingIcon = this.leadingIcon;
     final trailingIcon = this.trailingIcon;
-    final actionButtonTheme = themeBuilder(context);
+    final abiliaTheme = AbiliaTheme.of(context);
+    final actionButtonTheme = themeBuilder(abiliaTheme);
     return TextButton(
       style: actionButtonTheme.buttonStyle,
       onPressed: onPressed,

@@ -7,7 +7,5 @@ class ActionButtonTertiary extends ActionButton {
     super.leadingIcon,
     super.trailingIcon,
     super.key,
-  }) : super(
-          themeBuilder: (context) => context.abiliaTheme.actionButtonTertiary,
-        );
+  }) : super(themeBuilder: (abiliaTheme) => abiliaTheme.actionButtonTertiary);
 }

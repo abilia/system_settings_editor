@@ -7,7 +7,5 @@ class ActionButtonPrimary extends ActionButton {
     super.leadingIcon,
     super.trailingIcon,
     super.key,
-  }) : super(
-          themeBuilder: (context) => context.abiliaTheme.actionButtonPrimary,
-        );
+  }) : super(themeBuilder: (abiliaTheme) => abiliaTheme.actionButtonPrimary);
 }

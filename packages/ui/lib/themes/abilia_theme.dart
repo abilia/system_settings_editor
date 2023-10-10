@@ -4,11 +4,6 @@ import 'package:ui/themes/action_button/action_button_theme.dart';
 
 const int _smallBreakpoint = 320;
 
-extension ThemeExtention on BuildContext {
-  AbiliaTheme get abiliaTheme =>
-      Theme.of(this).extension<AbiliaTheme>() ?? AbiliaTheme.small;
-}
-
 class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   const AbiliaTheme({
     required this.actionButtonPrimary,
@@ -19,6 +14,9 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   final ActionButtonPrimaryTheme actionButtonPrimary;
   final ActionButtonSecondaryTheme actionButtonSecondary;
   final ActionButtonTertiaryTheme actionButtonTertiary;
+
+  factory AbiliaTheme.of(BuildContext context) =>
+      Theme.of(context).extension<AbiliaTheme>() ?? AbiliaTheme.small;
 
   static ThemeData getThemeData(double width) {
     if (width < _smallBreakpoint) {

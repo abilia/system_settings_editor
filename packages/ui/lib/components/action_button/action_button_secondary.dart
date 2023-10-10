@@ -7,7 +7,5 @@ class ActionButtonSecondary extends ActionButton {
     super.leadingIcon,
     super.trailingIcon,
     super.key,
-  }) : super(
-          themeBuilder: (context) => context.abiliaTheme.actionButtonSecondary,
-        );
+  }) : super(themeBuilder: (abiliaTheme) => abiliaTheme.actionButtonSecondary);
 }
