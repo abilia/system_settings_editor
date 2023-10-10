@@ -1,5 +1,26 @@
 part of 'main_page.dart';
 
+class HiddenExtra extends StatelessWidget {
+  const HiddenExtra({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          const VersionText(),
+          FakeTime(),
+          const AndroidSettingsButton(),
+          const GooglePlayButton(),
+          const LogoutButton(),
+        ],
+      ),
+    );
+  }
+}
+
 class FakeTime extends StatelessWidget {
   FakeTime({super.key});
   late final Ticker ticker = GetIt.I<Ticker>();
@@ -9,7 +30,6 @@ class FakeTime extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = context.watch<ClockCubit>().state;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FilledButton(
           child: Text(DateFormat.Hm().format(now)),
@@ -41,15 +61,14 @@ class FakeTime extends StatelessWidget {
           onPressed: ticker.reset,
           child: const Text('Reset'),
         ),
-        Container(
-          decoration: const ShapeDecoration(
-            color: Colors.white,
-            shape: StadiumBorder(),
-          ),
-          child: const VersionText(),
-        ),
-        const OpenSettingsButton(),
-      ],
+      ]
+          .map(
+            (w) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: w,
+            ),
+          )
+          .toList(),
     );
   }
 }
