@@ -10,6 +10,7 @@ import 'package:handi/listeners/top_level_listener.dart';
 import 'package:handi/providers.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 import 'package:seagull_logging/seagull_logging.dart';
+import 'package:ui/themes/abilia_theme.dart';
 import 'package:utils/utils.dart';
 
 final _log = Logger('main');
@@ -45,6 +46,7 @@ class HandiApp extends StatelessWidget {
         child: TopLevelListener(
           navigatorKey: _navigatorKey,
           child: MaterialApp(
+            theme: AbiliaTheme.getThemeData(MediaQuery.of(context).size.width),
             navigatorKey: _navigatorKey,
             localizationsDelegates: const [Lt.delegate],
             home: Scaffold(

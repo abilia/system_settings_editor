@@ -3,7 +3,7 @@ import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/fonts.dart';
 import 'package:ui/tokens/numericals.dart';
 
-const baseBorder = RoundedRectangleBorder(
+const _baseBorder = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(
     Radius.circular(numerical200),
   ),
@@ -13,16 +13,16 @@ const _roundBorder = RoundedRectangleBorder(
     Radius.circular(numerical500),
   ),
 );
-const borderSidePeach400 = BorderSide(
+const _borderSidePeach400 = BorderSide(
   color: AbiliaColors.peach400,
   width: numerical2px,
 );
-const borderSideGrey300 = BorderSide(
+const _borderSideGrey300 = BorderSide(
   color: AbiliaColors.greyscale300,
   width: numerical2px,
 );
 
-final backgroundGrey = MaterialStateProperty.resolveWith<Color>(
+final _backgroundGrey = MaterialStateProperty.resolveWith<Color>(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
       return AbiliaColors.greyscale300;
@@ -71,9 +71,9 @@ final actionButtonPrimary900 = ButtonStyle(
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.focused)) {
-        return baseBorder.copyWith(side: borderSidePeach400);
+        return _baseBorder.copyWith(side: _borderSidePeach400);
       }
-      return baseBorder;
+      return _baseBorder;
     },
   ),
   padding: MaterialStateProperty.all(
@@ -102,7 +102,7 @@ final actionButtonSecondary900 = actionButtonPrimary900.copyWith(
 );
 
 final actionButtonTertiary900 = actionButtonPrimary900.copyWith(
-  backgroundColor: backgroundGrey,
+  backgroundColor: _backgroundGrey,
   foregroundColor: MaterialStateProperty.resolveWith<Color>(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
@@ -114,12 +114,12 @@ final actionButtonTertiary900 = actionButtonPrimary900.copyWith(
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.focused)) {
-        return baseBorder.copyWith(side: borderSidePeach400);
+        return _baseBorder.copyWith(side: _borderSidePeach400);
       }
       if (states.contains(MaterialState.hovered)) {
-        return baseBorder.copyWith(side: borderSideGrey300);
+        return _baseBorder.copyWith(side: _borderSideGrey300);
       }
-      return baseBorder;
+      return _baseBorder;
     },
   ),
 );
@@ -134,10 +134,10 @@ final actionButtonTertiary800 = actionButtonTertiary900.copyWith(
   shape: MaterialStateProperty.resolveWith(
     (Set<MaterialState> states) {
       if (states.contains(MaterialState.focused)) {
-        return _roundBorder.copyWith(side: borderSidePeach400);
+        return _roundBorder.copyWith(side: _borderSidePeach400);
       }
       if (states.contains(MaterialState.hovered)) {
-        return _roundBorder.copyWith(side: borderSideGrey300);
+        return _roundBorder.copyWith(side: _borderSideGrey300);
       }
       return _roundBorder;
     },

@@ -1,12 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AbiliaFonts {
-  final FontWeight weightMedium = FontWeight.w400;
-  final int weightSemiBold = 500;
-  final int weightRegular = 400;
-
-  static const _primaryMedium = TextStyle(
-    fontFamily: 'Poppins',
+  static final _primaryMedium = GoogleFonts.poppins(
     fontWeight: FontWeight.w500,
   );
   static final _primarySemiBold = _primaryMedium.copyWith(

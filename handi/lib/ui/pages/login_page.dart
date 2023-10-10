@@ -10,7 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:ui/components/buttons/action_button.dart';
+import 'package:ui/components/action_button/action_button.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({required this.unauthenticatedState, super.key});
@@ -36,7 +36,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                ActionButton(
+                ActionButtonPrimary(
                   text: 'Ok',
                   onPressed: () {
                     Navigator.of(context).maybePop();
@@ -123,7 +123,7 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                     const Spacer(),
-                    ActionButton(
+                    ActionButtonPrimary(
                       text: translate.signIn,
                       onPressed: state.isFormValid
                           ? context.read<LoginCubit>().loginButtonPressed
