@@ -38,27 +38,29 @@ class AlarmPageBloc extends Bloc<_AlarmPageEvent, AlarmPageState> {
     required ActivityDay activity,
     required this.ttsHandler,
   }) : super(AlarmPageOpen(activity)) {
-    on<_CloseAlarmPage>((event, emit) => emit(AlarmPageClosed(state.activity)),
-        transformer: droppable());
-    on<_PlayAlarmSound>(_playAlarm, transformer: droppable());
+    on<_CloseAlarm>(
+      (event, emit) => emit(AlarmPageClosed(state.activityDay)),
+      transformer: droppable(),
+    );
+    on<_PlayAlarm>(_playAlarm, transformer: droppable());
     on<CancelAlarm>(_cancelAlarm, transformer: droppable());
     on<StopAlarm>(_stopAlarm, transformer: droppable());
     on<PlayAfter>(_playAfter, transformer: droppable());
 
     alarmLoopTimer = Timer.periodic(
       const Duration(minutes: 3),
-      (t) => add(_PlayAlarmSound()),
+      (t) => add(_PlayAlarm()),
     );
     closeAlarmPageTimer = Timer(
       const Duration(minutes: 30),
-      () => add(_CloseAlarmPage()),
+      () => add(_CloseAlarm()),
     );
 
     audioPlayerSubscription = audioPlayer.onPlayerComplete.listen(
       (event) => add(StopAlarm()),
     );
     unawaited(WakelockPlus.enable());
-    add(_PlayAlarmSound());
+    add(_PlayAlarm());
   }
 
   void _cancelAlarm(
@@ -80,7 +82,7 @@ class AlarmPageBloc extends Bloc<_AlarmPageEvent, AlarmPageState> {
   ) async {
     _log.info('Stopping alarm sound is Stopping alarm sound');
     await _stopSounds();
-    emit(AlarmPageOpen(state.activity));
+    emit(AlarmPageOpen(state.activityDay));
   }
 
   Future<void> _stopSounds() async {
@@ -96,7 +98,7 @@ class AlarmPageBloc extends Bloc<_AlarmPageEvent, AlarmPageState> {
     _AlarmPageEvent event,
     Emitter<AlarmPageState> emit,
   ) async {
-    emit(AlarmPlaying(state.activity));
+    emit(AlarmPlaying(state.activityDay));
     await FlutterRingtonePlayer.playNotification();
     // Can't await the notification sound to finish, will just add a delay here
     await Future.delayed(const Duration(seconds: 2));
@@ -108,26 +110,26 @@ class AlarmPageBloc extends Bloc<_AlarmPageEvent, AlarmPageState> {
     _AlarmPageEvent event,
     Emitter<AlarmPageState> emit,
   ) async {
-    emit(AlarmPlaying(state.activity));
+    emit(AlarmPlaying(state.activityDay));
     final playing = await _playSpeech() || await _playDescription(emit);
-    if (!playing) emit(AlarmPageOpen(state.activity));
+    if (!playing) emit(AlarmPageOpen(state.activityDay));
   }
 
   Future<bool> _playDescription(
     Emitter<AlarmPageState> emit,
   ) async {
-    final playTts = state.activity.activity.textToSpeech;
-    final description = '${state.activity.activity.title}. '
-        '${state.activity.activity.description}';
+    final activity = state.activityDay.activity;
+    final playTts = activity.textToSpeech;
+    final description = '${activity.title}. ${activity.description}';
     if (!playTts && description.isEmpty) return false;
     await ttsHandler.speak(description);
-    emit(AlarmPageOpen(state.activity));
+    emit(AlarmPageOpen(state.activityDay));
     return true;
   }
 
   Future<bool> _playSpeech() async {
     final startTimeExtraAlarm =
-        state.activity.activity.extras.startTimeExtraAlarm;
+        state.activityDay.activity.extras.startTimeExtraAlarm;
     if (startTimeExtraAlarm.isEmpty) return false;
     final file = _resolveFile(startTimeExtraAlarm);
     if (file == null) return false;

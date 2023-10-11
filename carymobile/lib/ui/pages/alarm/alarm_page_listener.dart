@@ -11,8 +11,8 @@ class AlarmPageListeners extends StatelessWidget {
       onPointerUp: (_) => context.read<AlarmPageBloc>().add(CancelAlarm()),
       child: BlocListener<AlarmPageBloc, AlarmPageState>(
         listenWhen: (previous, current) => current is AlarmPageClosed,
-        listener: (BuildContext context, AlarmPageState state) =>
-            Navigator.of(context).maybePop,
+        listener: (BuildContext context, AlarmPageState state) async =>
+            Navigator.of(context).maybePop(),
         child: child,
       ),
     );
