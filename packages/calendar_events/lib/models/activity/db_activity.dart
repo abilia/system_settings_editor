@@ -50,7 +50,11 @@ class DbActivity extends DbModel<Activity> {
           extras: Extras.fromJsonString(json['extras']),
           calendarId: json['calendarId'] ?? '',
           secretExemptions: UnmodifiableSetView(
-              exemptionsListToSet(json['secretExemptions'])),
+            exemptionsListToSet(json['secretExemptions']),
+          ),
+          description: json['description'] ?? '',
+          textToSpeech: json['textToSpeech'] ?? false,
+          showInDayplan: json['showInDayplan'] ?? true,
         ),
         revision: json['revision'],
         dirty: 0,
@@ -86,6 +90,9 @@ class DbActivity extends DbModel<Activity> {
           extras: Extras.fromJsonString(dbRow['extras']),
           calendarId: dbRow['calendar_id'] ?? '',
           secretExemptions: _parseExemptions(dbRow['secret_exemptions']),
+          description: dbRow['description'] ?? '',
+          textToSpeech: dbRow['text_to_speech'] == 1,
+          showInDayplan: dbRow['show_in_dayplan'] == 1,
         ),
         revision: dbRow['revision'],
         dirty: dbRow['dirty'],
@@ -94,12 +101,12 @@ class DbActivity extends DbModel<Activity> {
   @override
   Map<String, dynamic> toJson() => {
         'id': activity.id,
-        'seriesId': activity.seriesId.nullOnEmpty(),
-        'title': activity.title.nullOnEmpty(),
+        'seriesId': activity.seriesId,
+        'title': activity.title,
         'startTime': activity.startTime.millisecondsSinceEpoch,
         'endTime': activity.recurs.endTime,
         'duration': activity.duration.inMilliseconds,
-        'fileId': activity.fileId.nullOnEmpty(),
+        'fileId': activity.fileId,
         'category': activity.category,
         'deleted': activity.deleted,
         'checkable': activity.checkable,
@@ -109,17 +116,31 @@ class DbActivity extends DbModel<Activity> {
         'recurrentType': activity.recurs.type,
         'recurrentData': activity.recurs.data,
         'reminderBefore': activity.reminderBefore.join(';'),
-        'icon': activity.icon.nullOnEmpty(),
+        'icon': activity.icon,
         'infoItem': activity.infoItemString,
         'alarmType': activity.alarmType,
         'signedOffDates': activity.signedOffDates.tryEncodeSignedOffDates(),
         'revision': revision,
         'timezone': activity.timezone,
-        'extras': activity.extras.toJsonString().nullOnEmpty(),
+        'extras': activity.extras.toJsonString(),
         'secretExemptions': activity.secretExemptions.toList(),
-        if (activity.calendarId.isNotEmpty)
-          'calendarId': activity.calendarId.nullOnEmpty(),
-      };
+        if (activity.calendarId.isNotEmpty) 'calendarId': activity.calendarId,
+        'description': activity.description,
+        'textToSpeech': activity.textToSpeech,
+        'showInDayplan': activity.showInDayplan,
+      }
+          .map(
+            (key, value) => MapEntry(
+              key,
+              value is String ? value.nullOnEmpty() : value,
+            ),
+          )
+          .map(
+            (key, value) => MapEntry(
+              key,
+              value is Iterable && value.isEmpty ? null : value,
+            ),
+          );
 
   @override
   Map<String, dynamic> toMapForDb() => {
@@ -149,6 +170,9 @@ class DbActivity extends DbModel<Activity> {
         'secret_exemptions': activity.secretExemptions.join(';'),
         'revision': revision,
         'dirty': dirty,
+        'description': activity.description,
+        'text_to_speech': activity.textToSpeech ? 1 : 0,
+        'show_in_dayplan': activity.showInDayplan ? 1 : 0,
       };
 
   static UnmodifiableSetView<String> _parseSignedOffDates(
@@ -156,12 +180,8 @@ class DbActivity extends DbModel<Activity> {
       UnmodifiableSetView(signedOffDates?.tryDecodeSignedOffDates() ?? {});
 
   static UnmodifiableListView<int> parseReminders(String? reminders) =>
-      UnmodifiableListView(reminders
-              ?.split(';')
-              .map(int.tryParse)
-              .where((v) => v != null)
-              .cast<int>() ??
-          []);
+      UnmodifiableListView(
+          reminders?.split(';').map(int.tryParse).whereNotNull() ?? []);
 
   static Set<int> exemptionsListToSet(exemptions) =>
       exemptions is Iterable ? exemptions.whereType<int>().toSet() : {};
@@ -170,8 +190,7 @@ class DbActivity extends DbModel<Activity> {
       UnmodifiableSetView(secretExemptions
               ?.split(';')
               .map(int.tryParse)
-              .where((v) => v != null)
-              .cast<int>()
+              .whereNotNull()
               .toSet() ??
           {});
   @override

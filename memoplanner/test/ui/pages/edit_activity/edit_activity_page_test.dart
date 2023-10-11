@@ -3985,7 +3985,7 @@ text''';
           ),
       () => mockAnalytics.trackEvent(
             AnalyticsEvents.activityCreated,
-            properties: expectedActivity.properties,
+            properties: expectedActivity.analyticsProperties,
           ),
     ]);
   });
