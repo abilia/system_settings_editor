@@ -15,7 +15,7 @@ import 'package:utils/utils.dart';
 
 final _log = Logger('main');
 
-const appName = 'handi';
+const appName = 'HandiCalendar6';
 
 void main() async {
   await initServices();
@@ -49,9 +49,9 @@ class HandiApp extends StatelessWidget {
             theme: AbiliaTheme.getThemeData(MediaQuery.of(context).size.width),
             navigatorKey: _navigatorKey,
             localizationsDelegates: const [Lt.delegate],
-            home: Scaffold(
+            home: const Scaffold(
               body: Center(
-                child: Text('${appName.toUpperCase()}!'),
+                child: Text(appName),
               ),
             ),
           ),
