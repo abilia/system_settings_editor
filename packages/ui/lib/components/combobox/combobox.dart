@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:ui/styles/styles.dart';
+import 'package:ui/themes/abilia_theme.dart';
+import 'package:ui/themes/action_button/action_button_theme.dart';
 import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/fonts.dart';
 import 'package:ui/tokens/numericals.dart';
-
-final OutlineInputBorder roundBorder = defaultBorder.copyWith(
-  borderSide: borderSideGrey300.copyWith(width: numerical1px),
-);
 
 class Combobox extends StatefulWidget {
   final String? hintText;
@@ -36,23 +34,6 @@ class Combobox extends StatefulWidget {
   }
 }
 
-final defaultBorder = OutlineInputBorder(
-  borderRadius: const BorderRadius.all(
-    Radius.circular(numerical200),
-  ),
-  borderSide: borderSideGrey300.copyWith(
-    width: numerical1px,
-  ),
-);
-
-final errorBorder = defaultBorder.copyWith(
-  borderSide: borderSideGrey300.copyWith(color: BorderColors.focus),
-);
-
-final selectedBorder = defaultBorder.copyWith(
-  borderSide: borderSideGrey300.copyWith(color: BorderColors.active),
-);
-
 class _ComboboxState extends State<Combobox> {
   bool selected = false;
   bool hasText = false;
@@ -67,7 +48,7 @@ class _ComboboxState extends State<Combobox> {
       children: [
         if (widget.label != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: numerical100),
+            padding: const EdgeInsets.symmetric(vertical: numerical100),
             child: Text(
               widget.label!,
               style: AbiliaFonts.primary425.copyWith(
@@ -88,39 +69,20 @@ class _ComboboxState extends State<Combobox> {
             borderRadius: const BorderRadius.all(
               Radius.circular(numerical200),
             ),
+            color: AbiliaColors.greyscale000,
           ),
-          duration: const Duration(milliseconds: 250),
+          duration: const Duration(milliseconds: 150),
           child: TextField(
             decoration: InputDecoration(
               hintText: widget.hintText,
-              contentPadding: const EdgeInsets.symmetric(
-                  vertical: numerical300, horizontal: numerical400),
-              focusColor: AbiliaColors.greyscale000,
-              fillColor: AbiliaColors.greyscale000,
-              border: MaterialStateOutlineInputBorder.resolveWith(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.focused)) {
-                  return selectedBorder;
-                }
-                if (states.contains(MaterialState.error)) {
-                  return errorBorder;
-                }
-                return defaultBorder;
-              }),
+              contentPadding: textFieldInputTheme900.contentPadding,
+              focusColor: textFieldInputTheme900.focusColor,
+              fillColor: textFieldInputTheme900.fillColor,
+              border: textFieldInputTheme900.border,
               suffix: widget.trailing,
               prefix: widget.leading,
             ),
-            style:
-                MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
-              if (states.contains(MaterialState.error)) {
-                return AbiliaFonts.primary425;
-              }
-              if (states.contains(MaterialState.focused)) {
-                return AbiliaFonts.primary425;
-              }
-              return AbiliaFonts.primary425
-                  .copyWith(color: FontColors.secondary);
-            }),
+            style: textFieldTextStyle900,
             onChanged: widget.onChanged,
             focusNode: widget.focusNode,
             controller: widget.controller,
@@ -128,22 +90,25 @@ class _ComboboxState extends State<Combobox> {
         ),
         if (widget.errorMessage != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: numerical100),
-            child: Expanded(
-                child: Row(
-              children: [
-                Icon(
-                  MdiIcons.alert,
-                  size: numerical600,
-                ),
-                Text(
-                  widget.label!,
-                  style: AbiliaFonts.primary425.copyWith(
-                    color: AbiliaColors.greyscale700,
+            padding: const EdgeInsets.symmetric(vertical: numerical100),
+            child: Container(
+              color: AbiliaColors.peach100,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Icon(
+                    MdiIcons.alert,
+                    size: numerical600,
                   ),
-                ),
-              ],
-            )),
+                  Text(
+                    widget.errorMessage!,
+                    style: AbiliaFonts.primary425.copyWith(
+                      color: AbiliaColors.greyscale700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
       ],
     );

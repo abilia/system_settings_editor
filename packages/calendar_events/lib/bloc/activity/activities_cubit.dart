@@ -34,7 +34,7 @@ class ActivitiesCubit extends Cubit<ActivitiesChanged> with EditRecurringMixin {
   Future<void> addActivity(Activity activity) async {
     analytics.trackEvent(
       AnalyticsEvents.activityCreated,
-      properties: activity.properties,
+      properties: activity.analyticsProperties,
     );
     return _saveActivities([activity]);
   }

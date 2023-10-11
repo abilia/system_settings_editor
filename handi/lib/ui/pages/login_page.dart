@@ -10,8 +10,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:ui/components/buttons/action_button.dart';
-import 'package:ui/components/combobox.dart';
+import 'package:ui/components/action_button/action_button.dart';
+import 'package:ui/components/combobox/combobox.dart';
 import 'package:ui/tokens/numericals.dart';
 
 class LoginPage extends StatelessWidget {
@@ -38,7 +38,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                ActionButton(
+                ActionButtonPrimary(
                   text: 'Ok',
                   onPressed: () {
                     Navigator.of(context).maybePop();
@@ -111,7 +111,8 @@ class LoginPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    ActionButton(
+                    const Spacer(),
+                    ActionButtonPrimary(
                       text: translate.signIn,
                       onPressed: state.isFormValid
                           ? context.read<LoginCubit>().loginButtonPressed
