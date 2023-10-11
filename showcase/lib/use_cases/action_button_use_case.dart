@@ -35,6 +35,24 @@ class ActionButtonUseCase extends WidgetbookUseCase {
                       return 'Tertiary';
                     },
                   ),
+                  size: context.knobs.list(
+                    label: 'Button size',
+                    options: [
+                      ActionButtonSize.small,
+                      ActionButtonSize.medium,
+                      ActionButtonSize.large,
+                    ],
+                    initialOption: ActionButtonSize.small,
+                    labelBuilder: (size) {
+                      if (size == ActionButtonSize.small) {
+                        return 'Small';
+                      }
+                      if (size == ActionButtonSize.medium) {
+                        return 'Medium';
+                      }
+                      return 'Large';
+                    },
+                  ),
                   text: context.knobs.string(
                     label: 'Button title',
                     initialValue: 'Title',
@@ -66,6 +84,7 @@ class ActionButtonUseCase extends WidgetbookUseCase {
   static Widget _actionButtonFromType({
     required Type type,
     required String text,
+    required ActionButtonSize size,
     required IconData? leadingIcon,
     required IconData? trailingIcon,
     required VoidCallback? onPressed,
@@ -73,6 +92,7 @@ class ActionButtonUseCase extends WidgetbookUseCase {
     if (type == ActionButtonPrimary) {
       return ActionButtonPrimary(
         text: text,
+        size: size,
         onPressed: onPressed,
         leadingIcon: leadingIcon,
         trailingIcon: trailingIcon,
@@ -81,6 +101,7 @@ class ActionButtonUseCase extends WidgetbookUseCase {
     if (type == ActionButtonSecondary) {
       return ActionButtonSecondary(
         text: text,
+        size: size,
         onPressed: onPressed,
         leadingIcon: leadingIcon,
         trailingIcon: trailingIcon,
@@ -88,6 +109,7 @@ class ActionButtonUseCase extends WidgetbookUseCase {
     }
     return ActionButtonTertiary(
       text: text,
+      size: size,
       onPressed: onPressed,
       leadingIcon: leadingIcon,
       trailingIcon: trailingIcon,

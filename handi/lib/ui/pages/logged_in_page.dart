@@ -105,6 +105,7 @@ class LoggedInPage extends StatelessWidget {
                     ActionButtonPrimary(
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),
+                      size: ActionButtonSize.large,
                       text: 'Sync',
                     ),
                     const SizedBox(height: 8),
@@ -112,6 +113,7 @@ class LoggedInPage extends StatelessWidget {
                       onPressed: () => context
                           .read<AuthenticationBloc>()
                           .add(const LoggedOut()),
+                      size: ActionButtonSize.large,
                       text: Lt.of(context).logOut,
                     ),
                   ],
