@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull_fakes/all.dart';
 
-import '../../fakes/fake_getit.dart';
+import '../../../fakes/fake_getit.dart';
 
 void main() {
   late final Lt translate;

@@ -112,5 +112,5 @@ Future<void> initGetItWith({
             speechRate: GetIt.I<VoiceDb>().speechRate,
           ),
     )
-    ..registerSingleton<AudioPlayer>(AudioPlayer());
+    ..registerLazySingleton<AudioPlayer>(() => AudioPlayer());
 }
