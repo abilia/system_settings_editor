@@ -119,9 +119,8 @@ class AlarmPageBloc extends Bloc<_AlarmPageEvent, AlarmPageState> {
     Emitter<AlarmPageState> emit,
   ) async {
     final activity = state.activityDay.activity;
-    final playTts = activity.textToSpeech;
+    if (!activity.textToSpeech) return false;
     final description = '${activity.title}. ${activity.description}';
-    if (!playTts && description.isEmpty) return false;
     await ttsHandler.speak(description);
     emit(AlarmPageOpen(state.activityDay));
     return true;
