@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ui/components/buttons/action_button.dart';
+import 'package:showcase/addons/breakpoint_addon.dart';
+import 'package:showcase/use_cases/action_button_use_case.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 void main() {
@@ -20,57 +21,13 @@ class WidgetBook extends StatelessWidget {
           ],
         ),
         TextScaleAddon(scales: [3.0, 2.0, 1.0, .8, .5], initialScale: 1.0),
+        BreakpointAddon(),
       ],
       directories: [
         WidgetbookComponent(
           name: 'Buttons',
           useCases: [
-            WidgetbookUseCase(
-              name: 'Action Button',
-              builder: (context) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: SizedBox(
-                    width: context.knobs.boolean(
-                      label: 'Expanded',
-                      initialValue: false,
-                    )
-                        ? double.infinity
-                        : null,
-                    child: ActionButton(
-                      text: context.knobs.string(
-                        label: 'Button title',
-                        initialValue: 'Title',
-                      ),
-                      actionButtonStyle: context.knobs.list(
-                        label: 'Button style',
-                        options: ActionButtonStyle.values,
-                        initialOption: ActionButtonStyle.primary,
-                        labelBuilder: (style) => style.name,
-                      ),
-                      onPressed: context.knobs.boolean(
-                        label: 'Enabled',
-                        initialValue: true,
-                      )
-                          ? () {}
-                          : null,
-                      leadingIcon: context.knobs.boolean(
-                        label: 'Leading icon',
-                        initialValue: true,
-                      )
-                          ? Icons.login
-                          : null,
-                      trailingIcon: context.knobs.boolean(
-                        label: 'Trailing icon',
-                        initialValue: false,
-                      )
-                          ? Icons.login
-                          : null,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            ActionButtonUseCase(),
           ],
         )
       ],
