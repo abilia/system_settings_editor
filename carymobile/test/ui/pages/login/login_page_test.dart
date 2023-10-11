@@ -1,13 +1,13 @@
 import 'package:carymessenger/l10n/all.dart';
 import 'package:carymessenger/main.dart';
+import 'package:carymessenger/ui/components/buttons/action.dart';
 import 'package:carymessenger/ui/pages/login/login_page.dart';
 import 'package:carymessenger/ui/pages/main/main_page.dart';
-import 'package:carymessenger/ui/widgets/buttons/action.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:seagull_fakes/all.dart';
 
-import '../../fakes/fake_getit.dart';
+import '../../../fakes/fake_getit.dart';
 
 void main() {
   late final Lt translate;

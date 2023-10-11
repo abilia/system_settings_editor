@@ -21,5 +21,5 @@ ActivityDay? findNextAlarm(Iterable<Activity> activities, DateTime now) {
           .where((element) => element.start.isAfter(now)),
     );
   }
-  return (next..sort()).first;
+  return (next..sort()).firstOrNull;
 }

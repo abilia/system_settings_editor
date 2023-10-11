@@ -11,9 +11,11 @@ dependencies:
     path: ../packages/abilia_sync
   android_intent_plus: ^4.0.1
   async: ^2.11.0
+  audioplayers: ^5.1.0
   auth:
     path: ../packages/auth
   bloc: ^8.0.2
+  bloc_concurrency: ^0.2.0
   calendar:
     path: ../packages/calendar
   calendar_events:

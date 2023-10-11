@@ -1,4 +1,5 @@
 import 'package:carymessenger/cubit/production_guide_cubit.dart';
+import 'package:carymessenger/ui/components/buttons/action.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permissions/permission_cubit.dart';
@@ -19,19 +20,22 @@ class ProductionGuidePage extends StatelessWidget {
     );
     return Scaffold(
       body: SafeArea(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (!batteryOptimizationGranted) const BatteryOptimizationButton(),
-          const Expanded(child: Voices()),
-          FilledButton(
-            onPressed: batteryOptimizationGranted && voiceIsDownloaded
-                ? productionGuideCubit.setDone
-                : null,
-            child: const Text('Done'),
-          ),
-        ],
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Expanded(child: Voices()),
+            if (!batteryOptimizationGranted) const BatteryOptimizationButton(),
+            ActionButtonGreen(
+              onPressed: batteryOptimizationGranted && voiceIsDownloaded
+                  ? productionGuideCubit.setDone
+                  : null,
+              text: 'Done',
+            ),
+          ],
+        ),
       )),
     );
   }
