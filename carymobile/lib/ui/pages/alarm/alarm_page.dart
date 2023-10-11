@@ -15,7 +15,7 @@ class AlarmPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<AlarmPageBloc>().state;
-    final activityDay = state.activity;
+    final activityDay = state.activityDay;
     final title = activityDay.title;
     final description = activityDay.activity.description;
 
