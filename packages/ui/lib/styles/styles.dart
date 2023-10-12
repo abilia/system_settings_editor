@@ -3,6 +3,8 @@ import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/fonts.dart';
 import 'package:ui/tokens/numericals.dart';
 
+part 'action_button_styles.dart';
+
 const _baseBorder = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(
     Radius.circular(numerical200),
@@ -38,108 +40,4 @@ final _backgroundGrey = MaterialStateProperty.resolveWith<Color>(
     }
     return AbiliaColors.greyscale000;
   },
-);
-
-final actionButtonPrimary900 = ButtonStyle(
-  iconSize: MaterialStateProperty.all(numerical600),
-  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return AbiliaColors.greyscale300;
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return AbiliaColors.primary600;
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return AbiliaColors.primary700;
-      }
-      if (states.contains(MaterialState.focused)) {
-        return AbiliaColors.primary500;
-      }
-      return AbiliaColors.primary500;
-    },
-  ),
-  foregroundColor: MaterialStateProperty.resolveWith<Color>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return FontColors.secondary;
-      }
-      return AbiliaColors.greyscale000;
-    },
-  ),
-  textStyle: MaterialStateProperty.all(AbiliaFonts.primary425),
-  shape: MaterialStateProperty.resolveWith(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.focused)) {
-        return _baseBorder.copyWith(side: _borderSidePeach400);
-      }
-      return _baseBorder;
-    },
-  ),
-  padding: MaterialStateProperty.all(
-    const EdgeInsets.symmetric(
-      horizontal: numerical400,
-      vertical: numerical300,
-    ),
-  ),
-);
-
-final actionButtonSecondary900 = actionButtonPrimary900.copyWith(
-  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return AbiliaColors.greyscale300;
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return AbiliaColors.secondary500;
-      }
-      if (states.contains(MaterialState.pressed)) {
-        return AbiliaColors.secondary600;
-      }
-      return AbiliaColors.secondary400;
-    },
-  ),
-);
-
-final actionButtonTertiary900 = actionButtonPrimary900.copyWith(
-  backgroundColor: _backgroundGrey,
-  foregroundColor: MaterialStateProperty.resolveWith<Color>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
-        return FontColors.secondary;
-      }
-      return FontColors.primary;
-    },
-  ),
-  shape: MaterialStateProperty.resolveWith(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.focused)) {
-        return _baseBorder.copyWith(side: _borderSidePeach400);
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _baseBorder.copyWith(side: _borderSideGrey300);
-      }
-      return _baseBorder;
-    },
-  ),
-);
-
-final actionButtonTertiary800 = actionButtonTertiary900.copyWith(
-  padding: MaterialStateProperty.all(
-    const EdgeInsets.symmetric(
-      horizontal: numerical300,
-      vertical: numerical200,
-    ),
-  ),
-  shape: MaterialStateProperty.resolveWith(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.focused)) {
-        return _roundBorder.copyWith(side: _borderSidePeach400);
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return _roundBorder.copyWith(side: _borderSideGrey300);
-      }
-      return _roundBorder;
-    },
-  ),
 );
