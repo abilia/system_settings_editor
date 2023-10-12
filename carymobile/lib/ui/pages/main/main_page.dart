@@ -6,6 +6,7 @@ import 'package:carymessenger/ui/widgets/abilia_image.dart';
 import 'package:carymessenger/ui/widgets/buttons/android_settings_button.dart';
 import 'package:carymessenger/ui/widgets/buttons/google_play_button.dart';
 import 'package:carymessenger/ui/widgets/buttons/logout_button.dart';
+import 'package:carymessenger/ui/widgets/clock/analog_clock.dart';
 import 'package:carymessenger/ui/widgets/tts.dart';
 import 'package:carymessenger/ui/widgets/version_text.dart';
 import 'package:collection/collection.dart';
