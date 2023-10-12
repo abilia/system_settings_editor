@@ -1,11 +1,21 @@
 import 'package:carymessenger/ui/themes/colors.dart';
-import 'package:carymessenger/ui/themes/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+part 'text_styles.dart';
+
 final caryLightTheme = ThemeData.from(
   colorScheme: const ColorScheme.light(primary: abiliaBlack80),
-  textTheme: GoogleFonts.robotoTextTheme(),
+  textTheme: GoogleFonts.robotoTextTheme(
+    const TextTheme(
+      titleLarge: titleLarge,
+      headlineLarge: headLineLarge,
+      headlineMedium: headlineMedium,
+      headlineSmall: headlineSmall,
+      bodyMedium: bodyMedium,
+      bodySmall: bodySmall,
+    ),
+  ),
   useMaterial3: true,
 ).copyWith(
   filledButtonTheme: const FilledButtonThemeData(

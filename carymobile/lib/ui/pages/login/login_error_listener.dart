@@ -25,7 +25,7 @@ class LoginErrorListener extends StatelessWidget {
                 child: Center(
                   child: Text(
                     userFacingMessage(state.cause),
-                    style: bodyWhite,
+                    style: bodyMediumWhite,
                   ),
                 ),
               ),

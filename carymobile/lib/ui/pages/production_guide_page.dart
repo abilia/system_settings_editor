@@ -1,5 +1,6 @@
 import 'package:carymessenger/cubit/production_guide_cubit.dart';
 import 'package:carymessenger/ui/components/buttons/action.dart';
+import 'package:carymessenger/ui/widgets/buttons/android_settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permissions/permission_cubit.dart';
@@ -28,6 +29,9 @@ class ProductionGuidePage extends StatelessWidget {
           children: [
             const Expanded(child: Voices()),
             if (!batteryOptimizationGranted) const BatteryOptimizationButton(),
+            const SizedBox(height: 8),
+            const AndroidSettingsButton(),
+            const SizedBox(height: 8),
             ActionButtonGreen(
               onPressed: batteryOptimizationGranted && voiceIsDownloaded
                   ? productionGuideCubit.setDone

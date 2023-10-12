@@ -4,7 +4,7 @@ import 'package:carymessenger/l10n/generated/l10n.dart';
 import 'package:carymessenger/ui/abilia_icons.dart';
 import 'package:carymessenger/ui/components/buttons/action.dart';
 import 'package:carymessenger/ui/themes/colors.dart';
-import 'package:carymessenger/ui/themes/text_styles.dart';
+import 'package:carymessenger/ui/themes/theme.dart';
 import 'package:carymessenger/ui/widgets/buttons/android_settings_button.dart';
 import 'package:carymessenger/ui/widgets/version_text.dart';
 import 'package:flutter/material.dart';
@@ -61,14 +61,13 @@ class LoginPage extends StatelessWidget {
                         SizedBox(height: 24),
                         Text(
                           'Connect to myAbilia',
-                          style: headline4,
+                          style: headlineSmall,
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 8),
                         Text(
                           'Make sure that CARY Base is connected to myAbilia.'
                           ' Log in here with the same account.',
-                          style: body,
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 24),

@@ -1,8 +1,17 @@
 part of 'main_page.dart';
 
 class Agenda extends StatelessWidget {
-  const Agenda({super.key});
+  static const animationDuration = Duration(milliseconds: 500);
+  final void Function(bool) onTap;
+  final bool show;
 
+  const Agenda({
+    required this.show,
+    required this.onTap,
+    super.key,
+  });
+
+  @override
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => AgendaCubit(
@@ -10,8 +19,36 @@ class Agenda extends StatelessWidget {
           clock: context.read<ClockCubit>(),
           activityRepository: context.read<ActivityRepository>(),
         ),
-        child: const AgendaList(),
+        child: Expanded(
+          flex: show ? 1 : 0,
+          child: Column(
+            children: [
+              AgendaHeader(
+                show: show,
+                onTap: onTap,
+              ),
+              if (show) const AgendaContent(),
+            ],
+          ),
+        ),
       );
+}
+
+class AgendaContent extends StatelessWidget {
+  const AgendaContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ColoredBox(
+        color: abiliaBrown0,
+        child: RefreshIndicator(
+          onRefresh: () async => context.read<SyncBloc>().add(const SyncAll()),
+          child: const AgendaList(),
+        ),
+      ),
+    );
+  }
 }
 
 class AgendaList extends StatelessWidget {
@@ -25,34 +62,16 @@ class AgendaList extends StatelessWidget {
       AgendaLoaded(occasions: final occasions) => Builder(
           builder: (context) {
             final dayActivities = occasions.values.flattened.toList();
-            return ListView.builder(
+            return ListView.separated(
+              padding: const EdgeInsets.all(8),
               itemCount: dayActivities.length,
-              itemBuilder: (context, index) =>
-                  AgendaTile(activity: dayActivities[index]),
+              itemBuilder: (context, index) => AgendaTile(
+                activity: dayActivities[index],
+              ),
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
             );
           },
         ),
     };
-  }
-}
-
-class AgendaTile extends StatelessWidget {
-  final ActivityDay activity;
-
-  const AgendaTile({required this.activity, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onLongPress: () => context.read<AlarmCubit>().fakeAlarm(activity),
-      leading: activity.hasImage
-          ? AbiliaImage(
-              activity.image,
-              size: ImageSize.thumb,
-            )
-          : null,
-      title: Text(activity.title),
-      subtitle: Text(DateFormat.Hm().format(activity.start)),
-    );
   }
 }
