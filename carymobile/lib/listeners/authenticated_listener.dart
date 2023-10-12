@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:auth/bloc/authentication/authentication_bloc.dart';
 import 'package:auth/bloc/license/license_cubit.dart';
 import 'package:calendar_events/calendar_events.dart';
@@ -6,11 +7,14 @@ import 'package:carymessenger/bloc/alarm_page_bloc.dart';
 import 'package:carymessenger/bloc/next_alarm_scheduler_bloc.dart';
 import 'package:carymessenger/copied_providers.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
-import 'package:carymessenger/ui/pages/alarm_page.dart';
+import 'package:carymessenger/ui/pages/alarm/alarm_page.dart';
+import 'package:file_storage/file_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
+import 'package:text_to_speech/text_to_speech.dart';
+import 'package:user_files/user_files.dart';
 
 class AuthenticatedListener extends StatelessWidget {
   final Widget child;
@@ -42,13 +46,16 @@ class AuthenticatedListener extends StatelessWidget {
                     providers: [
                       ...authProviders,
                       BlocProvider(
-                        create: (context) => AlarmPageBloc(state),
+                        create: (context) => AlarmPageBloc(
+                          activity: state,
+                          audioPlayer: GetIt.I<AudioPlayer>(),
+                          storage: GetIt.I<FileStorage>(),
+                          userFileBloc: context.read<UserFileBloc>(),
+                          ttsHandler: GetIt.I<TtsHandler>(),
+                        ),
                       ),
                     ],
-                    child: AlarmPage(
-                      activityDay: state,
-                      providers: authProviders,
-                    ),
+                    child: const AlarmPage(),
                   ),
                 ),
                 (route) => route.isFirst,

@@ -1,4 +1,5 @@
 import 'package:abilia_sync/abilia_sync.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:auth/auth.dart';
 import 'package:calendar/all.dart';
 import 'package:calendar_events/calendar_events.dart';
@@ -110,5 +111,6 @@ Future<void> initGetItWith({
             voice: GetIt.I<VoiceDb>().voice,
             speechRate: GetIt.I<VoiceDb>().speechRate,
           ),
-    );
+    )
+    ..registerLazySingleton<AudioPlayer>(() => AudioPlayer());
 }

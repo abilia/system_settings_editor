@@ -3,8 +3,10 @@ import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/cubit/agenda_cubit.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
 import 'package:carymessenger/ui/widgets/abilia_image.dart';
+import 'package:carymessenger/ui/widgets/buttons/android_settings_button.dart';
+import 'package:carymessenger/ui/widgets/buttons/google_play_button.dart';
+import 'package:carymessenger/ui/widgets/buttons/logout_button.dart';
 import 'package:carymessenger/ui/widgets/clock/analog_clock.dart';
-import 'package:carymessenger/ui/widgets/open_settings_button.dart';
 import 'package:carymessenger/ui/widgets/tts.dart';
 import 'package:carymessenger/ui/widgets/version_text.dart';
 import 'package:collection/collection.dart';
@@ -18,7 +20,7 @@ import 'package:utils/date_time_extensions.dart';
 
 part 'agenda.dart';
 
-part 'fake_time.dart';
+part 'hidden_extra.dart';
 
 part 'clock_and_date.dart';
 
@@ -32,21 +34,16 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: FakeTime(),
+    return const Scaffold(
+      drawer: HiddenExtra(),
       drawerEdgeDragWidth: 60,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24.0),
+          padding: EdgeInsets.symmetric(vertical: 24.0),
           child: Column(
             children: [
-              const ClockAndDate(),
-              const Expanded(child: Agenda()),
-              FilledButton(
-                onPressed: () =>
-                    context.read<AuthenticationBloc>().add(const LoggedOut()),
-                child: const Text('Log out'),
-              ),
+              ClockAndDate(),
+              Expanded(child: Agenda()),
             ],
           ),
         ),

@@ -1,16 +1,6 @@
-import 'dart:ui';
+part of 'action_buttons_theme.dart';
 
-import 'package:flutter/material.dart';
-import 'package:ui/styles/styles.dart';
-import 'package:ui/tokens/numericals.dart';
-
-part 'action_button_primary_theme.dart';
-
-part 'action_button_secondary_theme.dart';
-
-part 'action_button_tertiary_theme.dart';
-
-sealed class ActionButtonTheme extends ThemeExtension<ActionButtonTheme> {
+class ActionButtonTheme extends ThemeExtension<ActionButtonTheme> {
   final double iconSpacing;
   final ButtonStyle buttonStyle;
 
@@ -18,4 +8,41 @@ sealed class ActionButtonTheme extends ThemeExtension<ActionButtonTheme> {
     required this.iconSpacing,
     required this.buttonStyle,
   });
+
+  factory ActionButtonTheme.small(ButtonStyle buttonStyle) => ActionButtonTheme(
+        iconSpacing: numerical100,
+        buttonStyle: buttonStyle,
+      );
+
+  factory ActionButtonTheme.medium(ButtonStyle buttonStyle) =>
+      ActionButtonTheme(
+        iconSpacing: numerical200,
+        buttonStyle: buttonStyle,
+      );
+
+  factory ActionButtonTheme.large(ButtonStyle buttonStyle) => ActionButtonTheme(
+        iconSpacing: numerical200,
+        buttonStyle: buttonStyle,
+      );
+
+  @override
+  ActionButtonTheme copyWith({
+    double? iconSpacing,
+    ButtonStyle? buttonStyle,
+  }) {
+    return ActionButtonTheme(
+      iconSpacing: iconSpacing ?? this.iconSpacing,
+      buttonStyle: buttonStyle ?? this.buttonStyle,
+    );
+  }
+
+  @override
+  ActionButtonTheme lerp(ActionButtonTheme? other, double t) {
+    if (other is! ActionButtonTheme) return this;
+    return ActionButtonTheme(
+      iconSpacing: lerpDouble(iconSpacing, other.iconSpacing, t) ?? iconSpacing,
+      buttonStyle:
+          ButtonStyle.lerp(buttonStyle, other.buttonStyle, t) ?? buttonStyle,
+    );
+  }
 }
