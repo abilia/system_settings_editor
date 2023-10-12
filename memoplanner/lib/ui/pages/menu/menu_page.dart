@@ -7,18 +7,24 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class MenuPage extends StatelessWidget {
-  const MenuPage({Key? key}) : super(key: key);
+class MenuPage extends CalendarTab {
+  const MenuPage({super.key});
+
+  @override
+  PreferredSizeWidget get appBar => const MenuAppBar();
+
+  @override
+  Widget floatingActionButton(BuildContext context) => const FloatingActions(
+        displayAboutButton: true,
+      );
 
   @override
   Widget build(BuildContext context) {
     final menuSettings =
         context.select((MemoplannerSettingsBloc bloc) => bloc.state.menu);
-    return Scaffold(
-      appBar: const MenuAppBar(),
-      floatingActionButton: const FloatingActions(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      body: Padding(
+    return ColoredBox(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Padding(
         padding: layout.templates.m2,
         child: Align(
           alignment: Alignment.topCenter,

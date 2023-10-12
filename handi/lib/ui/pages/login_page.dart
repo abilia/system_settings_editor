@@ -40,6 +40,7 @@ class LoginPage extends StatelessWidget {
               actions: <Widget>[
                 ActionButtonPrimary(
                   text: 'Ok',
+                  size: ActionButtonSize.large,
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
@@ -114,6 +115,7 @@ class LoginPage extends StatelessWidget {
                     const Spacer(),
                     ActionButtonPrimary(
                       text: translate.signIn,
+                      size: ActionButtonSize.large,
                       onPressed: state.isFormValid
                           ? context.read<LoginCubit>().loginButtonPressed
                           : null,

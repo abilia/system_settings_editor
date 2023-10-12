@@ -46,9 +46,13 @@ class AgendaCubit extends Cubit<AgendaState> {
       yesterday,
       nextDay,
     );
-    final dayActivities = activities.expand(
-      (activity) => activity.dayActivitiesForDay(day),
-    );
+    final dayActivities = activities
+        .where(
+          (activity) => activity.showInDayplan,
+        )
+        .expand(
+          (activity) => activity.dayActivitiesForDay(day),
+        );
     _stateOccasion(dayActivities, now);
   }
 

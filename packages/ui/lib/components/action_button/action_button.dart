@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/themes/abilia_theme.dart';
-import 'package:ui/themes/action_button/action_button_theme.dart';
+import 'package:ui/themes/action_button/action_buttons_theme.dart';
 
 part 'action_button_primary.dart';
 
@@ -8,12 +8,18 @@ part 'action_button_secondary.dart';
 
 part 'action_button_tertiary.dart';
 
+enum ActionButtonSize {
+  small,
+  medium,
+  large,
+}
+
 sealed class ActionButton extends StatelessWidget {
   final String text;
   final IconData? leadingIcon;
   final IconData? trailingIcon;
   final VoidCallback? onPressed;
-  final ActionButtonTheme Function(AbiliaTheme) themeBuilder;
+  final ActionButtonTheme Function(ActionButtonsTheme) themeBuilder;
 
   const ActionButton({
     required this.themeBuilder,
@@ -21,6 +27,7 @@ sealed class ActionButton extends StatelessWidget {
     required this.onPressed,
     required this.leadingIcon,
     required this.trailingIcon,
+    required ActionButtonSize size,
     super.key,
   });
 
@@ -29,7 +36,7 @@ sealed class ActionButton extends StatelessWidget {
     final leadingIcon = this.leadingIcon;
     final trailingIcon = this.trailingIcon;
     final abiliaTheme = AbiliaTheme.of(context);
-    final actionButtonTheme = themeBuilder(abiliaTheme);
+    final actionButtonTheme = themeBuilder(abiliaTheme.actionButtons);
     return TextButton(
       style: actionButtonTheme.buttonStyle,
       onPressed: onPressed,

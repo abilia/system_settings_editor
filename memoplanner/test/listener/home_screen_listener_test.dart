@@ -145,12 +145,12 @@ void main() {
       expect(find.byType(MenuPage), findsOneWidget);
     });
 
-    testWidgets('switches to WeekCalendar', (tester) async {
+    testWidgets('switches to MonthCalendar', (tester) async {
       when(() => mockSettingBloc.state).thenReturn(
         MemoplannerSettingsLoaded(
           const MemoplannerSettings(
             functions: FunctionsSettings(
-              startView: StartView.photoAlbum,
+              startView: StartView.monthCalendar,
             ),
           ),
         ),
@@ -159,15 +159,13 @@ void main() {
         wrapWithMaterialApp(child: const CalendarPage()),
       );
       await tester.pumpAndSettle();
-      expect(find.byType(PhotoCalendarPage), findsOneWidget);
-      await tester.tap(
-        find.widgetWithIcon(IconActionButton, AbiliaIcons.day),
-      );
+      expect(find.byType(MonthCalendar), findsOneWidget);
+      await tester.tap(find.byIcon(AbiliaIcons.day));
       await tester.pumpAndSettle();
-      expect(find.byType(PhotoCalendarPage), findsNothing);
+      expect(find.byType(MonthCalendar), findsNothing);
       inactivityCubit.emit(HomeScreenThresholdReached(initialTime));
       await tester.pumpAndSettle();
-      expect(find.byType(PhotoCalendarPage), findsOneWidget);
+      expect(find.byType(MonthCalendar), findsOneWidget);
     });
 
     testWidgets(
@@ -203,7 +201,7 @@ void main() {
           'When timeout is reached, day calendar switches to current day',
           (tester) async {
         await tester
-            .pumpWidget(wrapWithMaterialApp(child: const DayCalendarTab()));
+            .pumpWidget(wrapWithMaterialApp(child: const CalendarPage()));
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(AbiliaIcons.goToNextPage));
         await tester.pumpAndSettle();

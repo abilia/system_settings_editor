@@ -6,19 +6,20 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
-class WeekCalendarTab extends StatelessWidget {
-  const WeekCalendarTab({
-    Key? key,
-  }) : super(key: key);
+class WeekCalendarTab extends CalendarTab {
+  const WeekCalendarTab({super.key});
+
+  @override
+  PreferredSizeWidget get appBar => const WeekAppBar();
+
+  @override
+  Widget floatingActionButton(BuildContext context) => const FloatingActions();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AbiliaColors.white,
-      appBar: const WeekAppBar(),
-      floatingActionButton: const FloatingActions(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: Padding(
+    return ColoredBox(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: Padding(
         padding: layout.weekCalendar.bodyPadding,
         child: const WeekCalendar(),
       ),

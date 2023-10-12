@@ -4,88 +4,117 @@ import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
-class CalendarPage extends StatelessWidget {
-  const CalendarPage({Key? key}) : super(key: key);
+class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
 
   @override
+  State<CalendarPage> createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends State<CalendarPage> {
+  @override
   Widget build(BuildContext context) {
+    final isNotLoaded = context.select((MemoplannerSettingsBloc bloc) =>
+        bloc.state is MemoplannerSettingsNotLoaded);
+    if (isNotLoaded) {
+      return const Scaffold(
+        body: Center(
+          child: AbiliaProgressIndicator(),
+        ),
+      );
+    }
+    final functionsSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.functions);
+    final displaySettings = functionsSettings.display;
+    const emptyPage = EmptyCalendarPage();
+    const weekTab = WeekCalendarTab();
+    const monthTab = MonthCalendarTab();
+    const menuPage = MenuPage();
+
+    final tabs = <CalendarTab>[
+      const DayCalendarTab(),
+      if (displaySettings.week) weekTab else emptyPage,
+      if (displaySettings.month) monthTab else emptyPage,
+      if (displaySettings.menu) menuPage else emptyPage,
+      if (Config.isMP) const PhotoCalendarPage(),
+    ];
     return Theme(
       data: abiliaWhiteTheme,
       child: BlocProvider<ScrollPositionCubit>(
         create: (context) => ScrollPositionCubit(
           dayPickerBloc: BlocProvider.of<DayPickerBloc>(context),
         ),
-        child: Builder(
-          builder: (context) {
-            final isNotLoaded = context.select((MemoplannerSettingsBloc bloc) =>
-                bloc.state is MemoplannerSettingsNotLoaded);
-            if (isNotLoaded) {
-              return const Scaffold(
-                body: Center(
-                  child: AbiliaProgressIndicator(),
+        child: DefaultTabController(
+          length: displaySettings.calendarCount,
+          initialIndex: functionsSettings.startViewIndex,
+          child: Builder(
+            builder: (context) {
+              final controller = DefaultTabController.of(context)
+                ..addListener(() => setState(() {}));
+              final index = controller.index;
+              return Scaffold(
+                backgroundColor: _dayTheme(context).color,
+                appBar: tabs[index].appBar,
+                floatingActionButton: tabs[index].floatingActionButton(context),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.startFloat,
+                bottomNavigationBar: displaySettings.bottomBar
+                    ? const CalendarBottomBar()
+                    : null,
+                body: ReturnToHomeScreenListener(
+                  child: TrackableTabBarView(
+                    analytics: GetIt.I<SeagullAnalytics>(),
+                    children: tabs,
+                  ),
                 ),
               );
-            }
-            final functionsSettings = context
-                .select((MemoplannerSettingsBloc bloc) => bloc.state.functions);
-            final display = functionsSettings.display;
-            return DefaultTabController(
-              length: display.calendarCount,
-              initialIndex: functionsSettings.startViewIndex,
-              child: Scaffold(
-                bottomNavigationBar:
-                    display.bottomBar ? const CalendarBottomBar() : null,
-                body: Builder(
-                  builder: (context) {
-                    const emptyPage = EmptyCalendarPage();
-                    const weekTab = WeekCalendarTab();
-                    const monthTab = MonthCalendarTab();
-                    const menuPage = MenuPage();
-                    return ReturnToHomeScreenListener(
-                      child: TrackableTabBarView(
-                        analytics: GetIt.I<SeagullAnalytics>(),
-                        children: [
-                          const DayCalendarTab(),
-                          if (display.week) weekTab else emptyPage,
-                          if (display.month) monthTab else emptyPage,
-                          if (display.menu) menuPage else emptyPage,
-                          if (Config.isMP) const PhotoCalendarPage(),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            );
-          },
+            },
+          ),
         ),
       ),
     );
   }
-}
 
-class EmptyCalendarPage extends StatefulWidget {
-  const EmptyCalendarPage({Key? key}) : super(key: key);
+  DayTheme _dayTheme(BuildContext context) {
+    final day = context.select((DayPickerBloc bloc) => bloc.state.day);
+    final calendarSettings =
+        context.select((MemoplannerSettingsBloc bloc) => bloc.state.calendar);
+    final isNight = context.watch<NightMode>().state;
 
-  @override
-  State<EmptyCalendarPage> createState() => _EmptyCalendarPageState();
-}
-
-class _EmptyCalendarPageState extends State<EmptyCalendarPage> {
-  @override
-  void initState() {
-    super.initState();
-    _navigateToStartView();
+    return weekdayTheme(
+      dayColor: isNight ? DayColor.noColors : calendarSettings.dayColor,
+      languageCode: Localizations.localeOf(context).languageCode,
+      weekday: day.weekday,
+    );
   }
+}
+
+abstract class CalendarTab extends StatelessWidget {
+  const CalendarTab({super.key});
+
+  PreferredSizeWidget get appBar;
+
+  Widget floatingActionButton(BuildContext context);
+}
+
+class EmptyCalendarPage extends CalendarTab {
+  const EmptyCalendarPage({super.key});
+
+  @override
+  PreferredSizeWidget get appBar => AppBar();
+
+  @override
+  Widget floatingActionButton(BuildContext context) => const SizedBox();
 
   @override
   Widget build(BuildContext context) {
+    _navigateToStartView(context);
     return const SizedBox.shrink();
   }
 
-  void _navigateToStartView() {
+  void _navigateToStartView(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
+      if (context.mounted) {
         final tabController = DefaultTabController.of(context);
         final settings = context.read<MemoplannerSettingsBloc>().state;
         await Future.delayed(DayCalendarTab.transitionDuration);

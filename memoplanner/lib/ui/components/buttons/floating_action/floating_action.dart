@@ -4,16 +4,18 @@ import 'package:memoplanner/utils/all.dart';
 
 class FloatingActions extends StatelessWidget {
   final bool useBottomPadding;
+  final bool displayAboutButton;
+  final bool displayEyeButton;
 
   const FloatingActions({
     this.useBottomPadding = false,
+    this.displayAboutButton = false,
+    this.displayEyeButton = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final tabController = DefaultTabController.maybeOf(context);
-    final settings = context.watch<MemoplannerSettingsBloc>().state;
     return BlocBuilder<PermissionCubit, PermissionState>(
       buildWhen: (old, fresh) =>
           old.notificationDenied != fresh.notificationDenied,
@@ -21,11 +23,10 @@ class FloatingActions extends StatelessWidget {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            if (tabController != null)
-              _ToggleAlarmAndEyeButtons(
-                tabController: tabController,
-                useBottomPadding: useBottomPadding,
-              ),
+            _ToggleAlarmAndEyeButtons(
+              useBottomPadding: useBottomPadding,
+              displayEyeButton: displayEyeButton,
+            ),
             if (permission.notificationDenied)
               Expanded(
                 child: Padding(
@@ -42,9 +43,7 @@ class FloatingActions extends StatelessWidget {
               )
             else
               const Spacer(),
-            if (tabController != null &&
-                tabController.index == settings.functions.display.menuTabIndex)
-              const AboutButton(),
+            if (displayAboutButton) const AboutButton(),
           ],
         );
       },
@@ -53,19 +52,17 @@ class FloatingActions extends StatelessWidget {
 }
 
 class _ToggleAlarmAndEyeButtons extends StatelessWidget {
-  final TabController tabController;
   final bool useBottomPadding;
+  final bool displayEyeButton;
 
   const _ToggleAlarmAndEyeButtons({
-    required this.tabController,
     required this.useBottomPadding,
+    required this.displayEyeButton,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final displayEyeButton = context
-        .select((DayCalendarViewCubit bloc) => bloc.state.displayEyeButton);
     final showAlarmOnOffSwitch = context.select(
         (MemoplannerSettingsBloc bloc) =>
             bloc.state.alarm.showAlarmOnOffSwitch);
@@ -73,16 +70,21 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         if (showAlarmOnOffSwitch) const ToggleAlarmButton(),
-        if (displayEyeButton)
-          if (tabController.index == 0)
-            Padding(
-              padding: EdgeInsets.only(
-                top: layout.formPadding.verticalItemDistance,
-              ),
-              child: const EyeButtonDay(),
-            ),
-        if (useBottomPadding)
-          const IconActionButtonLight(child: SizedBox.shrink()),
+        AnimatedSize(
+          duration: 250.milliseconds(),
+          child: displayEyeButton || useBottomPadding
+              ? Padding(
+                  padding: EdgeInsets.only(
+                    top: layout.formPadding.verticalItemDistance,
+                  ),
+                  child: displayEyeButton
+                      ? const EyeButtonDay()
+                      : const IconActionButtonLight(
+                          child: SizedBox.shrink(),
+                        ),
+                )
+              : const SizedBox.shrink(),
+        ),
       ],
     );
   }
