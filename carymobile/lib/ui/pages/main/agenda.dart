@@ -23,10 +23,7 @@ class Agenda extends StatelessWidget {
           flex: show ? 1 : 0,
           child: Column(
             children: [
-              AgendaHeader(
-                show: show,
-                onTap: onTap,
-              ),
+              AgendaHeader(show: show, onTap: onTap),
               if (show) const AgendaContent(),
             ],
           ),
@@ -58,7 +55,7 @@ class AgendaList extends StatelessWidget {
   Widget build(BuildContext context) {
     final agendaCubit = context.watch<AgendaCubit>();
     return switch (agendaCubit.state) {
-      AgendaLoading() => const CircularProgressIndicator(),
+      AgendaLoading() => const Center(child: CircularProgressIndicator()),
       AgendaLoaded(occasions: final occasions) => Builder(
           builder: (context) {
             final dayActivities = occasions.values.flattened.toList();

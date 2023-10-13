@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:abilia_sync/abilia_sync.dart';
 import 'package:auth/auth.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/cubit/agenda_cubit.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
 import 'package:carymessenger/ui/abilia_icons.dart';
+import 'package:carymessenger/ui/themes/cary_theme.dart';
 import 'package:carymessenger/ui/themes/colors.dart';
 import 'package:carymessenger/ui/themes/theme.dart';
 import 'package:carymessenger/ui/widgets/abilia_image.dart';
@@ -47,7 +49,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  bool show = true;
+  bool expanded = true;
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +60,10 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const ClockAndDate(),
+            ClockAndDate(expanded: expanded),
             Agenda(
-              show: show,
-              onTap: (s) => setState(() => show = s),
+              show: expanded,
+              onTap: (s) => setState(() => expanded = s),
             ),
           ],
         ),

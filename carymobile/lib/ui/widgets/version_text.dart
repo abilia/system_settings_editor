@@ -15,7 +15,7 @@ class VersionText extends StatelessWidget {
         ),
         child: Text(
           versionText(GetIt.I<PackageInfo>()),
-          style: headlineMedium,
+          style: titleMedium,
         ),
       );
 

@@ -33,7 +33,7 @@ class AlarmPage extends StatelessWidget {
                     height: 296,
                     child: AbiliaImage(activityDay.image),
                   ),
-                if (title.isNotEmpty) Text(title, style: titleLarge,),
+                if (title.isNotEmpty) Text(title, style: headlineLarge),
                 if (description.isNotEmpty)
                   Text(
                     description,

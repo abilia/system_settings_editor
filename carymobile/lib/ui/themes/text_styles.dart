@@ -7,19 +7,18 @@ const titleLarge = TextStyle(
   fontWeight: FontWeight.w400,
 );
 
+const titleMedium = TextStyle(
+  color: Colors.black,
+  fontSize: 40,
+  fontFamily: 'Roboto',
+  fontWeight: FontWeight.w400,
+);
+
 const headLineLarge = TextStyle(
   color: Color(0xFF191919),
   fontSize: 32,
   fontFamily: 'Roboto',
   fontWeight: FontWeight.w400,
-);
-
-const headlineMedium = TextStyle(
-  color: Colors.black,
-  fontSize: 40,
-  fontFamily: 'Roboto',
-  fontWeight: FontWeight.w400,
-  height: 0,
 );
 
 const headlineSmall = TextStyle(
@@ -29,6 +28,13 @@ const headlineSmall = TextStyle(
   fontWeight: FontWeight.w500,
   leadingDistribution: TextLeadingDistribution.even,
   height: 32 / 24,
+);
+
+const headlineLarge = TextStyle(
+color: Colors.black,
+fontSize: 56,
+fontFamily: 'Roboto',
+fontWeight: FontWeight.w400,
 );
 
 const bodyMedium = TextStyle(
