@@ -56,9 +56,8 @@ class AgendaList extends StatelessWidget {
     final agendaCubit = context.watch<AgendaCubit>();
     return switch (agendaCubit.state) {
       AgendaLoading() => const Center(child: CircularProgressIndicator()),
-      AgendaLoaded(occasions: final occasions) => Builder(
+      AgendaLoaded(activities: final dayActivities) => Builder(
           builder: (context) {
-            final dayActivities = occasions.values.flattened.toList();
             return ListView.separated(
               padding: const EdgeInsets.all(8),
               itemCount: dayActivities.length,

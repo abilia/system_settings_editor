@@ -7,12 +7,15 @@ class AgendaTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final occasion = context.select(
+      (ClockCubit clock) => activity.toOccasion(clock.state).occasion,
+    );
     return InkWell(
       onLongPress: () => context.read<AlarmCubit>().fakeAlarm(activity),
       child: Container(
         constraints: const BoxConstraints(minHeight: 96),
         decoration: ShapeDecoration(
-          color: Colors.white,
+          color: occasion.isPast ? abiliaWhite.withOpacity(.6) : abiliaWhite,
           shape: RoundedRectangleBorder(
             side: const BorderSide(width: 1, color: abiliaBrown20),
             borderRadius: BorderRadius.circular(16),
@@ -29,12 +32,20 @@ class AgendaTile extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 8),
                       child: SizedBox(
                         width: 80,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: AbiliaImage(
-                            activity.image,
-                            size: ImageSize.thumb,
-                          ),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Opacity(
+                                opacity: occasion.isPast ? .6 : 1,
+                                child: AbiliaImage(
+                                  activity.image,
+                                  size: ImageSize.thumb,
+                                ),
+                              ),
+                            ),
+                            if (occasion.isPast) const CrossOver(),
+                          ],
                         ),
                       ),
                     ),
@@ -50,7 +61,11 @@ class AgendaTile extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           activity.title,
-                          style: headLineLarge,
+                          style: headLineLarge.copyWith(
+                            decoration: occasion.isPast
+                                ? TextDecoration.lineThrough
+                                : null,
+                          ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),

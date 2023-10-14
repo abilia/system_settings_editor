@@ -53,7 +53,7 @@ void main() {
         ),
       );
     },
-    expect: () => [AgendaLoaded(occasions: const {}, day: initialDay)],
+    expect: () => [AgendaLoaded(activities: const [], day: initialDay)],
   );
 
   blocTest(
@@ -83,8 +83,8 @@ void main() {
       ).called(1);
     },
     expect: () => [
-      AgendaLoaded(occasions: const {}, day: initialDay),
-      AgendaLoaded(occasions: const {}, day: initialDay.nextDay()),
+      AgendaLoaded(activities: const [], day: initialDay),
+      AgendaLoaded(activities: const [], day: initialDay.nextDay()),
     ],
   );
 
@@ -146,13 +146,13 @@ void main() {
       );
     },
     expect: () => [
-      AgendaLoaded(occasions: const {}, day: initialDay),
+      AgendaLoaded(activities: const [], day: initialDay),
       AgendaLoaded(
-        occasions: {
-          Occasion.past: [pastActivityOccasion],
-          Occasion.current: [nowActivityOccasion],
-          Occasion.future: [futureActivityOccasion],
-        },
+        activities: [
+          pastActivityOccasion,
+          nowActivityOccasion,
+          futureActivityOccasion,
+        ],
         day: initialDay,
       )
     ],
