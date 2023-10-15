@@ -65,8 +65,6 @@ const MaterialColor abiliaGreen = MaterialColor(
   },
 );
 
-
-
 const MaterialColor abiliaBrown = MaterialColor(
   _abiliaBrownPrimaryValue,
   <int, Color>{

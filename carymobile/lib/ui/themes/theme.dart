@@ -25,16 +25,13 @@ final caryLightTheme = ThemeData.from(
   iconTheme: const IconThemeData(size: 32),
 );
 
-
 ThemeData collapsed(ThemeData data) {
   return data.copyWith(
-        textTheme: data.textTheme.copyWith(
-            titleLarge: titleLarge,
-            titleMedium: titleMedium,
-
-        ),
-    extensions: [CaryTheme.collapsed]
-  );
+      textTheme: data.textTheme.copyWith(
+        titleLarge: titleLarge,
+        titleMedium: titleMedium,
+      ),
+      extensions: [CaryTheme.collapsed]);
 }
 
 const borderRadius = BorderRadius.all(Radius.circular(16));

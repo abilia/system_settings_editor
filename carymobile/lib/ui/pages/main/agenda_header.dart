@@ -1,10 +1,10 @@
 part of 'main_page.dart';
 
 class AgendaHeader extends StatelessWidget {
-  final bool show;
+  final bool expanded;
   final void Function(bool) onTap;
 
-  const AgendaHeader({required this.onTap, required this.show, super.key});
+  const AgendaHeader({required this.onTap, required this.expanded, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class AgendaHeader extends StatelessWidget {
           const Text('Today', style: actionButtonTextStyle),
           ShowHideToggle(
             onTap: onTap,
-            show: show,
+            show: expanded,
           ),
         ],
       ),

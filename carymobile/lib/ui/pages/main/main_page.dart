@@ -23,12 +23,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:seagull_clock/seagull_clock.dart';
 import 'package:utils/date_time_extensions.dart';
 
 part 'agenda.dart';
 
 part 'agenda_header.dart';
+
+part 'agenda_list.dart';
 
 part 'agenda_tile.dart';
 
@@ -62,7 +65,7 @@ class _MainPageState extends State<MainPage> {
           children: [
             ClockAndDate(expanded: expanded),
             Agenda(
-              show: expanded,
+              expanded: expanded,
               onTap: (s) => setState(() => expanded = s),
             ),
           ],

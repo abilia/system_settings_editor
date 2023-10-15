@@ -3,10 +3,10 @@ part of 'main_page.dart';
 class Agenda extends StatelessWidget {
   static const animationDuration = Duration(milliseconds: 500);
   final void Function(bool) onTap;
-  final bool show;
+  final bool expanded;
 
   const Agenda({
-    required this.show,
+    required this.expanded,
     required this.onTap,
     super.key,
   });
@@ -20,11 +20,11 @@ class Agenda extends StatelessWidget {
           activityRepository: context.read<ActivityRepository>(),
         ),
         child: Expanded(
-          flex: show ? 1 : 0,
+          flex: expanded ? 1 : 0,
           child: Column(
             children: [
-              AgendaHeader(show: show, onTap: onTap),
-              if (show) const AgendaContent(),
+              AgendaHeader(expanded: expanded, onTap: onTap),
+              if (expanded) const AgendaContent(),
             ],
           ),
         ),
@@ -41,33 +41,14 @@ class AgendaContent extends StatelessWidget {
         color: abiliaBrown0,
         child: RefreshIndicator(
           onRefresh: () async => context.read<SyncBloc>().add(const SyncAll()),
-          child: const AgendaList(),
+          child: switch (context.watch<AgendaCubit>().state) {
+            AgendaLoading() => const Center(child: CircularProgressIndicator()),
+            AgendaLoaded(activities: final dayActivities) => AgendaList(
+                dayActivities: dayActivities,
+              ),
+          },
         ),
       ),
     );
-  }
-}
-
-class AgendaList extends StatelessWidget {
-  const AgendaList({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final agendaCubit = context.watch<AgendaCubit>();
-    return switch (agendaCubit.state) {
-      AgendaLoading() => const Center(child: CircularProgressIndicator()),
-      AgendaLoaded(activities: final dayActivities) => Builder(
-          builder: (context) {
-            return ListView.separated(
-              padding: const EdgeInsets.all(8),
-              itemCount: dayActivities.length,
-              itemBuilder: (context, index) => AgendaTile(
-                activity: dayActivities[index],
-              ),
-              separatorBuilder: (context, index) => const SizedBox(height: 8),
-            );
-          },
-        ),
-    };
   }
 }

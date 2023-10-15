@@ -1,6 +1,7 @@
 part of 'main_page.dart';
 
 class AgendaTile extends StatelessWidget {
+  static const minHeight = 96.0;
   final ActivityDay activity;
 
   const AgendaTile({required this.activity, super.key});
@@ -13,7 +14,7 @@ class AgendaTile extends StatelessWidget {
     return InkWell(
       onLongPress: () => context.read<AlarmCubit>().fakeAlarm(activity),
       child: Container(
-        constraints: const BoxConstraints(minHeight: 96),
+        constraints: const BoxConstraints(minHeight: minHeight),
         decoration: ShapeDecoration(
           color: occasion.isPast ? abiliaWhite.withOpacity(.6) : abiliaWhite,
           shape: RoundedRectangleBorder(

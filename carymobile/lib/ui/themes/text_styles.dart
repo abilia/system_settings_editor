@@ -31,10 +31,10 @@ const headlineSmall = TextStyle(
 );
 
 const headlineLarge = TextStyle(
-color: Colors.black,
-fontSize: 56,
-fontFamily: 'Roboto',
-fontWeight: FontWeight.w400,
+  color: Colors.black,
+  fontSize: 56,
+  fontFamily: 'Roboto',
+  fontWeight: FontWeight.w400,
 );
 
 const bodyMedium = TextStyle(
