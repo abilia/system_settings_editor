@@ -91,28 +91,25 @@ void main() {
   final nowActivity = Activity.createNew(
     startTime: initialTime,
   );
-  final nowActivityOccasion = ActivityOccasion(
+  final nowActivityDay = ActivityDay(
     nowActivity,
     initialDay,
-    Occasion.current,
   );
 
   final pastActivity = Activity.createNew(
     startTime: initialTime.subtract(const Duration(hours: 1)),
   );
-  final pastActivityOccasion = ActivityOccasion(
+  final pastActivityDay = ActivityDay(
     pastActivity,
     initialDay,
-    Occasion.past,
   );
 
   final futureActivity = Activity.createNew(
     startTime: initialTime.add(const Duration(hours: 1)),
   );
-  final futureActivityOccasion = ActivityOccasion(
+  final futureActivityDay = ActivityDay(
     futureActivity,
     initialDay,
-    Occasion.future,
   );
 
   blocTest(
@@ -149,9 +146,9 @@ void main() {
       AgendaLoaded(activities: const [], day: initialDay),
       AgendaLoaded(
         activities: [
-          pastActivityOccasion,
-          nowActivityOccasion,
-          futureActivityOccasion,
+          pastActivityDay,
+          nowActivityDay,
+          futureActivityDay,
         ],
         day: initialDay,
       )
