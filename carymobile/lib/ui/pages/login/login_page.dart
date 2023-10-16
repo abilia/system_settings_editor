@@ -39,57 +39,67 @@ class LoginPage extends StatelessWidget {
         allowExpiredLicense: false,
         product: Product.carybase,
       ),
-      child: Scaffold(
-        body: SafeArea(
-          child: LoginErrorListener(
-            child: BlocSelector<LoginCubit, LoginState, bool>(
-              selector: (state) => state.isFormValid,
-              builder: (context, isFormValid) => Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      top: 24,
-                      left: 16,
-                      right: 16,
-                      bottom: 40,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        LogoWithChangeServer(),
-                        SizedBox(height: 24),
-                        Text(
-                          'Connect to myAbilia',
-                          style: headlineSmall,
-                          textAlign: TextAlign.center,
+      child: BlocSelector<LoginCubit, LoginState, bool>(
+        selector: (state) => state.isFormValid,
+        builder: (context, isFormValid) => SafeArea(
+          child: Stack(
+            children: [
+              Scaffold(
+                body: LoginErrorListener(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => SizedBox(
+                      height: constraints.maxHeight,
+                      child: const SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: 24,
+                            left: 16,
+                            right: 16,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              LogoWithChangeServer(),
+                              SizedBox(height: 24),
+                              Text(
+                                'Connect to myAbilia',
+                                style: headlineSmall,
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Make sure that CARY Base is connected to myAbilia.'
+                                ' Log in here with the same account.',
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 24),
+                              UsernameInputField(),
+                              SizedBox(height: 12),
+                              PasswordInputField(),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Make sure that CARY Base is connected to myAbilia.'
-                          ' Log in here with the same account.',
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 24),
-                        UsernameInputField(),
-                        SizedBox(height: 12),
-                        PasswordInputField(),
-                      ],
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ActionButtonGreen(
-                      onPressed: isFormValid
-                          ? context.read<LoginCubit>().loginButtonPressed
-                          : null,
-                      leading: const Icon(AbiliaIcons.ok),
-                      text: 'Log in',
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ActionButtonGreen(
+                    onPressed: isFormValid
+                        ? context.read<LoginCubit>().loginButtonPressed
+                        : null,
+                    leading: const Icon(AbiliaIcons.ok),
+                    text: 'Log in',
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
