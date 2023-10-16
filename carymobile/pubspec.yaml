@@ -101,4 +101,4 @@ flutter:
 
 flutter_launcher_icons:
   android: "ic_launcher"
-  image_path: "assets/graphics/abilia_big.png"
+  image_path: "assets/graphics/icon.png"
