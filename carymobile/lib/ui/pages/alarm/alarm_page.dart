@@ -1,4 +1,5 @@
 import 'package:carymessenger/bloc/alarm_page_bloc.dart';
+import 'package:carymessenger/l10n/generated/l10n.dart';
 import 'package:carymessenger/ui/abilia_icons.dart';
 import 'package:carymessenger/ui/components/buttons/action.dart';
 import 'package:carymessenger/ui/themes/theme.dart';
@@ -45,7 +46,7 @@ class AlarmPage extends StatelessWidget {
                 ActionButtonGreen(
                   onPressed: Navigator.of(context).maybePop,
                   leading: const Icon(AbiliaIcons.ok),
-                  text: 'Ok',
+                  text: Lt.of(context).ok,
                 ),
               ],
             ),

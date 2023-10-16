@@ -25,7 +25,39 @@ class MessageLookup extends MessageLookupByLibrary {
       _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
+        'about': MessageLookupByLibrary.simpleMessage('About'),
+        'afternoon': MessageLookupByLibrary.simpleMessage('Afternoon'),
+        'app_version': MessageLookupByLibrary.simpleMessage('App version'),
+        'back': MessageLookupByLibrary.simpleMessage('Back'),
+        'check_for_updates':
+            MessageLookupByLibrary.simpleMessage('Check for updates'),
+        'close': MessageLookupByLibrary.simpleMessage('Close'),
+        'connect_to_myabilia':
+            MessageLookupByLibrary.simpleMessage('Connect to myAbilia'),
+        'early_morning': MessageLookupByLibrary.simpleMessage('Early morning'),
+        'evening': MessageLookupByLibrary.simpleMessage('Evening'),
+        'hide': MessageLookupByLibrary.simpleMessage('Hide'),
+        'internet': MessageLookupByLibrary.simpleMessage('Internet'),
+        'last_sync': MessageLookupByLibrary.simpleMessage('Last sync:'),
+        'license_expired': MessageLookupByLibrary.simpleMessage(''),
+        'log_in': MessageLookupByLibrary.simpleMessage('Log in'),
+        'log_out': MessageLookupByLibrary.simpleMessage('Log out'),
+        'login_hint': MessageLookupByLibrary.simpleMessage(
+            'Make sure that CARY Base is connected to myAbilia. Log in here with the same account.'),
+        'mid_morning': MessageLookupByLibrary.simpleMessage('Mid-morning'),
+        'night': MessageLookupByLibrary.simpleMessage('Night'),
+        'no_license': MessageLookupByLibrary.simpleMessage(''),
+        'ok': MessageLookupByLibrary.simpleMessage('Ok'),
+        'password': MessageLookupByLibrary.simpleMessage('Password'),
+        'play': MessageLookupByLibrary.simpleMessage('Play'),
+        'producer': MessageLookupByLibrary.simpleMessage('Producer'),
+        'settings': MessageLookupByLibrary.simpleMessage('Settings'),
+        'show': MessageLookupByLibrary.simpleMessage('Show'),
+        'stop': MessageLookupByLibrary.simpleMessage('Stop'),
+        'today': MessageLookupByLibrary.simpleMessage('Today'),
         'username_email':
-            MessageLookupByLibrary.simpleMessage('Username / Email')
+            MessageLookupByLibrary.simpleMessage('Username / Email'),
+        'wrong_username_or_password':
+            MessageLookupByLibrary.simpleMessage('Wrong username or password')
       };
 }

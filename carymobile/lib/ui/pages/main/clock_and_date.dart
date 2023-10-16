@@ -59,7 +59,7 @@ class TimeDateText extends StatelessWidget {
               style: textTheme.titleLarge ?? titleLarge,
             ),
             padding,
-            const AutoSizeText('Time of day'),
+            AutoSizeText(Lt.of(context).mid_morning),
             padding,
             AutoSizeText(DateFormat.EEEE().format(time)),
             padding,

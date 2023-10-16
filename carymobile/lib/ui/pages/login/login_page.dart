@@ -29,6 +29,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translate = Lt.of(context);
     return BlocProvider(
       create: (context) => LoginCubit(
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
@@ -49,9 +50,9 @@ class LoginPage extends StatelessWidget {
                   child: LayoutBuilder(
                     builder: (context, constraints) => SizedBox(
                       height: constraints.maxHeight,
-                      child: const SingleChildScrollView(
+                      child: SingleChildScrollView(
                         child: Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             top: 24,
                             left: 16,
                             right: 16,
@@ -59,23 +60,22 @@ class LoginPage extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              LogoWithChangeServer(),
-                              SizedBox(height: 24),
+                              const LogoWithChangeServer(),
+                              const SizedBox(height: 24),
                               Text(
-                                'Connect to myAbilia',
+                                translate.connect_to_myabilia,
                                 style: headlineSmall,
                                 textAlign: TextAlign.center,
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
-                                'Make sure that CARY Base is connected to myAbilia.'
-                                ' Log in here with the same account.',
+                                translate.login_hint,
                                 textAlign: TextAlign.center,
                               ),
-                              SizedBox(height: 24),
-                              UsernameInputField(),
-                              SizedBox(height: 12),
-                              PasswordInputField(),
+                              const SizedBox(height: 24),
+                              const UsernameInputField(),
+                              const SizedBox(height: 12),
+                              const PasswordInputField(),
                             ],
                           ),
                         ),
@@ -95,7 +95,7 @@ class LoginPage extends StatelessWidget {
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,
                     leading: const Icon(AbiliaIcons.ok),
-                    text: 'Log in',
+                    text: translate.log_in,
                   ),
                 ),
               ),

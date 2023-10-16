@@ -23,7 +23,7 @@ class AgendaHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('Today', style: actionButtonTextStyle),
+          Text(Lt.of(context).today, style: actionButtonTextStyle),
           ShowHideToggle(
             onTap: onTap,
             show: expanded,
@@ -54,8 +54,8 @@ class ShowHideToggle extends StatelessWidget {
           children: [
             AnimatedCrossFade(
               duration: Agenda.animationDuration,
-              firstChild: const Text('Show', style: bodySmall),
-              secondChild: const Text('Hide', style: bodySmall),
+              firstChild: Text(Lt.of(context).show, style: bodySmall),
+              secondChild: Text(Lt.of(context).show, style: bodySmall),
               crossFadeState:
                   show ? CrossFadeState.showFirst : CrossFadeState.showSecond,
             ),

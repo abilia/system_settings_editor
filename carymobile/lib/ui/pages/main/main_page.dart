@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/cubit/agenda_cubit.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
+import 'package:carymessenger/l10n/generated/l10n.dart';
 import 'package:carymessenger/ui/abilia_icons.dart';
 import 'package:carymessenger/ui/themes/cary_theme.dart';
 import 'package:carymessenger/ui/themes/colors.dart';

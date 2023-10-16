@@ -25,7 +25,40 @@ class MessageLookup extends MessageLookupByLibrary {
       _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
+        'about': MessageLookupByLibrary.simpleMessage('Om'),
+        'afternoon': MessageLookupByLibrary.simpleMessage('eftermiddag'),
+        'app_version': MessageLookupByLibrary.simpleMessage('Appversion'),
+        'back': MessageLookupByLibrary.simpleMessage('Tillbaka'),
+        'check_for_updates':
+            MessageLookupByLibrary.simpleMessage('Sök efter uppdateringar'),
+        'close': MessageLookupByLibrary.simpleMessage('Stäng'),
+        'connect_to_myabilia':
+            MessageLookupByLibrary.simpleMessage('Connect to myAbilia'),
+        'early_morning': MessageLookupByLibrary.simpleMessage('morgon'),
+        'evening': MessageLookupByLibrary.simpleMessage('kväll'),
+        'hide': MessageLookupByLibrary.simpleMessage('Dölj'),
+        'internet': MessageLookupByLibrary.simpleMessage('Internet'),
+        'last_sync':
+            MessageLookupByLibrary.simpleMessage('Senaste synkronisering:'),
+        'license_expired': MessageLookupByLibrary.simpleMessage(''),
+        'log_in': MessageLookupByLibrary.simpleMessage('Logga in'),
+        'log_out': MessageLookupByLibrary.simpleMessage('Logga ut'),
+        'login_hint': MessageLookupByLibrary.simpleMessage(
+            'Make sure that CARY Base is connected to myAbilia. Log in here with the same account.'),
+        'mid_morning': MessageLookupByLibrary.simpleMessage('förmiddag'),
+        'night': MessageLookupByLibrary.simpleMessage('natt'),
+        'no_license': MessageLookupByLibrary.simpleMessage(''),
+        'ok': MessageLookupByLibrary.simpleMessage('OK'),
+        'password': MessageLookupByLibrary.simpleMessage('Lösenord'),
+        'play': MessageLookupByLibrary.simpleMessage('Spela'),
+        'producer': MessageLookupByLibrary.simpleMessage('Tillverkare'),
+        'settings': MessageLookupByLibrary.simpleMessage('Inställningar'),
+        'show': MessageLookupByLibrary.simpleMessage('Visa'),
+        'stop': MessageLookupByLibrary.simpleMessage('Stopp'),
+        'today': MessageLookupByLibrary.simpleMessage('Idag'),
         'username_email':
-            MessageLookupByLibrary.simpleMessage('Användarnamn / e-post')
+            MessageLookupByLibrary.simpleMessage('Användarnamn / e-post'),
+        'wrong_username_or_password': MessageLookupByLibrary.simpleMessage(
+            'Felaktigt användarnamn eller lösenord')
       };
 }
