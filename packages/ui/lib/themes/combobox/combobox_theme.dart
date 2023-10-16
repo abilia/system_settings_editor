@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:ui/styles/styles.dart';
+import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/combobox/combobox_themes.dart';
 import 'package:ui/tokens/numericals.dart';
 

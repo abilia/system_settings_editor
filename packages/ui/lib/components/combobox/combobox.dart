@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/collapsable_widget.dart';
-import 'package:ui/styles/styles.dart';
+import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/combobox/combobox_theme.dart';
 import 'package:ui/tokens/colors.dart';
@@ -98,7 +98,7 @@ class _ComboboxState extends State<Combobox> {
   @override
   Widget build(BuildContext context) {
     final abiliaTheme = AbiliaTheme.of(context);
-    final comboBoxTheme = widget.themeBuilder(abiliaTheme.comboboxTheme);
+    final comboBoxTheme = widget.themeBuilder(abiliaTheme.combobox);
     widget.focusNode.addListener(
       () => setState(
         () => selected = widget.focusNode.hasFocus,

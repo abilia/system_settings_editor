@@ -36,7 +36,7 @@ sealed class ActionButton extends StatelessWidget {
     final leadingIcon = this.leadingIcon;
     final trailingIcon = this.trailingIcon;
     final abiliaTheme = AbiliaTheme.of(context);
-    final actionButtonTheme = themeBuilder(abiliaTheme.actionButtonsTheme);
+    final actionButtonTheme = themeBuilder(abiliaTheme.actionButtons);
     return TextButton(
       style: actionButtonTheme.buttonStyle,
       onPressed: onPressed,

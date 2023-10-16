@@ -6,12 +6,12 @@ import 'package:ui/themes/combobox/combobox_theme.dart';
 const int _breakpointMobile = 360;
 
 class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
-  final ActionButtonsTheme actionButtonsTheme;
-  final ComboboxTheme comboboxTheme;
+  final ActionButtonsTheme actionButtons;
+  final ComboboxTheme combobox;
 
   const AbiliaTheme({
-    required this.actionButtonsTheme,
-    required this.comboboxTheme,
+    required this.actionButtons,
+    required this.combobox,
   });
 
   factory AbiliaTheme.of(BuildContext context) =>
@@ -31,23 +31,23 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   }
 
   static final AbiliaTheme mobile = AbiliaTheme(
-    actionButtonsTheme: ActionButtonsTheme.mobile,
-    comboboxTheme: ComboboxTheme.medium(),
+    actionButtons: ActionButtonsTheme.mobile,
+    combobox: ComboboxTheme.medium(),
   );
 
   static final AbiliaTheme tablet = AbiliaTheme(
-    actionButtonsTheme: ActionButtonsTheme.tablet,
-    comboboxTheme: ComboboxTheme.medium(),
+    actionButtons: ActionButtonsTheme.tablet,
+    combobox: ComboboxTheme.medium(),
   );
 
   @override
   AbiliaTheme copyWith({
-    ActionButtonsTheme? actionButtonsTheme,
-    ComboboxTheme? comboboxTheme,
+    ActionButtonsTheme? actionButtons,
+    ComboboxTheme? combobox,
   }) {
     return AbiliaTheme(
-      actionButtonsTheme: actionButtonsTheme ?? this.actionButtonsTheme,
-      comboboxTheme: comboboxTheme ?? this.comboboxTheme,
+      actionButtons: actionButtons ?? this.actionButtons,
+      combobox: combobox ?? this.combobox,
     );
   }
 
@@ -55,8 +55,8 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   AbiliaTheme lerp(AbiliaTheme? other, double t) {
     if (other is! AbiliaTheme) return this;
     return AbiliaTheme(
-      actionButtonsTheme: actionButtonsTheme.lerp(other.actionButtonsTheme, t),
-      comboboxTheme: other.comboboxTheme,
+      actionButtons: actionButtons.lerp(other.actionButtons, t),
+      combobox: other.combobox,
     );
   }
 }
