@@ -10,6 +10,7 @@ class ClockAndDate extends StatelessWidget {
         data: DateFormat.yMMMMd().add_EEEE().add_Hm().format(time),
         child: Column(
           children: [
+            SizedBox.square(dimension: 288, child: AnalogClock(time)),
             Text(DateFormat.Hm().format(time)),
             Text(DateFormat.EEEE().format(time)),
             Text(DateFormat.yMMMMd().format(time)),
