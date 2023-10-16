@@ -77,7 +77,7 @@ final actionButtonTertiaryMedium = actionButtonPrimaryMedium.copyWith(
         return _baseBorder.copyWith(side: _borderSidePeach400);
       }
       if (states.contains(MaterialState.hovered)) {
-        return _baseBorder.copyWith(side: _borderSideGrey300);
+        return _baseBorder.copyWith(side: borderSideGrey300);
       }
       return _baseBorder;
     },
@@ -97,7 +97,7 @@ final actionButtonPrimarySmall = actionButtonPrimaryMedium.copyWith(
         return _roundBorder.copyWith(side: _borderSidePeach400);
       }
       if (states.contains(MaterialState.hovered)) {
-        return _roundBorder.copyWith(side: _borderSideGrey300);
+        return _roundBorder.copyWith(side: borderSideGrey300);
       }
       return _roundBorder;
     },
@@ -117,7 +117,7 @@ final actionButtonSecondarySmall = actionButtonSecondaryMedium.copyWith(
         return _roundBorder.copyWith(side: _borderSidePeach400);
       }
       if (states.contains(MaterialState.hovered)) {
-        return _roundBorder.copyWith(side: _borderSideGrey300);
+        return _roundBorder.copyWith(side: borderSideGrey300);
       }
       return _roundBorder;
     },
@@ -137,7 +137,7 @@ final actionButtonTertiarySmall = actionButtonTertiaryMedium.copyWith(
         return _roundBorder.copyWith(side: _borderSidePeach400);
       }
       if (states.contains(MaterialState.hovered)) {
-        return _roundBorder.copyWith(side: _borderSideGrey300);
+        return _roundBorder.copyWith(side: borderSideGrey300);
       }
       return _roundBorder;
     },

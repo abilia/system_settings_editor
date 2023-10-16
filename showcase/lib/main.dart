@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:showcase/addons/breakpoint_addon.dart';
 import 'package:showcase/use_cases/action_button_use_case.dart';
 import 'package:showcase/use_cases/combobox_use_case.dart';
-import 'package:ui/themes/abilia_theme.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 void main() {

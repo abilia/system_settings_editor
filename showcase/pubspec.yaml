@@ -10,10 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  material_symbols_icons: ^4.2671.0
   ui:
     path: ../packages/ui
   widgetbook: ^3.3.0
-  material_symbols_icons: ^4.2671.0
 
 dev_dependencies:
   flutter_test:

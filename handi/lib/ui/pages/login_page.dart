@@ -12,10 +12,14 @@ import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ui/components/action_button/action_button.dart';
 import 'package:ui/components/combobox/combobox.dart';
+import 'package:ui/themes/combobox/combobox_theme.dart';
 import 'package:ui/tokens/numericals.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({required this.unauthenticatedState, super.key});
+  const LoginPage({
+    required this.unauthenticatedState,
+    super.key,
+  });
 
   final Unauthenticated unauthenticatedState;
 
@@ -82,14 +86,15 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Tooltip(
                       message: 'Username',
-                      child: Combobox(
+                      child: Combobox.large(
                         label: 'Username',
                         onChanged: context.read<LoginCubit>().usernameChanged,
                       ),
                     ),
                     Tooltip(
                       message: 'Password',
-                      child: Combobox(
+                      child: Combobox.large(
+                        subTheme: ComboboxSubTheme.password(),
                         label: 'Password',
                         onChanged: context.read<LoginCubit>().passwordChanged,
                       ),

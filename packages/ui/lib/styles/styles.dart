@@ -19,7 +19,7 @@ const _borderSidePeach400 = BorderSide(
   color: AbiliaColors.peach400,
   width: numerical2px,
 );
-const _borderSideGrey300 = BorderSide(
+const borderSideGrey300 = BorderSide(
   color: AbiliaColors.greyscale300,
   width: numerical2px,
 );
@@ -46,44 +46,24 @@ final inputBorder = OutlineInputBorder(
     borderRadius: const BorderRadius.all(
       Radius.circular(numerical200),
     ),
-    borderSide: _borderSideGrey300.copyWith(width: numerical1px));
+    borderSide: borderSideGrey300.copyWith(width: numerical1px));
 
 final activeBorder = OutlineInputBorder(
     borderRadius: const BorderRadius.all(
       Radius.circular(numerical200),
     ),
-    borderSide: _borderSideGrey300.copyWith(
+    borderSide: borderSideGrey300.copyWith(
         width: numerical1px, color: BorderColors.active));
 
 final errorBorder = OutlineInputBorder(
   borderRadius: const BorderRadius.all(
     Radius.circular(numerical200),
   ),
-  borderSide: _borderSideGrey300.copyWith(
+  borderSide: borderSideGrey300.copyWith(
       width: numerical1px, color: BorderColors.focus),
 );
 
-final textFieldInputTheme900 = InputDecorationTheme(
-  fillColor: MaterialStateColor.resolveWith((states) {
-    if (states.contains(MaterialState.disabled)) {
-      return AbiliaColors.peach300;
-    }
-    return AbiliaColors.greyscale000;
-  }),
-  filled: true,
-  border: inputBorder,
-  errorBorder: errorBorder,
-  focusedBorder: OutlineInputBorder(
-    borderRadius: const BorderRadius.all(
-      Radius.circular(numerical200),
-    ),
-    borderSide: _borderSideGrey300.copyWith(width: numerical1px),
-  ),
-  contentPadding: const EdgeInsets.symmetric(
-      horizontal: numerical200, vertical: numerical10px),
-);
-
-final textFieldTextStyle900 =
+final textFieldTextStyleMedium =
     MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
   if (states.contains(MaterialState.error)) {
     return AbiliaFonts.primary425;
@@ -92,4 +72,15 @@ final textFieldTextStyle900 =
     return AbiliaFonts.primary425;
   }
   return AbiliaFonts.primary425.copyWith(color: FontColors.secondary);
+});
+
+final textFieldTextStyleLarge =
+    MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
+  if (states.contains(MaterialState.error)) {
+    return AbiliaFonts.primary525;
+  }
+  if (states.contains(MaterialState.focused)) {
+    return AbiliaFonts.primary525;
+  }
+  return AbiliaFonts.primary525.copyWith(color: FontColors.secondary);
 });
