@@ -61,6 +61,7 @@ Future<void> initGetItWith({
   Delays? delays,
   SeagullLogger? seagullLogger,
   TtsHandler? ttsHandler,
+  VoiceDb? voiceDb,
 }) async {
   GetIt.I
     ..registerSingleton(directories)
@@ -72,7 +73,9 @@ Future<void> initGetItWith({
     ..registerSingleton(DeviceDb(sharedPreferences))
     ..registerSingleton(LicenseDb(sharedPreferences))
     ..registerSingleton(UserDb(sharedPreferences))
-    ..registerSingleton(VoiceDb(sharedPreferences, ttsDefault: false))
+    ..registerSingleton(
+      voiceDb ?? VoiceDb(sharedPreferences, ttsDefault: false),
+    )
     ..registerSingleton(Ticker(initialTime: DateTime.now()))
     ..registerSingleton(MultipartRequestBuilder())
     ..registerSingleton(packageInfo ?? await PackageInfo.fromPlatform())
