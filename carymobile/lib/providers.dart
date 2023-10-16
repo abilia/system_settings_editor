@@ -10,7 +10,6 @@ import 'package:carymessenger/background/notification.dart';
 import 'package:carymessenger/bloc/next_alarm_scheduler_bloc.dart';
 import 'package:carymessenger/cubit/alarm_cubit.dart';
 import 'package:carymessenger/cubit/production_guide_cubit.dart';
-import 'package:carymessenger/db/settings_db.dart';
 import 'package:carymessenger/main.dart';
 import 'package:carymessenger/models/delays.dart';
 import 'package:connectivity/connectivity_cubit.dart';
@@ -99,11 +98,6 @@ class TopLevelProviders extends StatelessWidget {
             )..checkConnectivity(),
             lazy: false,
           ),
-          BlocProvider<ProductionGuideCubit>(
-            create: (context) => ProductionGuideCubit(
-              settingsDb: GetIt.I<SettingsDb>(),
-            ),
-          ),
           BlocProvider<SpeechSettingsCubit>(
             create: (context) => SpeechSettingsCubit(
               voiceDb: GetIt.I<VoiceDb>(),
@@ -117,6 +111,12 @@ class TopLevelProviders extends StatelessWidget {
               languageCode: 'sv',
               localeChangeStream: const Stream.empty(),
             )..initialize(),
+          ),
+          BlocProvider<ProductionGuideCubit>(
+            create: (context) => ProductionGuideCubit(
+              speechSettingsCubit: context.read<SpeechSettingsCubit>(),
+              permissionCubit: context.read<PermissionCubit>(),
+            ),
           ),
         ],
         child: child,

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:carymessenger/db/settings_db.dart';
 import 'package:carymessenger/getit_initializer.dart';
 import 'package:carymessenger/models/delays.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -13,10 +12,10 @@ import 'flutter_local_notifications_plugin.dart';
 
 Future<void> initGetItFakes() async => initGetItWith(
       listenableClient: fakeClient,
-      sharedPreferences:
-          await FakeSharedPreferences.getInstance(loggedIn: false, extras: {
-        SettingsDb.productionGuideDoneRecord: true,
-      }),
+      sharedPreferences: await FakeSharedPreferences.getInstance(
+        loggedIn: false,
+        extras: {},
+      ),
       database: FakeDatabase(),
       directories: Directories(
         applicationSupport: Directory.systemTemp,

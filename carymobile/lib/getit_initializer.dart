@@ -4,7 +4,6 @@ import 'package:auth/auth.dart';
 import 'package:calendar/all.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/background/notification.dart';
-import 'package:carymessenger/db/settings_db.dart';
 import 'package:carymessenger/main.dart';
 import 'package:carymessenger/models/delays.dart';
 import 'package:connectivity/connectivity_cubit.dart';
@@ -85,7 +84,6 @@ Future<void> initGetItWith({
     ..registerSingleton(LastSyncDb(sharedPreferences))
     ..registerSingleton(delays ?? const Delays())
     ..registerSingleton(seagullLogger ?? SeagullLogger.empty())
-    ..registerSingleton<SettingsDb>(SettingsDb(sharedPreferences))
     ..registerSingleton(
       listenableClient ??
           ClientWithDefaultHeaders(
