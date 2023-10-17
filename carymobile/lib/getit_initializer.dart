@@ -4,7 +4,6 @@ import 'package:auth/auth.dart';
 import 'package:calendar/all.dart';
 import 'package:calendar_events/calendar_events.dart';
 import 'package:carymessenger/background/notification.dart';
-import 'package:carymessenger/db/settings_db.dart';
 import 'package:carymessenger/main.dart';
 import 'package:carymessenger/models/delays.dart';
 import 'package:connectivity/connectivity_cubit.dart';
@@ -62,6 +61,7 @@ Future<void> initGetItWith({
   Delays? delays,
   SeagullLogger? seagullLogger,
   TtsHandler? ttsHandler,
+  VoiceDb? voiceDb,
 }) async {
   GetIt.I
     ..registerSingleton(directories)
@@ -73,7 +73,9 @@ Future<void> initGetItWith({
     ..registerSingleton(DeviceDb(sharedPreferences))
     ..registerSingleton(LicenseDb(sharedPreferences))
     ..registerSingleton(UserDb(sharedPreferences))
-    ..registerSingleton(VoiceDb(sharedPreferences, ttsDefault: false))
+    ..registerSingleton(
+      voiceDb ?? VoiceDb(sharedPreferences, ttsDefault: false),
+    )
     ..registerSingleton(Ticker(initialTime: DateTime.now()))
     ..registerSingleton(MultipartRequestBuilder())
     ..registerSingleton(packageInfo ?? await PackageInfo.fromPlatform())
@@ -85,7 +87,6 @@ Future<void> initGetItWith({
     ..registerSingleton(LastSyncDb(sharedPreferences))
     ..registerSingleton(delays ?? const Delays())
     ..registerSingleton(seagullLogger ?? SeagullLogger.empty())
-    ..registerSingleton<SettingsDb>(SettingsDb(sharedPreferences))
     ..registerSingleton(
       listenableClient ??
           ClientWithDefaultHeaders(
