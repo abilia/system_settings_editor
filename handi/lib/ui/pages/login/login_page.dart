@@ -12,6 +12,8 @@ import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ui/components/action_button/action_button.dart';
 
+part 'logo_with_change_server.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({required this.unauthenticatedState, super.key});
 
@@ -78,6 +80,8 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    const LogoWithChangeServer(),
+                    const SizedBox(height: 24),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -101,24 +105,6 @@ class LoginPage extends StatelessWidget {
                           child: TextField(
                             onChanged:
                                 context.read<LoginCubit>().passwordChanged,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ...backendEnvironments.entries.map(
-                          (kvp) => Builder(
-                            builder: (context) => RadioMenuButton(
-                              value: kvp.key,
-                              onChanged: (s) async => context
-                                  .read<BaseUrlCubit>()
-                                  .updateBaseUrl(kvp.key),
-                              groupValue: context.watch<BaseUrlCubit>().state,
-                              child: Text(kvp.value),
-                            ),
                           ),
                         ),
                       ],

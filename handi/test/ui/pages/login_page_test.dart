@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/all.dart';
 import 'package:handi/main.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
-import 'package:handi/ui/pages/login_page.dart';
+import 'package:handi/ui/pages/login/login_page.dart';
 import 'package:seagull_fakes/all.dart';
 import 'package:ui/components/action_button/action_button.dart';
 
