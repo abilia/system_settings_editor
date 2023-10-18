@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/collapsable_widget.dart';
-import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/numericals.dart';
 
-class SeagullComoBox extends StatefulWidget {
+class SeagullComboBox extends StatefulWidget {
   final String? hintText;
   final String? label;
   final String? message;
@@ -17,7 +16,7 @@ class SeagullComoBox extends StatefulWidget {
   final Function(String)? onChanged;
   final TextEditingController? controller;
 
-  const SeagullComoBox({
+  const SeagullComboBox({
     this.hintText,
     this.controller,
     this.onChanged,
@@ -32,11 +31,11 @@ class SeagullComoBox extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _SeagullComoBoxState();
+    return _SeagullComboBoxState();
   }
 }
 
-class _SeagullComoBoxState extends State<SeagullComoBox> {
+class _SeagullComboBoxState extends State<SeagullComboBox> {
   final FocusNode focusNode = FocusNode();
   bool selected = false;
 
@@ -64,7 +63,7 @@ class _SeagullComoBoxState extends State<SeagullComoBox> {
             padding: const EdgeInsets.symmetric(vertical: numerical200),
             child: Text(
               label,
-              style: textFieldTextStyleMedium.copyWith(
+              style: theme.textStyle.copyWith(
                 color: AbiliaColors.greyscale700,
               ),
             ),
@@ -102,14 +101,15 @@ class _SeagullComoBoxState extends State<SeagullComoBox> {
             obscureText: widget.obscureText,
           ),
         ),
-        CollapsableWidget(
-          collapsed: widget.message == null,
-          child: SizedBox(
-            height: numerical300,
-            child: Padding(
-              padding: theme.messagePadding,
-              child: Container(
-                color: AbiliaColors.peach100,
+        Padding(
+          padding: const EdgeInsets.only(top: numerical300),
+          child: CollapsableWidget(
+            collapsed: widget.message == null,
+            child: Container(
+              color: AbiliaColors.peach100,
+              height: numerical900,
+              child: Padding(
+                padding: theme.messagePadding,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -117,6 +117,7 @@ class _SeagullComoBoxState extends State<SeagullComoBox> {
                       Symbols.error,
                       size: theme.iconSize,
                     ),
+                    SizedBox(width: theme.iconGap),
                     Text(
                       widget.message ?? '',
                       style: theme.textStyle.copyWith(
@@ -128,7 +129,7 @@ class _SeagullComoBoxState extends State<SeagullComoBox> {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }

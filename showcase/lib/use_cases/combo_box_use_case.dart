@@ -17,7 +17,7 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                   )
                       ? null
                       : 300,
-                  child: SeagullComoBox(
+                  child: SeagullComboBox(
                     controller: TextEditingController(),
                     message: context.knobs.stringOrNull(
                       label: 'Error message',

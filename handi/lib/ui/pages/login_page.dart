@@ -66,72 +66,62 @@ class LoginPage extends StatelessWidget {
         product: Product.handicalendar,
       ),
       child: Scaffold(
-        body: BlocListener<LoginCubit, LoginState>(
-          listener: (context, state) {
-            if (state is LoginFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.cause.name),
-                ),
-              );
-            }
-          },
-          child: BlocBuilder<LoginCubit, LoginState>(
-            builder: (context, state) => SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(numerical600),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Tooltip(
-                      message: 'Username',
-                      child: SeagullComoBox(
-                        label: 'Username',
-                        leadingIcon: Symbols.account_circle,
-                        textInputAction: TextInputAction.next,
-                        onChanged: context.read<LoginCubit>().usernameChanged,
-                      ),
+        body: BlocBuilder<LoginCubit, LoginState>(
+          builder: (context, state) => SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(numerical600),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Tooltip(
+                    message: 'Username',
+                    child: SeagullComboBox(
+                      label: 'Username',
+                      leadingIcon: Symbols.account_circle,
+                      textInputAction: TextInputAction.next,
+                      onChanged: context.read<LoginCubit>().usernameChanged,
                     ),
-                    Tooltip(
-                      message: 'Password',
-                      child: SeagullComoBox(
-                        label: 'Password',
-                        leadingIcon: Symbols.key,
-                        trailingIcon: Symbols.visibility,
-                        obscureText: true,
-                        onChanged: context.read<LoginCubit>().passwordChanged,
-                      ),
+                  ),
+                  Tooltip(
+                    message: 'Password',
+                    child: SeagullComboBox(
+                      label: 'Password',
+                      leadingIcon: Symbols.key,
+                      trailingIcon: Symbols.visibility,
+                      obscureText: true,
+                      onChanged: context.read<LoginCubit>().passwordChanged,
+                      message: state is LoginFailure ? state.cause.name : null,
                     ),
-                    const SizedBox(height: numerical600),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ...backendEnvironments.entries.map(
-                          (kvp) => Builder(
-                            builder: (context) => RadioMenuButton(
-                              value: kvp.key,
-                              onChanged: (s) async => context
-                                  .read<BaseUrlCubit>()
-                                  .updateBaseUrl(kvp.key),
-                              groupValue: context.watch<BaseUrlCubit>().state,
-                              child: Text(kvp.value),
-                            ),
+                  ),
+                  const SizedBox(height: numerical600),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ...backendEnvironments.entries.map(
+                        (kvp) => Builder(
+                          builder: (context) => RadioMenuButton(
+                            value: kvp.key,
+                            onChanged: (s) async => context
+                                .read<BaseUrlCubit>()
+                                .updateBaseUrl(kvp.key),
+                            groupValue: context.watch<BaseUrlCubit>().state,
+                            child: Text(kvp.value),
                           ),
                         ),
-                      ],
-                    ),
-                    const Spacer(),
-                    ActionButtonPrimary(
-                      text: translate.signIn,
-                      size: ActionButtonSize.large,
-                      onPressed: state.isFormValid
-                          ? context.read<LoginCubit>().loginButtonPressed
-                          : null,
-                      leadingIcon: MdiIcons.login,
-                    )
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  ActionButtonPrimary(
+                    text: translate.signIn,
+                    size: ActionButtonSize.large,
+                    onPressed: state.isFormValid
+                        ? context.read<LoginCubit>().loginButtonPressed
+                        : null,
+                    leadingIcon: MdiIcons.login,
+                  )
+                ],
               ),
             ),
           ),

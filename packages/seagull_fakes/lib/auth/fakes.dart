@@ -107,6 +107,7 @@ class FakeListenableClient {
   static const String token = 'token',
       name = 'Test case user',
       username = 'username',
+      incorrectPassword = 'wrong wrong wrong',
       type = 'test case';
 
   static ListenableMockClient client({

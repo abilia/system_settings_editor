@@ -8,7 +8,7 @@ import 'package:ui/tokens/numericals.dart';
 class SeagullComoBoxTheme extends ThemeExtension<SeagullComoBoxTheme> {
   final TextStyle textStyle;
   final InputDecorationTheme inputDecorationTheme;
-  final double iconSize;
+  final double iconSize, iconGap;
   final EdgeInsets messagePadding;
 
   const SeagullComoBoxTheme({
@@ -16,6 +16,7 @@ class SeagullComoBoxTheme extends ThemeExtension<SeagullComoBoxTheme> {
     required this.inputDecorationTheme,
     required this.iconSize,
     required this.messagePadding,
+    required this.iconGap,
   });
 
   factory SeagullComoBoxTheme.large() => SeagullComoBoxTheme(
@@ -23,6 +24,7 @@ class SeagullComoBoxTheme extends ThemeExtension<SeagullComoBoxTheme> {
         textStyle: textFieldTextStyleLarge,
         iconSize: numerical800,
         messagePadding: const EdgeInsets.all(numerical600),
+        iconGap: numerical200,
       );
 
   factory SeagullComoBoxTheme.medium() => SeagullComoBoxTheme(
@@ -30,6 +32,7 @@ class SeagullComoBoxTheme extends ThemeExtension<SeagullComoBoxTheme> {
         textStyle: textFieldTextStyleMedium,
         iconSize: numerical600,
         messagePadding: const EdgeInsets.all(numerical300),
+        iconGap: numerical200,
       );
 
   @override
@@ -41,12 +44,14 @@ class SeagullComoBoxTheme extends ThemeExtension<SeagullComoBoxTheme> {
     bool? obscureText,
     double? iconSize,
     EdgeInsets? messagePadding,
+    double? iconGap,
   }) {
     return SeagullComoBoxTheme(
       inputDecorationTheme: inputDecorationTheme ?? this.inputDecorationTheme,
       textStyle: textStyle ?? this.textStyle,
       iconSize: iconSize ?? this.iconSize,
       messagePadding: messagePadding ?? this.messagePadding,
+      iconGap: iconGap ?? this.iconGap,
     );
   }
 
@@ -56,6 +61,7 @@ class SeagullComoBoxTheme extends ThemeExtension<SeagullComoBoxTheme> {
       iconSize: lerpDouble(iconSize, other?.iconSize, t),
       textStyle: TextStyle.lerp(textStyle, other?.textStyle, t),
       messagePadding: EdgeInsets.lerp(messagePadding, other?.messagePadding, t),
+      iconGap: lerpDouble(iconGap, other?.iconGap, t),
     );
   }
 }
