@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:showcase/addons/breakpoint_addon.dart';
 import 'package:showcase/use_cases/action_button_use_case.dart';
-import 'package:showcase/use_cases/combobox_use_case.dart';
+import 'package:showcase/use_cases/combo_box_use_case.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 void main() {
@@ -29,9 +29,14 @@ class WidgetBook extends StatelessWidget {
           name: 'Buttons',
           useCases: [
             ActionButtonUseCase(),
-            ComboboxUseCase(),
           ],
-        )
+        ),
+        WidgetbookComponent(
+          name: 'Input',
+          useCases: [
+            ComboBoxUseCase(),
+          ],
+        ),
       ],
     );
   }

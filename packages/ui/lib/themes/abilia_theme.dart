@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:ui/themes/action_button/action_buttons_theme.dart';
-import 'package:ui/themes/combobox/combobox_theme.dart';
+import 'package:ui/themes/combo_box/combo_box_theme.dart';
 
 const int _breakpointMobile = 360;
 
 class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
-  final ActionButtonsTheme actionButtons;
-  final ComboboxTheme combobox;
+  final ActionButtonsTheme actionButton;
+  final SeagullComoBoxTheme comboBox;
 
   const AbiliaTheme({
-    required this.actionButtons,
-    required this.combobox,
+    required this.actionButton,
+    required this.comboBox,
   });
 
   factory AbiliaTheme.of(BuildContext context) =>
@@ -31,23 +31,23 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   }
 
   static final AbiliaTheme mobile = AbiliaTheme(
-    actionButtons: ActionButtonsTheme.mobile,
-    combobox: ComboboxTheme.medium(),
+    actionButton: ActionButtonsTheme.mobile,
+    comboBox: SeagullComoBoxTheme.medium(),
   );
 
   static final AbiliaTheme tablet = AbiliaTheme(
-    actionButtons: ActionButtonsTheme.tablet,
-    combobox: ComboboxTheme.medium(),
+    actionButton: ActionButtonsTheme.tablet,
+    comboBox: SeagullComoBoxTheme.medium(),
   );
 
   @override
   AbiliaTheme copyWith({
-    ActionButtonsTheme? actionButtons,
-    ComboboxTheme? combobox,
+    ActionButtonsTheme? actionButton,
+    SeagullComoBoxTheme? comboBox,
   }) {
     return AbiliaTheme(
-      actionButtons: actionButtons ?? this.actionButtons,
-      combobox: combobox ?? this.combobox,
+      actionButton: actionButton ?? this.actionButton,
+      comboBox: comboBox ?? this.comboBox,
     );
   }
 
@@ -55,8 +55,8 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   AbiliaTheme lerp(AbiliaTheme? other, double t) {
     if (other is! AbiliaTheme) return this;
     return AbiliaTheme(
-      actionButtons: actionButtons.lerp(other.actionButtons, t),
-      combobox: other.combobox,
+      actionButton: actionButton.lerp(other.actionButton, t),
+      comboBox: other.comboBox,
     );
   }
 }

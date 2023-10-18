@@ -7,12 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/generated/l10n.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ui/components/action_button/action_button.dart';
-import 'package:ui/components/combobox/combobox.dart';
-import 'package:ui/themes/combobox/combobox_theme.dart';
+import 'package:ui/components/combo_box.dart';
 import 'package:ui/tokens/numericals.dart';
 
 class LoginPage extends StatelessWidget {
@@ -86,16 +86,20 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Tooltip(
                       message: 'Username',
-                      child: Combobox.large(
+                      child: SeagullComoBox(
                         label: 'Username',
+                        leadingIcon: Symbols.account_circle,
+                        textInputAction: TextInputAction.next,
                         onChanged: context.read<LoginCubit>().usernameChanged,
                       ),
                     ),
                     Tooltip(
                       message: 'Password',
-                      child: Combobox.large(
-                        subTheme: ComboboxSubTheme.password(),
+                      child: SeagullComoBox(
                         label: 'Password',
+                        leadingIcon: Symbols.key,
+                        trailingIcon: Symbols.visibility,
+                        obscureText: true,
                         onChanged: context.read<LoginCubit>().passwordChanged,
                       ),
                     ),

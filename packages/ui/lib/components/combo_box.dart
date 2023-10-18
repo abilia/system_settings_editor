@@ -3,116 +3,67 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/collapsable_widget.dart';
 import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/abilia_theme.dart';
-import 'package:ui/themes/combobox/combobox_theme.dart';
 import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/numericals.dart';
 
-class Combobox extends StatefulWidget {
-  final ComboboxTheme Function(ComboboxTheme) themeBuilder;
+class SeagullComoBox extends StatefulWidget {
   final String? hintText;
   final String? label;
   final String? message;
+  final IconData? leadingIcon;
+  final IconData? trailingIcon;
+  final bool obscureText;
+  final TextInputAction? textInputAction;
   final Function(String)? onChanged;
-  final FocusNode focusNode = FocusNode();
   final TextEditingController? controller;
 
-  Combobox({
-    required this.themeBuilder,
-    ComboboxTheme? mixTheme,
+  const SeagullComoBox({
     this.hintText,
     this.controller,
     this.onChanged,
     this.label,
     this.message,
+    this.leadingIcon,
+    this.trailingIcon,
+    this.textInputAction,
+    this.obscureText = false,
     super.key,
   });
 
-  factory Combobox.large({
-    ComboboxSubTheme? subTheme,
-    controller,
-    onChanged,
-    leading,
-    trailing,
-    label,
-    message,
-    key,
-    bool? obscureText,
-  }) =>
-      Combobox(
-        themeBuilder: (comboBoxTheme) => subTheme != null
-            ? ComboboxTheme.medium().applySubTheme(subTheme)
-            : ComboboxTheme.medium(),
-        controller: controller,
-        onChanged: onChanged,
-        label: label,
-        key: key,
-      );
-
-  factory Combobox.medium({
-    ComboboxSubTheme? subTheme,
-    controller,
-    onChanged,
-    leading,
-    trailing,
-    label,
-    message,
-    key,
-    bool? obscureText,
-  }) =>
-      Combobox(
-        themeBuilder: (comboBoxTheme) =>
-            ComboboxTheme.medium().applySubTheme(subTheme),
-        controller: controller,
-        onChanged: onChanged,
-        label: label,
-        message: message,
-        key: key,
-      );
-
   @override
   State<StatefulWidget> createState() {
-    return _ComboboxState();
+    return _SeagullComoBoxState();
   }
-
-  Combobox copyWith({
-    hintText,
-    controller,
-    onChanged,
-    leading,
-    trailing,
-    label,
-    message,
-    obscureText,
-  }) =>
-      Combobox(
-        themeBuilder: themeBuilder,
-        hintText: hintText ?? this.hintText,
-        controller: controller ?? this.controller,
-        label: label ?? this.label,
-        message: message ?? this.message,
-      );
 }
 
-class _ComboboxState extends State<Combobox> {
+class _SeagullComoBoxState extends State<SeagullComoBox> {
+  final FocusNode focusNode = FocusNode();
   bool selected = false;
+
   @override
-  Widget build(BuildContext context) {
-    final abiliaTheme = AbiliaTheme.of(context);
-    final comboBoxTheme = widget.themeBuilder(abiliaTheme.combobox);
-    widget.focusNode.addListener(
+  void initState() {
+    focusNode.addListener(
       () => setState(
-        () => selected = widget.focusNode.hasFocus,
+        () => selected = focusNode.hasFocus,
       ),
     );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AbiliaTheme.of(context).comboBox;
+    final label = widget.label;
     return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.label != null)
+        if (label != null)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: numerical200),
             child: Text(
-              widget.label!,
+              label,
               style: textFieldTextStyleMedium.copyWith(
                 color: AbiliaColors.greyscale700,
               ),
@@ -136,15 +87,19 @@ class _ComboboxState extends State<Combobox> {
           duration: const Duration(milliseconds: 150),
           child: TextField(
             decoration: InputDecoration(
-                    hintText: widget.hintText,
-                    prefix: comboBoxTheme.leading,
-                    suffix: comboBoxTheme.trailing)
-                .applyDefaults(comboBoxTheme.inputDecorationTheme),
-            style: comboBoxTheme.textStyle,
+              hintText: widget.hintText,
+              prefixIcon:
+                  widget.leadingIcon != null ? Icon(widget.leadingIcon) : null,
+              suffixIcon: widget.trailingIcon != null
+                  ? Icon(widget.trailingIcon)
+                  : null,
+            ).applyDefaults(theme.inputDecorationTheme),
+            textInputAction: widget.textInputAction,
+            style: theme.textStyle,
             onChanged: widget.onChanged,
-            focusNode: widget.focusNode,
+            focusNode: focusNode,
             controller: widget.controller,
-            obscureText: comboBoxTheme.obscureText ?? false,
+            obscureText: widget.obscureText,
           ),
         ),
         CollapsableWidget(
@@ -152,7 +107,7 @@ class _ComboboxState extends State<Combobox> {
           child: SizedBox(
             height: numerical300,
             child: Padding(
-              padding: comboBoxTheme.messagePadding,
+              padding: theme.messagePadding,
               child: Container(
                 color: AbiliaColors.peach100,
                 child: Row(
@@ -160,11 +115,11 @@ class _ComboboxState extends State<Combobox> {
                   children: [
                     Icon(
                       Symbols.error,
-                      size: comboBoxTheme.iconSize,
+                      size: theme.iconSize,
                     ),
                     Text(
                       widget.message ?? '',
-                      style: comboBoxTheme.textStyle.copyWith(
+                      style: theme.textStyle.copyWith(
                         color: AbiliaColors.greyscale700,
                       ),
                     ),

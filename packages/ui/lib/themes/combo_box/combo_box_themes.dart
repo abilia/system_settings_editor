@@ -5,12 +5,14 @@ import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/numericals.dart';
 
 final textFieldInputThemeMedium = InputDecorationTheme(
-  fillColor: MaterialStateColor.resolveWith((states) {
-    if (states.contains(MaterialState.disabled)) {
-      return AbiliaColors.peach300;
-    }
-    return AbiliaColors.greyscale000;
-  }),
+  fillColor: MaterialStateColor.resolveWith(
+    (states) {
+      if (states.contains(MaterialState.disabled)) {
+        return AbiliaColors.peach300;
+      }
+      return AbiliaColors.greyscale000;
+    },
+  ),
   filled: true,
   border: inputBorder,
   errorBorder: errorBorder,
@@ -21,9 +23,7 @@ final textFieldInputThemeMedium = InputDecorationTheme(
     borderSide: borderSideGrey300.copyWith(width: numerical1px),
   ),
   contentPadding: const EdgeInsets.symmetric(
-      horizontal: numerical400, vertical: numerical10px),
+    horizontal: numerical400,
+    vertical: numerical300,
+  ),
 );
-
-final textFieldInputThemeLarge = textFieldInputThemeMedium.copyWith(
-    contentPadding: const EdgeInsets.symmetric(
-        horizontal: numerical400, vertical: numerical300));

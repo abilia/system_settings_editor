@@ -569,7 +569,7 @@ packages:
     source: hosted
     version: "7.0.7296"
   material_symbols_icons:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: material_symbols_icons
       sha256: "1b45a9588c31b0f624745d88a4f1e93f9596f0fe4c7619645fa87e13448e2540"
