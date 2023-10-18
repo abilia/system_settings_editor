@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ui/styles/styles.dart';
 import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/fonts.dart';
 import 'package:ui/tokens/numericals.dart';
+
+final borderSideGrey300 = BorderSide(
+  color: AbiliaColors.greyscale.shade300,
+  width: numerical2px,
+);
 
 final inputBorder = OutlineInputBorder(
     borderRadius: const BorderRadius.all(
@@ -15,14 +19,14 @@ final activeBorder = OutlineInputBorder(
       Radius.circular(numerical200),
     ),
     borderSide: borderSideGrey300.copyWith(
-        width: numerical1px, color: BorderColors.active));
+        width: numerical1px, color: SurfaceColors.active));
 
 final errorBorder = OutlineInputBorder(
   borderRadius: const BorderRadius.all(
     Radius.circular(numerical200),
   ),
   borderSide: borderSideGrey300.copyWith(
-      width: numerical1px, color: BorderColors.focus),
+      width: numerical1px, color: AbiliaColors.peach.shade300),
 );
 
 final textFieldTextStyleMedium =
@@ -33,7 +37,7 @@ final textFieldTextStyleMedium =
   if (states.contains(MaterialState.focused)) {
     return AbiliaFonts.primary425;
   }
-  return AbiliaFonts.primary425.copyWith(color: FontColors.secondary);
+  return AbiliaFonts.primary425.copyWith(color: SurfaceColors.textSecondary);
 });
 
 final textFieldTextStyleLarge =
@@ -44,5 +48,5 @@ final textFieldTextStyleLarge =
   if (states.contains(MaterialState.focused)) {
     return AbiliaFonts.primary525;
   }
-  return AbiliaFonts.primary525.copyWith(color: FontColors.secondary);
+  return AbiliaFonts.primary525.copyWith(color: SurfaceColors.textSecondary);
 });

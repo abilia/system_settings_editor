@@ -64,7 +64,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             child: Text(
               label,
               style: theme.textStyle.copyWith(
-                color: AbiliaColors.greyscale700,
+                color: SurfaceColors.textSecondary,
               ),
             ),
           ),
@@ -72,8 +72,8 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
           decoration: BoxDecoration(
             boxShadow: selected
                 ? [
-                    const BoxShadow(
-                      color: AbiliaColors.primary200,
+                    BoxShadow(
+                      color: AbiliaColors.primary,
                       spreadRadius: numerical200,
                     ),
                   ]
@@ -81,7 +81,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             borderRadius: const BorderRadius.all(
               Radius.circular(numerical200),
             ),
-            color: AbiliaColors.greyscale000,
+            color: AbiliaColors.greyscale,
           ),
           duration: const Duration(milliseconds: 150),
           child: TextField(
@@ -106,7 +106,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
           child: CollapsableWidget(
             collapsed: widget.message == null,
             child: Container(
-              color: AbiliaColors.peach100,
+              color: AbiliaColors.peach.shade100,
               height: numerical900,
               child: Padding(
                 padding: theme.messagePadding,
@@ -121,7 +121,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
                     Text(
                       widget.message ?? '',
                       style: theme.textStyle.copyWith(
-                        color: AbiliaColors.greyscale700,
+                        color: SurfaceColors.textSecondary,
                       ),
                     ),
                   ],

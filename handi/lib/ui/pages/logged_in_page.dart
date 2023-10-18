@@ -9,7 +9,7 @@ import 'package:handi/l10n/generated/l10n.dart';
 import 'package:handi/ui/components/tts.dart';
 import 'package:sortables/sortables.dart';
 import 'package:support_persons/bloc/support_persons_cubit.dart';
-import 'package:ui/components/action_button/action_button.dart';
+import 'package:ui/components/buttons/buttons.dart';
 import 'package:user_files/user_files.dart';
 
 class LoggedInPage extends StatelessWidget {
@@ -102,19 +102,21 @@ class LoggedInPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    ActionButtonPrimary(
+                    SeagullActionButton(
+                      text: 'Sync',
+                      type: ActionButtonType.primary,
+                      size: ButtonSize.large,
                       onPressed: () =>
                           context.read<SyncBloc>().add(const SyncAll()),
-                      size: ActionButtonSize.large,
-                      text: 'Sync',
                     ),
                     const SizedBox(height: 8),
-                    ActionButtonPrimary(
+                    SeagullActionButton(
+                      text: Lt.of(context).logOut,
+                      type: ActionButtonType.primary,
+                      size: ButtonSize.large,
                       onPressed: () => context
                           .read<AuthenticationBloc>()
                           .add(const LoggedOut()),
-                      size: ActionButtonSize.large,
-                      text: Lt.of(context).logOut,
                     ),
                   ],
                 ),

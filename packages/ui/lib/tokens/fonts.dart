@@ -1,9 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ui/tokens/colors.dart';
 
 class AbiliaFonts {
   static final _primaryMedium = GoogleFonts.poppins(
     fontWeight: FontWeight.w500,
+    color: SurfaceColors.textPrimary,
+    decoration: TextDecoration.none,
   );
   static final _primarySemiBold = _primaryMedium.copyWith(
     fontWeight: FontWeight.w600,

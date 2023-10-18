@@ -1,5 +1,4 @@
-import 'package:carymessenger/cubit/production_guide_cubit.dart';
-import 'package:carymessenger/ui/components/buttons/action.dart';
+import 'package:carymessenger/ui/widgets/buttons/android_settings_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permissions/permission_cubit.dart';
@@ -11,13 +10,9 @@ class ProductionGuidePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productionGuideCubit = context.watch<ProductionGuideCubit>();
     final batteryOptimizationGranted = context.select((PermissionCubit cubit) =>
         cubit.state.status[Permission.ignoreBatteryOptimizations]?.isGranted ==
         true);
-    final voiceIsDownloaded = context.select(
-      (VoicesCubit cubit) => cubit.state.downloaded.isNotEmpty,
-    );
     return Scaffold(
       body: SafeArea(
           child: Padding(
@@ -28,12 +23,9 @@ class ProductionGuidePage extends StatelessWidget {
           children: [
             const Expanded(child: Voices()),
             if (!batteryOptimizationGranted) const BatteryOptimizationButton(),
-            ActionButtonGreen(
-              onPressed: batteryOptimizationGranted && voiceIsDownloaded
-                  ? productionGuideCubit.setDone
-                  : null,
-              text: 'Done',
-            ),
+            const SizedBox(height: 8),
+            const AndroidSettingsButton(),
+            const SizedBox(height: 8),
           ],
         ),
       )),

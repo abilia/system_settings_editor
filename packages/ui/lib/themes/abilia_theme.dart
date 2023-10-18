@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
-
-import 'package:ui/themes/action_button/action_buttons_theme.dart';
+import 'package:ui/themes/buttons/action_button/action_button_themes.dart';
+import 'package:ui/themes/buttons/icon_button/icon_button_themes.dart';
 import 'package:ui/themes/combo_box/combo_box_theme.dart';
+import 'package:ui/themes/helper_box/helper_box_themes.dart';
+import 'package:ui/themes/tag/tag_themes.dart';
 
-const int _breakpointMobile = 360;
+const int _breakpointMobile = 640;
+const int _breakpointTablet = 1280;
+const int _breakpointDesktop = 1600;
 
 class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
-  final ActionButtonsTheme actionButton;
+  final SeagullActionButtonThemes actionButtons;
+  final SeagullIconButtonThemes iconButtons;
+  final SeagullHelperBoxThemes helperBox;
+  final SeagullTagThemes tag;
   final SeagullComoBoxTheme comboBox;
 
   const AbiliaTheme({
-    required this.actionButton,
+    required this.actionButtons,
+    required this.iconButtons,
+    required this.helperBox,
+    required this.tag,
     required this.comboBox,
   });
 
@@ -18,35 +28,72 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
       Theme.of(context).extension<AbiliaTheme>() ?? AbiliaTheme.mobile;
 
   static ThemeData getThemeData(double width) {
-    if (width < _breakpointMobile) {
-      return ThemeData(
-        visualDensity: VisualDensity.standard,
-        extensions: [AbiliaTheme.mobile],
-      );
-    }
+    final abiliaTheme = _getAbiliaTheme(width);
     return ThemeData(
+      useMaterial3: true,
       visualDensity: VisualDensity.standard,
-      extensions: [AbiliaTheme.tablet],
+      extensions: [abiliaTheme],
     );
   }
 
+  static AbiliaTheme _getAbiliaTheme(double width) {
+    if (width < _breakpointMobile) {
+      return AbiliaTheme.mobile;
+    }
+    if (width < _breakpointTablet) {
+      return AbiliaTheme.tablet;
+    }
+    if (width < _breakpointDesktop) {
+      return AbiliaTheme.desktopSmall;
+    }
+    return AbiliaTheme.desktopLarge;
+  }
+
   static final AbiliaTheme mobile = AbiliaTheme(
-    actionButton: ActionButtonsTheme.mobile,
+    actionButtons: SeagullActionButtonThemes.mobile,
+    iconButtons: SeagullIconButtonThemes.mobile,
+    helperBox: SeagullHelperBoxThemes.mobile,
+    tag: SeagullTagThemes.mobile,
     comboBox: SeagullComoBoxTheme.medium(),
   );
 
   static final AbiliaTheme tablet = AbiliaTheme(
-    actionButton: ActionButtonsTheme.tablet,
+    actionButtons: SeagullActionButtonThemes.tablet,
+    iconButtons: SeagullIconButtonThemes.tablet,
+    helperBox: SeagullHelperBoxThemes.tablet,
+    tag: SeagullTagThemes.tablet,
     comboBox: SeagullComoBoxTheme.medium(),
+  );
+
+  static final AbiliaTheme desktopSmall = AbiliaTheme(
+    actionButtons: SeagullActionButtonThemes.desktopSmall,
+    iconButtons: SeagullIconButtonThemes.desktopSmall,
+    helperBox: SeagullHelperBoxThemes.desktopSmall,
+    tag: SeagullTagThemes.desktopSmall,
+    comboBox: SeagullComoBoxTheme.large(),
+  );
+
+  static final AbiliaTheme desktopLarge = AbiliaTheme(
+    actionButtons: SeagullActionButtonThemes.desktopLarge,
+    iconButtons: SeagullIconButtonThemes.desktopLarge,
+    helperBox: SeagullHelperBoxThemes.desktopLarge,
+    tag: SeagullTagThemes.desktopLarge,
+    comboBox: SeagullComoBoxTheme.large(),
   );
 
   @override
   AbiliaTheme copyWith({
-    ActionButtonsTheme? actionButton,
+    SeagullActionButtonThemes? actionButtons,
+    SeagullIconButtonThemes? iconButtons,
+    SeagullHelperBoxThemes? helperBox,
+    SeagullTagThemes? tag,
     SeagullComoBoxTheme? comboBox,
   }) {
     return AbiliaTheme(
-      actionButton: actionButton ?? this.actionButton,
+      actionButtons: actionButtons ?? this.actionButtons,
+      iconButtons: iconButtons ?? this.iconButtons,
+      helperBox: helperBox ?? this.helperBox,
+      tag: tag ?? this.tag,
       comboBox: comboBox ?? this.comboBox,
     );
   }
@@ -55,8 +102,11 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   AbiliaTheme lerp(AbiliaTheme? other, double t) {
     if (other is! AbiliaTheme) return this;
     return AbiliaTheme(
-      actionButton: actionButton.lerp(other.actionButton, t),
-      comboBox: other.comboBox,
+      actionButtons: actionButtons.lerp(other.actionButtons, t),
+      iconButtons: iconButtons.lerp(other.iconButtons, t),
+      helperBox: helperBox.lerp(other.helperBox, t),
+      tag: tag.lerp(other.tag, t),
+      comboBox: comboBox.lerp(other.comboBox, t),
     );
   }
 }

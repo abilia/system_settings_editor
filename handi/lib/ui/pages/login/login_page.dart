@@ -11,9 +11,10 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:ui/components/action_button/action_button.dart';
+import 'package:ui/components/buttons/buttons.dart';
 import 'package:ui/components/combo_box.dart';
-import 'package:ui/tokens/numericals.dart';
+
+part 'logo_with_change_server.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({
@@ -42,9 +43,10 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                ActionButtonPrimary(
+                SeagullActionButton(
                   text: 'Ok',
-                  size: ActionButtonSize.large,
+                  type: ActionButtonType.primary,
+                  size: ButtonSize.large,
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
@@ -69,11 +71,13 @@ class LoginPage extends StatelessWidget {
         body: BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) => SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(numerical600),
+              padding: const EdgeInsets.all(24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const LogoWithChangeServer(),
+                  const SizedBox(height: 24),
                   Tooltip(
                     message: 'Username',
                     child: SeagullComboBox(
@@ -94,28 +98,11 @@ class LoginPage extends StatelessWidget {
                       message: state is LoginFailure ? state.cause.name : null,
                     ),
                   ),
-                  const SizedBox(height: numerical600),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ...backendEnvironments.entries.map(
-                        (kvp) => Builder(
-                          builder: (context) => RadioMenuButton(
-                            value: kvp.key,
-                            onChanged: (s) async => context
-                                .read<BaseUrlCubit>()
-                                .updateBaseUrl(kvp.key),
-                            groupValue: context.watch<BaseUrlCubit>().state,
-                            child: Text(kvp.value),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   const Spacer(),
-                  ActionButtonPrimary(
+                  SeagullActionButton(
                     text: translate.signIn,
-                    size: ActionButtonSize.large,
+                    type: ActionButtonType.primary,
+                    size: ButtonSize.large,
                     onPressed: state.isFormValid
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,

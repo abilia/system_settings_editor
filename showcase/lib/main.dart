@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:showcase/addons/background_addon.dart';
 import 'package:showcase/addons/breakpoint_addon.dart';
-import 'package:showcase/use_cases/action_button_use_case.dart';
-import 'package:showcase/use_cases/combo_box_use_case.dart';
+import 'package:showcase/use_cases/buttons/action_button_use_case.dart';
+import 'package:showcase/use_cases/buttons/icon_button_use_case.dart';
+import 'package:showcase/use_cases/helper_box_use_case.dart';
+import 'package:showcase/use_cases/tag_use_case.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 void main() {
@@ -22,6 +25,7 @@ class WidgetBook extends StatelessWidget {
           ],
         ),
         TextScaleAddon(scales: [3.0, 2.0, 1.0, .8, .5], initialScale: 1.0),
+        BackgroundAddon(),
         BreakpointAddon(),
       ],
       directories: [
@@ -29,12 +33,14 @@ class WidgetBook extends StatelessWidget {
           name: 'Buttons',
           useCases: [
             ActionButtonUseCase(),
+            IconButtonUseCase(),
           ],
         ),
         WidgetbookComponent(
-          name: 'Input',
+          name: 'Boxes',
           useCases: [
-            ComboBoxUseCase(),
+            HelperBoxUseCase(),
+            TagUseCase(),
           ],
         ),
       ],

@@ -72,6 +72,7 @@ dev_dependencies:
     sdk: flutter
   http: ^1.1.0
   mocktail: ^1.0.0
+  patrol: ^2.3.1
   seagull_fakes:
     path: ../packages/seagull_fakes
   seagull_lints:
@@ -86,3 +87,11 @@ flutter_icons:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
+
+
+patrol:
+  app_name: Handi
+  android:
+    package_name: com.abilia.handicalendar6
