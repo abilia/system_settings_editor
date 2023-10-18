@@ -81,7 +81,8 @@ class MaterialAppWrapper extends StatelessWidget {
       theme: caryLightTheme,
       builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
-          statusBarBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.dark,
           systemNavigationBarColor: Colors.transparent,
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
