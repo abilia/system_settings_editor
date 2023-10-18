@@ -3,12 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class CaryTheme extends ThemeExtension<CaryTheme> {
-  final double clockSize, datePadding;
+  final double clockSize;
   final Size clockDatePadding;
 
   const CaryTheme({
     required this.clockSize,
-    required this.datePadding,
     required this.clockDatePadding,
   });
 
@@ -23,20 +22,17 @@ class CaryTheme extends ThemeExtension<CaryTheme> {
   }) {
     return CaryTheme(
       clockSize: clockSize ?? this.clockSize,
-      datePadding: datePadding ?? this.datePadding,
       clockDatePadding: clockDatePadding ?? this.clockDatePadding,
     );
   }
 
   static const CaryTheme collapsed = CaryTheme(
     clockSize: 288,
-    datePadding: 16,
     clockDatePadding: Size(0, 24),
   );
 
   static const CaryTheme expanded = CaryTheme(
     clockSize: 136,
-    datePadding: 8,
     clockDatePadding: Size(8, 0),
   );
 
@@ -45,7 +41,6 @@ class CaryTheme extends ThemeExtension<CaryTheme> {
     if (other is! CaryTheme) return this;
     return CaryTheme(
       clockSize: lerpDouble(clockSize, other.clockSize, t) ?? clockSize,
-      datePadding: lerpDouble(datePadding, other.datePadding, t) ?? datePadding,
       clockDatePadding: Size.lerp(
             clockDatePadding,
             other.clockDatePadding,

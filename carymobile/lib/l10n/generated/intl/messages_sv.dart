@@ -56,6 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'show': MessageLookupByLibrary.simpleMessage('Visa'),
         'stop': MessageLookupByLibrary.simpleMessage('Stopp'),
         'today': MessageLookupByLibrary.simpleMessage('Idag'),
+        'tts_the_time_is': MessageLookupByLibrary.simpleMessage('Klockan är'),
         'username_email':
             MessageLookupByLibrary.simpleMessage('Användarnamn / e-post'),
         'wrong_username_or_password': MessageLookupByLibrary.simpleMessage(

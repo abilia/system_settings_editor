@@ -63,6 +63,7 @@ class Lt {
     'show': [],
     'stop': [],
     'today': [],
+    'tts_the_time_is': [],
     'username_email': [],
     'wrong_username_or_password': []
   };
@@ -353,6 +354,16 @@ class Lt {
     return Intl.message(
       'Today',
       name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The time is`
+  String get tts_the_time_is {
+    return Intl.message(
+      'The time is',
+      name: 'tts_the_time_is',
       desc: '',
       args: [],
     );

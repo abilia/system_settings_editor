@@ -80,10 +80,17 @@ class MaterialAppWrapper extends StatelessWidget {
       navigatorKey: _navigatorKey,
       theme: caryLightTheme,
       builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: Colors.transparent,
+        value: const SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.dark,
+          systemNavigationBarColor: Colors.transparent,
+          systemNavigationBarIconBrightness: Brightness.dark,
         ),
-        child: child != null ? BackendBanner(child: child) : const SplashPage(),
+        child: child != null
+            ? ColoredBox(
+                color: Theme.of(context).colorScheme.background,
+                child: BackendBanner(child: child),
+              )
+            : const SplashPage(),
       ),
       supportedLocales: Lt.supportedLocales,
       localizationsDelegates: Lt.localizationsDelegates,

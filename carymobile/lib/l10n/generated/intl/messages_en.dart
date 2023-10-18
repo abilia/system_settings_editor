@@ -55,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'show': MessageLookupByLibrary.simpleMessage('Show'),
         'stop': MessageLookupByLibrary.simpleMessage('Stop'),
         'today': MessageLookupByLibrary.simpleMessage('Today'),
+        'tts_the_time_is': MessageLookupByLibrary.simpleMessage('The time is'),
         'username_email':
             MessageLookupByLibrary.simpleMessage('Username / Email'),
         'wrong_username_or_password':

@@ -13,7 +13,11 @@ class ClockAndDate extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: BlocBuilder<ClockCubit, DateTime>(
           builder: (context, time) => Tts.data(
-            data: DateFormat().add_Hm().add_EEEE().add_yMMMMd().format(time),
+            data: '${Lt.of(context).tts_the_time_is}: '
+                '${DateFormat.Hm().format(time)}. '
+                '${DateFormat.EEEE().format(time)}, '
+                '${Lt.of(context).mid_morning}, '
+                '${DateFormat.yMMMMd().format(time)}',
             child: Flex(
               direction: expanded ? Axis.horizontal : Axis.vertical,
               verticalDirection: VerticalDirection.up,
@@ -47,7 +51,6 @@ class TimeDateText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final padding = SizedBox(height: CaryTheme.of(context).datePadding);
     return DefaultTextStyle(
       style: textTheme.titleMedium ?? titleMedium,
       maxLines: 1,
@@ -58,11 +61,8 @@ class TimeDateText extends StatelessWidget {
               DateFormat.Hm().format(time),
               style: textTheme.titleLarge ?? titleLarge,
             ),
-            padding,
-            AutoSizeText(Lt.of(context).mid_morning),
-            padding,
             AutoSizeText(DateFormat.EEEE().format(time)),
-            padding,
+            AutoSizeText(Lt.of(context).mid_morning),
             AutoSizeText(DateFormat.yMMMMd().format(time)),
           ],
         ),
