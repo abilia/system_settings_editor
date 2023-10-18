@@ -72,7 +72,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
           decoration: BoxDecoration(
             boxShadow: selected
                 ? [
-                    BoxShadow(
+                    const BoxShadow(
                       color: AbiliaColors.primary,
                       spreadRadius: numerical200,
                     ),
