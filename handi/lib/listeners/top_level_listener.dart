@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:handi/listeners/authenticated_listener.dart';
 import 'package:handi/providers.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
-import 'package:handi/ui/pages/login_page.dart';
+import 'package:handi/ui/pages/login/login_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 
