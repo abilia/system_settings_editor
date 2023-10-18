@@ -10,7 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:ui/components/action_button/action_button.dart';
+import 'package:ui/components/buttons/buttons.dart';
 
 part 'logo_with_change_server.dart';
 
@@ -38,9 +38,10 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                ActionButtonPrimary(
+                SeagullActionButton(
                   text: 'Ok',
-                  size: ActionButtonSize.large,
+                  type: ActionButtonType.primary,
+                  size: ButtonSize.large,
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
@@ -110,9 +111,10 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                     const Spacer(),
-                    ActionButtonPrimary(
+                    SeagullActionButton(
                       text: translate.signIn,
-                      size: ActionButtonSize.large,
+                      type: ActionButtonType.primary,
+                      size: ButtonSize.large,
                       onPressed: state.isFormValid
                           ? context.read<LoginCubit>().loginButtonPressed
                           : null,

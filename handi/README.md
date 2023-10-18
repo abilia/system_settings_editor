@@ -13,5 +13,6 @@
 ### Integration testing
 
 `$ dart pub global activate patrol_cli`
+
 `$ patrol test`
 

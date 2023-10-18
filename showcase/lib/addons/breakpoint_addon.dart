@@ -3,16 +3,17 @@ import 'package:ui/themes/abilia_theme.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 class BreakpointAddon extends WidgetbookAddon<double> {
-  BreakpointAddon({
-    double breakpoint = 300,
-  }) : super(
+  BreakpointAddon()
+      : super(
           name: 'Breakpoint',
-          initialSetting: breakpoint,
+          initialSetting: 350,
         );
 
   static final _breakpoints = {
-    300.0: 'Mobile',
-    500.0: 'Tablet',
+    350.0: 'Mobile',
+    700.0: 'Tablet',
+    1400.0: 'Desktop small',
+    2000.0: 'Desktop large',
   };
 
   @override

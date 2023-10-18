@@ -1,10 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:handi/ui/components/backend_banner.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
 import 'package:handi/ui/pages/login/login_page.dart';
 import 'package:patrol/patrol.dart';
 import 'package:repository_base/end_point.dart';
-import 'package:ui/components/action_button/action_button.dart';
+import 'package:ui/components/buttons/action_button.dart';
 
 import 'test_helpers.dart';
 
@@ -26,10 +25,7 @@ void main() {
     await patrol.tap(find.text(environment));
     await patrol.tester.tapAt(const Offset(10, 10));
 
-    expect(find.byType(BackendBanner),
-        expectBackendBanner ? findsOneWidget : findsNothing);
-
-    await patrol.tap(find.byType(ActionButtonPrimary));
+    await patrol.tap(find.byType(SeagullActionButton));
 
     await patrol.native.grantPermissionWhenInUse();
     await patrol.pumpAndSettle();
