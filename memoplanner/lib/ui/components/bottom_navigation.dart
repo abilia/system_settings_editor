@@ -13,8 +13,8 @@ class BottomNavigation extends StatelessWidget {
     this.color = ViewDialog.dark,
     this.useVerticalSafeArea = true,
     this.verticalButtons = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

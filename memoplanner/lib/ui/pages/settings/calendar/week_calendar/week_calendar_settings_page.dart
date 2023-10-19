@@ -3,7 +3,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class WeekCalendarSettingsPage extends StatelessWidget {
-  const WeekCalendarSettingsPage({Key? key}) : super(key: key);
+  const WeekCalendarSettingsPage({super.key});
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);

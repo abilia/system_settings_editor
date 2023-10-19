@@ -15,8 +15,8 @@ class AlarmPage extends StatelessWidget {
   const AlarmPage({
     required this.alarm,
     this.previewImage,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +69,8 @@ class ReminderPage extends StatelessWidget {
 
   const ReminderPage({
     required this.reminder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -144,8 +144,8 @@ class PopAwareAlarmPage extends StatefulWidget {
     required this.alarmNavigator,
     required this.stopRemoteSoundDelay,
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<PopAwareAlarmPage> createState() => _PopAwareAlarmPageState();
@@ -199,8 +199,8 @@ class AlarmBottomNavigationBar extends StatelessWidget
     with ActivityAndAlarmsMixin {
   const AlarmBottomNavigationBar({
     required this.alarm,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ActivityAlarm alarm;
 
@@ -269,8 +269,8 @@ class TimerAlarmPage extends StatelessWidget with ActivityAndAlarmsMixin {
 
   const TimerAlarmPage({
     required this.timerAlarm,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -351,8 +351,8 @@ class TimerAlarmPage extends StatelessWidget with ActivityAndAlarmsMixin {
 class FinishedTimerWheel extends StatefulWidget {
   const FinishedTimerWheel({
     required this.timer,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AbiliaTimer timer;
 

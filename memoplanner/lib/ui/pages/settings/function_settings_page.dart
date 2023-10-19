@@ -5,7 +5,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class FunctionSettingsPage extends StatelessWidget {
-  const FunctionSettingsPage({Key? key}) : super(key: key);
+  const FunctionSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +73,8 @@ class FunctionSettingsPage extends StatelessWidget {
 
 class MenuRemovalWarningDialog extends StatelessWidget {
   const MenuRemovalWarningDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +90,7 @@ class _SettingsTab extends StatelessWidget {
   const _SettingsTab({
     required this.hint,
     this.children = const [],
-    Key? key,
-  }) : super(key: key);
+  });
   final List<Widget> children;
   final String hint;
 
@@ -107,7 +106,7 @@ class _SettingsTab extends StatelessWidget {
 }
 
 class ToolbarSettingsTab extends StatelessWidget {
-  const ToolbarSettingsTab({Key? key}) : super(key: key);
+  const ToolbarSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +173,7 @@ class ToolbarSettingsTab extends StatelessWidget {
 }
 
 class HomeScreenSettingsTab extends StatelessWidget {
-  const HomeScreenSettingsTab({Key? key}) : super(key: key);
+  const HomeScreenSettingsTab({super.key});
   final widgets = const <Widget>[];
 
   @override
@@ -234,7 +233,7 @@ class HomeScreenSettingsTab extends StatelessWidget {
 }
 
 class TimeoutSettingsTab extends StatelessWidget {
-  const TimeoutSettingsTab({Key? key}) : super(key: key);
+  const TimeoutSettingsTab({super.key});
   final widgets = const <Widget>[];
 
   @override

@@ -82,8 +82,8 @@ class TopLevelProviders extends StatelessWidget {
 class AuthenticationBlocProvider extends StatelessWidget {
   const AuthenticationBlocProvider({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
 

@@ -3,11 +3,10 @@ import 'package:memoplanner/ui/all.dart';
 
 class CreateNewPage extends StatelessWidget {
   const CreateNewPage({
-    Key? key,
+    super.key,
     this.showActivities = true,
     this.showTimers = true,
-  })  : assert(showActivities || showTimers),
-        super(key: key);
+  }) : assert(showActivities || showTimers);
 
   final bool showActivities, showTimers;
 

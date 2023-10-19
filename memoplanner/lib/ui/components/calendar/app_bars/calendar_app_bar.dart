@@ -27,8 +27,8 @@ class CalendarAppBar extends StatelessWidget {
     this.showClock = true,
     this.calendarDayColor = DayColor.noColors,
     this.textStyle,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

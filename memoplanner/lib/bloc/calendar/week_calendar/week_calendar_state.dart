@@ -27,10 +27,10 @@ class WeekCalendarInitial extends WeekCalendarState {
 
 class WeekCalendarLoaded extends WeekCalendarState {
   const WeekCalendarLoaded(
-    DateTime currentWeekStart,
-    Map<int, List<EventOccasion>> currentWeekEvents,
-    Map<int, List<ActivityOccasion>> fullDayActivities,
-  ) : super(currentWeekStart, currentWeekEvents, fullDayActivities);
+    super.currentWeekStart,
+    super.currentWeekEvents,
+    super.fullDayActivities,
+  );
 
   @override
   String toString() =>

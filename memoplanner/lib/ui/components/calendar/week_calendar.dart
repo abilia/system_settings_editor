@@ -28,7 +28,7 @@ class WeekCalendarTab extends CalendarTab {
 }
 
 class WeekCalendar extends StatelessWidget {
-  const WeekCalendar({Key? key}) : super(key: key);
+  const WeekCalendar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +70,8 @@ class WeekCalendarPage extends StatelessWidget {
     required this.numberOfDays,
     required this.weekDisplayDays,
     required this.isCurrentState,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final int numberOfDays;
   final WeekDisplayDays weekDisplayDays;
@@ -142,8 +142,8 @@ class WeekCalendarHeadingContent extends StatelessWidget {
     required this.weekDisplayDays,
     required this.selected,
     required this.fullDayActivitiesBuilder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final DateTime day;
   final WeekDisplayDays weekDisplayDays;
@@ -255,8 +255,7 @@ class _WeekBodyContentWrapper extends StatelessWidget {
 
   const _WeekBodyContentWrapper({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) => Expanded(
@@ -285,8 +284,7 @@ class _FullDayActivities extends StatelessWidget {
     required this.day,
     required this.selected,
     required this.fullDayActivitiesBuilder,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -319,8 +317,7 @@ class _WeekdayColumn extends StatelessWidget {
     required this.day,
     required this.weekDisplayDays,
     required this.occasions,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -411,8 +408,7 @@ class _WeekdayColumnItems extends StatelessWidget {
     required this.showCategories,
     required this.showCategoryColor,
     required this.occasions,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -495,8 +491,7 @@ class _WeekActivityContent extends StatelessWidget {
     required this.selected,
     required this.maxLines,
     this.fullDay = false,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final ActivityOccasion activityOccasion;
   final bool selected, fullDay;
@@ -534,8 +529,7 @@ class _WeekTimerContent extends StatelessWidget {
   const _WeekTimerContent({
     required this.timerOccasion,
     required this.selected,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final TimerOccasion timerOccasion;
   final bool selected;
@@ -645,8 +639,7 @@ class _WeekEventContent extends StatelessWidget {
     required this.selected,
     required this.child,
     this.showColors,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -731,8 +724,7 @@ class _WeekBorderedColumn extends StatelessWidget {
     required this.past,
     required this.header,
     required this.selected,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

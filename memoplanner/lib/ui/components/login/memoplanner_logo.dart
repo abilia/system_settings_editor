@@ -4,10 +4,10 @@ import 'package:memoplanner/ui/all.dart';
 
 class MEMOplannerLogoHiddenBackendSwitch extends StatelessWidget {
   const MEMOplannerLogoHiddenBackendSwitch({
-    Key? key,
+    super.key,
     this.loading = false,
     this.height,
-  }) : super(key: key);
+  });
   final bool loading;
   final double? height;
 
@@ -42,8 +42,8 @@ class MEMOplannerLogoHiddenBackendSwitch extends StatelessWidget {
 class MEMOplannerLogo extends StatelessWidget {
   const MEMOplannerLogo({
     required this.height,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final double height;
 

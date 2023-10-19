@@ -5,9 +5,8 @@ class AuthenticatedDialogListener
     extends BlocListener<AuthenticatedDialogCubit, AuthenticatedDialogState> {
   AuthenticatedDialogListener({
     required AuthenticatedDialogCubit authenticatedDialogCubit,
-    Key? key,
+    super.key,
   }) : super(
-          key: key,
           listenWhen: (previous, current) => current.showDialog,
           listener: (context, state) => showPersistentDialog<bool>(
             context: context,

@@ -67,9 +67,9 @@ abstract class ActivityState extends Equatable {
 }
 
 class ActivityLoaded extends ActivityState {
-  const ActivityLoaded(ActivityDay activityDay) : super(activityDay);
+  const ActivityLoaded(super.activityDay);
 }
 
 class ActivityDeleted extends ActivityState {
-  const ActivityDeleted(ActivityDay activityDay) : super(activityDay);
+  const ActivityDeleted(super.activityDay);
 }

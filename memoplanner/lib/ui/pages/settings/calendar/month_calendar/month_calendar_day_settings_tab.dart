@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class MonthDisplaySettingsTab extends StatelessWidget {
-  const MonthDisplaySettingsTab({Key? key}) : super(key: key);
+  const MonthDisplaySettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class MonthDisplaySettingsTab extends StatelessWidget {
 }
 
 class _MonthCalendarPreview extends StatelessWidget {
-  const _MonthCalendarPreview({Key? key}) : super(key: key);
+  const _MonthCalendarPreview();
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +75,7 @@ class _MonthDayView extends StatelessWidget {
   final DayTheme dayTheme;
   const _MonthDayView({
     required this.dayTheme,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

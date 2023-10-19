@@ -6,7 +6,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ImageWiz extends StatelessWidget {
-  const ImageWiz({Key? key}) : super(key: key);
+  const ImageWiz({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class ImageWiz extends StatelessWidget {
 }
 
 class ImageWizSelectPictureWidget extends StatelessWidget {
-  const ImageWizSelectPictureWidget({Key? key}) : super(key: key);
+  const ImageWizSelectPictureWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

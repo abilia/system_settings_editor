@@ -6,8 +6,8 @@ class FullscreenImageDialog extends StatelessWidget {
   const FullscreenImageDialog({
     required this.fileId,
     required this.filePath,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

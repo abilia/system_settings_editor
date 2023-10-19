@@ -5,7 +5,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class BackendSwitcherDialog extends StatefulWidget {
-  const BackendSwitcherDialog({Key? key}) : super(key: key);
+  const BackendSwitcherDialog({super.key});
 
   @override
   State<BackendSwitcherDialog> createState() => _BackendSwitcherDialogState();
@@ -59,7 +59,7 @@ class _BackendSwitcherDialogState extends State<BackendSwitcherDialog> {
 }
 
 class Version extends StatelessWidget {
-  const Version({Key? key}) : super(key: key);
+  const Version({super.key});
 
   @override
   Widget build(BuildContext context) =>

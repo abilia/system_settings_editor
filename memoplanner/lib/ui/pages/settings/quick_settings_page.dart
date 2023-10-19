@@ -7,7 +7,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class QuickSettingsPage extends StatelessWidget {
-  const QuickSettingsPage({Key? key}) : super(key: key);
+  const QuickSettingsPage({super.key});
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
@@ -84,8 +84,8 @@ class QuickSettingsPage extends StatelessWidget {
 class QuickSettingsGroup extends StatelessWidget {
   const QuickSettingsGroup({
     required this.children,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final List<Widget> children;
 

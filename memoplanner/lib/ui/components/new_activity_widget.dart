@@ -3,7 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class NewActivityWidget extends StatelessWidget with ActivityNavigation {
-  const NewActivityWidget({Key? key}) : super(key: key);
+  const NewActivityWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

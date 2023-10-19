@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class AddActivityGeneralSettingsTab extends StatelessWidget {
-  const AddActivityGeneralSettingsTab({Key? key}) : super(key: key);
+  const AddActivityGeneralSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {

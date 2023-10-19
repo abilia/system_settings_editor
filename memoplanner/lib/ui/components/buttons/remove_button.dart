@@ -6,11 +6,11 @@ class RemoveButton extends StatelessWidget {
   final String? text;
 
   const RemoveButton({
-    Key? key,
+    super.key,
     this.onTap,
     this.icon,
     this.text,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

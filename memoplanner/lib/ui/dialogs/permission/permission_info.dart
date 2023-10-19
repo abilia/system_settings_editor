@@ -8,8 +8,8 @@ class PermissionInfoDialog extends StatelessWidget {
 
   const PermissionInfoDialog({
     required this.permission,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -67,8 +67,8 @@ class PermissionInfoDialog extends StatelessWidget {
 class PermissionInfoBodyText extends StatelessWidget {
   const PermissionInfoBodyText({
     required this.allowAccessBodyText,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String allowAccessBodyText;
   @override

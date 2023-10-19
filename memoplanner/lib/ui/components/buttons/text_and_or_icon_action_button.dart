@@ -5,11 +5,11 @@ class TextAndIconActionButton extends StatelessWidget {
   const TextAndIconActionButton(
     this.text,
     this.iconData, {
-    Key? key,
+    super.key,
     this.onPressed,
     this.style,
     this.size,
-  }) : super(key: key);
+  });
 
   final ButtonStyle? style;
   final VoidCallback? onPressed;
@@ -41,11 +41,11 @@ class TextAndOrIconActionButtonLight extends StatelessWidget {
   const TextAndOrIconActionButtonLight(
     this.text,
     this.iconData, {
-    Key? key,
+    super.key,
     this.onPressed,
     this.selected = false,
     this.ttsData,
-  }) : super(key: key);
+  });
 
   final String text;
   final IconData iconData;
@@ -79,9 +79,9 @@ class TextAndOrIconActionButtonBlack extends StatelessWidget {
   const TextAndOrIconActionButtonBlack(
     this.text,
     this.iconData, {
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final String text;
   final IconData iconData;

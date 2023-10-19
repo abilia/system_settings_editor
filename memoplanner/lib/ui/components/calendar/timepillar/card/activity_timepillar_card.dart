@@ -169,8 +169,8 @@ class SideTime extends StatelessWidget {
     required this.category,
     required this.showCategoryColor,
     required this.nightMode,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

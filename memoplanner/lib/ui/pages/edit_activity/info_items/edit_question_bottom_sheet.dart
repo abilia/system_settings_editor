@@ -6,8 +6,8 @@ class EditQuestionBottomSheet extends StatelessWidget {
 
   const EditQuestionBottomSheet({
     this.question,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);

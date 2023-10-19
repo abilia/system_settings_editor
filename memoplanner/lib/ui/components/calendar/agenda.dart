@@ -7,8 +7,8 @@ class Agenda extends StatelessWidget with CalendarWidgetMixin {
 
   const Agenda({
     required this.eventsState,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +53,8 @@ class EventList extends StatelessWidget {
     required this.events,
     required this.scrollController,
     this.centerNoActivitiesText = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ScrollController? scrollController;
   final double bottomPadding, topPadding;
@@ -130,7 +130,7 @@ class EventList extends StatelessWidget {
 }
 
 class SliverNoActivities extends StatelessWidget {
-  const SliverNoActivities({required this.center, Key? key}) : super(key: key);
+  const SliverNoActivities({required this.center, super.key});
   final bool center;
 
   @override
@@ -171,9 +171,8 @@ class SliverEventList extends StatelessWidget {
     this.reversed = false,
     this.isNight = false,
     this.lastMargin = 0.0,
-    Key? key,
-  })  : _maxIndex = events.length - 1,
-        super(key: key);
+    super.key,
+  }) : _maxIndex = events.length - 1;
 
   @override
   Widget build(BuildContext context) {

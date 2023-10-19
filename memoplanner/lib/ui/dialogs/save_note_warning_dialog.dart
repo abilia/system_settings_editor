@@ -1,7 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 class SaveNoteWarningDialog extends StatelessWidget {
-  const SaveNoteWarningDialog({Key? key}) : super(key: key);
+  const SaveNoteWarningDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

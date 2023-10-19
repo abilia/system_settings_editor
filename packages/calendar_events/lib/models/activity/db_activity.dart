@@ -5,9 +5,9 @@ class DbActivity extends DbModel<Activity> {
 
   const DbActivity._({
     required Activity activity,
-    required int dirty,
-    required int revision,
-  }) : super(revision: revision, dirty: dirty, model: activity);
+    required super.dirty,
+    required super.revision,
+  }) : super(model: activity);
 
   @override
   DbActivity copyWith({

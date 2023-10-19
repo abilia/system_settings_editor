@@ -14,7 +14,7 @@ import 'package:seagull_logging/logging.dart';
 part 'warning_modal.dart';
 
 class LogoutPage extends StatelessWidget {
-  const LogoutPage({Key? key}) : super(key: key);
+  const LogoutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,7 @@ class LogoutPage extends StatelessWidget {
 }
 
 class ProfilePictureNameAndEmail extends StatefulWidget {
-  const ProfilePictureNameAndEmail({Key? key}) : super(key: key);
+  const ProfilePictureNameAndEmail({super.key});
 
   @override
   State createState() => _ProfilePictureNameAndEmailState();

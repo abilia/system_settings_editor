@@ -9,8 +9,8 @@ class TimeInputPage extends StatelessWidget {
 
   TimeInputPage({
     required this.timeInput,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +74,8 @@ class TimeInputPage extends StatelessWidget {
 
 class MissingStartTimeErrorDialog extends StatelessWidget {
   const MissingStartTimeErrorDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +98,8 @@ class TimeInputContent extends StatefulWidget {
     required this.is24HoursFormat,
     this.bottomNavigationBuilder,
     this.onValidTimeInput,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State createState() => _TimeInputContentState();
@@ -393,8 +393,7 @@ class _TimeInput extends StatelessWidget {
     required this.amRadioFieldKey,
     required this.pmRadioFieldKey,
     required this.inputKey,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final TextEditingController controller;
   final FocusNode focusNode;
@@ -569,8 +568,8 @@ class AmPmSelector extends StatelessWidget {
     required this.onChanged,
     this.amRadioFieldKey,
     this.pmRadioFieldKey,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

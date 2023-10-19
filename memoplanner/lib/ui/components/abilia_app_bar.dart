@@ -56,10 +56,9 @@ class AbiliaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.useVerticalSafeArea = true,
     this.height,
     MainAxisAlignment? mainAxisAlignment,
-    Key? key,
-  })  : preferredSize = Size.fromHeight(height ??
-            layout.appBar.smallHeight + (bottom?.preferredSize.height ?? 0.0)),
-        super(key: key);
+    super.key,
+  }) : preferredSize = Size.fromHeight(height ??
+            layout.appBar.smallHeight + (bottom?.preferredSize.height ?? 0.0));
 
   @override
   Widget build(BuildContext context) {
@@ -120,9 +119,8 @@ class AbiliaSearchAppBar extends StatelessWidget
     required this.onImageSelected,
     this.breadcrumbs = const [],
     MainAxisAlignment? mainAxisAlignment,
-    Key? key,
-  })  : preferredSize = Size.fromHeight(layout.appBar.smallHeight),
-        super(key: key);
+    super.key,
+  }) : preferredSize = Size.fromHeight(layout.appBar.smallHeight);
 
   @override
   Widget build(BuildContext context) {

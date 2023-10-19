@@ -5,7 +5,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class AlarmSettingsPage extends StatelessWidget {
-  const AlarmSettingsPage({Key? key}) : super(key: key);
+  const AlarmSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -145,8 +145,8 @@ class _AlarmSelector extends StatelessWidget {
     required this.sound,
     required this.onChanged,
     this.noSoundOption = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -199,8 +199,8 @@ class _AlarmDurationSelector extends StatelessWidget {
 
   const _AlarmDurationSelector({
     required this.duration,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

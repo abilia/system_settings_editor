@@ -6,7 +6,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class ActivityViewSettingsPage extends StatelessWidget {
-  const ActivityViewSettingsPage({Key? key}) : super(key: key);
+  const ActivityViewSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +102,7 @@ class _FakeMemoplannerSetting extends StatelessWidget {
 
   const _FakeMemoplannerSetting({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -149,8 +148,8 @@ class _FakeMemoplannerSetting extends StatelessWidget {
 
 class ActivityPagePreview extends StatelessWidget {
   const ActivityPagePreview({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

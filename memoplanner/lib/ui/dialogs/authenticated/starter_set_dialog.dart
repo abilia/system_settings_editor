@@ -3,7 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 
 class StarterSetDialog extends StatelessWidget {
   final Function() onNext;
-  const StarterSetDialog({required this.onNext, Key? key}) : super(key: key);
+  const StarterSetDialog({required this.onNext, super.key});
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);

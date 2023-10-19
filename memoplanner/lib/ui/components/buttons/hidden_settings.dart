@@ -3,7 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class HiddenSetting extends StatefulWidget {
-  const HiddenSetting({Key? key}) : super(key: key);
+  const HiddenSetting({super.key});
 
   @override
   State createState() => _HiddenSettingState();

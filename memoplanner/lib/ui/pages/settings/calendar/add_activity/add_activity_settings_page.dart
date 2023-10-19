@@ -3,7 +3,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class AddActivitySettingsPage extends StatelessWidget {
-  const AddActivitySettingsPage({Key? key}) : super(key: key);
+  const AddActivitySettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

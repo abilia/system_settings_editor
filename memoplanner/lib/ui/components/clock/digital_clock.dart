@@ -4,7 +4,7 @@ import 'package:memoplanner/utils/all.dart';
 
 class DigitalClock extends StatelessWidget {
   final TextStyle? style;
-  const DigitalClock({Key? key, this.style}) : super(key: key);
+  const DigitalClock({super.key, this.style});
 
   @override
   Widget build(BuildContext context) {

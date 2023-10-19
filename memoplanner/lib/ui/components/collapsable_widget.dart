@@ -13,8 +13,8 @@ class CollapsableWidget extends StatelessWidget {
     this.padding = EdgeInsets.zero,
     this.alignment = Alignment.topLeft,
     this.axis = Axis.vertical,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

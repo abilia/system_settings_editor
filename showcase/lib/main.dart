@@ -13,7 +13,7 @@ void main() {
 }
 
 class WidgetBook extends StatelessWidget {
-  const WidgetBook({Key? key}) : super(key: key);
+  const WidgetBook({super.key});
 
   @override
   Widget build(BuildContext context) {

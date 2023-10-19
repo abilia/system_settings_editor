@@ -6,16 +6,14 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:system_settings_editor/volume_settings.dart';
 
 class AlarmVolumeSlider extends _VolumeSlider {
-  const AlarmVolumeSlider({Key? key, VoidCallback? onVolumeSet})
-      : super(key: key, onVolumeSet: onVolumeSet);
+  const AlarmVolumeSlider({super.key, super.onVolumeSet});
 
   @override
   State createState() => _AlarmVolumeSliderState();
 }
 
 class MediaVolumeSlider extends _VolumeSlider {
-  const MediaVolumeSlider({Key? key, VoidCallback? onVolumeSet})
-      : super(key: key, onVolumeSet: onVolumeSet);
+  const MediaVolumeSlider({super.key, super.onVolumeSet});
 
   @override
   State createState() => _MediaVolumeSliderState();
@@ -24,7 +22,7 @@ class MediaVolumeSlider extends _VolumeSlider {
 abstract class _VolumeSlider extends StatefulWidget {
   final VoidCallback? onVolumeSet;
 
-  const _VolumeSlider({Key? key, this.onVolumeSet}) : super(key: key);
+  const _VolumeSlider({super.key, this.onVolumeSet});
 }
 
 class _AlarmVolumeSliderState extends _VolumeSliderState {

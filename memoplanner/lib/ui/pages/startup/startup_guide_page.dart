@@ -5,7 +5,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/android_intents.dart';
 
 class StartupGuidePage extends StatelessWidget {
-  const StartupGuidePage({Key? key}) : super(key: key);
+  const StartupGuidePage({super.key});
 
   static const pageDuration = Duration(milliseconds: 500);
   static const curve = Curves.easeOutQuad;
@@ -68,7 +68,7 @@ class StartupGuidePage extends StatelessWidget {
 }
 
 class _SkipStartupGuide extends StatelessWidget {
-  const _SkipStartupGuide({Key? key}) : super(key: key);
+  const _SkipStartupGuide();
 
   @override
   Widget build(BuildContext context) {

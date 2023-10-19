@@ -5,8 +5,8 @@ class SecondaryActionButton extends StatelessWidget {
     required this.style,
     required this.child,
     this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ButtonStyle style;
   final VoidCallback? onPressed;
@@ -27,8 +27,8 @@ class SecondaryActionButtonLight extends StatelessWidget {
   const SecondaryActionButtonLight({
     required this.child,
     this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
   final VoidCallback? onPressed;
@@ -45,8 +45,8 @@ class SecondaryActionButtonDark extends StatelessWidget {
   const SecondaryActionButtonDark({
     required this.child,
     this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
   final VoidCallback? onPressed;

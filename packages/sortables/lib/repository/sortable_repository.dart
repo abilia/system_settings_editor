@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:sortables/sortables.dart';
@@ -11,15 +10,12 @@ class SortableRepository extends DataRepository<Sortable> {
   final SortableDb sortableDb;
 
   SortableRepository({
-    required BaseUrlDb baseUrlDb,
-    required BaseClient client,
-    required int userId,
+    required super.baseUrlDb,
+    required super.client,
+    required super.userId,
     required this.sortableDb,
   }) : super(
-            client: client,
-            baseUrlDb: baseUrlDb,
             path: 'sortableitems',
-            userId: userId,
             db: sortableDb,
             fromJsonToDataModel: DbSortable.fromJson,
             log: Logger((SortableRepository).toString()),

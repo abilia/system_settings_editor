@@ -14,8 +14,8 @@ class PasswordInput extends StatelessWidget {
     required this.errorState,
     required this.validator,
     this.inputHeading,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +94,8 @@ class PasswordInputBottomSheet extends StatefulWidget {
   const PasswordInputBottomSheet({
     required this.password,
     this.inputHeading,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String password;
   final String? inputHeading;
@@ -205,9 +205,9 @@ class _PasswordInputBottomSheetState
 
 class HidePasswordButton extends StatelessWidget {
   const HidePasswordButton({
-    Key? key,
+    super.key,
     this.padding = EdgeInsets.zero,
-  }) : super(key: key);
+  });
 
   final EdgeInsets padding;
 

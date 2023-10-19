@@ -7,10 +7,10 @@ class AbiliaScrollBar extends StatelessWidget {
 
   const AbiliaScrollBar({
     required this.child,
-    Key? key,
+    super.key,
     this.controller,
     this.thumbVisibility = false,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) => CupertinoScrollbar(
         controller: controller,

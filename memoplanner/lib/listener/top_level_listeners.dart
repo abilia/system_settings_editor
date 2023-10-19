@@ -17,9 +17,9 @@ class TopLevelListeners extends StatelessWidget {
   const TopLevelListeners({
     required this.child,
     required this.navigatorKey,
-    Key? key,
+    super.key,
     this.payload,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) => Listener(

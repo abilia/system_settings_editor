@@ -6,8 +6,8 @@ import 'package:memoplanner/ui/all.dart';
 
 class ResetDeviceDialog extends StatelessWidget {
   const ResetDeviceDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,7 @@ class ResetDeviceDialog extends StatelessWidget {
 }
 
 class _ResetDeviceDialog extends StatelessWidget {
-  const _ResetDeviceDialog({
-    Key? key,
-  }) : super(key: key);
+  const _ResetDeviceDialog();
 
   @override
   Widget build(BuildContext context) {

@@ -6,8 +6,8 @@ class WebViewDialog extends StatelessWidget {
 
   const WebViewDialog({
     required this.url,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return ViewDialog(

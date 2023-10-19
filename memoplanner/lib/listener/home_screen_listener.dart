@@ -8,8 +8,8 @@ class ReturnToHomeScreenListener extends StatelessWidget {
 
   const ReturnToHomeScreenListener({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     if (!Config.isMP) return child;

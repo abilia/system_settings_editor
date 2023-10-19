@@ -19,18 +19,15 @@ class UserFileRepository extends DataRepository<UserFile> {
   final MultipartRequestBuilder multipartRequestBuilder;
 
   UserFileRepository({
-    required BaseUrlDb baseUrlDb,
-    required BaseClient client,
-    required int userId,
+    required super.baseUrlDb,
+    required super.client,
+    required super.userId,
     required this.userFileDb,
     required this.loginDb,
     required this.fileStorage,
     required this.multipartRequestBuilder,
   }) : super(
-          client: client,
-          baseUrlDb: baseUrlDb,
           path: 'storage/items',
-          userId: userId,
           db: userFileDb,
           fromJsonToDataModel: DbUserFile.fromJson,
           log: Logger((UserFileRepository).toString()),

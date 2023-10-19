@@ -5,8 +5,8 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
 
   const NotificationPermissionOffWarningDialog({
     required this.onOk,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -46,8 +46,8 @@ class NotificationPermissionOffWarningDialog extends StatelessWidget {
 
 class NotificationPermissionWarningDialog extends StatelessWidget {
   const NotificationPermissionWarningDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) => ViewDialog(
         expanded: true,
@@ -64,8 +64,7 @@ class _WarningContent extends StatelessWidget {
   const _WarningContent({
     required this.heading,
     required this.body,
-    Key? key,
-  }) : super(key: key);
+  });
   final String heading;
   final Widget body;
   @override
@@ -92,7 +91,7 @@ class _WarningContent extends StatelessWidget {
 
 @visibleForTesting
 class NotificationBodyTextWarning extends StatelessWidget {
-  const NotificationBodyTextWarning({Key? key}) : super(key: key);
+  const NotificationBodyTextWarning({super.key});
 
   @override
   Widget build(BuildContext context) {

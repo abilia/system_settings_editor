@@ -10,7 +10,7 @@ class IntervalsSettingsTab extends StatelessWidget {
     DayPart.evening,
     DayPart.night,
   ];
-  const IntervalsSettingsTab({Key? key}) : super(key: key);
+  const IntervalsSettingsTab({super.key});
   @override
   Widget build(BuildContext context) => ListView.separated(
         padding: EdgeInsets.only(
@@ -32,8 +32,8 @@ class IntervalStepper extends StatelessWidget {
 
   const IntervalStepper({
     required this.part,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

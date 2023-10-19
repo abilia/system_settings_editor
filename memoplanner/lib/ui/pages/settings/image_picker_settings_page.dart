@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ImagePickerSettingsPage extends StatefulWidget {
-  const ImagePickerSettingsPage({Key? key}) : super(key: key);
+  const ImagePickerSettingsPage({super.key});
 
   @override
   State createState() => _ImagePickerSettingsPageState();

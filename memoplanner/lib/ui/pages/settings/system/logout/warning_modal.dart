@@ -2,7 +2,7 @@ part of 'logout_page.dart';
 
 @visibleForTesting
 class LogoutWarningModal extends StatelessWidget {
-  const LogoutWarningModal({Key? key}) : super(key: key);
+  const LogoutWarningModal({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,7 @@ class LogoutWarningModal extends StatelessWidget {
 }
 
 class _InternetConnection extends StatelessWidget {
-  const _InternetConnection({Key? key}) : super(key: key);
+  const _InternetConnection();
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +146,7 @@ class _Body extends StatelessWidget {
   const _Body({
     required this.warning,
     required this.dirtyItems,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final DirtyItems? dirtyItems;
   final LogoutWarning warning;
@@ -245,8 +244,7 @@ class _DirtyItems extends StatefulWidget {
   const _DirtyItems({
     required this.dirtyItems,
     required this.warning,
-    Key? key = TestKey.dirtyItems,
-  }) : super(key: key);
+  });
 
   final DirtyItems dirtyItems;
   final LogoutWarning warning;
@@ -399,8 +397,8 @@ class _LogoutModal extends StatelessWidget {
     required this.body,
     this.label,
     this.bodyWithoutBottomPadding = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget icon;
   final Widget? body;

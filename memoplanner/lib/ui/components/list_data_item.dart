@@ -19,8 +19,8 @@ class ListDataItem extends StatelessWidget {
     this.alwaysShowTrailing = false,
     this.semanticsLabel,
     this.secondaryText,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final bool hasText = text.data?.isNotEmpty ?? false;

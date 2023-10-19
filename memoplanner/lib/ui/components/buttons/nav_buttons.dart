@@ -3,8 +3,8 @@ import 'package:memoplanner/ui/all.dart';
 class LeftNavButton extends StatelessWidget {
   const LeftNavButton({
     required this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Function() onPressed;
   @override
@@ -18,8 +18,8 @@ class LeftNavButton extends StatelessWidget {
 class RightNavButton extends StatelessWidget {
   const RightNavButton({
     required this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Function() onPressed;
   @override

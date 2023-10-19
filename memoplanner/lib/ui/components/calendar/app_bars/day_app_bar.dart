@@ -15,8 +15,8 @@ class DayAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leftAction,
     this.rightAction,
     this.clockReplacement,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Size get preferredSize => CalendarAppBar.size;

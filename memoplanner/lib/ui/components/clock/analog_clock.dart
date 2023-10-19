@@ -7,8 +7,8 @@ import 'package:memoplanner/utils/all.dart';
 
 class AnalogClock extends StatelessWidget {
   const AnalogClock({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,8 @@ class AnalogClock extends StatelessWidget {
 class ScreensaverAnalogClock extends StatelessWidget {
   const ScreensaverAnalogClock({
     required this.isNight,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final bool isNight;
 
   @override
@@ -93,8 +93,7 @@ class _AnalogClock extends StatelessWidget {
     this.height = double.infinity,
     this.hourHandLength,
     this.minuteHandLength,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

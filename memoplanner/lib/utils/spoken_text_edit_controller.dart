@@ -18,8 +18,8 @@ class SpokenTextEditController extends TextEditingController {
 
   SpokenTextEditController._({
     required this.onNewWord,
-    String? text,
-  }) : super(text: text);
+    super.text,
+  });
 
   @override
   set value(TextEditingValue newValue) {
