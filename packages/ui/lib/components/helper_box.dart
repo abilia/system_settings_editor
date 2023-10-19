@@ -9,7 +9,7 @@ enum HelperBoxSize { medium, large }
 class SeagullHelperBox extends StatelessWidget {
   final String text;
   final IconData? icon;
-  final Color? iconColor;
+  final IconTheme? iconTheme;
   final MessageState state;
   final HelperBoxSize size;
 
@@ -18,7 +18,7 @@ class SeagullHelperBox extends StatelessWidget {
     required this.state,
     required this.size,
     this.icon,
-    this.iconColor,
+    this.iconTheme,
     super.key,
   });
 
@@ -27,6 +27,7 @@ class SeagullHelperBox extends StatelessWidget {
     final color = _getColor();
     final helperBoxTheme = _getTheme(context);
     final iconAndTextBoxTheme = helperBoxTheme.iconAndTextBoxTheme;
+    final showIcon = icon != null || iconTheme != null;
     return DecoratedBox(
       decoration: ShapeDecoration(
         shape: iconAndTextBoxTheme.border,
@@ -37,12 +38,13 @@ class SeagullHelperBox extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (icon != null) ...[
-              Icon(
-                icon,
-                size: iconAndTextBoxTheme.iconSize,
-                color: iconColor,
-              ),
+            if (showIcon) ...[
+              if (icon != null)
+                Icon(
+                  icon,
+                  size: iconAndTextBoxTheme.iconSize,
+                ),
+              if (iconTheme != null) iconTheme!,
               SizedBox(width: iconAndTextBoxTheme.iconSpacing),
             ],
             Expanded(

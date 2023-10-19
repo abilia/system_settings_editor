@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/collapsable_widget.dart';
 import 'package:ui/components/helper_box.dart';
 import 'package:ui/states.dart';
 import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/abilia_theme.dart';
+import 'package:ui/themes/combo_box/combo_box_themes.dart';
 import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/numericals.dart';
 
@@ -58,7 +58,8 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
   Widget build(BuildContext context) {
     final theme = AbiliaTheme.of(context).comboBox;
     final label = widget.label;
-    final showHelperBox = widget.messageState != MessageState.none;
+    final showHelperBox = widget.messageState == MessageState.error ||
+        widget.messageState == MessageState.success;
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -107,10 +108,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
           child: CollapsableWidget(
             collapsed: !showHelperBox,
             child: SeagullHelperBox(
-              icon: _getIcon(widget.messageState),
-              iconColor: widget.messageState == MessageState.success
-                  ? SurfaceColors.positiveSelected
-                  : null,
+              iconTheme: _getIconTheme(widget.messageState),
               text: widget.message ?? '',
               size: HelperBoxSize.medium,
               state: widget.messageState,
@@ -121,12 +119,12 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
     );
   }
 
-  IconData? _getIcon(MessageState state) {
+  IconTheme? _getIconTheme(MessageState state) {
     switch (state) {
       case MessageState.error:
-        return Symbols.error;
+        return iconThemeError;
       case MessageState.success:
-        return Symbols.check_circle_filled;
+        return iconThemeSuccess;
       default:
         return null;
     }
