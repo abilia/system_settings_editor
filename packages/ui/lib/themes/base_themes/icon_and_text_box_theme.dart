@@ -1,9 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:ui/styles/borders.dart';
-import 'package:ui/tokens/fonts.dart';
-import 'package:ui/tokens/numericals.dart';
 
 class IconAndTextBoxTheme extends ThemeExtension<IconAndTextBoxTheme> {
   final TextStyle textStyle;
@@ -19,20 +16,6 @@ class IconAndTextBoxTheme extends ThemeExtension<IconAndTextBoxTheme> {
     required this.iconSpacing,
     required this.border,
   });
-
-  static final primary900 = IconAndTextBoxTheme(
-    textStyle: AbiliaFonts.primary300,
-    padding: const EdgeInsets.all(numerical300),
-    iconSize: numerical600,
-    iconSpacing: numerical200,
-    border: border200,
-  );
-
-  static final primary1000 = primary900.copyWith(
-    textStyle: AbiliaFonts.primary400,
-    padding: const EdgeInsets.all(numerical600),
-    iconSize: numerical800,
-  );
 
   @override
   IconAndTextBoxTheme copyWith({

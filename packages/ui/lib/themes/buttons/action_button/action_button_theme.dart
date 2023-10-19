@@ -4,10 +4,12 @@ class SeagullActionButtonTheme
     extends ThemeExtension<SeagullActionButtonTheme> {
   final double iconSpacing;
   final ButtonStyle buttonStyle;
+  final SpinnerSize spinnerSize;
 
   const SeagullActionButtonTheme({
     required this.iconSpacing,
     required this.buttonStyle,
+    required this.spinnerSize,
   });
 
   static final primary800 =
@@ -40,18 +42,21 @@ class SeagullActionButtonTheme
 
   factory SeagullActionButtonTheme.small(ButtonStyle buttonStyle) =>
       SeagullActionButtonTheme(
+        spinnerSize: SpinnerSize.small,
         iconSpacing: numerical100,
         buttonStyle: buttonStyle,
       );
 
   factory SeagullActionButtonTheme.medium(ButtonStyle buttonStyle) =>
       SeagullActionButtonTheme(
+        spinnerSize: SpinnerSize.small,
         iconSpacing: numerical200,
         buttonStyle: buttonStyle,
       );
 
   factory SeagullActionButtonTheme.large(ButtonStyle buttonStyle) =>
       SeagullActionButtonTheme(
+        spinnerSize: SpinnerSize.medium,
         iconSpacing: numerical200,
         buttonStyle: buttonStyle,
       );
@@ -60,10 +65,12 @@ class SeagullActionButtonTheme
   SeagullActionButtonTheme copyWith({
     double? iconSpacing,
     ButtonStyle? buttonStyle,
+    SpinnerSize? spinnerSize,
   }) {
     return SeagullActionButtonTheme(
       iconSpacing: iconSpacing ?? this.iconSpacing,
       buttonStyle: buttonStyle ?? this.buttonStyle,
+      spinnerSize: spinnerSize ?? this.spinnerSize,
     );
   }
 
@@ -74,6 +81,7 @@ class SeagullActionButtonTheme
       iconSpacing: lerpDouble(iconSpacing, other.iconSpacing, t) ?? iconSpacing,
       buttonStyle:
           ButtonStyle.lerp(buttonStyle, other.buttonStyle, t) ?? buttonStyle,
+      spinnerSize: other.spinnerSize,
     );
   }
 }
