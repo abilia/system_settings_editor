@@ -1,4 +1,5 @@
 import 'package:android_intent_plus/android_intent.dart';
+import 'package:carymessenger/l10n/generated/l10n.dart';
 
 import 'package:carymessenger/ui/components/buttons/action.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class GooglePlayButton extends StatelessWidget {
           'market://details?id=${GetIt.I<PackageInfo>().packageName}',
         ),
       ).launch(),
-      text: 'Check for updates',
+      text: Lt.of(context).check_for_updates,
     );
   }
 }

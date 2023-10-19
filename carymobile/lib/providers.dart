@@ -165,13 +165,14 @@ class AuthenticationBlocProvider extends StatelessWidget {
   }
 
   Future<void> _clearSettings() async {
-    const deviceRecords = DeviceDb.records;
-    const baseUrlRecord = BaseUrlDb.baseUrlRecord;
-    const records = {...deviceRecords, baseUrlRecord};
-
+    const records = {
+      ...DeviceDb.records,
+      BaseUrlDb.baseUrlRecord,
+      ...VoiceDb.storeOnLogoutRecords,
+    };
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final keys = prefs.getKeys().where((key) => !records.contains(key));
-    for (final key in keys) {
+    final removeKeys = prefs.getKeys().difference(records);
+    for (final key in removeKeys) {
       await prefs.remove(key);
     }
   }

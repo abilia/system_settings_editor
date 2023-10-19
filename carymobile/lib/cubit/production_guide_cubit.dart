@@ -15,12 +15,10 @@ class ProductionGuideCubit extends Cubit<ProductionGuideState> {
   }) : super(
           getState(speechSettingsCubit.state, permissionCubit.state.status),
         ) {
-    speechSettingsCubit.stream.listen((speechState) {
-      emit(getState(speechState, permissionCubit.state.status));
-    });
-    permissionCubit.stream.listen((permissionState) {
-      emit(getState(speechSettingsCubit.state, permissionState.status));
-    });
+    speechSettingsCubit.stream.listen((speechState) =>
+        emit(getState(speechState, permissionCubit.state.status)));
+    permissionCubit.stream.listen((permissionState) =>
+        emit(getState(speechSettingsCubit.state, permissionState.status)));
   }
 
   static ProductionGuideState getState(

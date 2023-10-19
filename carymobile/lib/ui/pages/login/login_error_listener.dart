@@ -24,8 +24,8 @@ class LoginErrorListener extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    userFacingMessage(state.cause),
-                    style: bodyWhite,
+                    userFacingMessage(state.cause, Lt.of(context)),
+                    style: bodyMediumWhite,
                   ),
                 ),
               ),
@@ -40,14 +40,14 @@ class LoginErrorListener extends StatelessWidget {
     );
   }
 
-  String userFacingMessage(LoginFailureCause cause) {
+  String userFacingMessage(LoginFailureCause cause, Lt translate) {
     switch (cause) {
       case LoginFailureCause.credentials:
-        return 'Wrong username or password';
+        return translate.wrong_username_or_password;
       case LoginFailureCause.licenseExpired:
-        return 'License expired';
+        return translate.license_expired;
       case LoginFailureCause.noLicense:
-        return 'No license';
+        return translate.no_license;
       case LoginFailureCause.noUsername:
       case LoginFailureCause.noPassword:
       case LoginFailureCause.noConnection:

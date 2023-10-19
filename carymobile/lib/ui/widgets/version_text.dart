@@ -1,4 +1,4 @@
-import 'package:carymessenger/ui/themes/text_styles.dart';
+import 'package:carymessenger/ui/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -15,7 +15,7 @@ class VersionText extends StatelessWidget {
         ),
         child: Text(
           versionText(GetIt.I<PackageInfo>()),
-          style: headline4,
+          style: titleMedium,
         ),
       );
 

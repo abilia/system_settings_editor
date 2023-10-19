@@ -9,7 +9,7 @@ class UsernameInputField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(translate.username_email, style: body),
+        Text(translate.username_email),
         const SizedBox(height: 4),
         Tooltip(
           message: translate.username_email,
