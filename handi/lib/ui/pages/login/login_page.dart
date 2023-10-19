@@ -10,7 +10,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:ui/components/action_button/action_button.dart';
+import 'package:ui/components/buttons/buttons.dart';
+
+part 'logo_with_change_server.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({required this.unauthenticatedState, super.key});
@@ -36,9 +38,10 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                ActionButtonPrimary(
+                SeagullActionButton(
                   text: 'Ok',
-                  size: ActionButtonSize.large,
+                  type: ActionButtonType.primary,
+                  size: ButtonSize.large,
                   onPressed: () {
                     Navigator.of(context).maybePop();
                   },
@@ -78,6 +81,8 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    const LogoWithChangeServer(),
+                    const SizedBox(height: 24),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -105,28 +110,11 @@ class LoginPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ...backendEnvironments.entries.map(
-                          (kvp) => Builder(
-                            builder: (context) => RadioMenuButton(
-                              value: kvp.key,
-                              onChanged: (s) async => context
-                                  .read<BaseUrlCubit>()
-                                  .updateBaseUrl(kvp.key),
-                              groupValue: context.watch<BaseUrlCubit>().state,
-                              child: Text(kvp.value),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     const Spacer(),
-                    ActionButtonPrimary(
+                    SeagullActionButton(
                       text: translate.signIn,
-                      size: ActionButtonSize.large,
+                      type: ActionButtonType.primary,
+                      size: ButtonSize.large,
                       onPressed: state.isFormValid
                           ? context.read<LoginCubit>().loginButtonPressed
                           : null,

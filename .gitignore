@@ -6,6 +6,9 @@ env.g.dart
 # Lokalise
 *.arb
 
+# Patrol
+test_bundle.dart
+
 # Miscellaneous
 *.class
 *.log

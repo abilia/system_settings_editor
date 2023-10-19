@@ -1,9 +1,18 @@
 # Handi6
 
-## Run app
+### Run app
 
 `$ flutter run`
 
-## Run tests
+## Testing
+
+### Widget and unit testing
 
 `$ flutter test`
+
+### Integration testing
+
+`$ dart pub global activate patrol_cli`
+
+`$ patrol test`
+
