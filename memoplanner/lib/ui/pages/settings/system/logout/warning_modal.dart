@@ -244,7 +244,7 @@ class _DirtyItems extends StatefulWidget {
   const _DirtyItems({
     required this.dirtyItems,
     required this.warning,
-  });
+  }) : super(key: TestKey.dirtyItems);
 
   final DirtyItems dirtyItems;
   final LogoutWarning warning;
