@@ -54,7 +54,7 @@ class ShowHideToggle extends StatelessWidget {
           children: [
             AnimatedCrossFade(
               duration: Agenda.animationDuration,
-              firstChild: Text(Lt.of(context).show, style: bodySmall),
+              firstChild: Text(Lt.of(context).hide, style: bodySmall),
               secondChild: Text(Lt.of(context).show, style: bodySmall),
               crossFadeState:
                   show ? CrossFadeState.showFirst : CrossFadeState.showSecond,
@@ -65,7 +65,7 @@ class ShowHideToggle extends StatelessWidget {
               transformAlignment: Alignment.center,
               transform: Matrix4.diagonal3Values(
                 -1.0,
-                show ? 1.0 : -1.0,
+                show ? -1.0 : 1.0,
                 1,
               )..rotateZ(.5 * pi),
               child: const Icon(
