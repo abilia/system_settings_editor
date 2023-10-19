@@ -1,4 +1,5 @@
 import 'package:auth/auth.dart';
+import 'package:carymessenger/l10n/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,7 +11,7 @@ class LogoutButton extends StatelessWidget {
     return FilledButton(
       onPressed: () =>
           context.read<AuthenticationBloc>().add(const LoggedOut()),
-      child: const Text('Log out'),
+      child: Text(Lt.of(context).log_out),
     );
   }
 }

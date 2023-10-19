@@ -25,26 +25,27 @@ class CaryClockPainter extends CustomPainter {
     const numberFraction = borderFraction * 8;
     const fontFraction = borderFraction * 6;
 
-    final radius = min(size.width, size.height) / 2;
-    final borderWidth = radius * borderFraction;
+    final maxRadius = min(size.width, size.height) / 2;
+    final borderWidth = maxRadius * borderFraction;
+    final radius = maxRadius - borderWidth;
     final numberOffset = radius * numberFraction;
     final numberRadius = radius - numberOffset;
     final knobRadius = borderWidth * 1.5;
     final knobPadding = knobRadius * 1.5;
     final fontSize = radius * fontFraction;
 
-    canvas.translate(
-      size.width / 2,
-      size.height / 2,
-    );
+    canvas.translate(size.width / 2, size.height / 2);
     if (showMinuteMark) {
       _paintMinuteMark(canvas, radius, numberOffset / 4, borderWidth / 2);
     }
     _paintHourText(
-        canvas, numberRadius, textStyle.copyWith(fontSize: fontSize));
+      canvas,
+      numberRadius,
+      textStyle.copyWith(fontSize: fontSize),
+    );
     _paintHourMark(canvas, radius, numberOffset / 2, borderWidth);
 
-    final hourDial = hourHandEnd(numberRadius * 0.8);
+    final hourDial = hourHandEnd(numberRadius * 0.7);
     final minuteDial = minuteHandEnd(numberRadius);
     canvas
       ..drawCircle(

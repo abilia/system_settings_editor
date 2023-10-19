@@ -10,13 +10,13 @@ class PlayStopButton extends StatelessWidget {
         return ActionButtonBlack(
           onPressed: () => context.read<AlarmPageBloc>().add(StopAlarm()),
           leading: const Icon(AbiliaIcons.stop),
-          text: 'Stop',
+          text: Lt.of(context).stop,
         );
       default:
         return ActionButtonBlack(
           onPressed: () => context.read<AlarmPageBloc>().add(PlayAfter()),
           leading: const Icon(AbiliaIcons.playSound),
-          text: 'Play',
+          text: Lt.of(context).play,
         );
     }
   }
