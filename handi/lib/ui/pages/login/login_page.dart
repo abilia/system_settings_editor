@@ -13,6 +13,8 @@ import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ui/components/buttons/buttons.dart';
 import 'package:ui/components/combo_box.dart';
+import 'package:ui/states.dart';
+import 'package:ui/tokens/numericals.dart';
 
 part 'logo_with_change_server.dart';
 
@@ -71,7 +73,7 @@ class LoginPage extends StatelessWidget {
         body: BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) => SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(numerical300),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -85,6 +87,9 @@ class LoginPage extends StatelessWidget {
                       leadingIcon: Symbols.account_circle,
                       textInputAction: TextInputAction.next,
                       onChanged: context.read<LoginCubit>().usernameChanged,
+                      messageState: state is LoginFailure
+                          ? MessageState.error
+                          : MessageState.none,
                     ),
                   ),
                   Tooltip(
@@ -95,6 +100,9 @@ class LoginPage extends StatelessWidget {
                       trailingIcon: Symbols.visibility,
                       obscureText: true,
                       onChanged: context.read<LoginCubit>().passwordChanged,
+                      messageState: state is LoginFailure
+                          ? MessageState.error
+                          : MessageState.none,
                       message: state is LoginFailure ? state.cause.name : null,
                     ),
                   ),

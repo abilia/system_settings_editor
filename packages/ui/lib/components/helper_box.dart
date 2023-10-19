@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ui/states.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/helper_box/helper_box_themes.dart';
 import 'package:ui/tokens/colors.dart';
-
-enum HelperBoxState {
-  caution,
-  info,
-  error,
-  success,
-}
 
 enum HelperBoxSize { medium, large }
 
 class SeagullHelperBox extends StatelessWidget {
   final String text;
   final IconData? icon;
-  final HelperBoxState state;
+  final MessageState state;
   final HelperBoxSize size;
 
   const SeagullHelperBox({
@@ -62,13 +56,13 @@ class SeagullHelperBox extends StatelessWidget {
 
   Color _getColor() {
     switch (state) {
-      case HelperBoxState.caution:
+      case MessageState.caution:
         return AbiliaColors.yellow.shade100;
-      case HelperBoxState.info:
+      case MessageState.info:
         return AbiliaColors.greyscale.shade100;
-      case HelperBoxState.error:
+      case MessageState.error:
         return AbiliaColors.peach.shade100;
-      case HelperBoxState.success:
+      default:
         return AbiliaColors.secondary.shade100;
     }
   }

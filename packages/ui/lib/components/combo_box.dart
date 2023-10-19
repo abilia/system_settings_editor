@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/collapsable_widget.dart';
+import 'package:ui/components/helper_box.dart';
+import 'package:ui/states.dart';
+import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/tokens/colors.dart';
 import 'package:ui/tokens/numericals.dart';
@@ -15,10 +18,11 @@ class SeagullComboBox extends StatefulWidget {
   final TextInputAction? textInputAction;
   final Function(String)? onChanged;
   final TextEditingController? controller;
+  final MessageState messageState;
 
   const SeagullComboBox({
-    this.hintText,
     this.controller,
+    this.hintText,
     this.onChanged,
     this.label,
     this.message,
@@ -26,6 +30,7 @@ class SeagullComboBox extends StatefulWidget {
     this.trailingIcon,
     this.textInputAction,
     this.obscureText = false,
+    this.messageState = MessageState.none,
     super.key,
   });
 
@@ -53,6 +58,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
   Widget build(BuildContext context) {
     final theme = AbiliaTheme.of(context).comboBox;
     final label = widget.label;
+    final showHelperBox = widget.message != null;
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -78,9 +84,6 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
                     ),
                   ]
                 : [],
-            borderRadius: const BorderRadius.all(
-              Radius.circular(numerical200),
-            ),
             color: AbiliaColors.greyscale,
           ),
           duration: const Duration(milliseconds: 150),
@@ -92,6 +95,12 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
               suffixIcon: widget.trailingIcon != null
                   ? Icon(widget.trailingIcon)
                   : null,
+              enabledBorder: _getBorder(widget.messageState) ??
+                  theme.inputDecorationTheme.enabledBorder,
+              focusedBorder: _getBorder(widget.messageState) ??
+                  theme.inputDecorationTheme.focusedBorder,
+              focusedErrorBorder: _getBorder(widget.messageState) ??
+                  theme.inputDecorationTheme.focusedErrorBorder,
             ).applyDefaults(theme.inputDecorationTheme),
             textInputAction: widget.textInputAction,
             style: theme.textStyle,
@@ -104,33 +113,38 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
         Padding(
           padding: const EdgeInsets.only(top: numerical300),
           child: CollapsableWidget(
-            collapsed: widget.message == null,
-            child: Container(
-              color: AbiliaColors.peach.shade100,
-              height: numerical900,
-              child: Padding(
-                padding: theme.messagePadding,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Icon(
-                      Symbols.error,
-                      size: theme.iconSize,
-                    ),
-                    SizedBox(width: theme.iconGap),
-                    Text(
-                      widget.message ?? '',
-                      style: theme.textStyle.copyWith(
-                        color: SurfaceColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            collapsed: !showHelperBox,
+            child: SeagullHelperBox(
+              icon: _getIcon(widget.messageState),
+              text: widget.message ?? '',
+              size: HelperBoxSize.medium,
+              state: widget.messageState,
             ),
           ),
         ),
       ],
     );
+  }
+
+  IconData? _getIcon(MessageState state) {
+    switch (state) {
+      case MessageState.error:
+        return Symbols.error;
+      case MessageState.success:
+        return Symbols.check_circle;
+      default:
+        return null;
+    }
+  }
+
+  OutlineInputBorder? _getBorder(MessageState state) {
+    switch (state) {
+      case MessageState.error:
+        return errorBorder;
+      case MessageState.success:
+        return successBorder;
+      default:
+        return null;
+    }
   }
 }

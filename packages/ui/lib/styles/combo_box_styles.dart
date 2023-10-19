@@ -4,7 +4,7 @@ import 'package:ui/tokens/fonts.dart';
 import 'package:ui/tokens/numericals.dart';
 
 final borderSideGrey300 = BorderSide(
-  color: AbiliaColors.greyscale.shade300,
+  color: SurfaceColors.active,
   width: numerical2px,
 );
 
@@ -14,20 +14,18 @@ final inputBorder = OutlineInputBorder(
     ),
     borderSide: borderSideGrey300.copyWith(width: numerical1px));
 
-final activeBorder = OutlineInputBorder(
-    borderRadius: const BorderRadius.all(
-      Radius.circular(numerical200),
-    ),
+final activeBorder = inputBorder.copyWith(
     borderSide: borderSideGrey300.copyWith(
-        width: numerical1px, color: SurfaceColors.active));
+        width: numerical1px, color: SurfaceColors.borderActive));
 
-final errorBorder = OutlineInputBorder(
-  borderRadius: const BorderRadius.all(
-    Radius.circular(numerical200),
-  ),
+final errorBorder = inputBorder.copyWith(
   borderSide: borderSideGrey300.copyWith(
-      width: numerical1px, color: AbiliaColors.peach.shade300),
+      width: numerical1px, color: SurfaceColors.borderFocus),
 );
+
+final successBorder = inputBorder.copyWith(
+    borderSide: borderSideGrey300.copyWith(
+        width: numerical1px, color: SurfaceColors.positiveSelected));
 
 final textFieldTextStyleMedium =
     MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {

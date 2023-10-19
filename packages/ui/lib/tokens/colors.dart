@@ -90,4 +90,8 @@ class SurfaceColors {
   static final selected = AbiliaColors.primary.shade100;
   static final hoverSubdued = AbiliaColors.primary.shade200;
   static final hover = AbiliaColors.primary.shade100;
+  static final positiveSelected = AbiliaColors.secondary.shade400;
+  static final borderPrimary = AbiliaColors.primary.shade200;
+  static final borderActive = AbiliaColors.primary.shade500;
+  static final borderFocus = AbiliaColors.peach.shade300;
 }

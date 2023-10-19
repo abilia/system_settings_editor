@@ -15,12 +15,9 @@ final textFieldInputThemeMedium = InputDecorationTheme(
   filled: true,
   border: inputBorder,
   errorBorder: errorBorder,
-  focusedBorder: OutlineInputBorder(
-    borderRadius: const BorderRadius.all(
-      Radius.circular(numerical200),
-    ),
-    borderSide: borderSideGrey300.copyWith(width: numerical1px),
-  ),
+  focusedBorder: activeBorder,
+  focusedErrorBorder: errorBorder,
+  enabledBorder: inputBorder,
   contentPadding: const EdgeInsets.symmetric(
     horizontal: numerical400,
     vertical: numerical300,
