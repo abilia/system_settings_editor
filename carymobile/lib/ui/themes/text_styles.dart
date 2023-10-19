@@ -72,6 +72,15 @@ const inputTextStyle = TextStyle(
   height: 24 / 20,
 );
 
+const heading = TextStyle(
+  color: Colors.black,
+  fontSize: 20,
+  fontFamily: 'Roboto',
+  fontWeight: FontWeight.w500,
+  leadingDistribution: TextLeadingDistribution.even,
+  height: 24 / 20,
+);
+
 const timeTextStyle = TextStyle(
   color: abiliaBlack80,
   fontSize: 20,
@@ -85,5 +94,22 @@ const bodyMediumWhite = TextStyle(
   fontFamily: 'Roboto',
   fontWeight: FontWeight.w500,
   leadingDistribution: TextLeadingDistribution.even,
+  height: 24 / 16,
+);
+
+const grey = TextStyle(
+  color: abiliaWhite140,
+  fontSize: 14,
+  fontFamily: 'Roboto',
+  fontWeight: FontWeight.w500,
+  leadingDistribution: TextLeadingDistribution.even,
+  height: 24 / 14,
+);
+
+const subHeading = TextStyle(
+  color: abiliaBlack60,
+  fontSize: 16,
+  fontFamily: 'Roboto',
+  fontWeight: FontWeight.w600,
   height: 24 / 16,
 );

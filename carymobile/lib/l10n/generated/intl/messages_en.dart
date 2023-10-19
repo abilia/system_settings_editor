@@ -34,8 +34,10 @@ class MessageLookup extends MessageLookupByLibrary {
         'close': MessageLookupByLibrary.simpleMessage('Close'),
         'connect_to_myabilia':
             MessageLookupByLibrary.simpleMessage('Connect to myAbilia'),
+        'connected': MessageLookupByLibrary.simpleMessage('Connected'),
         'early_morning': MessageLookupByLibrary.simpleMessage('Early morning'),
         'evening': MessageLookupByLibrary.simpleMessage('Evening'),
+        'failed': MessageLookupByLibrary.simpleMessage('Failed'),
         'hide': MessageLookupByLibrary.simpleMessage('Hide'),
         'internet': MessageLookupByLibrary.simpleMessage('Internet'),
         'last_sync': MessageLookupByLibrary.simpleMessage('Last sync:'),
@@ -47,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'mid_morning': MessageLookupByLibrary.simpleMessage('Mid-morning'),
         'night': MessageLookupByLibrary.simpleMessage('Night'),
         'no_license': MessageLookupByLibrary.simpleMessage(''),
+        'not_connected': MessageLookupByLibrary.simpleMessage('Not connected'),
         'ok': MessageLookupByLibrary.simpleMessage('Ok'),
         'password': MessageLookupByLibrary.simpleMessage('Password'),
         'play': MessageLookupByLibrary.simpleMessage('Play'),
@@ -54,6 +57,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'settings': MessageLookupByLibrary.simpleMessage('Settings'),
         'show': MessageLookupByLibrary.simpleMessage('Show'),
         'stop': MessageLookupByLibrary.simpleMessage('Stop'),
+        'successful': MessageLookupByLibrary.simpleMessage('Successful'),
+        'support_id': MessageLookupByLibrary.simpleMessage('Support id'),
         'today': MessageLookupByLibrary.simpleMessage('Today'),
         'tts_the_time_is': MessageLookupByLibrary.simpleMessage('The time is'),
         'username_email':

@@ -43,8 +43,10 @@ class Lt {
     'check_for_updates': [],
     'close': [],
     'connect_to_myabilia': [],
+    'connected': [],
     'early_morning': [],
     'evening': [],
+    'failed': [],
     'hide': [],
     'internet': [],
     'last_sync': [],
@@ -55,6 +57,7 @@ class Lt {
     'mid_morning': [],
     'night': [],
     'no_license': [],
+    'not_connected': [],
     'ok': [],
     'password': [],
     'play': [],
@@ -62,6 +65,8 @@ class Lt {
     'settings': [],
     'show': [],
     'stop': [],
+    'successful': [],
+    'support_id': [],
     'today': [],
     'tts_the_time_is': [],
     'username_email': [],
@@ -159,6 +164,16 @@ class Lt {
     );
   }
 
+  /// `Connected`
+  String get connected {
+    return Intl.message(
+      'Connected',
+      name: 'connected',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Early morning`
   String get early_morning {
     return Intl.message(
@@ -174,6 +189,16 @@ class Lt {
     return Intl.message(
       'Evening',
       name: 'evening',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed`
+  String get failed {
+    return Intl.message(
+      'Failed',
+      name: 'failed',
       desc: '',
       args: [],
     );
@@ -279,6 +304,16 @@ class Lt {
     );
   }
 
+  /// `Not connected`
+  String get not_connected {
+    return Intl.message(
+      'Not connected',
+      name: 'not_connected',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Ok`
   String get ok {
     return Intl.message(
@@ -344,6 +379,26 @@ class Lt {
     return Intl.message(
       'Stop',
       name: 'stop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Successful`
+  String get successful {
+    return Intl.message(
+      'Successful',
+      name: 'successful',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Support id`
+  String get support_id {
+    return Intl.message(
+      'Support id',
+      name: 'support_id',
       desc: '',
       args: [],
     );

@@ -5,7 +5,7 @@ import 'package:carymessenger/ui/abilia_icons.dart';
 import 'package:carymessenger/ui/components/buttons/action.dart';
 import 'package:carymessenger/ui/themes/colors.dart';
 import 'package:carymessenger/ui/themes/theme.dart';
-import 'package:carymessenger/ui/widgets/buttons/android_settings_button.dart';
+import 'package:carymessenger/ui/widgets/support_id_text.dart';
 import 'package:carymessenger/ui/widgets/version_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

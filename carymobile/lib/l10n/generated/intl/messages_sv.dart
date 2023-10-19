@@ -34,8 +34,10 @@ class MessageLookup extends MessageLookupByLibrary {
         'close': MessageLookupByLibrary.simpleMessage('Stäng'),
         'connect_to_myabilia':
             MessageLookupByLibrary.simpleMessage('Connect to myAbilia'),
+        'connected': MessageLookupByLibrary.simpleMessage('Ansluten'),
         'early_morning': MessageLookupByLibrary.simpleMessage('morgon'),
         'evening': MessageLookupByLibrary.simpleMessage('kväll'),
+        'failed': MessageLookupByLibrary.simpleMessage('Misslyckades'),
         'hide': MessageLookupByLibrary.simpleMessage('Dölj'),
         'internet': MessageLookupByLibrary.simpleMessage('Internet'),
         'last_sync':
@@ -48,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'mid_morning': MessageLookupByLibrary.simpleMessage('förmiddag'),
         'night': MessageLookupByLibrary.simpleMessage('natt'),
         'no_license': MessageLookupByLibrary.simpleMessage(''),
+        'not_connected': MessageLookupByLibrary.simpleMessage('Inte ansluten'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
         'password': MessageLookupByLibrary.simpleMessage('Lösenord'),
         'play': MessageLookupByLibrary.simpleMessage('Spela'),
@@ -55,6 +58,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'settings': MessageLookupByLibrary.simpleMessage('Inställningar'),
         'show': MessageLookupByLibrary.simpleMessage('Visa'),
         'stop': MessageLookupByLibrary.simpleMessage('Stopp'),
+        'successful': MessageLookupByLibrary.simpleMessage('Lyckades'),
+        'support_id': MessageLookupByLibrary.simpleMessage('Support-id'),
         'today': MessageLookupByLibrary.simpleMessage('Idag'),
         'tts_the_time_is': MessageLookupByLibrary.simpleMessage('Klockan är'),
         'username_email':

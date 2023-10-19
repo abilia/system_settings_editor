@@ -93,3 +93,32 @@ const abiliaBrown200 = Color(0xFF090401),
     abiliaBrown40 = Color(0xFFB39F8C),
     abiliaBrown20 = Color(0xFFD1C5BA),
     abiliaBrown0 = Color(0xFFEFEBE8);
+
+const MaterialColor abiliaRed = MaterialColor(
+  _abiliaRedPrimaryValue,
+  <int, Color>{
+    0: abiliaRed0,
+    20: abiliaRed20,
+    40: abiliaRed40,
+    60: abiliaRed60Secondary,
+    80: abiliaRed80,
+    100: abiliaRed100,
+    120: abiliaRed120,
+    140: abiliaRed140,
+    160: abiliaRed160,
+    180: abiliaRed180,
+    200: abiliaRed200,
+  },
+);
+const int _abiliaRedPrimaryValue = 0xFFCA0733;
+const abiliaRed200 = Color(0xFF130105),
+    abiliaRed180 = Color(0xFF38020E),
+    abiliaRed160 = Color(0xFF5C0418),
+    abiliaRed140 = Color(0xFF810521),
+    abiliaRed120 = Color(0xFFA6062A),
+    abiliaRed100 = Color(_abiliaRedPrimaryValue),
+    abiliaRed80 = Color(0xFFD33458),
+    abiliaRed60Secondary = Color(0xFFF34863),
+    abiliaRed40 = Color(0xFFE68EA2),
+    abiliaRed20 = Color(0xFFF0BBC7),
+    abiliaRed0 = Color(0xFFFAE8EC);
