@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:ui/tokens/colors.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 class BackgroundAddon extends WidgetbookAddon<Color> {
   BackgroundAddon()
       : super(
           name: 'Background',
-          initialSetting: AbiliaColors.greyscale.shade900,
+          initialSetting: Colors.black87,
         );
 
   static final _colors = {
-    AbiliaColors.greyscale.shade900: 'Black',
-    AbiliaColors.greyscale.shade500: 'Grey',
-    AbiliaColors.greyscale.shade200: 'White',
+    Colors.black87: 'Black',
+    Colors.grey: 'Grey',
+    Colors.white: 'White',
   };
 
   @override

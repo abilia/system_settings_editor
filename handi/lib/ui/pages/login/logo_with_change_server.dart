@@ -5,9 +5,10 @@ class LogoWithChangeServer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final spacings = AbiliaTheme.of(context).spacings;
     return GestureDetector(
       child: SizedBox.square(
-        dimension: 100,
+        dimension: spacings.spacing1000,
         child: Image.asset('assets/handi_logo_android.png'),
       ),
       onLongPress: () async => showModalBottomSheet(

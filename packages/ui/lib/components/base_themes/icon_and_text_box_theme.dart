@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ui/src/fonts.dart';
+import 'package:ui/src/numericals.dart';
 import 'package:ui/styles/borders.dart';
-import 'package:ui/tokens/fonts.dart';
-import 'package:ui/tokens/numericals.dart';
 
 class IconAndTextBoxTheme extends ThemeExtension<IconAndTextBoxTheme> {
   final TextStyle textStyle;
