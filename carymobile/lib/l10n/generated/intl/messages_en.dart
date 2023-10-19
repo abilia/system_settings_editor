@@ -31,6 +31,28 @@ class MessageLookup extends MessageLookupByLibrary {
         'back': MessageLookupByLibrary.simpleMessage('Back'),
         'check_for_updates':
             MessageLookupByLibrary.simpleMessage('Check for updates'),
+        'clockFiveMinutesHalfPastTts':
+            MessageLookupByLibrary.simpleMessage('twenty five to %s'),
+        'clockFiveMinutesPastTts':
+            MessageLookupByLibrary.simpleMessage('five past %s'),
+        'clockFiveMinutesToHalfPastTts':
+            MessageLookupByLibrary.simpleMessage('twenty five past %s'),
+        'clockFiveMinutesToTts':
+            MessageLookupByLibrary.simpleMessage('five to %s'),
+        'clockHalfPastTts':
+            MessageLookupByLibrary.simpleMessage('Half past %s'),
+        'clockQuarterPastTts':
+            MessageLookupByLibrary.simpleMessage('quarter past %s'),
+        'clockQuarterToTts':
+            MessageLookupByLibrary.simpleMessage('Quarter to %s'),
+        'clockTenMinutesPastTts':
+            MessageLookupByLibrary.simpleMessage('ten past %s'),
+        'clockTenMinutesToTts':
+            MessageLookupByLibrary.simpleMessage('ten to %s'),
+        'clockTwentyMinutesPastTts':
+            MessageLookupByLibrary.simpleMessage('twenty past %s'),
+        'clockTwentyMinutesToTts':
+            MessageLookupByLibrary.simpleMessage('twenty to %s'),
         'close': MessageLookupByLibrary.simpleMessage('Close'),
         'connect_to_myabilia':
             MessageLookupByLibrary.simpleMessage('Connect to myAbilia'),

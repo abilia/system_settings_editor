@@ -31,6 +31,26 @@ class MessageLookup extends MessageLookupByLibrary {
         'back': MessageLookupByLibrary.simpleMessage('Tillbaka'),
         'check_for_updates':
             MessageLookupByLibrary.simpleMessage('Sök efter uppdateringar'),
+        'clockFiveMinutesHalfPastTts':
+            MessageLookupByLibrary.simpleMessage('Fem över halv %s'),
+        'clockFiveMinutesPastTts':
+            MessageLookupByLibrary.simpleMessage('Fem minuter över %s'),
+        'clockFiveMinutesToHalfPastTts':
+            MessageLookupByLibrary.simpleMessage('Fem i halv %s'),
+        'clockFiveMinutesToTts':
+            MessageLookupByLibrary.simpleMessage('Fem minuter i %s'),
+        'clockHalfPastTts': MessageLookupByLibrary.simpleMessage('Halv %s'),
+        'clockQuarterPastTts':
+            MessageLookupByLibrary.simpleMessage('Kvart över %s'),
+        'clockQuarterToTts': MessageLookupByLibrary.simpleMessage('Kvart i %s'),
+        'clockTenMinutesPastTts':
+            MessageLookupByLibrary.simpleMessage('Tio minuter över %s'),
+        'clockTenMinutesToTts':
+            MessageLookupByLibrary.simpleMessage('Tio minuter i %s'),
+        'clockTwentyMinutesPastTts':
+            MessageLookupByLibrary.simpleMessage('Tjugo minuter över %s'),
+        'clockTwentyMinutesToTts':
+            MessageLookupByLibrary.simpleMessage('Tjugo minuter i %s'),
         'close': MessageLookupByLibrary.simpleMessage('Stäng'),
         'connect_to_myabilia':
             MessageLookupByLibrary.simpleMessage('Connect to myAbilia'),
