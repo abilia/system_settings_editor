@@ -23,3 +23,22 @@ final textFieldInputThemeMedium = InputDecorationTheme(
     vertical: numerical300,
   ),
 );
+
+final textFieldBoxDecoration = BoxDecoration(
+  borderRadius: const BorderRadius.all(
+    Radius.circular(numerical200),
+  ),
+  color: MaterialStateColor.resolveWith(
+    (states) {
+      if (states.contains(MaterialState.disabled)) {
+        return SurfaceColors.subdued;
+      }
+      return SurfaceColors.primary;
+    },
+  ),
+);
+
+const comboBoxBoxShadow = BoxShadow(
+  color: AbiliaColors.primary,
+  spreadRadius: numerical200,
+);

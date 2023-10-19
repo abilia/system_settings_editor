@@ -14,7 +14,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   final SeagullIconButtonThemes iconButtons;
   final SeagullHelperBoxThemes helperBox;
   final SeagullTagThemes tag;
-  final SeagullComoBoxTheme comboBox;
+  final SeagullComboBoxTheme comboBox;
 
   const AbiliaTheme({
     required this.actionButtons,
@@ -54,7 +54,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     iconButtons: SeagullIconButtonThemes.mobile,
     helperBox: SeagullHelperBoxThemes.mobile,
     tag: SeagullTagThemes.mobile,
-    comboBox: SeagullComoBoxTheme.medium(),
+    comboBox: SeagullComboBoxTheme.medium(),
   );
 
   static final AbiliaTheme tablet = AbiliaTheme(
@@ -62,7 +62,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     iconButtons: SeagullIconButtonThemes.tablet,
     helperBox: SeagullHelperBoxThemes.tablet,
     tag: SeagullTagThemes.tablet,
-    comboBox: SeagullComoBoxTheme.medium(),
+    comboBox: SeagullComboBoxTheme.medium(),
   );
 
   static final AbiliaTheme desktopSmall = AbiliaTheme(
@@ -70,7 +70,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     iconButtons: SeagullIconButtonThemes.desktopSmall,
     helperBox: SeagullHelperBoxThemes.desktopSmall,
     tag: SeagullTagThemes.desktopSmall,
-    comboBox: SeagullComoBoxTheme.large(),
+    comboBox: SeagullComboBoxTheme.large(),
   );
 
   static final AbiliaTheme desktopLarge = AbiliaTheme(
@@ -78,7 +78,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     iconButtons: SeagullIconButtonThemes.desktopLarge,
     helperBox: SeagullHelperBoxThemes.desktopLarge,
     tag: SeagullTagThemes.desktopLarge,
-    comboBox: SeagullComoBoxTheme.large(),
+    comboBox: SeagullComboBoxTheme.large(),
   );
 
   @override
@@ -87,7 +87,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     SeagullIconButtonThemes? iconButtons,
     SeagullHelperBoxThemes? helperBox,
     SeagullTagThemes? tag,
-    SeagullComoBoxTheme? comboBox,
+    SeagullComboBoxTheme? comboBox,
   }) {
     return AbiliaTheme(
       actionButtons: actionButtons ?? this.actionButtons,

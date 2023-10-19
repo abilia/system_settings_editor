@@ -75,16 +75,8 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             ),
           ),
         AnimatedContainer(
-          decoration: BoxDecoration(
-            boxShadow: selected
-                ? [
-                    const BoxShadow(
-                      color: AbiliaColors.primary,
-                      spreadRadius: numerical200,
-                    ),
-                  ]
-                : [],
-            color: AbiliaColors.greyscale,
+          decoration: theme.boxDecoration.copyWith(
+            boxShadow: selected ? [theme.boxShadow] : [],
           ),
           duration: const Duration(milliseconds: 150),
           child: TextField(
