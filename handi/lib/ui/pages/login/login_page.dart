@@ -105,18 +105,19 @@ class LoginPage extends StatelessWidget {
                           : MessageState.none,
                       message: state is LoginFailure ? state.cause.name : null,
                     ),
-                  ),
-                  const Spacer(),
-                  SeagullActionButton(
-                    text: translate.signIn,
-                    type: ActionButtonType.primary,
-                    size: ButtonSize.large,
-                    onPressed: state.isFormValid
-                        ? context.read<LoginCubit>().loginButtonPressed
-                        : null,
-                    leadingIcon: MdiIcons.login,
-                  )
-                ],
+                    const Spacer(),
+                    SeagullActionButton(
+                      text: translate.signIn,
+                      type: ActionButtonType.primary,
+                      size: ButtonSize.large,
+                      isLoading: state is LoginLoading,
+                      leadingIcon: MdiIcons.login,
+                      onPressed: state.isFormValid
+                          ? context.read<LoginCubit>().loginButtonPressed
+                          : null,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

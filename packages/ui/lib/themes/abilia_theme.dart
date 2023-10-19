@@ -3,6 +3,7 @@ import 'package:ui/themes/buttons/action_button/action_button_themes.dart';
 import 'package:ui/themes/buttons/icon_button/icon_button_themes.dart';
 import 'package:ui/themes/combo_box/combo_box_theme.dart';
 import 'package:ui/themes/helper_box/helper_box_themes.dart';
+import 'package:ui/themes/spinner/spinner_themes.dart';
 import 'package:ui/themes/tag/tag_themes.dart';
 
 const int _breakpointMobile = 640;
@@ -13,13 +14,15 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   final SeagullActionButtonThemes actionButtons;
   final SeagullIconButtonThemes iconButtons;
   final SeagullHelperBoxThemes helperBox;
+  final SeagullSpinnerThemes spinner;
   final SeagullTagThemes tag;
-  final SeagullComoBoxTheme comboBox;
+  final SeagullComboBoxTheme comboBox;
 
   const AbiliaTheme({
     required this.actionButtons,
     required this.iconButtons,
     required this.helperBox,
+    required this.spinner,
     required this.tag,
     required this.comboBox,
   });
@@ -53,32 +56,28 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     actionButtons: SeagullActionButtonThemes.mobile,
     iconButtons: SeagullIconButtonThemes.mobile,
     helperBox: SeagullHelperBoxThemes.mobile,
-    tag: SeagullTagThemes.mobile,
-    comboBox: SeagullComoBoxTheme.medium(),
+    spinner: SeagullSpinnerThemes.themes,
+    tag: SeagullTagThemes.themes,
+    comboBox: SeagullComboBoxTheme.medium(),
   );
 
-  static final AbiliaTheme tablet = AbiliaTheme(
+  static final AbiliaTheme tablet = mobile.copyWith(
     actionButtons: SeagullActionButtonThemes.tablet,
     iconButtons: SeagullIconButtonThemes.tablet,
     helperBox: SeagullHelperBoxThemes.tablet,
-    tag: SeagullTagThemes.tablet,
-    comboBox: SeagullComoBoxTheme.medium(),
   );
 
-  static final AbiliaTheme desktopSmall = AbiliaTheme(
+  static final AbiliaTheme desktopSmall = tablet.copyWith(
     actionButtons: SeagullActionButtonThemes.desktopSmall,
     iconButtons: SeagullIconButtonThemes.desktopSmall,
     helperBox: SeagullHelperBoxThemes.desktopSmall,
-    tag: SeagullTagThemes.desktopSmall,
-    comboBox: SeagullComoBoxTheme.large(),
+    comboBox: SeagullComboBoxTheme.large(),
   );
 
-  static final AbiliaTheme desktopLarge = AbiliaTheme(
+  static final AbiliaTheme desktopLarge = desktopSmall.copyWith(
     actionButtons: SeagullActionButtonThemes.desktopLarge,
     iconButtons: SeagullIconButtonThemes.desktopLarge,
     helperBox: SeagullHelperBoxThemes.desktopLarge,
-    tag: SeagullTagThemes.desktopLarge,
-    comboBox: SeagullComoBoxTheme.large(),
   );
 
   @override
@@ -86,13 +85,15 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     SeagullActionButtonThemes? actionButtons,
     SeagullIconButtonThemes? iconButtons,
     SeagullHelperBoxThemes? helperBox,
+    SeagullSpinnerThemes? spinner,
     SeagullTagThemes? tag,
-    SeagullComoBoxTheme? comboBox,
+    SeagullComboBoxTheme? comboBox,
   }) {
     return AbiliaTheme(
       actionButtons: actionButtons ?? this.actionButtons,
       iconButtons: iconButtons ?? this.iconButtons,
       helperBox: helperBox ?? this.helperBox,
+      spinner: spinner ?? this.spinner,
       tag: tag ?? this.tag,
       comboBox: comboBox ?? this.comboBox,
     );
@@ -105,6 +106,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
       actionButtons: actionButtons.lerp(other.actionButtons, t),
       iconButtons: iconButtons.lerp(other.iconButtons, t),
       helperBox: helperBox.lerp(other.helperBox, t),
+      spinner: spinner.lerp(other.spinner, t),
       tag: tag.lerp(other.tag, t),
       comboBox: comboBox.lerp(other.comboBox, t),
     );

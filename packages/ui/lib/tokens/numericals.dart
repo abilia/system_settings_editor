@@ -35,4 +35,5 @@ const numerical3200 = 1600.0;
 // These are used in the design, but are not officially recognized.
 const numerical1px = 1.0;
 const numerical2px = 2.0;
-const numerical10px = 10.0;
+const numerical4px = 4.0;
+const numerical5px = 5.0;

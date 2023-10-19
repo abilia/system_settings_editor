@@ -47,13 +47,17 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                     messageState: context.knobs.list(
                       label: 'State',
                       options: [
+                        MessageState.none,
                         MessageState.caution,
                         MessageState.error,
                         MessageState.info,
                         MessageState.success,
                       ],
-                      initialOption: MessageState.caution,
+                      initialOption: MessageState.none,
                       labelBuilder: (state) {
+                        if (state == MessageState.none) {
+                          return 'None';
+                        }
                         if (state == MessageState.caution) {
                           return 'Caution';
                         }

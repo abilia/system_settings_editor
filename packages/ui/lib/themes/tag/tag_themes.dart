@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/styles/borders.dart';
-import 'package:ui/themes/icon_and_text_box_theme.dart';
+import 'package:ui/themes/base_themes/icon_and_text_box_theme.dart';
 import 'package:ui/tokens/fonts.dart';
 import 'package:ui/tokens/numericals.dart';
 
@@ -15,16 +15,10 @@ class SeagullTagThemes extends ThemeExtension<SeagullTagThemes> {
     required this.size700,
   });
 
-  static final SeagullTagThemes mobile = SeagullTagThemes(
+  static final SeagullTagThemes themes = SeagullTagThemes(
     size600: SeagullTagTheme.primary600,
     size700: SeagullTagTheme.primary700,
   );
-
-  static final SeagullTagThemes tablet = mobile;
-
-  static final SeagullTagThemes desktopSmall = tablet;
-
-  static final SeagullTagThemes desktopLarge = desktopSmall;
 
   @override
   SeagullTagThemes copyWith({

@@ -58,7 +58,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
   Widget build(BuildContext context) {
     final theme = AbiliaTheme.of(context).comboBox;
     final label = widget.label;
-    final showHelperBox = widget.message != null;
+    final showHelperBox = widget.messageState != MessageState.none;
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
