@@ -7,7 +7,7 @@ import 'package:memoplanner/utils/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
 class ProductionGuidePage extends StatefulWidget {
-  const ProductionGuidePage({Key? key}) : super(key: key);
+  const ProductionGuidePage({super.key});
 
   @override
   State<ProductionGuidePage> createState() => _ProductionGuidePageState();

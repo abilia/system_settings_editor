@@ -8,8 +8,8 @@ class CheckActivityConfirmDialog extends StatelessWidget {
   const CheckActivityConfirmDialog({
     required this.activityDay,
     this.message,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

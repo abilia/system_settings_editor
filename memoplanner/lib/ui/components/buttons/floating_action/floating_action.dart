@@ -58,8 +58,7 @@ class _ToggleAlarmAndEyeButtons extends StatelessWidget {
   const _ToggleAlarmAndEyeButtons({
     required this.useBottomPadding,
     required this.displayEyeButton,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

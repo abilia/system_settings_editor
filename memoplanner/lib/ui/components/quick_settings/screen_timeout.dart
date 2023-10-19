@@ -3,7 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class ScreenTimeoutPickField extends StatelessWidget {
-  const ScreenTimeoutPickField({Key? key}) : super(key: key);
+  const ScreenTimeoutPickField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +41,8 @@ class ScreenTimeOutSelectorPage extends StatefulWidget {
 
   const ScreenTimeOutSelectorPage({
     required this.timeout,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -118,7 +118,7 @@ class ScreenTimeOutSelectorPageState extends State<ScreenTimeOutSelectorPage> {
 }
 
 class KeepOnWhileChargingSwitch extends StatelessWidget {
-  const KeepOnWhileChargingSwitch({Key? key}) : super(key: key);
+  const KeepOnWhileChargingSwitch({super.key});
 
   @override
   Widget build(BuildContext context) {

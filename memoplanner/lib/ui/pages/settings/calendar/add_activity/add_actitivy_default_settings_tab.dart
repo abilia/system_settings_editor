@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class AddActivityDefaultSettingsTab extends StatelessWidget {
-  const AddActivityDefaultSettingsTab({Key? key}) : super(key: key);
+  const AddActivityDefaultSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {

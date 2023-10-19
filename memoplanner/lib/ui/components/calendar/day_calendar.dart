@@ -26,8 +26,8 @@ class DayCalendarTab extends CalendarTab {
 
 class Calendars extends StatefulWidget {
   const Calendars({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State createState() => _CalendarsState();
@@ -134,7 +134,7 @@ class _CalendarsState extends State<Calendars> with WidgetsBindingObserver {
 }
 
 class CategoriesAndHiddenSettings extends StatelessWidget {
-  const CategoriesAndHiddenSettings({Key? key}) : super(key: key);
+  const CategoriesAndHiddenSettings({super.key});
 
   @override
   Widget build(BuildContext context) {

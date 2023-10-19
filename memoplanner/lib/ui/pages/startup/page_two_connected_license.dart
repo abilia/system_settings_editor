@@ -8,8 +8,8 @@ class PageTwoConnectedLicense extends StatefulWidget {
   const PageTwoConnectedLicense({
     required this.pageController,
     required this.licenseNumberController,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final PageController pageController;
   final TextEditingController licenseNumberController;

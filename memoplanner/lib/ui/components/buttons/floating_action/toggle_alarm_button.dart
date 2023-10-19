@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class ToggleAlarmButton extends StatelessWidget {
-  const ToggleAlarmButton({Key? key}) : super(key: key);
+  const ToggleAlarmButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ToggleAlarmButton extends StatelessWidget {
 }
 
 class ToggleAlarmButtonActive extends StatelessWidget {
-  const ToggleAlarmButtonActive({Key? key}) : super(key: key);
+  const ToggleAlarmButtonActive({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +47,8 @@ class ToggleAlarmButtonActive extends StatelessWidget {
 class ToggleAlarmButtonInactive extends StatelessWidget {
   const ToggleAlarmButtonInactive({
     required this.now,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final DateTime now;
 
   @override

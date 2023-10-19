@@ -24,9 +24,8 @@ class AuthenticationListener
     required this.onUnauthenticated,
     required this.navigatorKey,
     super.child,
-    Key? key,
+    super.key,
   }) : super(
-          key: key,
           listenWhen: (previous, current) =>
               previous.runtimeType != current.runtimeType ||
               previous.forcedNewState != current.forcedNewState,

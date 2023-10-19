@@ -4,8 +4,8 @@ import 'package:memoplanner/ui/all.dart';
 
 class BasicActivityPickerPage extends StatelessWidget {
   const BasicActivityPickerPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

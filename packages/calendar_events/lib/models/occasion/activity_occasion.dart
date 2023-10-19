@@ -15,10 +15,10 @@ class ActivityOccasion extends ActivityDay implements EventOccasion {
   @override
   final Occasion occasion;
   const ActivityOccasion(
-    Activity activity,
-    DateTime day,
+    super.activity,
+    super.day,
     this.occasion,
-  ) : super(activity, day);
+  );
 
   @override
   List<Object> get props => [occasion, ...super.props];

@@ -10,8 +10,8 @@ class FakeAuthenticatedBlocsProvider extends StatelessWidget {
 
   const FakeAuthenticatedBlocsProvider({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(

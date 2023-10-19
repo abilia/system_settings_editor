@@ -10,8 +10,8 @@ class CreateAccountPage extends StatelessWidget {
 
   const CreateAccountPage({
     required this.userRepository,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -151,8 +151,8 @@ class CreateAccountPage extends StatelessWidget {
 
 class AccountCreatedDialog extends StatelessWidget {
   const AccountCreatedDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +169,7 @@ class AccountCreatedDialog extends StatelessWidget {
 }
 
 class MyAbiliaLogo extends StatelessWidget {
-  const MyAbiliaLogo({Key? key}) : super(key: key);
+  const MyAbiliaLogo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +196,7 @@ class MyAbiliaLogo extends StatelessWidget {
 }
 
 class BackToLoginButton extends StatelessWidget {
-  const BackToLoginButton({Key? key}) : super(key: key);
+  const BackToLoginButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +209,7 @@ class BackToLoginButton extends StatelessWidget {
 }
 
 class CreateAccountButton extends StatelessWidget {
-  const CreateAccountButton({Key? key}) : super(key: key);
+  const CreateAccountButton({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,8 +4,8 @@ import 'package:memoplanner/utils/all.dart';
 
 class WiFiPickField extends StatelessWidget {
   const WiFiPickField({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

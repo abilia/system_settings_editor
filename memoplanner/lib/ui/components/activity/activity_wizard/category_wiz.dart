@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class CategoryWiz extends StatelessWidget {
-  const CategoryWiz({Key? key}) : super(key: key);
+  const CategoryWiz({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CategoryWiz extends StatelessWidget {
 }
 
 class _CategoryWidget extends StatelessWidget {
-  const _CategoryWidget({Key? key}) : super(key: key);
+  const _CategoryWidget();
 
   @override
   Widget build(BuildContext context) {

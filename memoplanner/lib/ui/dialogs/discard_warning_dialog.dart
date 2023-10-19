@@ -1,7 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 class DiscardWarningDialog extends StatelessWidget {
-  const DiscardWarningDialog({Key? key}) : super(key: key);
+  const DiscardWarningDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

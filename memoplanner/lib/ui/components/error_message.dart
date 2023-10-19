@@ -5,8 +5,8 @@ class ErrorMessage extends StatelessWidget {
   const ErrorMessage({
     required this.text,
     this.trailing,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Text text;
   final Widget? trailing;
@@ -48,8 +48,8 @@ class ErrorMessage extends StatelessWidget {
 
 class NoInternetErrorMessage extends StatelessWidget {
   const NoInternetErrorMessage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

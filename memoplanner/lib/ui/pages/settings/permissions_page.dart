@@ -3,7 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class PermissionsPage extends StatelessWidget {
-  const PermissionsPage({Key? key}) : super(key: key);
+  const PermissionsPage({super.key});
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -39,10 +39,9 @@ class PermissionSetting extends StatelessWidget {
 
   PermissionSetting(
     MapEntry<Permission, PermissionStatus> entry, {
-    Key? key,
+    super.key,
   })  : permission = entry.key,
-        status = entry.value,
-        super(key: key);
+        status = entry.value;
 
   @override
   Widget build(BuildContext context) => permission == Permission.notification
@@ -56,8 +55,8 @@ class PermissionSwitch extends StatelessWidget {
   const PermissionSwitch({
     required this.permission,
     required this.status,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Permission permission;
   final PermissionStatus status;
@@ -86,8 +85,8 @@ class NotificationPermissionSwitch extends StatelessWidget {
 
   const NotificationPermissionSwitch({
     required this.status,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -163,8 +162,8 @@ class FullscreenPermissionSwitch extends StatelessWidget {
 
   const FullscreenPermissionSwitch({
     required this.status,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

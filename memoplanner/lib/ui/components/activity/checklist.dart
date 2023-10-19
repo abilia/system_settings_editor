@@ -15,9 +15,8 @@ class ChecklistView extends StatelessWidget {
     this.checklist, {
     this.day,
     this.onTap,
-    Key? key,
-  })  : preview = day == null,
-        super(key: key);
+    super.key,
+  }) : preview = day == null;
 
   @override
   Widget build(BuildContext context) {
@@ -165,8 +164,8 @@ class EditQuestionView extends StatelessWidget {
 
   const EditQuestionView(
     this.question, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -227,8 +226,8 @@ class QuestionView extends StatelessWidget {
     this.signedOff = false,
     this.inactive = false,
     this.selected = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   static const duration = Duration(milliseconds: 200);
 

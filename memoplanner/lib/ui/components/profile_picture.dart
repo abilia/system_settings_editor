@@ -11,10 +11,10 @@ class ProfilePicture extends StatelessWidget {
   const ProfilePicture(
     this.baseUrl,
     this.image, {
-    Key? key,
+    super.key,
     this.initial = '',
     this.size,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

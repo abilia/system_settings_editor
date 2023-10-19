@@ -3,7 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class WeekAppBarSettingsTab extends StatelessWidget {
-  const WeekAppBarSettingsTab({Key? key}) : super(key: key);
+  const WeekAppBarSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class WeekAppBarSettingsTab extends StatelessWidget {
 }
 
 class WeekAppBarPreview extends StatelessWidget {
-  const WeekAppBarPreview({Key? key}) : super(key: key);
+  const WeekAppBarPreview({super.key});
 
   @override
   Widget build(BuildContext context) {

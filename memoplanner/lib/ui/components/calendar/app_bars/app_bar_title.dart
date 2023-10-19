@@ -8,8 +8,8 @@ class AppBarTitle extends StatelessWidget {
   const AppBarTitle({
     required this.rows,
     this.style,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AppBarTitleRows rows;
   final TextStyle? style;

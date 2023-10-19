@@ -7,8 +7,8 @@ class Tts extends StatelessWidget {
 
   const Tts({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => _Tts(
@@ -32,9 +32,7 @@ class _Tts extends StatelessWidget {
     required this.child,
     this.data,
     this.onTap,
-    Key? key,
-  })  : assert(data != null || onTap != null),
-        super(key: key);
+  }) : assert(data != null || onTap != null);
 
   @override
   Widget build(BuildContext context) => GestureDetector(

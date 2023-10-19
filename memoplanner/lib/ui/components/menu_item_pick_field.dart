@@ -10,8 +10,8 @@ class MenuItemPickField extends StatelessWidget {
     required this.icon,
     required this.text,
     required this.navigateTo,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

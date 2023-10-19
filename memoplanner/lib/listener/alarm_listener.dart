@@ -15,8 +15,8 @@ class AlarmListener extends StatelessWidget with ActivityAndAlarmsMixin {
   const AlarmListener({
     required this.child,
     this.alarm,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

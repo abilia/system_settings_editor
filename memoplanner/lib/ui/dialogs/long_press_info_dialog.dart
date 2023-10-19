@@ -5,7 +5,7 @@ import 'package:memoplanner/utils/all.dart';
 import 'package:seagull_clock/ticker.dart';
 
 class LongPressInfoDialog extends StatelessWidget {
-  const LongPressInfoDialog({Key? key}) : super(key: key);
+  const LongPressInfoDialog({super.key});
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -55,7 +55,7 @@ class LongPressInfoDialog extends StatelessWidget {
 }
 
 class _Preview extends StatelessWidget {
-  const _Preview({Key? key}) : super(key: key);
+  const _Preview();
 
   @override
   Widget build(BuildContext context) {

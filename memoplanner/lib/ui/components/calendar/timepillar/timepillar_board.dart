@@ -34,8 +34,8 @@ class TimepillarBoard extends StatelessWidget {
     required this.categoryMinWidth,
     required this.timepillarWidth,
     required this.textStyle,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final TimePillarBoardData boardData;
   final TextStyle textStyle;

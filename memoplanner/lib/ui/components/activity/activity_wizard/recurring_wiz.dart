@@ -1,7 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 class RecurringWiz extends StatelessWidget {
-  const RecurringWiz({Key? key}) : super(key: key);
+  const RecurringWiz({super.key});
 
   @override
   Widget build(BuildContext context) => WizardScaffold(

@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class ScreensaverPage extends StatelessWidget {
-  const ScreensaverPage({Key? key}) : super(key: key);
+  const ScreensaverPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class ScreensaverPage extends StatelessWidget {
 }
 
 class _ScreensaverAppBar extends StatelessWidget {
-  const _ScreensaverAppBar({Key? key}) : super(key: key);
+  const _ScreensaverAppBar();
 
   @override
   Widget build(BuildContext context) {

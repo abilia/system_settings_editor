@@ -6,8 +6,8 @@ class FullDayListPage extends StatelessWidget {
   const FullDayListPage({
     required this.fullDayActivities,
     required this.day,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final List<ActivityOccasion> fullDayActivities;
   final DateTime day;

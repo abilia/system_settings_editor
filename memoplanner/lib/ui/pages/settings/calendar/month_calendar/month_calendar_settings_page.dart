@@ -3,7 +3,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class MonthCalendarSettingsPage extends StatelessWidget {
-  const MonthCalendarSettingsPage({Key? key}) : super(key: key);
+  const MonthCalendarSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,8 +8,8 @@ class AppBarPreview extends StatelessWidget {
     required this.showBrowseButtons,
     required this.showClock,
     required this.rows,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

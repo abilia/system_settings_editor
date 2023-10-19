@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class TimeWiz extends StatelessWidget {
-  const TimeWiz({Key? key}) : super(key: key);
+  const TimeWiz({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class TimeWiz extends StatelessWidget {
 }
 
 class _TimeWizContent extends StatelessWidget {
-  const _TimeWizContent({Key? key}) : super(key: key);
+  const _TimeWizContent();
 
   @override
   Widget build(BuildContext context) {

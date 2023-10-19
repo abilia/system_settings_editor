@@ -155,14 +155,10 @@ abstract class ActivityAlarm extends NotificationAlarm {
 
 abstract class NewAlarm extends ActivityAlarm {
   const NewAlarm(
-    ActivityDay activityDay, {
-    required bool reschedule,
-    bool fullScreenActivity = false,
-  }) : super(
-          activityDay,
-          reschedule: reschedule,
-          fullScreenActivity: fullScreenActivity,
-        );
+    super.activityDay, {
+    required super.reschedule,
+    super.fullScreenActivity,
+  });
 
   @override
   bool hasSound(settings) => activity.alarm.sound;
@@ -183,14 +179,10 @@ abstract class NewAlarm extends ActivityAlarm {
 
 class StartAlarm extends NewAlarm {
   const StartAlarm(
-    ActivityDay activityDay, {
-    bool reschedule = false,
-    bool fullScreenActivity = false,
-  }) : super(
-          activityDay,
-          fullScreenActivity: fullScreenActivity,
-          reschedule: reschedule,
-        );
+    super.activityDay, {
+    super.reschedule = false,
+    super.fullScreenActivity,
+  });
 
   @override
   DateTime get notificationTime => activityDay.start;
@@ -223,14 +215,10 @@ class StartAlarm extends NewAlarm {
 
 class EndAlarm extends NewAlarm {
   const EndAlarm(
-    ActivityDay activityDay, {
-    bool reschedule = false,
-    bool fullScreenActivity = false,
-  }) : super(
-          activityDay,
-          fullScreenActivity: fullScreenActivity,
-          reschedule: reschedule,
-        );
+    super.activityDay, {
+    super.reschedule = false,
+    super.fullScreenActivity,
+  });
 
   @override
   DateTime get notificationTime => activityDay.end;
@@ -265,10 +253,10 @@ class EndAlarm extends NewAlarm {
 abstract class NewReminder extends ActivityAlarm {
   final Duration reminder;
   const NewReminder(
-    ActivityDay activityDay,
+    super.activityDay,
     this.reminder, {
-    required bool reschedule,
-  }) : super(activityDay, reschedule: reschedule);
+    required super.reschedule,
+  });
 
   @override
   bool hasSound(AlarmSettings settings) =>

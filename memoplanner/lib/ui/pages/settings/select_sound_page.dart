@@ -14,8 +14,8 @@ class SelectSoundPage extends StatefulWidget {
     required this.appBarTitle,
     this.appBarLabel,
     this.noSoundOption = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State createState() => _SelectSoundPageState();

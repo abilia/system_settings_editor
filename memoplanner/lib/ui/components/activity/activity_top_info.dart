@@ -14,9 +14,9 @@ class ActivityTopInfo extends StatelessWidget {
 
   const ActivityTopInfo(
     this.activityDay, {
-    Key? key,
+    super.key,
     this.alarm,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +65,9 @@ class ActivityTopInfo extends StatelessWidget {
 class _ActivityTopInfo extends StatelessWidget {
   const _ActivityTopInfo(
     this.activityDay, {
-    Key? key,
     this.leading,
     this.trailing,
-  }) : super(key: key);
+  });
   final ActivityDay activityDay;
   final Widget? leading, trailing;
 
@@ -174,8 +173,8 @@ class _TimeBox extends StatelessWidget {
     required this.text,
     required this.occasion,
     required this.maxWidth,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Occasion occasion;
   final String text;

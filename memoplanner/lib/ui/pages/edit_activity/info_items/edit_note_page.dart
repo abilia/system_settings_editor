@@ -7,8 +7,8 @@ class EditNotePage extends StatefulWidget {
 
   const EditNotePage({
     required this.text,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State createState() => _EditNotePageState();

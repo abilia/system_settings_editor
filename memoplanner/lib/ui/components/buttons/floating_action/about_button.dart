@@ -1,7 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 class AboutButton extends StatelessWidget {
-  const AboutButton({Key? key}) : super(key: key);
+  const AboutButton({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -7,8 +7,8 @@ class FactoryResetOrClearDataDialog extends StatelessWidget {
 
   const FactoryResetOrClearDataDialog({
     required this.pageController,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

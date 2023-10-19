@@ -8,8 +8,8 @@ class EditCategoryBottomSheet extends StatelessWidget {
   const EditCategoryBottomSheet({
     required this.hintText,
     this.imageAndName,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final label = Lt.of(context).general;

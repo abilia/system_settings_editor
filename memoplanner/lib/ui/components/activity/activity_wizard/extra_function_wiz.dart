@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ExtraFunctionWiz extends StatelessWidget {
-  const ExtraFunctionWiz({Key? key}) : super(key: key);
+  const ExtraFunctionWiz({super.key});
 
   @override
   Widget build(BuildContext context) {

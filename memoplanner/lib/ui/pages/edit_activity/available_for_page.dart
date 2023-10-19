@@ -6,7 +6,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class AvailableForPage extends StatelessWidget {
-  const AvailableForPage({Key? key}) : super(key: key);
+  const AvailableForPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +31,10 @@ class AvailableForPage extends StatelessWidget {
 
 class AvailableForPageBody extends StatelessWidget {
   const AvailableForPageBody({
-    Key? key,
+    super.key,
     this.onAvailableForChanged,
     this.onSupportPersonChanged,
-  }) : super(key: key);
+  });
   final Function? onAvailableForChanged;
   final Function? onSupportPersonChanged;
 
@@ -101,8 +101,7 @@ class AvailableForRadioField extends StatelessWidget {
   final ValueChanged<AvailableForType?>? onChanged;
 
   const AvailableForRadioField(this.type, this.groupValue,
-      {this.onChanged, Key? key})
-      : super(key: key);
+      {this.onChanged, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -124,8 +123,7 @@ class AvailableForRadioField extends StatelessWidget {
 }
 
 class SupportPersonsWidget extends StatelessWidget {
-  const SupportPersonsWidget({Key? key, this.onSupportPersonChanged})
-      : super(key: key);
+  const SupportPersonsWidget({super.key, this.onSupportPersonChanged});
 
   final Function? onSupportPersonChanged;
 

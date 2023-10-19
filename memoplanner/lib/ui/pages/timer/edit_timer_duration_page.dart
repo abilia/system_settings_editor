@@ -8,9 +8,9 @@ class EditTimerDurationPage extends StatelessWidget {
   final Duration initialDuration;
 
   const EditTimerDurationPage({
-    Key? key,
+    super.key,
     this.initialDuration = Duration.zero,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,7 @@ class _TimerInputContent extends StatefulWidget {
 
   const _TimerInputContent({
     required this.initialDuration,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   State<_TimerInputContent> createState() => _TimerInputContentState();
@@ -161,8 +160,8 @@ class _TimerInputContentState extends State<_TimerInputContent> {
 
 class InvalidTimerDurationDialog extends StatelessWidget {
   const InvalidTimerDurationDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -181,8 +180,8 @@ class _TimeTextField extends StatelessWidget {
     required this.header,
     required this.controller,
     this.focusNode,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

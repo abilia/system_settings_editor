@@ -5,7 +5,7 @@ import 'package:memoplanner/ui/all.dart';
 enum EditActivityPageTab { main, alarm, recurrence, infoItem }
 
 class EditActivityPage extends StatelessWidget {
-  const EditActivityPage({Key? key}) : super(key: key);
+  const EditActivityPage({super.key});
 
   @override
   Widget build(BuildContext context) {

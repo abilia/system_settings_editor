@@ -14,8 +14,8 @@ class SelectAlarmDurationPage extends StatefulWidget {
     required this.appBarIcon,
     required this.appBarTitle,
     this.appBarLabel,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State createState() => _SelectAlarmDurationPageState();

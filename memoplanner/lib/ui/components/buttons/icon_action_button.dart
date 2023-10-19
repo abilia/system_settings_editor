@@ -3,11 +3,11 @@ import 'package:memoplanner/ui/all.dart';
 class IconActionButton extends StatelessWidget {
   const IconActionButton({
     required this.child,
-    Key? key,
+    super.key,
     this.onPressed,
     this.style,
     this.ttsData,
-  }) : super(key: key);
+  });
 
   final ButtonStyle? style;
   final VoidCallback? onPressed;
@@ -31,9 +31,9 @@ class IconActionButton extends StatelessWidget {
 class IconActionButtonLight extends StatelessWidget {
   const IconActionButtonLight({
     required this.child,
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final VoidCallback? onPressed;
@@ -49,9 +49,9 @@ class IconActionButtonLight extends StatelessWidget {
 class IconActionButtonDark extends StatelessWidget {
   const IconActionButtonDark({
     required this.child,
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final VoidCallback? onPressed;
@@ -69,8 +69,8 @@ class IconActionButtonBlack extends StatelessWidget {
     required this.child,
     this.onPressed,
     this.ttsData,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
   final VoidCallback? onPressed;

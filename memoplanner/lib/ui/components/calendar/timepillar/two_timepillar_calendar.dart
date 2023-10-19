@@ -10,8 +10,8 @@ class TwoTimepillarCalendar extends StatelessWidget {
     required this.displayTimeline,
     required this.dayParts,
     required this.timepillarState,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool showCategories, displayHourLines, displayTimeline;
   final DayParts dayParts;

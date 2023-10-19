@@ -10,10 +10,10 @@ class ActivityInfoWithDots extends StatelessWidget {
 
   const ActivityInfoWithDots(
     this.activityDay, {
-    Key? key,
+    super.key,
     this.alarm,
     this.previewImage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +51,10 @@ class ActivityInfo extends StatelessWidget with ActivityAndAlarmsMixin {
   const ActivityInfo(
     this.activityDay, {
     this.showCheckButton = false,
-    Key? key,
+    super.key,
     this.previewImage,
     this.alarm,
-  }) : super(key: key);
+  });
 
   @visibleForTesting
   factory ActivityInfo.from({
@@ -114,8 +114,8 @@ class ActivityContainer extends StatelessWidget {
     required this.activityDay,
     this.alarm,
     this.previewImage,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ActivityDay activityDay;
   final Widget? previewImage;
@@ -175,8 +175,8 @@ class Attachment extends StatelessWidget with ActivityAndAlarmsMixin {
   const Attachment({
     required this.activityDay,
     this.alarm,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -280,8 +280,8 @@ class TitleAndOrImage extends StatelessWidget {
   const TitleAndOrImage({
     required this.activityDay,
     this.previewImage,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ActivityDay activityDay;
   final Widget? previewImage;

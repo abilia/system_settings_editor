@@ -5,7 +5,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class TemplatesPage extends StatelessWidget {
-  const TemplatesPage({Key? key}) : super(key: key);
+  const TemplatesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -151,9 +151,9 @@ class BasicTemplatePickField<T extends SortableData> extends StatelessWidget {
     this._onTap,
     this._trailing,
     this.selected, {
-    Key? key,
+    super.key,
     this.alwaysShowTrailing = false,
-  }) : super(key: key);
+  });
 
   final Sortable<T> _sortable;
   final GestureTapCallback _onTap;
@@ -220,8 +220,7 @@ class _PickFolder extends StatelessWidget {
 
   const _PickFolder({
     required this.sortableData,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -261,8 +260,8 @@ class AddTemplateButton extends StatelessWidget {
   const AddTemplateButton({
     required this.activityTemplateIndex,
     required this.onNewTimerTemplate,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

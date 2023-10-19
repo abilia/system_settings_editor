@@ -2,9 +2,12 @@ part of 'sortable.dart';
 
 class DbSortable extends DbModel<Sortable> {
   Sortable get sortable => model;
-  const DbSortable._(
-      {required Sortable sortable, required int revision, required int dirty})
-      : super(model: sortable, revision: revision, dirty: dirty);
+
+  const DbSortable._({
+    required Sortable sortable,
+    required super.revision,
+    required super.dirty,
+  }) : super(model: sortable);
 
   @override
   DbSortable copyWith({
@@ -193,6 +196,7 @@ class DbSortable extends DbModel<Sortable> {
 
   @override
   List<Object> get props => [sortable, revision, dirty];
+
   @override
   String toString() =>
       'DbSortable: { revision: $revision, dirty: $dirty $sortable }';

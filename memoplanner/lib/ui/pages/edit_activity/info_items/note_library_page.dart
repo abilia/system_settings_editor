@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class NoteLibraryPage extends StatelessWidget {
-  const NoteLibraryPage({Key? key}) : super(key: key);
+  const NoteLibraryPage({super.key});
 
   @override
   Widget build(BuildContext context) =>
@@ -28,8 +28,8 @@ class LibraryNote extends StatelessWidget {
   final String content;
   const LibraryNote({
     required this.content,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +71,8 @@ class LibraryNote extends StatelessWidget {
 class FullScreenNote extends StatelessWidget {
   const FullScreenNote({
     required this.noteData,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final NoteData noteData;
 
   @override

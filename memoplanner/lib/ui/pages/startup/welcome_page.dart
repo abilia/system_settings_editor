@@ -3,8 +3,8 @@ import 'package:memoplanner/ui/all.dart';
 class WelcomePage extends StatelessWidget {
   const WelcomePage({
     required this.pageController,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final PageController pageController;
 

@@ -12,7 +12,7 @@ class EditImageAndName extends StatefulWidget {
   final String? selectPictureLabel;
 
   const EditImageAndName({
-    Key? key,
+    super.key,
     this.imageAndName,
     this.appBar,
     this.maxLines,
@@ -21,7 +21,7 @@ class EditImageAndName extends StatefulWidget {
     this.hintText,
     this.selectPictureLabel,
     this.nameFromImage = false,
-  }) : super(key: key);
+  });
 
   @override
   State createState() => _EditImageAndNameState();

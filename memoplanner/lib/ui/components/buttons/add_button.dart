@@ -20,7 +20,7 @@ enum _ButtonType {
 
 class AddButton extends StatelessWidget
     with ActivityNavigation, TimerNavigation {
-  const AddButton({Key? key}) : super(key: key);
+  const AddButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +117,7 @@ class AddButton extends StatelessWidget
 class _AddButtonMPGO extends StatelessWidget {
   final OnAddButtonPressed onAddButtonPressed;
 
-  const _AddButtonMPGO(this.onAddButtonPressed, {Key? key}) : super(key: key);
+  const _AddButtonMPGO(this.onAddButtonPressed);
 
   @override
   Widget build(BuildContext context) {
@@ -141,8 +141,7 @@ class _AddButtonMPGO extends StatelessWidget {
 class _AddActivityButton extends StatelessWidget {
   final OnAddButtonPressed onAddButtonPressed;
 
-  const _AddActivityButton(this.onAddButtonPressed, {Key? key})
-      : super(key: key);
+  const _AddActivityButton(this.onAddButtonPressed);
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +162,7 @@ class _AddActivityButton extends StatelessWidget {
 class _AddTimerButton extends StatelessWidget {
   final OnAddButtonPressed onAddButtonPressed;
 
-  const _AddTimerButton(this.onAddButtonPressed, {Key? key}) : super(key: key);
+  const _AddTimerButton(this.onAddButtonPressed);
 
   @override
   Widget build(BuildContext context) {
@@ -184,8 +183,7 @@ class _AddTimerButton extends StatelessWidget {
 class _AddActivityOrTimerButtons extends StatelessWidget {
   final OnAddButtonPressed onAddButtonPressed;
 
-  const _AddActivityOrTimerButtons(this.onAddButtonPressed, {Key? key})
-      : super(key: key);
+  const _AddActivityOrTimerButtons(this.onAddButtonPressed);
 
   @override
   Widget build(BuildContext context) {
@@ -243,8 +241,8 @@ class _AddTab extends StatelessWidget {
     required this.position,
     required this.onTap,
     this.ttsData,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String text;
   final IconData icon;
