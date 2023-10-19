@@ -5,7 +5,7 @@ import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/combo_box/combo_box_themes.dart';
 import 'package:ui/tokens/numericals.dart';
 
-class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
+class SeagullComoBoxTheme extends ThemeExtension<SeagullComoBoxTheme> {
   final TextStyle textStyle;
   final InputDecorationTheme inputDecorationTheme;
   final double iconSize, iconGap;
@@ -13,7 +13,7 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
   final BoxDecoration boxDecoration;
   final BoxShadow boxShadow;
 
-  const SeagullComboBoxTheme({
+  const SeagullComoBoxTheme({
     required this.textStyle,
     required this.inputDecorationTheme,
     required this.iconSize,
@@ -23,7 +23,7 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
     required this.boxShadow,
   });
 
-  factory SeagullComboBoxTheme.large() => SeagullComboBoxTheme(
+  factory SeagullComoBoxTheme.large() => SeagullComoBoxTheme(
         inputDecorationTheme: textFieldInputThemeMedium,
         textStyle: textFieldTextStyleLarge,
         iconSize: numerical800,
@@ -33,7 +33,7 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
         boxShadow: comboBoxBoxShadow,
       );
 
-  factory SeagullComboBoxTheme.medium() => SeagullComboBoxTheme(
+  factory SeagullComoBoxTheme.medium() => SeagullComoBoxTheme(
         inputDecorationTheme: textFieldInputThemeMedium,
         textStyle: textFieldTextStyleMedium,
         iconSize: numerical600,
@@ -44,7 +44,7 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
       );
 
   @override
-  SeagullComboBoxTheme copyWith({
+  SeagullComoBoxTheme copyWith({
     InputDecorationTheme? inputDecorationTheme,
     TextStyle? textStyle,
     Widget? leading,
@@ -56,7 +56,7 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
     BoxDecoration? boxDecoration,
     BoxShadow? boxShadow,
   }) {
-    return SeagullComboBoxTheme(
+    return SeagullComoBoxTheme(
       inputDecorationTheme: inputDecorationTheme ?? this.inputDecorationTheme,
       textStyle: textStyle ?? this.textStyle,
       iconSize: iconSize ?? this.iconSize,
@@ -68,7 +68,7 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
   }
 
   @override
-  SeagullComboBoxTheme lerp(covariant SeagullComboBoxTheme? other, double t) {
+  SeagullComoBoxTheme lerp(covariant SeagullComoBoxTheme? other, double t) {
     return copyWith(
       iconSize: lerpDouble(iconSize, other?.iconSize, t),
       textStyle: TextStyle.lerp(textStyle, other?.textStyle, t),

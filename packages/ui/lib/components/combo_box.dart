@@ -108,6 +108,9 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             collapsed: !showHelperBox,
             child: SeagullHelperBox(
               icon: _getIcon(widget.messageState),
+              iconColor: widget.messageState == MessageState.success
+                  ? SurfaceColors.positiveSelected
+                  : null,
               text: widget.message ?? '',
               size: HelperBoxSize.medium,
               state: widget.messageState,
@@ -123,7 +126,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
       case MessageState.error:
         return Symbols.error;
       case MessageState.success:
-        return Symbols.check_circle;
+        return Symbols.check_circle_filled;
       default:
         return null;
     }

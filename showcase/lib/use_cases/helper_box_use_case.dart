@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:showcase/knobs.dart';
 import 'package:ui/components/helper_box.dart';
+import 'package:ui/states.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 class HelperBoxUseCase extends WidgetbookUseCase {
@@ -30,20 +31,20 @@ class HelperBoxUseCase extends WidgetbookUseCase {
                 state: context.knobs.list(
                   label: 'State',
                   options: [
-                    HelperBoxState.caution,
-                    HelperBoxState.error,
-                    HelperBoxState.info,
-                    HelperBoxState.success,
+                    MessageState.caution,
+                    MessageState.error,
+                    MessageState.info,
+                    MessageState.success,
                   ],
-                  initialOption: HelperBoxState.caution,
+                  initialOption: MessageState.caution,
                   labelBuilder: (state) {
-                    if (state == HelperBoxState.caution) {
+                    if (state == MessageState.caution) {
                       return 'Caution';
                     }
-                    if (state == HelperBoxState.error) {
+                    if (state == MessageState.error) {
                       return 'Error';
                     }
-                    if (state == HelperBoxState.info) {
+                    if (state == MessageState.info) {
                       return 'Info';
                     }
                     return 'Success';

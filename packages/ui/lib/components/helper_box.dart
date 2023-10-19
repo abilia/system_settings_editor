@@ -9,6 +9,7 @@ enum HelperBoxSize { medium, large }
 class SeagullHelperBox extends StatelessWidget {
   final String text;
   final IconData? icon;
+  final Color? iconColor;
   final MessageState state;
   final HelperBoxSize size;
 
@@ -17,6 +18,7 @@ class SeagullHelperBox extends StatelessWidget {
     required this.state,
     required this.size,
     this.icon,
+    this.iconColor,
     super.key,
   });
 
@@ -39,6 +41,7 @@ class SeagullHelperBox extends StatelessWidget {
               Icon(
                 icon,
                 size: iconAndTextBoxTheme.iconSize,
+                color: iconColor,
               ),
               SizedBox(width: iconAndTextBoxTheme.iconSpacing),
             ],

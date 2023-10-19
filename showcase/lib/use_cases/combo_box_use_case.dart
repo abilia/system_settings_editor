@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/components/combo_box.dart';
+import 'package:ui/states.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 class ComboBoxUseCase extends WidgetbookUseCase {
@@ -19,8 +20,8 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                       : 300,
                   child: SeagullComboBox(
                     controller: TextEditingController(),
-                    message: context.knobs.stringOrNull(
-                      label: 'Error message',
+                    message: context.knobs.string(
+                      label: 'Message',
                     ),
                     hintText: context.knobs.string(
                       label: 'Hint text',
@@ -43,6 +44,28 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                     )
                         ? Icons.visibility
                         : null,
+                    messageState: context.knobs.list(
+                      label: 'State',
+                      options: [
+                        MessageState.caution,
+                        MessageState.error,
+                        MessageState.info,
+                        MessageState.success,
+                      ],
+                      initialOption: MessageState.caution,
+                      labelBuilder: (state) {
+                        if (state == MessageState.caution) {
+                          return 'Caution';
+                        }
+                        if (state == MessageState.error) {
+                          return 'Error';
+                        }
+                        if (state == MessageState.info) {
+                          return 'Info';
+                        }
+                        return 'Success';
+                      },
+                    ),
                   ),
                 ),
               ),
