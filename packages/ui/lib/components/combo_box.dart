@@ -6,10 +6,7 @@ import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/combo_box/combo_box_themes.dart';
 
-enum ComboBoxSize {
-  medium,
-  large,
-}
+typedef ComboBoxSize = MediumLargeSize;
 
 class SeagullComboBox extends StatefulWidget {
   final String? hintText;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:showcase/knobs.dart';
 import 'package:ui/components/combo_box.dart';
 import 'package:ui/states.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -28,20 +29,7 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                     label: 'Label',
                     initialValue: 'Label',
                   ),
-                  size: context.knobs.list(
-                    label: 'Size',
-                    options: [
-                      ComboBoxSize.medium,
-                      ComboBoxSize.large,
-                    ],
-                    initialOption: ComboBoxSize.medium,
-                    labelBuilder: (size) {
-                      if (size == ComboBoxSize.medium) {
-                        return 'Medium';
-                      }
-                      return 'Large';
-                    },
-                  ),
+                  size: mediumLargeSizeKnob(context),
                   hintText: context.knobs.string(
                     label: 'Hint text',
                     initialValue: '',

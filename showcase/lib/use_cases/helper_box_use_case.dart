@@ -11,20 +11,7 @@ class HelperBoxUseCase extends WidgetbookUseCase {
           builder: (context) => Padding(
             padding: const EdgeInsets.all(8.0),
             child: SeagullHelperBox(
-              size: context.knobs.list(
-                label: 'Size',
-                options: [
-                  HelperBoxSize.medium,
-                  HelperBoxSize.large,
-                ],
-                initialOption: HelperBoxSize.medium,
-                labelBuilder: (size) {
-                  if (size == HelperBoxSize.medium) {
-                    return 'Medium';
-                  }
-                  return 'Large';
-                },
-              ),
+              size: mediumLargeSizeKnob(context),
               text: textKnob(context),
               icon: iconKnob(context),
               state: context.knobs.list(

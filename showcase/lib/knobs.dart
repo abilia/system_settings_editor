@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/components/buttons/buttons.dart';
+import 'package:ui/states.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:widgetbook/widgetbook.dart';
 
@@ -68,6 +69,23 @@ Color colorKnob(BuildContext context) {
         return 'Peach';
       }
       return 'Greyscale';
+    },
+  );
+}
+
+MediumLargeSize mediumLargeSizeKnob(BuildContext context) {
+  return context.knobs.list(
+    label: 'Size',
+    options: [
+      MediumLargeSize.medium,
+      MediumLargeSize.large,
+    ],
+    initialOption: MediumLargeSize.medium,
+    labelBuilder: (size) {
+      if (size == MediumLargeSize.medium) {
+        return 'Medium';
+      }
+      return 'Large';
     },
   );
 }

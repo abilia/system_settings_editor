@@ -6,27 +6,27 @@ import 'package:ui/src/numericals.dart';
 part 'spinner_theme.dart';
 
 class SeagullSpinnerThemes extends ThemeExtension<SeagullSpinnerThemes> {
-  final SeagullSpinnerTheme small;
+  final SeagullSpinnerTheme large;
   final SeagullSpinnerTheme medium;
 
   const SeagullSpinnerThemes({
-    required this.small,
+    required this.large,
     required this.medium,
   });
 
   static const SeagullSpinnerThemes spinners = SeagullSpinnerThemes(
-    small: SeagullSpinnerTheme.small,
+    large: SeagullSpinnerTheme.large,
     medium: SeagullSpinnerTheme.medium,
   );
 
   @override
   SeagullSpinnerThemes copyWith({
     SeagullSpinnerTheme? medium,
-    SeagullSpinnerTheme? small,
+    SeagullSpinnerTheme? large,
   }) {
     return SeagullSpinnerThemes(
       medium: medium ?? this.medium,
-      small: small ?? this.small,
+      large: large ?? this.large,
     );
   }
 
@@ -35,7 +35,7 @@ class SeagullSpinnerThemes extends ThemeExtension<SeagullSpinnerThemes> {
     if (other is! SeagullSpinnerThemes) return this;
     return SeagullSpinnerThemes(
       medium: medium.lerp(other.medium, t),
-      small: small.lerp(other.small, t),
+      large: large.lerp(other.large, t),
     );
   }
 }

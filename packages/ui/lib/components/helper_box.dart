@@ -3,7 +3,7 @@ import 'package:ui/states.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/helper_box/helper_box_themes.dart';
 
-enum HelperBoxSize { medium, large }
+typedef HelperBoxSize = MediumLargeSize;
 
 class SeagullHelperBox extends StatelessWidget {
   final String text;

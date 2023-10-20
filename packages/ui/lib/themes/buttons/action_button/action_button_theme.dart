@@ -42,21 +42,21 @@ class SeagullActionButtonTheme
 
   factory SeagullActionButtonTheme.small(ButtonStyle buttonStyle) =>
       SeagullActionButtonTheme(
-        spinnerSize: SpinnerSize.small,
+        spinnerSize: SpinnerSize.medium,
         iconSpacing: numerical100,
         buttonStyle: buttonStyle,
       );
 
   factory SeagullActionButtonTheme.medium(ButtonStyle buttonStyle) =>
       SeagullActionButtonTheme(
-        spinnerSize: SpinnerSize.small,
+        spinnerSize: SpinnerSize.medium,
         iconSpacing: numerical200,
         buttonStyle: buttonStyle,
       );
 
   factory SeagullActionButtonTheme.large(ButtonStyle buttonStyle) =>
       SeagullActionButtonTheme(
-        spinnerSize: SpinnerSize.medium,
+        spinnerSize: SpinnerSize.large,
         iconSpacing: numerical200,
         buttonStyle: buttonStyle,
       );
