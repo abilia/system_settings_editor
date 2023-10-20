@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:ui/components/collapsable_widget.dart';
 import 'package:ui/components/helper_box.dart';
-import 'package:ui/src/colors.dart';
-import 'package:ui/src/numericals.dart';
 import 'package:ui/states.dart';
 import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/combo_box/combo_box_themes.dart';
+
+enum ComboBoxSize {
+  medium,
+  large,
+}
 
 class SeagullComboBox extends StatefulWidget {
   final String? hintText;
@@ -15,12 +18,15 @@ class SeagullComboBox extends StatefulWidget {
   final IconData? leadingIcon;
   final IconData? trailingIcon;
   final bool obscureText;
+  final bool enabled;
   final TextInputAction? textInputAction;
   final Function(String)? onChanged;
   final TextEditingController? controller;
   final MessageState? messageState;
+  final ComboBoxSize size;
 
   const SeagullComboBox({
+    required this.size,
     this.controller,
     this.hintText,
     this.onChanged,
@@ -29,6 +35,7 @@ class SeagullComboBox extends StatefulWidget {
     this.leadingIcon,
     this.trailingIcon,
     this.textInputAction,
+    this.enabled = true,
     this.obscureText = false,
     this.messageState,
     super.key,
@@ -56,7 +63,8 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = AbiliaTheme.of(context).comboBox;
+    final spacings = AbiliaTheme.of(context).spacings;
+    final comboBoxTheme = _getTheme(context);
     final label = widget.label;
     final messageState = widget.messageState;
     final showHelperBox = widget.message != null &&
@@ -67,38 +75,58 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: numerical200),
+        if (label != null) ...[
+          SizedBox(
             child: Text(
               label,
-              style: theme.textStyle.copyWith(
-                color: SurfaceColors.textSecondary,
-              ),
+              style: comboBoxTheme.labelStyle,
             ),
           ),
+          SizedBox(height: spacings.spacing100),
+        ],
         AnimatedContainer(
-          decoration: theme.boxDecoration.copyWith(
-            boxShadow: selected ? [theme.boxShadow] : [],
+          decoration: comboBoxTheme.boxDecoration.copyWith(
+            boxShadow: selected ? [comboBoxTheme.boxShadow] : [],
           ),
           duration: const Duration(milliseconds: 150),
           child: TextField(
             decoration: InputDecoration(
               hintText: widget.hintText,
-              prefixIcon:
-                  widget.leadingIcon != null ? Icon(widget.leadingIcon) : null,
+              enabled: widget.enabled,
+              hintStyle: comboBoxTheme.inputDecorationTheme.hintStyle,
+              prefixIcon: widget.leadingIcon != null
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                        left: comboBoxTheme.padding.left,
+                        right: spacings.spacing200,
+                      ),
+                      child: Icon(
+                        widget.leadingIcon,
+                        size: comboBoxTheme.iconSize,
+                      ),
+                    )
+                  : null,
               suffixIcon: widget.trailingIcon != null
-                  ? Icon(widget.trailingIcon)
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                        right: comboBoxTheme.padding.right,
+                        left: spacings.spacing200,
+                      ),
+                      child: Icon(
+                        widget.trailingIcon,
+                        size: comboBoxTheme.iconSize,
+                      ),
+                    )
                   : null,
               enabledBorder: _getBorder(widget.messageState) ??
-                  theme.inputDecorationTheme.enabledBorder,
+                  comboBoxTheme.inputDecorationTheme.enabledBorder,
               focusedBorder: _getBorder(widget.messageState) ??
-                  theme.inputDecorationTheme.focusedBorder,
+                  comboBoxTheme.inputDecorationTheme.focusedBorder,
               focusedErrorBorder: _getBorder(widget.messageState) ??
-                  theme.inputDecorationTheme.focusedErrorBorder,
-            ).applyDefaults(theme.inputDecorationTheme),
+                  comboBoxTheme.inputDecorationTheme.focusedErrorBorder,
+            ).applyDefaults(comboBoxTheme.inputDecorationTheme),
             textInputAction: widget.textInputAction,
-            style: theme.textStyle,
+            style: comboBoxTheme.textStyle,
             onChanged: widget.onChanged,
             focusNode: focusNode,
             controller: widget.controller,
@@ -106,14 +134,16 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: numerical300),
+          padding: EdgeInsets.only(top: spacings.spacing300),
           child: CollapsableWidget(
             collapsed: !showHelperBox,
             child: messageState != null
                 ? SeagullHelperBox(
                     iconTheme: _getIconTheme(widget.messageState),
                     text: widget.message ?? '',
-                    size: HelperBoxSize.medium,
+                    size: widget.size == ComboBoxSize.large
+                        ? HelperBoxSize.large
+                        : HelperBoxSize.medium,
                     state: messageState,
                   )
                 : const SizedBox.shrink(),
@@ -142,6 +172,16 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
         return successBorder;
       default:
         return null;
+    }
+  }
+
+  SeagullComboBoxTheme _getTheme(BuildContext context) {
+    final abiliaTheme = AbiliaTheme.of(context);
+    switch (widget.size) {
+      case ComboBoxSize.medium:
+        return abiliaTheme.comboBox.medium;
+      case ComboBoxSize.large:
+        return abiliaTheme.comboBox.large;
     }
   }
 }

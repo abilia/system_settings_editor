@@ -7,7 +7,7 @@ class SeagullTagTheme extends ThemeExtension<SeagullTagTheme> {
     required this.iconAndTextBoxTheme,
   });
 
-  static final primary700 = SeagullTagTheme(
+  static final size700 = SeagullTagTheme(
     iconAndTextBoxTheme: IconAndTextBoxTheme(
       textStyle: AbiliaFonts.primary425,
       padding: const EdgeInsets.symmetric(
@@ -20,8 +20,8 @@ class SeagullTagTheme extends ThemeExtension<SeagullTagTheme> {
     ),
   );
 
-  static final primary600 = primary700.copyWith(
-    iconAndTextBoxTheme: primary700.iconAndTextBoxTheme.copyWith(
+  static final size600 = size700.copyWith(
+    iconAndTextBoxTheme: size700.iconAndTextBoxTheme.copyWith(
       padding: const EdgeInsets.symmetric(
         horizontal: numerical300,
         vertical: numerical100,

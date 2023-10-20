@@ -16,14 +16,14 @@ class SeagullHelperBoxThemes extends ThemeExtension<SeagullHelperBoxThemes> {
   });
 
   static final SeagullHelperBoxThemes mobile = SeagullHelperBoxThemes(
-    medium: SeagullHelperBoxTheme.primary900,
-    large: SeagullHelperBoxTheme.primary900,
+    medium: SeagullHelperBoxTheme.size900,
+    large: SeagullHelperBoxTheme.size900,
   );
 
   static final SeagullHelperBoxThemes tablet = mobile;
 
   static final SeagullHelperBoxThemes desktopSmall = mobile.copyWith(
-    large: SeagullHelperBoxTheme.primary1000,
+    large: SeagullHelperBoxTheme.size1000,
   );
 
   static final SeagullHelperBoxThemes desktopLarge = desktopSmall;

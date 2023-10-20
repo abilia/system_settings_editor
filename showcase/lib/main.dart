@@ -18,6 +18,7 @@ class WidgetBook extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textController = TextEditingController();
     return Widgetbook.material(
       addons: [
         DeviceFrameAddon(
@@ -29,6 +30,7 @@ class WidgetBook extends StatelessWidget {
         TextScaleAddon(scales: [3.0, 2.0, 1.0, .8, .5], initialScale: 1.0),
         BackgroundAddon(),
         BreakpointAddon(),
+        AlignmentAddon(initialAlignment: Alignment.center),
       ],
       directories: [
         WidgetbookComponent(
@@ -43,7 +45,7 @@ class WidgetBook extends StatelessWidget {
           useCases: [
             HelperBoxUseCase(),
             TagUseCase(),
-            ComboBoxUseCase(),
+            ComboBoxUseCase(controller: textController),
           ],
         ),
         WidgetbookComponent(

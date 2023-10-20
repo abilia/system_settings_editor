@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ui/src/fonts.dart';
 
+extension TextStyleWithColor on TextStyle {
+  TextStyle withColor(Color color) => copyWith(color: color);
+}
+
 class AbiliaTextStyleThemes extends ThemeExtension<AbiliaTextStyleThemes> {
   final TextStyle primary125;
   final TextStyle primary225;

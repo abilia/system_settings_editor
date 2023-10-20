@@ -7,7 +7,7 @@ class SeagullHelperBoxTheme extends ThemeExtension<SeagullHelperBoxTheme> {
     required this.iconAndTextBoxTheme,
   });
 
-  static final primary900 = SeagullHelperBoxTheme(
+  static final size900 = SeagullHelperBoxTheme(
     iconAndTextBoxTheme: IconAndTextBoxTheme(
       textStyle: AbiliaFonts.primary300,
       padding: const EdgeInsets.all(numerical300),
@@ -17,8 +17,8 @@ class SeagullHelperBoxTheme extends ThemeExtension<SeagullHelperBoxTheme> {
     ),
   );
 
-  static final primary1000 = primary900.copyWith(
-    iconAndTextBoxTheme: primary900.iconAndTextBoxTheme.copyWith(
+  static final size1000 = size900.copyWith(
+    iconAndTextBoxTheme: size900.iconAndTextBoxTheme.copyWith(
       textStyle: AbiliaFonts.primary400,
       padding: const EdgeInsets.all(numerical600),
       iconSize: numerical800,

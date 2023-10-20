@@ -16,8 +16,8 @@ class SeagullTagThemes extends ThemeExtension<SeagullTagThemes> {
   });
 
   static final SeagullTagThemes tags = SeagullTagThemes(
-    size600: SeagullTagTheme.primary600,
-    size700: SeagullTagTheme.primary700,
+    size600: SeagullTagTheme.size600,
+    size700: SeagullTagTheme.size700,
   );
 
   @override

@@ -96,6 +96,7 @@ class LoginPage extends StatelessWidget {
                     message: 'Username',
                     child: SeagullComboBox(
                       label: 'Username',
+                      size: ComboBoxSize.medium,
                       leadingIcon: Symbols.account_circle,
                       textInputAction: TextInputAction.next,
                       onChanged: context.read<LoginCubit>().usernameChanged,
@@ -108,6 +109,7 @@ class LoginPage extends StatelessWidget {
                     message: 'Password',
                     child: SeagullComboBox(
                       label: 'Password',
+                      size: ComboBoxSize.medium,
                       leadingIcon: Symbols.key,
                       trailingIcon: Symbols.visibility,
                       obscureText: true,
