@@ -4,8 +4,8 @@ class ProfilePicture extends StatelessWidget {
   final User user;
   const ProfilePicture({
     required this.user,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
