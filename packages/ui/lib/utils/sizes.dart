@@ -1,10 +1,3 @@
-enum MessageState {
-  caution,
-  info,
-  error,
-  success,
-}
-
 enum MediumLargeSize {
   medium,
   large,

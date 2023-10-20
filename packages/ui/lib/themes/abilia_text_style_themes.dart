@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui/src/fonts.dart';
+import 'package:ui/src/tokens/fonts.dart';
 
 extension TextStyleWithColor on TextStyle {
   TextStyle withColor(Color color) => copyWith(color: color);

@@ -12,8 +12,8 @@ import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ui/components/buttons/buttons.dart';
 import 'package:ui/components/combo_box.dart';
-import 'package:ui/states.dart';
 import 'package:ui/themes/abilia_theme.dart';
+import 'package:ui/utils/states.dart';
 
 part 'logo_with_change_server.dart';
 

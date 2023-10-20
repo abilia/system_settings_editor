@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui/styles/buttons/button_styles.dart';
+import 'package:ui/src/styles/buttons/button_styles.dart';
 
 part 'icon_button_theme.dart';
 

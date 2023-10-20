@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ui/states.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/spinner/spinner_themes.dart';
+import 'package:ui/utils/sizes.dart';
 
 typedef SpinnerSize = MediumLargeSize;
 
@@ -33,7 +33,7 @@ class SeagullSpinner extends StatelessWidget {
   SeagullSpinnerTheme _getTheme(BuildContext context) {
     final abiliaTheme = AbiliaTheme.of(context);
     switch (size) {
-        case SpinnerSize.medium:
+      case SpinnerSize.medium:
         return abiliaTheme.spinners.medium;
       case SpinnerSize.large:
         return abiliaTheme.spinners.large;

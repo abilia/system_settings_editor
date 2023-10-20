@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:showcase/knobs.dart';
 import 'package:ui/components/combo_box.dart';
-import 'package:ui/states.dart';
+import 'package:ui/utils/states.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 class ComboBoxUseCase extends WidgetbookUseCase {

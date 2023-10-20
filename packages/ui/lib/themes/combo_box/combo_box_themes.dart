@@ -1,10 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:ui/src/colors.dart';
-import 'package:ui/src/fonts.dart';
-import 'package:ui/src/numericals.dart';
-import 'package:ui/styles/combo_box_styles.dart';
+import 'package:ui/src/styles/decoration.dart';
+import 'package:ui/src/themes/input_themes.dart';
+import 'package:ui/src/tokens/colors.dart';
+import 'package:ui/src/tokens/fonts.dart';
+import 'package:ui/src/tokens/numericals.dart';
 import 'package:ui/themes/abilia_text_style_themes.dart';
 
 part 'combo_box_theme.dart';

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ui/states.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/helper_box/helper_box_themes.dart';
+import 'package:ui/utils/sizes.dart';
+import 'package:ui/utils/states.dart';
 
 typedef HelperBoxSize = MediumLargeSize;
 

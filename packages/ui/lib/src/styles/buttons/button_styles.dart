@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ui/src/colors.dart';
-import 'package:ui/src/fonts.dart';
-import 'package:ui/src/numericals.dart';
-import 'package:ui/styles/borders.dart';
+import 'package:ui/src/styles/borders.dart';
+import 'package:ui/src/tokens/colors.dart';
+import 'package:ui/src/tokens/fonts.dart';
+import 'package:ui/src/tokens/numericals.dart';
 
 part 'action_button_styles.dart';
 part 'icon_button_styles.dart';
