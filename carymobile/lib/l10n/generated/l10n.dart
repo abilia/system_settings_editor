@@ -355,10 +355,10 @@ class Lt {
     );
   }
 
-  /// ``
+  /// `Your licence has expired.`
   String get license_expired {
     return Intl.message(
-      '',
+      'Your licence has expired.',
       name: 'license_expired',
       desc: '',
       args: [],
@@ -415,10 +415,10 @@ class Lt {
     );
   }
 
-  /// ``
+  /// `We could not find a licence for your account. Make sure that CARY Base is connected to myAbilia before logging in here with the same account.`
   String get no_license {
     return Intl.message(
-      '',
+      'We could not find a licence for your account. Make sure that CARY Base is connected to myAbilia before logging in here with the same account.',
       name: 'no_license',
       desc: '',
       args: [],

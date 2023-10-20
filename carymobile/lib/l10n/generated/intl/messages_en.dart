@@ -63,14 +63,16 @@ class MessageLookup extends MessageLookupByLibrary {
         'hide': MessageLookupByLibrary.simpleMessage('Hide'),
         'internet': MessageLookupByLibrary.simpleMessage('Internet'),
         'last_sync': MessageLookupByLibrary.simpleMessage('Last sync:'),
-        'license_expired': MessageLookupByLibrary.simpleMessage(''),
+        'license_expired':
+            MessageLookupByLibrary.simpleMessage('Your licence has expired.'),
         'log_in': MessageLookupByLibrary.simpleMessage('Log in'),
         'log_out': MessageLookupByLibrary.simpleMessage('Log out'),
         'login_hint': MessageLookupByLibrary.simpleMessage(
             'Make sure that CARY Base is connected to myAbilia. Log in here with the same account.'),
         'mid_morning': MessageLookupByLibrary.simpleMessage('Mid-morning'),
         'night': MessageLookupByLibrary.simpleMessage('Night'),
-        'no_license': MessageLookupByLibrary.simpleMessage(''),
+        'no_license': MessageLookupByLibrary.simpleMessage(
+            'We could not find a licence for your account. Make sure that CARY Base is connected to myAbilia before logging in here with the same account.'),
         'not_connected': MessageLookupByLibrary.simpleMessage('Not connected'),
         'ok': MessageLookupByLibrary.simpleMessage('Ok'),
         'password': MessageLookupByLibrary.simpleMessage('Password'),

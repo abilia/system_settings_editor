@@ -53,7 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage('Tjugo minuter i %s'),
         'close': MessageLookupByLibrary.simpleMessage('Stäng'),
         'connect_to_myabilia':
-            MessageLookupByLibrary.simpleMessage('Connect to myAbilia'),
+            MessageLookupByLibrary.simpleMessage('Anslut till myAbilia'),
         'connected': MessageLookupByLibrary.simpleMessage('Ansluten'),
         'early_morning': MessageLookupByLibrary.simpleMessage('morgon'),
         'evening': MessageLookupByLibrary.simpleMessage('kväll'),
@@ -62,14 +62,16 @@ class MessageLookup extends MessageLookupByLibrary {
         'internet': MessageLookupByLibrary.simpleMessage('Internet'),
         'last_sync':
             MessageLookupByLibrary.simpleMessage('Senaste synkronisering:'),
-        'license_expired': MessageLookupByLibrary.simpleMessage(''),
+        'license_expired':
+            MessageLookupByLibrary.simpleMessage('Ditt licens har gått ut.'),
         'log_in': MessageLookupByLibrary.simpleMessage('Logga in'),
         'log_out': MessageLookupByLibrary.simpleMessage('Logga ut'),
         'login_hint': MessageLookupByLibrary.simpleMessage(
-            'Make sure that CARY Base is connected to myAbilia. Log in here with the same account.'),
+            'Se till att CARY Base är ansluten till myAbilia. Använd samma konto för att logga in här.'),
         'mid_morning': MessageLookupByLibrary.simpleMessage('förmiddag'),
         'night': MessageLookupByLibrary.simpleMessage('natt'),
-        'no_license': MessageLookupByLibrary.simpleMessage(''),
+        'no_license': MessageLookupByLibrary.simpleMessage(
+            'Vi kunde inte hitta en licens för ditt konto. Se till att CARY Base är ansluten till myAbilia innan du loggar in här med samma konto.'),
         'not_connected': MessageLookupByLibrary.simpleMessage('Inte ansluten'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
         'password': MessageLookupByLibrary.simpleMessage('Lösenord'),
