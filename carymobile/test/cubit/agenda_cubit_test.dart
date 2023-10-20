@@ -53,7 +53,7 @@ void main() {
         ),
       );
     },
-    expect: () => [AgendaLoaded(occasions: const {}, day: initialDay)],
+    expect: () => [AgendaLoaded(activities: const [], day: initialDay)],
   );
 
   blocTest(
@@ -83,36 +83,33 @@ void main() {
       ).called(1);
     },
     expect: () => [
-      AgendaLoaded(occasions: const {}, day: initialDay),
-      AgendaLoaded(occasions: const {}, day: initialDay.nextDay()),
+      AgendaLoaded(activities: const [], day: initialDay),
+      AgendaLoaded(activities: const [], day: initialDay.nextDay()),
     ],
   );
 
   final nowActivity = Activity.createNew(
     startTime: initialTime,
   );
-  final nowActivityOccasion = ActivityOccasion(
+  final nowActivityDay = ActivityDay(
     nowActivity,
     initialDay,
-    Occasion.current,
   );
 
   final pastActivity = Activity.createNew(
     startTime: initialTime.subtract(const Duration(hours: 1)),
   );
-  final pastActivityOccasion = ActivityOccasion(
+  final pastActivityDay = ActivityDay(
     pastActivity,
     initialDay,
-    Occasion.past,
   );
 
   final futureActivity = Activity.createNew(
     startTime: initialTime.add(const Duration(hours: 1)),
   );
-  final futureActivityOccasion = ActivityOccasion(
+  final futureActivityDay = ActivityDay(
     futureActivity,
     initialDay,
-    Occasion.future,
   );
 
   blocTest(
@@ -146,13 +143,13 @@ void main() {
       );
     },
     expect: () => [
-      AgendaLoaded(occasions: const {}, day: initialDay),
+      AgendaLoaded(activities: const [], day: initialDay),
       AgendaLoaded(
-        occasions: {
-          Occasion.past: [pastActivityOccasion],
-          Occasion.current: [nowActivityOccasion],
-          Occasion.future: [futureActivityOccasion],
-        },
+        activities: [
+          pastActivityDay,
+          nowActivityDay,
+          futureActivityDay,
+        ],
         day: initialDay,
       )
     ],

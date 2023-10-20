@@ -7,8 +7,8 @@ class AppBarHeading extends StatelessWidget {
     this.label = '',
     this.breadcrumbs = const [],
     this.iconData,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String text;
   final String label;

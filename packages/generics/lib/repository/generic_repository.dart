@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:generics/generics.dart';
-import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:repository_base/repository_base.dart';
 
@@ -11,17 +10,14 @@ class GenericRepository extends DataRepository<Generic> {
   final Set<String> noSyncSettings;
 
   GenericRepository({
-    required BaseUrlDb baseUrlDb,
-    required BaseClient client,
-    required int userId,
+    required super.baseUrlDb,
+    required super.client,
+    required super.userId,
     required this.genericDb,
     required this.noSyncSettings,
   }) : super(
-          client: client,
-          baseUrlDb: baseUrlDb,
           path: 'generics',
           postPath: 'generics',
-          userId: userId,
           db: genericDb,
           fromJsonToDataModel: DbGeneric.fromJson,
           log: Logger((GenericRepository).toString()),

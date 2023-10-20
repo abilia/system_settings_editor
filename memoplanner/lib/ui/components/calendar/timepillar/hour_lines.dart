@@ -8,8 +8,8 @@ class HourLines extends StatelessWidget {
     required this.width,
     required this.strokeWidth,
     this.numberOfLines = 24,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => Column(

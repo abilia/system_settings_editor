@@ -18,26 +18,27 @@ class EmptyRecordSoundState extends RecordSoundState {
 }
 
 abstract class RecordedSoundState extends RecordSoundState {
-  const RecordedSoundState(recordedFile, duration)
-      : super(recordedFile, duration);
+  const RecordedSoundState(super.recordedFile, super.duration);
 }
 
 class UnchangedRecordingSoundState extends RecordedSoundState {
-  const UnchangedRecordingSoundState(AbiliaFile recordedFile, Duration duration)
-      : super(recordedFile, duration);
+  const UnchangedRecordingSoundState(super.recordedFile, super.duration);
 }
 
 class RecordingSoundState extends RecordSoundState {
   double get progress =>
       duration.inMilliseconds /
       RecordSoundCubit.maxRecordingTime.inMilliseconds;
+
   const RecordingSoundState(duration) : super(AbiliaFile.empty, duration);
+
   @override
   List<Object?> get props => [recordedFile, progress, duration];
 }
 
 class NewRecordedSoundState extends RecordedSoundState {
   final UnstoredAbiliaFile unstoredAbiliaFile;
+
   const NewRecordedSoundState(this.unstoredAbiliaFile, duration)
       : super(unstoredAbiliaFile, duration);
 }

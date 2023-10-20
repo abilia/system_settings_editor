@@ -8,7 +8,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class ActivityNameAndPictureWidget extends StatelessWidget {
-  const ActivityNameAndPictureWidget({Key? key}) : super(key: key);
+  const ActivityNameAndPictureWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +68,8 @@ class NameAndPictureWidget extends StatelessWidget {
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
     this.inputHeadingForNameField,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +114,8 @@ class SelectPictureWidget extends StatelessWidget {
     this.errorState = false,
     this.isLarge = false,
     this.label,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -191,8 +191,8 @@ class SelectedImageWidget extends StatelessWidget {
     this.errorState = false,
     this.isLarge = false,
     this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -249,8 +249,8 @@ class NameInput extends StatelessWidget {
     this.maxLines = 1,
     this.inputFormatters = const <TextInputFormatter>[],
     this.inputHeading,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String text;
   final Function(String)? onEdit;
@@ -279,7 +279,7 @@ class NameInput extends StatelessWidget {
 class CategoryWidget extends StatelessWidget {
   final Activity activity;
 
-  const CategoryWidget(this.activity, {Key? key}) : super(key: key);
+  const CategoryWidget(this.activity, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -328,9 +328,8 @@ class CategoryRadioField extends StatelessWidget {
     required this.category,
     required this.groupValue,
     this.onChanged,
-    Key? key,
-  })  : isRight = category == Category.right,
-        super(key: key);
+    super.key,
+  }) : isRight = category == Category.right;
 
   @override
   Widget build(BuildContext context) {
@@ -377,7 +376,7 @@ class CategoryRadioField extends StatelessWidget {
 }
 
 class AlarmWidget extends StatelessWidget {
-  const AlarmWidget({Key? key}) : super(key: key);
+  const AlarmWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -429,8 +428,8 @@ class AlarmWidget extends StatelessWidget {
 
 class AlarmOnlyAtStartSwitch extends StatelessWidget {
   const AlarmOnlyAtStartSwitch({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -459,8 +458,7 @@ class AlarmOnlyAtStartSwitch extends StatelessWidget {
 class CheckableAndDeleteAfterWidget extends StatelessWidget {
   final Activity activity;
 
-  const CheckableAndDeleteAfterWidget(this.activity, {Key? key})
-      : super(key: key);
+  const CheckableAndDeleteAfterWidget(this.activity, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -509,7 +507,7 @@ class CheckableAndDeleteAfterWidget extends StatelessWidget {
 class AvailableForWidget extends StatelessWidget {
   final Activity activity;
 
-  const AvailableForWidget(this.activity, {Key? key}) : super(key: key);
+  const AvailableForWidget(this.activity, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -572,7 +570,7 @@ class AvailableForWidget extends StatelessWidget {
 }
 
 class EndDateWidget extends StatelessWidget {
-  const EndDateWidget({required this.errorState, Key? key}) : super(key: key);
+  const EndDateWidget({required this.errorState, super.key});
 
   final bool errorState;
 
@@ -628,7 +626,7 @@ class EndDateWidget extends StatelessWidget {
 }
 
 class EndDateWizWidget extends StatelessWidget {
-  const EndDateWizWidget({Key? key}) : super(key: key);
+  const EndDateWizWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -652,8 +650,8 @@ class EndDateWizWidget extends StatelessWidget {
 
 class Weekdays extends StatelessWidget {
   const Weekdays({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -701,7 +699,7 @@ class Weekdays extends StatelessWidget {
 }
 
 class MonthDays extends StatelessWidget {
-  const MonthDays({Key? key}) : super(key: key);
+  const MonthDays({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -145,7 +145,7 @@ class FakeListenableClient {
 }
 
 class ListenableMockClient extends MockClient implements ListenableClient {
-  ListenableMockClient(MockClientHandler handler) : super(handler);
+  ListenableMockClient(super.handler);
   final _stateController = StreamController<HttpMessage>.broadcast();
 
   @override

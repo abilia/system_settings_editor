@@ -22,8 +22,8 @@ class ViewDialog extends StatelessWidget {
     this.forwardNavigationWidget,
     this.bodyPadding,
     this.verticalButtons = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +84,8 @@ class ErrorDialog extends StatelessWidget {
   const ErrorDialog({
     required this.text,
     this.backNavigationWidget,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => ViewDialog(
@@ -106,8 +106,8 @@ class YesNoDialog extends StatelessWidget {
     required this.text,
     required this.heading,
     this.headingIcon,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +127,8 @@ class ConfirmWarningDialog extends StatelessWidget {
   final String text;
   const ConfirmWarningDialog({
     required this.text,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -151,8 +151,8 @@ class WarningDialog extends StatelessWidget {
 
   const WarningDialog({
     required this.text,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,9 @@
 import 'package:logging/logging.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:user_files/user_files.dart';
 
 class UserFileDb extends DataDb<UserFile> {
-  UserFileDb(Database database) : super(database);
+  UserFileDb(super.database);
 
   @override
   String get tableName => DatabaseRepository.userFileTableName;

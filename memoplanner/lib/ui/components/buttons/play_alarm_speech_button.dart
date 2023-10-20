@@ -10,8 +10,8 @@ class PlayAlarmSpeechButton extends StatelessWidget {
   final NewAlarm alarm;
   const PlayAlarmSpeechButton({
     required this.alarm,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) => BlocProvider(
         create: (context) => SoundBloc(

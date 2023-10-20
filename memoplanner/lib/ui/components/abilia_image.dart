@@ -35,8 +35,8 @@ class EventImage extends StatelessWidget {
     this.checkPadding,
     this.checkMark,
     this.radius,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -137,9 +137,9 @@ class CheckedImageWithImagePopup extends StatelessWidget {
 
   const CheckedImageWithImagePopup({
     required this.activityDay,
-    Key? key,
+    super.key,
     this.checkPadding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -190,8 +190,8 @@ class PhotoCalendarImage extends StatelessWidget {
     required this.fileId,
     required this.filePath,
     this.errorContent,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -243,8 +243,8 @@ class FullScreenImage extends StatelessWidget {
     this.backgroundDecoration,
     this.onTap,
     this.tightMode = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -303,8 +303,8 @@ class FadeInCalendarImage extends StatelessWidget {
     this.imageSize = ImageSize.thumb,
     this.fit = BoxFit.cover,
     this.radius,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -360,8 +360,8 @@ class FadeInAbiliaImage extends StatelessWidget {
     this.width,
     this.fit = BoxFit.cover,
     this.borderRadius,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -416,8 +416,8 @@ class FadeInNetworkImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.width,
     this.height,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class AddActivityAddSettingsTab extends StatelessWidget {
-  const AddActivityAddSettingsTab({Key? key}) : super(key: key);
+  const AddActivityAddSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ Future<void> _showErrorDialog(BuildContext context) async => showDialog(
     );
 
 class _EditActivitySettingsWidget extends StatelessWidget {
-  const _EditActivitySettingsWidget({Key? key}) : super(key: key);
+  const _EditActivitySettingsWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +204,7 @@ class _EditActivitySettingsWidget extends StatelessWidget {
 }
 
 class _StepByStepSettingsWidget extends StatelessWidget {
-  const _StepByStepSettingsWidget({Key? key}) : super(key: key);
+  const _StepByStepSettingsWidget();
 
   @override
   Widget build(BuildContext context) {

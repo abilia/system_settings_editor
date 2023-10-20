@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class _EyeButton extends StatelessWidget {
-  const _EyeButton({Key? key, this.onPressed}) : super(key: key);
+  const _EyeButton({this.onPressed});
   final VoidCallback? onPressed;
 
   @override
@@ -23,7 +23,7 @@ class _EyeButton extends StatelessWidget {
 }
 
 class EyeButtonDay extends StatelessWidget {
-  const EyeButtonDay({Key? key}) : super(key: key);
+  const EyeButtonDay({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 
 class BatteryLevel extends StatelessWidget {
   final Battery battery;
-  const BatteryLevel({required this.battery, Key? key}) : super(key: key);
+  const BatteryLevel({required this.battery, super.key});
 
   @override
   Widget build(BuildContext context) {

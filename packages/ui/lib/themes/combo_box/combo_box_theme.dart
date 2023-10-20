@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ui/src/numericals.dart';
 import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/combo_box/combo_box_themes.dart';
-import 'package:ui/tokens/numericals.dart';
 
 class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
   final TextStyle textStyle;

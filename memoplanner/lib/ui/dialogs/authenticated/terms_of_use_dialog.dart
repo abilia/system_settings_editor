@@ -10,8 +10,8 @@ class TermsOfUseDialog extends StatefulWidget {
     required this.loginDialogCubit,
     required this.isMoreDialogs,
     required this.onNext,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<TermsOfUseDialog> createState() => _TermsOfUseDialogState();

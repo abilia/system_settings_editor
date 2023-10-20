@@ -5,9 +5,8 @@ import 'package:memoplanner/utils/all.dart';
 
 class CalendarInactivityListener
     extends BlocListener<InactivityCubit, InactivityState> {
-  CalendarInactivityListener({Widget? child, Key? key})
+  CalendarInactivityListener({super.child, super.key})
       : super(
-          key: key,
           listenWhen: (previous, current) =>
               previous is! ReturnToTodayState && current is ReturnToTodayState,
           listener: (context, state) {
@@ -15,15 +14,13 @@ class CalendarInactivityListener
             context.read<WeekCalendarCubit>().goToCurrentWeek();
             context.read<DayPickerBloc>().add(const CurrentDay());
           },
-          child: child,
         );
 }
 
 class ScreensaverListener
     extends BlocListener<InactivityCubit, InactivityState> {
-  ScreensaverListener({Key? key})
+  ScreensaverListener({super.key})
       : super(
-          key: key,
           listenWhen: (previous, current) => current is HomeScreenState,
           listener: (context, state) {
             // Need to pop to root here and not in [ReturnToHomeScreenListener]
@@ -47,9 +44,8 @@ class ScreensaverListener
 
 class PopScreensaverListener
     extends BlocListener<InactivityCubit, InactivityState> {
-  PopScreensaverListener({Key? key})
+  PopScreensaverListener({super.key})
       : super(
-          key: key,
           listenWhen: (previous, current) => current is SomethingHappened,
           listener: (context, state) =>
               GetIt.I<AlarmNavigator>().popScreensaverRoute(),

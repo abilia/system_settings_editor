@@ -1,7 +1,8 @@
 import 'package:carymessenger/bloc/alarm_page_bloc.dart';
+import 'package:carymessenger/l10n/generated/l10n.dart';
 import 'package:carymessenger/ui/abilia_icons.dart';
 import 'package:carymessenger/ui/components/buttons/action.dart';
-import 'package:carymessenger/ui/themes/text_styles.dart';
+import 'package:carymessenger/ui/themes/theme.dart';
 import 'package:carymessenger/ui/widgets/abilia_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class AlarmPage extends StatelessWidget {
                     height: 296,
                     child: AbiliaImage(activityDay.image),
                   ),
-                if (title.isNotEmpty) Text(title, style: headline4),
+                if (title.isNotEmpty) Text(title, style: headlineLarge),
                 if (description.isNotEmpty)
                   Text(
                     description,
@@ -45,7 +46,7 @@ class AlarmPage extends StatelessWidget {
                 ActionButtonGreen(
                   onPressed: Navigator.of(context).maybePop,
                   leading: const Icon(AbiliaIcons.ok),
-                  text: 'Ok',
+                  text: Lt.of(context).ok,
                 ),
               ],
             ),

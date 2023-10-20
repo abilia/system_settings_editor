@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class TitleWiz extends StatefulWidget {
-  const TitleWiz({Key? key}) : super(key: key);
+  const TitleWiz({super.key});
 
   @override
   State<TitleWiz> createState() => _TitleWizState();

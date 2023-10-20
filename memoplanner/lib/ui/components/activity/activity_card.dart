@@ -16,8 +16,8 @@ class ActivityCard extends StatelessWidget {
     this.showCategoryColor = false,
     this.showInfoIcons = true,
     this.useOpacity = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -171,8 +171,8 @@ class CardIcon extends StatelessWidget {
 
   const CardIcon(
     this.icon, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -192,8 +192,8 @@ class AvailableForIcon extends StatelessWidget {
   const AvailableForIcon(
     this.availableFor,
     this.inactive, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

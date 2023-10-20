@@ -10,8 +10,8 @@ class RecordSoundPage extends StatelessWidget {
   const RecordSoundPage({
     required this.title,
     required this.initialRecording,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

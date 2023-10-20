@@ -11,15 +11,16 @@ class _PasswordInputFieldState extends State<PasswordInputField> {
   bool obscureText = true;
   @override
   Widget build(BuildContext context) {
+    final translate = Lt.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Password', style: body),
+        Text(translate.password),
         const SizedBox(height: 4),
         Tooltip(
-          message: 'Password',
+          message: translate.password,
           child: TextField(
-            style: body,
+            style: inputTextStyle,
             obscureText: obscureText,
             obscuringCharacter: '*',
             enableIMEPersonalizedLearning: false,

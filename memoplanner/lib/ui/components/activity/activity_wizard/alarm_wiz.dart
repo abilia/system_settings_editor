@@ -1,7 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 class AlarmWiz extends StatelessWidget {
-  const AlarmWiz({Key? key}) : super(key: key);
+  const AlarmWiz({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class AlarmWiz extends StatelessWidget {
 }
 
 class SelectAlarmWizPage extends StatelessWidget {
-  const SelectAlarmWizPage({Key? key}) : super(key: key);
+  const SelectAlarmWizPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -9,8 +9,8 @@ class TabControlledButton extends StatelessWidget {
     this.text,
     this.iconData, {
     required this.tabIndex,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => DefaultTabControllerBuilder(

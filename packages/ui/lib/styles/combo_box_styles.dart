@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ui/tokens/colors.dart';
-import 'package:ui/tokens/fonts.dart';
-import 'package:ui/tokens/numericals.dart';
+import 'package:ui/src/colors.dart';
+import 'package:ui/src/fonts.dart';
+import 'package:ui/src/numericals.dart';
 
 final borderSideGrey300 = BorderSide(
   color: SurfaceColors.active,

@@ -11,6 +11,6 @@ abstract class TimepillarCard extends StatelessWidget {
   const TimepillarCard(
     this.column,
     this.cardPosition, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 }

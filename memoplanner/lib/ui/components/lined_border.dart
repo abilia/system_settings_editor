@@ -9,8 +9,8 @@ class LinedBorder extends StatelessWidget {
     required this.child,
     this.onTap,
     this.errorState = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return InkWell(

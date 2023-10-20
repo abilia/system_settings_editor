@@ -23,7 +23,7 @@ class ScrollArrows extends StatelessWidget {
     this.overflowDividerPadding = const EdgeInsets.all(0.0),
     bool hasScrollBar = true,
     bool scrollbarAlwaysShown = false,
-    Key? key,
+    super.key,
   })  : assert(controller != null),
         verticalScrollBar = hasScrollBar,
         verticalController = controller,
@@ -32,8 +32,7 @@ class ScrollArrows extends StatelessWidget {
         downArrow = true,
         leftArrow = false,
         rightArrow = false,
-        horizontalController = null,
-        super(key: key);
+        horizontalController = null;
 
   ScrollArrows.all({
     required this.child,
@@ -44,20 +43,19 @@ class ScrollArrows extends StatelessWidget {
     this.verticalController,
     this.horizontalController,
     this.verticalOverflowDivider = false,
-    Key? key,
+    super.key,
   })  : assert(verticalController != null && horizontalController != null),
         overflowDividerPadding = const EdgeInsets.all(0.0),
         upArrow = true,
         downArrow = true,
         leftArrow = true,
-        rightArrow = true,
-        super(key: key);
+        rightArrow = true;
 
   ScrollArrows.horizontal({
     required this.child,
     required ScrollController? controller,
     this.verticalOverflowDivider = false,
-    Key? key,
+    super.key,
   })  : assert(controller != null),
         overflowDividerPadding = const EdgeInsets.all(0.0),
         upArrow = false,
@@ -69,8 +67,7 @@ class ScrollArrows extends StatelessWidget {
         verticalController = null,
         verticalScrollBar = false,
         verticalScrollBarAlwaysShown = false,
-        horizontalController = controller,
-        super(key: key);
+        horizontalController = controller;
 
   @override
   Widget build(BuildContext context) {
@@ -251,10 +248,9 @@ abstract class _ArrowBase extends StatelessWidget {
   double get _collapseMargin => collapseMargin ?? layout.arrows.collapseMargin;
 
   const _ArrowBase({
-    Key? key,
     this.controller,
     this.collapseMargin,
-  }) : super(key: key);
+  });
 }
 
 class _Arrow extends StatefulWidget {

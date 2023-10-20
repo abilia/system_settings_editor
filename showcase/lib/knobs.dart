@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/components/buttons/buttons.dart';
-import 'package:ui/tokens/colors.dart';
+import 'package:ui/themes/abilia_theme.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 IconData iconKnob(BuildContext context) => context.knobs.list(
@@ -50,21 +50,24 @@ ButtonSize buttonSizeKnob(BuildContext context) => context.knobs.list(
       },
     );
 
-Color colorKnob(BuildContext context) => context.knobs.list(
-      label: 'Color',
-      options: [
-        AbiliaColors.yellow,
-        AbiliaColors.peach,
-        AbiliaColors.greyscale,
-      ],
-      initialOption: AbiliaColors.yellow,
-      labelBuilder: (color) {
-        if (color == AbiliaColors.yellow) {
-          return 'Yellow';
-        }
-        if (color == AbiliaColors.peach) {
-          return 'Peach';
-        }
-        return 'Greyscale';
-      },
-    );
+Color colorKnob(BuildContext context) {
+  final abiliaColors = AbiliaTheme.of(context).colors;
+  return context.knobs.list(
+    label: 'Color',
+    options: [
+      abiliaColors.yellow,
+      abiliaColors.peach,
+      abiliaColors.greyscale,
+    ],
+    initialOption: abiliaColors.yellow,
+    labelBuilder: (color) {
+      if (color == abiliaColors.yellow) {
+        return 'Yellow';
+      }
+      if (color == abiliaColors.peach) {
+        return 'Peach';
+      }
+      return 'Greyscale';
+    },
+  );
+}

@@ -8,8 +8,8 @@ class TabItem extends StatelessWidget {
   const TabItem(
     this.text,
     this.iconData, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => Tts.data(
@@ -29,8 +29,8 @@ class AbiliaTabBar extends StatelessWidget implements PreferredSizeWidget {
     required this.tabs,
     this.collapsedCondition,
     this.onTabTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final List<Widget> tabs;
 
@@ -58,8 +58,8 @@ class AbiliaTabs extends StatelessWidget {
     this.collapsedCondition,
     this.onTabTap,
     this.useOffset = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final List<Widget> tabs;
   final bool useOffset;
@@ -121,8 +121,7 @@ class _Tab extends StatefulWidget {
     required this.child,
     required this.controller,
     this.onTabTap,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final int index, offset;
   final bool first, last;
@@ -223,20 +222,18 @@ class _AnimatedTab extends AnimatedWidget {
     required this.endIconThemeData,
     required this.beginTextStyle,
     required this.endTextStyle,
-    required Listenable listenable,
+    required super.listenable,
     required this.index,
     required this.offset,
     required this.last,
     required this.first,
     required this.onTap,
-    Key? key,
-  })  : padding = EdgeInsets.only(
+  }) : padding = EdgeInsets.only(
           left: first ? layout.tabBar.item.border : 0,
           right: last ? layout.tabBar.item.border : 0,
           top: layout.tabBar.item.border,
           bottom: layout.tabBar.item.border,
-        ),
-        super(key: key, listenable: listenable) {
+        ) {
     selectedDecoration =
         const BoxDecoration(color: AbiliaColors.white).copyWith(
       borderRadius: first && last

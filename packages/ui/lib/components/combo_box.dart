@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ui/components/collapsable_widget.dart';
 import 'package:ui/components/helper_box.dart';
+import 'package:ui/src/colors.dart';
+import 'package:ui/src/numericals.dart';
 import 'package:ui/states.dart';
 import 'package:ui/styles/combo_box_styles.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/combo_box/combo_box_themes.dart';
-import 'package:ui/tokens/colors.dart';
-import 'package:ui/tokens/numericals.dart';
 
 class SeagullComboBox extends StatefulWidget {
   final String? hintText;
@@ -18,7 +18,7 @@ class SeagullComboBox extends StatefulWidget {
   final TextInputAction? textInputAction;
   final Function(String)? onChanged;
   final TextEditingController? controller;
-  final MessageState messageState;
+  final MessageState? messageState;
 
   const SeagullComboBox({
     this.controller,
@@ -30,7 +30,7 @@ class SeagullComboBox extends StatefulWidget {
     this.trailingIcon,
     this.textInputAction,
     this.obscureText = false,
-    this.messageState = MessageState.none,
+    this.messageState,
     super.key,
   });
 
@@ -58,9 +58,10 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
   Widget build(BuildContext context) {
     final theme = AbiliaTheme.of(context).comboBox;
     final label = widget.label;
+    final messageState = widget.messageState;
     final showHelperBox = widget.message != null &&
-        (widget.messageState == MessageState.error ||
-            widget.messageState == MessageState.success);
+        (messageState == MessageState.error ||
+            messageState == MessageState.success);
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -108,19 +109,21 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
           padding: const EdgeInsets.only(top: numerical300),
           child: CollapsableWidget(
             collapsed: !showHelperBox,
-            child: SeagullHelperBox(
-              iconTheme: _getIconTheme(widget.messageState),
-              text: widget.message ?? '',
-              size: HelperBoxSize.medium,
-              state: widget.messageState,
-            ),
+            child: messageState != null
+                ? SeagullHelperBox(
+                    iconTheme: _getIconTheme(widget.messageState),
+                    text: widget.message ?? '',
+                    size: HelperBoxSize.medium,
+                    state: messageState,
+                  )
+                : const SizedBox.shrink(),
           ),
         ),
       ],
     );
   }
 
-  IconTheme? _getIconTheme(MessageState state) {
+  IconTheme? _getIconTheme(MessageState? state) {
     switch (state) {
       case MessageState.error:
         return iconThemeError;
@@ -131,7 +134,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
     }
   }
 
-  OutlineInputBorder? _getBorder(MessageState state) {
+  OutlineInputBorder? _getBorder(MessageState? state) {
     switch (state) {
       case MessageState.error:
         return errorBorder;

@@ -20,16 +20,13 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                       : 300,
                   child: SeagullComboBox(
                     controller: TextEditingController(),
-                    message: context.knobs.string(
-                      label: 'Message',
+                    label: context.knobs.string(
+                      label: 'Label',
+                      initialValue: 'Label',
                     ),
                     hintText: context.knobs.string(
                       label: 'Hint text',
                       initialValue: '',
-                    ),
-                    label: context.knobs.string(
-                      label: 'Label',
-                      initialValue: 'Label',
                     ),
                     onChanged: (value) {},
                     leadingIcon: context.knobs.boolean(
@@ -47,17 +44,13 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                     messageState: context.knobs.list(
                       label: 'State',
                       options: [
-                        MessageState.none,
                         MessageState.caution,
                         MessageState.error,
                         MessageState.info,
                         MessageState.success,
                       ],
-                      initialOption: MessageState.none,
+                      initialOption: MessageState.caution,
                       labelBuilder: (state) {
-                        if (state == MessageState.none) {
-                          return 'None';
-                        }
                         if (state == MessageState.caution) {
                           return 'Caution';
                         }
@@ -69,6 +62,9 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                         }
                         return 'Success';
                       },
+                    ),
+                    message: context.knobs.string(
+                      label: 'Message',
                     ),
                   ),
                 ),

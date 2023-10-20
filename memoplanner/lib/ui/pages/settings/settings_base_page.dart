@@ -12,8 +12,8 @@ class SettingsBasePage extends StatelessWidget {
     required this.title,
     this.label,
     this.bottomNavigationBar,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +46,10 @@ class SettingsBasePage extends StatelessWidget {
 class SettingsTab extends StatelessWidget {
   final double? dividerPadding;
   const SettingsTab({
-    Key? key,
+    super.key,
     this.children = const [],
     this.dividerPadding,
-  }) : super(key: key);
+  });
   final List<Widget> children;
   @override
   Widget build(BuildContext context) {

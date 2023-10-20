@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ui/themes/abilia_color_themes.dart';
+import 'package:ui/themes/abilia_spacing_themes.dart';
+import 'package:ui/themes/abilia_text_style_themes.dart';
 import 'package:ui/themes/buttons/action_button/action_button_themes.dart';
 import 'package:ui/themes/buttons/icon_button/icon_button_themes.dart';
 import 'package:ui/themes/combo_box/combo_box_theme.dart';
@@ -14,17 +17,23 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   final SeagullActionButtonThemes actionButtons;
   final SeagullIconButtonThemes iconButtons;
   final SeagullHelperBoxThemes helperBox;
-  final SeagullSpinnerThemes spinner;
-  final SeagullTagThemes tag;
+  final SeagullTagThemes tags;
+  final SeagullSpinnerThemes spinners;
+  final AbiliaColorThemes colors;
+  final AbiliaTextStyleThemes textStyles;
+  final AbiliaSpacingThemes spacings;
   final SeagullComboBoxTheme comboBox;
 
   const AbiliaTheme({
     required this.actionButtons,
     required this.iconButtons,
     required this.helperBox,
-    required this.spinner,
-    required this.tag,
+    required this.tags,
+    required this.spinners,
     required this.comboBox,
+    required this.colors,
+    required this.textStyles,
+    required this.spacings,
   });
 
   factory AbiliaTheme.of(BuildContext context) =>
@@ -56,8 +65,11 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     actionButtons: SeagullActionButtonThemes.mobile,
     iconButtons: SeagullIconButtonThemes.mobile,
     helperBox: SeagullHelperBoxThemes.mobile,
-    spinner: SeagullSpinnerThemes.themes,
-    tag: SeagullTagThemes.themes,
+    colors: AbiliaColorThemes.colors,
+    tags: SeagullTagThemes.tags,
+    spinners: SeagullSpinnerThemes.spinners,
+    textStyles: AbiliaTextStyleThemes.textStyles,
+    spacings: AbiliaSpacingThemes.spacings,
     comboBox: SeagullComboBoxTheme.medium(),
   );
 
@@ -85,17 +97,23 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     SeagullActionButtonThemes? actionButtons,
     SeagullIconButtonThemes? iconButtons,
     SeagullHelperBoxThemes? helperBox,
-    SeagullSpinnerThemes? spinner,
-    SeagullTagThemes? tag,
+    SeagullTagThemes? tags,
+    SeagullSpinnerThemes? spinners,
     SeagullComboBoxTheme? comboBox,
+    AbiliaColorThemes? colors,
+    AbiliaTextStyleThemes? textStyles,
+    AbiliaSpacingThemes? spacings,
   }) {
     return AbiliaTheme(
       actionButtons: actionButtons ?? this.actionButtons,
       iconButtons: iconButtons ?? this.iconButtons,
       helperBox: helperBox ?? this.helperBox,
-      spinner: spinner ?? this.spinner,
-      tag: tag ?? this.tag,
+      tags: tags ?? this.tags,
+      spinners: spinners ?? this.spinners,
       comboBox: comboBox ?? this.comboBox,
+      colors: colors ?? this.colors,
+      textStyles: textStyles ?? this.textStyles,
+      spacings: spacings ?? this.spacings,
     );
   }
 
@@ -106,9 +124,12 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
       actionButtons: actionButtons.lerp(other.actionButtons, t),
       iconButtons: iconButtons.lerp(other.iconButtons, t),
       helperBox: helperBox.lerp(other.helperBox, t),
-      spinner: spinner.lerp(other.spinner, t),
-      tag: tag.lerp(other.tag, t),
+      tags: tags.lerp(other.tags, t),
+      spinners: spinners.lerp(other.spinners, t),
       comboBox: comboBox.lerp(other.comboBox, t),
+      colors: colors.lerp(other.colors, t),
+      textStyles: textStyles.lerp(other.textStyles, t),
+      spacings: spacings.lerp(other.spacings, t),
     );
   }
 }

@@ -49,7 +49,6 @@ Future<void> initServices() async {
     preferences: preferences,
     app: Config.flavor.id,
   );
-  await seagullLogger.maybeUploadLogs();
   _log.fine('Initializing services');
   final analytics = kReleaseMode
       ? await _initAnalytics(supportId, BaseUrlDb(preferences).environment)
@@ -135,10 +134,10 @@ class App extends StatelessWidget {
   final NotificationAlarm? payload;
 
   const App({
-    Key? key,
+    super.key,
     this.payload,
     this.pushCubit,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) => TopLevelProvider(

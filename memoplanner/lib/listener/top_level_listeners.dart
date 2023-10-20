@@ -9,7 +9,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 import 'package:seagull_logging/logging.dart';
 
-class TopLevelListeners extends StatelessWidget {
+class TopLevelListeners extends StatefulWidget {
   final Widget child;
   final GlobalKey<NavigatorState> navigatorKey;
   final NotificationAlarm? payload;
@@ -17,9 +17,22 @@ class TopLevelListeners extends StatelessWidget {
   const TopLevelListeners({
     required this.child,
     required this.navigatorKey,
-    Key? key,
+    super.key,
     this.payload,
-  }) : super(key: key);
+  });
+
+  @override
+  State<TopLevelListeners> createState() => _TopLevelListenersState();
+}
+
+class _TopLevelListenersState extends State<TopLevelListeners>
+    with WidgetsBindingObserver {
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      await context.read<ClockCubit>().setTime(DateTime.now());
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Listener(
@@ -27,16 +40,14 @@ class TopLevelListeners extends StatelessWidget {
         child: MultiBlocListener(
           listeners: [
             BlocListener<ClockCubit, DateTime>(
-              listenWhen: (previous, current) =>
-                  previous.minute != 0 && current.minute == 0,
               listener: (context, state) async =>
                   GetIt.I<SeagullLogger>().maybeUploadLogs(),
             ),
             AuthenticationListener(
-              navigatorKey: navigatorKey,
+              navigatorKey: widget.navigatorKey,
               onAuthenticated: (context, navigator, state) async {
                 await Permission.notification.request();
-                final alarm = payload;
+                final alarm = widget.payload;
                 if (alarm == null) {
                   await navigator.pushAndRemoveUntil<void>(
                     MaterialPageRoute<void>(
@@ -91,7 +102,7 @@ class TopLevelListeners extends StatelessWidget {
               },
             ),
           ],
-          child: child,
+          child: widget.child,
         ),
       );
 }

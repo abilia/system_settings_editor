@@ -6,7 +6,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class RecordSoundWidget extends StatelessWidget {
-  const RecordSoundWidget({Key? key}) : super(key: key);
+  const RecordSoundWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +114,8 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
     required this.label,
     required this.recordedAudio,
     required this.onResult,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +198,7 @@ class SelectOrPlaySoundWidget extends StatelessWidget {
 }
 
 class RecordingWidget extends StatelessWidget {
-  const RecordingWidget({Key? key}) : super(key: key);
+  const RecordingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -225,9 +225,7 @@ class RecordingWidget extends StatelessWidget {
 }
 
 class _Progress extends StatelessWidget {
-  const _Progress({
-    Key? key,
-  }) : super(key: key);
+  const _Progress();
 
   @override
   Widget build(BuildContext context) {
@@ -342,7 +340,7 @@ class _RecordActionRow extends StatelessWidget {
 }
 
 class _TimeDisplay extends StatelessWidget {
-  const _TimeDisplay({Key? key}) : super(key: key);
+  const _TimeDisplay();
 
   @override
   Widget build(BuildContext context) {
@@ -384,7 +382,7 @@ class _TimeDisplay extends StatelessWidget {
 }
 
 class RecordAudioButton extends StatelessWidget {
-  const RecordAudioButton({Key? key}) : super(key: key);
+  const RecordAudioButton({super.key});
 
   @override
   Widget build(BuildContext context) => RedButton(
@@ -395,7 +393,7 @@ class RecordAudioButton extends StatelessWidget {
 }
 
 class DeleteButton extends StatelessWidget {
-  const DeleteButton({Key? key}) : super(key: key);
+  const DeleteButton({super.key});
 
   @override
   Widget build(BuildContext context) => IconActionButtonDark(
@@ -408,9 +406,9 @@ class StopButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const StopButton({
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -427,8 +425,8 @@ class PlayRecordingButton extends StatelessWidget {
 
   const PlayRecordingButton(
     this.sound, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

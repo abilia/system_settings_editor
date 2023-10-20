@@ -4,7 +4,7 @@ import 'package:memoplanner/listener/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ActivityWizardPage extends StatelessWidget {
-  const ActivityWizardPage({Key? key}) : super(key: key);
+  const ActivityWizardPage({super.key});
 
   @override
   Widget build(BuildContext context) {

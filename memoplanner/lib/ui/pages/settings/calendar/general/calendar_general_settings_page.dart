@@ -3,7 +3,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class CalendarGeneralSettingsPage extends StatelessWidget {
-  const CalendarGeneralSettingsPage({Key? key}) : super(key: key);
+  const CalendarGeneralSettingsPage({super.key});
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);

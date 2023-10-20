@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class BasicTimerPickerPage extends StatelessWidget {
-  const BasicTimerPickerPage({Key? key}) : super(key: key);
+  const BasicTimerPickerPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class BasicTimerPickerPage extends StatelessWidget {
 }
 
 class _StartBasicTimerButton extends StatelessWidget {
-  const _StartBasicTimerButton({Key? key, this.onPressed}) : super(key: key);
+  const _StartBasicTimerButton({this.onPressed});
   final VoidCallback? onPressed;
 
   @override

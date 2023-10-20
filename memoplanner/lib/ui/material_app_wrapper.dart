@@ -10,10 +10,10 @@ class MaterialAppWrapper extends StatelessWidget {
   final Widget home;
 
   const MaterialAppWrapper({
-    Key? key,
+    super.key,
     this.navigatorKey,
     this.home = const SplashPage(),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) => BlocProvider(

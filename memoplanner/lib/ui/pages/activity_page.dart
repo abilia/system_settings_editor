@@ -22,8 +22,8 @@ class ActivityPage extends StatelessWidget {
   const ActivityPage({
     required this.activityDay,
     this.previewImage,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +61,7 @@ class _ActivityBottomAppBar extends StatelessWidget
     with ActivityAndAlarmsMixin {
   const _ActivityBottomAppBar({
     required this.activityDay,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final ActivityDay activityDay;
 
@@ -223,8 +222,8 @@ class _ActivityBottomAppBar extends StatelessWidget
 
 class DeleteActivityDialog extends StatelessWidget {
   const DeleteActivityDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -239,8 +238,8 @@ class DeleteActivityDialog extends StatelessWidget {
 class EditActivityButton extends StatelessWidget {
   const EditActivityButton({
     required this.activityDay,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ActivityDay activityDay;
 

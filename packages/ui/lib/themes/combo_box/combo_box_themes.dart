@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:ui/src/colors.dart';
+import 'package:ui/src/numericals.dart';
 import 'package:ui/styles/combo_box_styles.dart';
-import 'package:ui/tokens/colors.dart';
-import 'package:ui/tokens/numericals.dart';
 
 final textFieldInputThemeMedium = InputDecorationTheme(
   fillColor: MaterialStateColor.resolveWith(

@@ -34,8 +34,8 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
     this.memoplannerSettingBloc,
     this.sortableBloc,
     this.syncBloc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => MultiRepositoryProvider(
@@ -348,9 +348,9 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
 class TopLevelProvider extends StatelessWidget {
   const TopLevelProvider({
     required this.child,
-    Key? key,
+    super.key,
     this.pushCubit,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final PushCubit? pushCubit;
@@ -463,8 +463,8 @@ class TopLevelProvider extends StatelessWidget {
 class AuthenticationBlocProvider extends StatelessWidget {
   const AuthenticationBlocProvider({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
 

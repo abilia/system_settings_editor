@@ -1,10 +1,9 @@
 import 'package:calendar_events/calendar_events.dart';
 import 'package:logging/logging.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:sqflite/sqflite.dart';
 
 class ActivityDb extends DataDb<Activity> {
-  ActivityDb(Database database) : super(database);
+  ActivityDb(super.database);
 
   static const String allAfter =
       'SELECT * FROM ${DatabaseRepository.activityTableName} WHERE end_time >= ? AND deleted == 0';

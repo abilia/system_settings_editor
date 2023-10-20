@@ -14,46 +14,43 @@ class TimerWheel extends StatefulWidget {
   const TimerWheel.interactive({
     required int lengthInSeconds,
     this.onMinutesSelectedChanged,
-    Key? key,
+    super.key,
   })  : activeSeconds = lengthInSeconds,
         finished = false,
         style = TimerWheelStyle.interactive,
         lengthInMinutes = null,
         paused = false,
         isPast = false,
-        showTimeText = false,
-        super(key: key);
+        showTimeText = false;
 
   const TimerWheel.nonInteractive({
     required int secondsLeft,
     this.lengthInMinutes,
     this.paused = false,
-    Key? key,
+    super.key,
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,
         finished = false,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
-        showTimeText = true,
-        super(key: key);
+        showTimeText = true;
 
   const TimerWheel.simplified({
     required int secondsLeft,
     this.lengthInMinutes,
     this.paused = false,
-    Key? key,
+    super.key,
   })  : assert(secondsLeft >= 0, 'seconds cannot be negative'),
         isPast = secondsLeft == 0 && !paused,
         activeSeconds = secondsLeft,
         finished = false,
         style = TimerWheelStyle.simplified,
         onMinutesSelectedChanged = null,
-        showTimeText = false,
-        super(key: key);
+        showTimeText = false;
 
   const TimerWheel.finished({
-    Key? key,
+    super.key,
     int length = 0,
     bool withPaint = false,
   })  : isPast = false,
@@ -63,8 +60,7 @@ class TimerWheel extends StatefulWidget {
         lengthInMinutes = length,
         style = TimerWheelStyle.nonInteractive,
         onMinutesSelectedChanged = null,
-        showTimeText = true,
-        super(key: key);
+        showTimeText = true;
 
   final TimerWheelStyle style;
   final int activeSeconds;

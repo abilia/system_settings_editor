@@ -8,8 +8,8 @@ class AuthenticatedDialog extends StatelessWidget {
 
   const AuthenticatedDialog({
     required this.authenticatedDialogCubit,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

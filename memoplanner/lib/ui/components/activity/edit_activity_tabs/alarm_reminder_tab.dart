@@ -6,8 +6,8 @@ class AlarmAndReminderTab extends StatelessWidget with EditActivityTab {
     required this.showAlarm,
     required this.showReminders,
     required this.showSpeech,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool showAlarm, showReminders, showSpeech;
 

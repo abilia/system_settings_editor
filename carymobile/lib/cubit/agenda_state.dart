@@ -13,20 +13,13 @@ class AgendaLoading extends AgendaState {
 
 class AgendaLoaded extends AgendaState {
   final DateTime day;
-  final Map<Occasion, List<ActivityDay>> occasions;
+  final List<ActivityDay> activities;
 
   const AgendaLoaded({
-    required this.occasions,
+    required this.activities,
     required this.day,
   });
 
-  List<ActivityDay> get pastActivities => occasions[Occasion.past] ?? [];
-
-  List<ActivityDay> get notPastActivities => [
-        ...occasions[Occasion.current] ?? [],
-        ...occasions[Occasion.future] ?? []
-      ];
-
   @override
-  List<Object?> get props => [occasions, day];
+  List<Object?> get props => [activities, day];
 }

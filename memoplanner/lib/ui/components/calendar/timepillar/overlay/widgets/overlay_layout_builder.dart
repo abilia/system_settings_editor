@@ -15,8 +15,8 @@ class OverlayLayoutBuilder extends RenderObjectWidget {
   /// The [builder] argument must not be null.
   const OverlayLayoutBuilder({
     required this.builder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// Called at layout time to construct the widget tree. The builder must not
   /// return null.
@@ -33,7 +33,7 @@ class OverlayLayoutBuilder extends RenderObjectWidget {
 }
 
 class _OvlerlayLayoutBuilderElement extends RenderObjectElement {
-  _OvlerlayLayoutBuilderElement(OverlayLayoutBuilder widget) : super(widget);
+  _OvlerlayLayoutBuilderElement(OverlayLayoutBuilder super.widget);
 
   OverlayLayoutBuilder get overlayLayoutBuilder =>
       widget as OverlayLayoutBuilder;

@@ -5,9 +5,9 @@ import 'package:memoplanner/ui/all.dart';
 class AbiliaClock extends StatelessWidget {
   final TextStyle? style;
   const AbiliaClock({
-    Key? key,
+    super.key,
     this.style,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     final clockType = context.select(
@@ -23,11 +23,11 @@ class FittedAbiliaClock extends StatelessWidget {
 
   const FittedAbiliaClock(
     this.clockType, {
-    Key? key,
+    super.key,
     this.height,
     this.width,
     this.style,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     final analog = clockType == ClockType.analogue ||

@@ -4,7 +4,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ImportPicturePage extends StatelessWidget {
-  const ImportPicturePage({Key? key}) : super(key: key);
+  const ImportPicturePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +37,7 @@ class _ImportPictureBody extends StatelessWidget {
   const _ImportPictureBody({
     required this.imageCallback,
     this.onCancel,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

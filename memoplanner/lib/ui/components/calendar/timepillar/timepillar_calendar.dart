@@ -11,8 +11,8 @@ class TimepillarCalendar extends StatelessWidget {
   const TimepillarCalendar({
     required this.timepillarState,
     required this.timepillarMeasures,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final TimepillarState timepillarState;
   final TimepillarMeasures timepillarMeasures;
@@ -77,11 +77,10 @@ class OneTimepillarCalendar extends StatelessWidget with CalendarWidgetMixin {
     double? topMargin,
     double? bottomMargin,
     bool? showCategoryLabels,
-    Key? key,
+    super.key,
   })  : showCategoryLabels = showCategoryLabels ?? showCategories,
         topMargin = topMargin ?? layout.templates.l1.top,
-        bottomMargin = bottomMargin ?? layout.templates.l1.bottom,
-        super(key: key);
+        bottomMargin = bottomMargin ?? layout.templates.l1.bottom;
 
   bool get showTimeLine => timepillarState.isToday && displayTimeline;
 

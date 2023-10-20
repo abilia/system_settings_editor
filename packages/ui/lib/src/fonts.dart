@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ui/tokens/colors.dart';
+import 'package:ui/src/colors.dart';
 
 class AbiliaFonts {
   static final _primaryMedium = GoogleFonts.poppins(

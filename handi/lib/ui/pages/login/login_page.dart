@@ -14,7 +14,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:ui/components/buttons/buttons.dart';
 import 'package:ui/components/combo_box.dart';
 import 'package:ui/states.dart';
-import 'package:ui/tokens/numericals.dart';
+import 'package:ui/themes/abilia_theme.dart';
 
 part 'logo_with_change_server.dart';
 
@@ -30,6 +30,9 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final reason = unauthenticatedState.loggedOutReason;
     final translate = Lt.of(context);
+    final abiliaTheme = AbiliaTheme.of(context);
+    final textStyles = abiliaTheme.textStyles;
+    final spacings = abiliaTheme.spacings;
     if (reason != LoggedOutReason.logOut) {
       Future(
         () async => showDialog(
@@ -73,13 +76,21 @@ class LoginPage extends StatelessWidget {
         body: BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) => SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(numerical300),
+              padding: EdgeInsets.symmetric(
+                horizontal: spacings.spacing400,
+                vertical: spacings.spacing600,
+              ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const LogoWithChangeServer(),
-                  const SizedBox(height: 24),
+                  SizedBox(height: spacings.spacing800),
+                  Text(
+                    'Welcome to Handi!',
+                    style: textStyles.primary525,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: spacings.spacing800),
                   Tooltip(
                     message: 'Username',
                     child: SeagullComboBox(
@@ -87,11 +98,11 @@ class LoginPage extends StatelessWidget {
                       leadingIcon: Symbols.account_circle,
                       textInputAction: TextInputAction.next,
                       onChanged: context.read<LoginCubit>().usernameChanged,
-                      messageState: state is LoginFailure
-                          ? MessageState.error
-                          : MessageState.none,
+                      messageState:
+                          state is LoginFailure ? MessageState.error : null,
                     ),
                   ),
+                  SizedBox(height: spacings.spacing300),
                   Tooltip(
                     message: 'Password',
                     child: SeagullComboBox(
@@ -100,13 +111,12 @@ class LoginPage extends StatelessWidget {
                       trailingIcon: Symbols.visibility,
                       obscureText: true,
                       onChanged: context.read<LoginCubit>().passwordChanged,
-                      messageState: state is LoginFailure
-                          ? MessageState.error
-                          : MessageState.none,
+                      messageState:
+                          state is LoginFailure ? MessageState.error : null,
                       message: state is LoginFailure ? state.cause.name : null,
                     ),
                   ),
-                  const Spacer(),
+                  SizedBox(height: spacings.spacing600),
                   SeagullActionButton(
                     text: translate.signIn,
                     type: ActionButtonType.primary,
