@@ -16,6 +16,7 @@ import 'package:carymessenger/ui/widgets/abilia_image.dart';
 import 'package:carymessenger/ui/widgets/clock/analog_clock.dart';
 import 'package:carymessenger/ui/widgets/cross_over.dart';
 import 'package:carymessenger/ui/widgets/tts.dart';
+import 'package:carymessenger/utils/analog_time_strings.dart';
 import 'package:file_storage/file_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

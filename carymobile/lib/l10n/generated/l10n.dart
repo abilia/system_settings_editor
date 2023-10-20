@@ -41,6 +41,17 @@ class Lt {
     'app_version': [],
     'back': [],
     'check_for_updates': [],
+    'clockFiveMinutesHalfPastTts': [],
+    'clockFiveMinutesPastTts': [],
+    'clockFiveMinutesToHalfPastTts': [],
+    'clockFiveMinutesToTts': [],
+    'clockHalfPastTts': [],
+    'clockQuarterPastTts': [],
+    'clockQuarterToTts': [],
+    'clockTenMinutesPastTts': [],
+    'clockTenMinutesToTts': [],
+    'clockTwentyMinutesPastTts': [],
+    'clockTwentyMinutesToTts': [],
     'close': [],
     'connect_to_myabilia': [],
     'connected': [],
@@ -139,6 +150,116 @@ class Lt {
     return Intl.message(
       'Check for updates',
       name: 'check_for_updates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `twenty five to %s`
+  String get clockFiveMinutesHalfPastTts {
+    return Intl.message(
+      'twenty five to %s',
+      name: 'clockFiveMinutesHalfPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `five past %s`
+  String get clockFiveMinutesPastTts {
+    return Intl.message(
+      'five past %s',
+      name: 'clockFiveMinutesPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `twenty five past %s`
+  String get clockFiveMinutesToHalfPastTts {
+    return Intl.message(
+      'twenty five past %s',
+      name: 'clockFiveMinutesToHalfPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `five to %s`
+  String get clockFiveMinutesToTts {
+    return Intl.message(
+      'five to %s',
+      name: 'clockFiveMinutesToTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Half past %s`
+  String get clockHalfPastTts {
+    return Intl.message(
+      'Half past %s',
+      name: 'clockHalfPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `quarter past %s`
+  String get clockQuarterPastTts {
+    return Intl.message(
+      'quarter past %s',
+      name: 'clockQuarterPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quarter to %s`
+  String get clockQuarterToTts {
+    return Intl.message(
+      'Quarter to %s',
+      name: 'clockQuarterToTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ten past %s`
+  String get clockTenMinutesPastTts {
+    return Intl.message(
+      'ten past %s',
+      name: 'clockTenMinutesPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ten to %s`
+  String get clockTenMinutesToTts {
+    return Intl.message(
+      'ten to %s',
+      name: 'clockTenMinutesToTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `twenty past %s`
+  String get clockTwentyMinutesPastTts {
+    return Intl.message(
+      'twenty past %s',
+      name: 'clockTwentyMinutesPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `twenty to %s`
+  String get clockTwentyMinutesToTts {
+    return Intl.message(
+      'twenty to %s',
+      name: 'clockTwentyMinutesToTts',
       desc: '',
       args: [],
     );
