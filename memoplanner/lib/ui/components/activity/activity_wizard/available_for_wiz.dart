@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class AvailableForWiz extends StatelessWidget {
-  const AvailableForWiz({Key? key}) : super(key: key);
+  const AvailableForWiz({super.key});
 
   @override
   Widget build(BuildContext context) {

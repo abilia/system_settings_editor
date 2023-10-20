@@ -2,14 +2,14 @@ import 'package:memoplanner/ui/all.dart';
 
 class CrossOver extends StatelessWidget {
   const CrossOver({
-    Key? key,
+    super.key,
     this.style = CrossOverStyle.darkDefault,
     this.applyCross = true,
     this.fallbackWidth,
     this.fallbackHeight,
     this.padding,
     this.child,
-  }) : super(key: key);
+  });
 
   final CrossOverStyle style;
   final bool applyCross;

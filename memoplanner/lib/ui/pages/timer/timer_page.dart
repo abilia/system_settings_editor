@@ -9,8 +9,8 @@ class TimerPage extends StatelessWidget {
   const TimerPage({
     required this.timerOccasion,
     required this.day,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +104,8 @@ class TimerPage extends StatelessWidget {
 class TimerTopInfo extends StatelessWidget {
   const TimerTopInfo({
     required this.timer,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final AbiliaTimer timer;
 
@@ -151,8 +151,7 @@ class TimerTopInfo extends StatelessWidget {
 class _TimerBottomBar extends StatelessWidget {
   const _TimerBottomBar({
     required this.timer,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final AbiliaTimer timer;
 
@@ -193,8 +192,8 @@ class _TimerBottomBar extends StatelessWidget {
 
 class DeleteTimerDialog extends StatelessWidget {
   const DeleteTimerDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

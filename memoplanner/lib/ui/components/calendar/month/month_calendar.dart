@@ -175,8 +175,8 @@ class MonthHeading extends StatelessWidget {
   const MonthHeading({
     required this.dayThemes,
     this.showLeadingWeekShort = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final List<DayTheme> dayThemes;
   final bool showLeadingWeekShort;
 
@@ -231,8 +231,8 @@ class MonthDayView extends StatelessWidget {
   const MonthDayView(
     this.monthDay, {
     required this.dayTheme,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -348,10 +348,10 @@ class MonthDayView extends StatelessWidget {
 
 class MonthDayContainer extends StatelessWidget {
   const MonthDayContainer({
-    Key? key,
+    super.key,
     this.day,
     this.highlighted = false,
-  }) : super(key: key);
+  });
 
   final MonthDay? day;
   final bool highlighted;
@@ -393,8 +393,8 @@ class MonthDayViewCompact extends StatelessWidget {
   const MonthDayViewCompact(
     this.monthDay, {
     required this.dayTheme,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -493,7 +493,7 @@ class MonthDayViewCompact extends StatelessWidget {
 class WeekNumber extends StatelessWidget {
   final int? weekNumber;
 
-  const WeekNumber({Key? key, this.weekNumber}) : super(key: key);
+  const WeekNumber({super.key, this.weekNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -518,8 +518,8 @@ class MonthActivityContent extends StatelessWidget {
     this.width,
     this.height,
     this.goToActivityOnTap = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ActivityDay activityDay;
   final double? width;

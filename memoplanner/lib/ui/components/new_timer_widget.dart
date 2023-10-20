@@ -2,7 +2,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class NewTimerWidget extends StatelessWidget with TimerNavigation {
-  const NewTimerWidget({Key? key}) : super(key: key);
+  const NewTimerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

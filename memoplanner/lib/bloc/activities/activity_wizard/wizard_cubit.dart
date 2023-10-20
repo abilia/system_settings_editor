@@ -6,7 +6,7 @@ import 'package:memoplanner/models/all.dart';
 part 'wizard_state.dart';
 
 abstract class WizardCubit extends Cubit<WizardState> {
-  WizardCubit(WizardState initialState) : super(initialState);
+  WizardCubit(super.initialState);
   void next({
     bool warningConfirmed = false,
     SaveRecurring? saveRecurring,

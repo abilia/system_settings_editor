@@ -42,6 +42,10 @@ class ActionButtonUseCase extends WidgetbookUseCase {
                   ),
                   size: buttonSizeKnob(context),
                   text: textKnob(context),
+                  isLoading: context.knobs.boolean(
+                    label: 'Loading',
+                    initialValue: false,
+                  ),
                   onPressed: context.knobs.boolean(
                     label: 'Enabled',
                     initialValue: true,

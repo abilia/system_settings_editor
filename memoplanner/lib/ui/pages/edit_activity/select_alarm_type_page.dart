@@ -11,8 +11,8 @@ class SelectAlarmTypePage extends StatelessWidget {
   const SelectAlarmTypePage({
     required this.onOk,
     this.trailing = const <Widget>[],
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +36,8 @@ class SelectAlarmTypeBody extends StatelessWidget {
 
   const SelectAlarmTypeBody({
     required this.trailing,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class SelectAlarmTypeBody extends StatelessWidget {
 }
 
 class SelectAlarmPage extends StatelessWidget {
-  const SelectAlarmPage({Key? key}) : super(key: key);
+  const SelectAlarmPage({super.key});
 
   @override
   Widget build(BuildContext context) {

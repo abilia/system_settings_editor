@@ -3,7 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class MpGoMenuPage extends StatelessWidget {
-  const MpGoMenuPage({Key? key}) : super(key: key);
+  const MpGoMenuPage({super.key});
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -55,7 +55,7 @@ class MpGoMenuPage extends StatelessWidget {
 }
 
 class MyPhotosPickField extends StatelessWidget {
-  const MyPhotosPickField({Key? key}) : super(key: key);
+  const MyPhotosPickField({super.key});
 
   @override
   Widget build(BuildContext context) {

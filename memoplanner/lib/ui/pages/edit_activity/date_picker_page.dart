@@ -8,9 +8,9 @@ class DatePickerPage extends StatelessWidget {
 
   const DatePickerPage({
     required this.date,
-    Key? key,
+    super.key,
     this.notBefore,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

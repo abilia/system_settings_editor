@@ -38,8 +38,8 @@ class TimePillarWithAddActivity extends StatelessWidget {
     required this.columnOfDots,
     required this.topMargin,
     required this.measures,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(context) {
@@ -94,8 +94,8 @@ class TimePillar extends StatelessWidget {
     required this.measures,
     this.selectionRange,
     this.preview = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -293,8 +293,8 @@ class Hour extends StatelessWidget {
     required this.dots,
     required this.isNight,
     required this.measures,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String hour;
   final Widget dots;
@@ -341,8 +341,8 @@ class TimePillarHourDots extends StatelessWidget {
     required this.isNight,
     required this.columnOfDots,
     this.selectionRange,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final DateTime hour;
   final bool isNight, columnOfDots;

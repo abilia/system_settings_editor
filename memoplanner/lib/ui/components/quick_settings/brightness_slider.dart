@@ -6,7 +6,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
 class BrightnessSlider extends StatefulWidget {
-  const BrightnessSlider({Key? key}) : super(key: key);
+  const BrightnessSlider({super.key});
 
   @override
   State<BrightnessSlider> createState() => _BrightnessSliderState();

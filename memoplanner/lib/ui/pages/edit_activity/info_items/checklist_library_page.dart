@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class ChecklistLibraryPage extends StatelessWidget {
-  const ChecklistLibraryPage({Key? key}) : super(key: key);
+  const ChecklistLibraryPage({super.key});
 
   @override
   Widget build(BuildContext context) =>
@@ -30,8 +30,8 @@ class LibraryChecklist extends StatelessWidget {
 
   const LibraryChecklist({
     required this.checklist,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +50,8 @@ class LibraryChecklist extends StatelessWidget {
 class FullScreenChecklist extends StatelessWidget {
   const FullScreenChecklist({
     required this.checklist,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final Checklist checklist;
 
   @override

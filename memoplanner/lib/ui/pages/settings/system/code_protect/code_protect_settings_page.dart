@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/ui/pages/settings/system/code_protect/change_code_protect_page.dart';
 
 class CodeProtectSettingsPage extends StatelessWidget {
-  const CodeProtectSettingsPage({Key? key}) : super(key: key);
+  const CodeProtectSettingsPage({super.key});
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);

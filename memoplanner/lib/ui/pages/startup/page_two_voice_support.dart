@@ -5,8 +5,8 @@ class PageTwoVoiceSupport extends StatelessWidget {
   const PageTwoVoiceSupport({
     required this.pageController,
     required this.pages,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final PageController pageController;
   final int pages;

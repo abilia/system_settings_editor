@@ -51,7 +51,7 @@ class MenuPage extends CalendarTab {
 }
 
 class CameraButton extends StatelessWidget {
-  const CameraButton({Key? key}) : super(key: key);
+  const CameraButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +112,7 @@ class CameraButton extends StatelessWidget {
 }
 
 class MyPhotosButton extends StatelessWidget {
-  const MyPhotosButton({Key? key}) : super(key: key);
+  const MyPhotosButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class MyPhotosButton extends StatelessWidget {
 }
 
 class PhotoCalendarButton extends StatelessWidget {
-  const PhotoCalendarButton({Key? key}) : super(key: key);
+  const PhotoCalendarButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +163,7 @@ class PhotoCalendarButton extends StatelessWidget {
 }
 
 class QuickSettingsButton extends StatelessWidget {
-  const QuickSettingsButton({Key? key}) : super(key: key);
+  const QuickSettingsButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +188,7 @@ class QuickSettingsButton extends StatelessWidget {
 }
 
 class SettingsButton extends StatelessWidget {
-  const SettingsButton({Key? key}) : super(key: key);
+  const SettingsButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -235,8 +235,8 @@ class MenuItemButton extends StatelessWidget {
     required this.text,
     required this.icon,
     required this.style,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +269,7 @@ class MenuItemButton extends StatelessWidget {
 }
 
 class TemplatesButton extends StatelessWidget {
-  const TemplatesButton({Key? key}) : super(key: key);
+  const TemplatesButton({super.key});
 
   @override
   Widget build(BuildContext context) {

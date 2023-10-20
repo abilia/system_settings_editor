@@ -9,8 +9,8 @@ class SortableToolbar extends StatelessWidget {
     this.disableUp = false,
     this.disableDown = false,
     this.margin,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool disableUp, disableDown;
   final void Function()? onTapEdit, onTapDelete;

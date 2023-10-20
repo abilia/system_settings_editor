@@ -32,10 +32,10 @@ class UnstoredAbiliaFile extends AbiliaFile {
   final File file;
 
   const UnstoredAbiliaFile._(
-    String id,
-    String path,
+    super.id,
+    super.path,
     this.file,
-  ) : super._(id, path);
+  ) : super._();
 
   factory UnstoredAbiliaFile.newFile(File file) {
     final id = const Uuid().v4();

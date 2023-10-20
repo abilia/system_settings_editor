@@ -40,7 +40,6 @@ dependencies:
   flutter_archive: ^5.0.0
   flutter_bloc: ^8.0.1
   flutter_isolate: ^2.0.3
-  flutter_lints: ^2.0.1
   flutter_local_notifications:
     git:
       url: https://github.com/abilia/flutter_local_notifications.git

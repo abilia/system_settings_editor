@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:provider/provider.dart';
 
 class ClockSettingsTab extends StatelessWidget {
-  const ClockSettingsTab({Key? key}) : super(key: key);
+  const ClockSettingsTab({super.key});
   @override
   Widget build(BuildContext context) {
     final is24h = MediaQuery.of(context).alwaysUse24HourFormat;
@@ -97,7 +97,7 @@ class ClockSettingsTab extends StatelessWidget {
 }
 
 class PreviewTimePillar extends StatelessWidget {
-  const PreviewTimePillar({Key? key}) : super(key: key);
+  const PreviewTimePillar({super.key});
   static final _time = DateTime(2021, 1, 1, 13, 30);
 
   @override

@@ -12,8 +12,8 @@ class LoginPage extends StatelessWidget {
 
   const LoginPage({
     required this.unauthenticatedState,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

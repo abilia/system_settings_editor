@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class FeatureTogglesPage extends StatelessWidget {
-  const FeatureTogglesPage({Key? key}) : super(key: key);
+  const FeatureTogglesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

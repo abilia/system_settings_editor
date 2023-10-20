@@ -3,8 +3,8 @@ import 'package:memoplanner/ui/all.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ import 'package:memoplanner/utils/all.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutPage extends StatelessWidget {
-  const AboutPage({Key? key}) : super(key: key);
+  const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,8 @@ class AboutPage extends StatelessWidget {
 
 class AboutDialog extends StatelessWidget {
   const AboutDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class AboutDialog extends StatelessWidget {
 class AboutContent extends StatelessWidget {
   final bool updateButton;
 
-  const AboutContent({Key? key, this.updateButton = true}) : super(key: key);
+  const AboutContent({super.key, this.updateButton = true});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class AboutContent extends StatelessWidget {
 }
 
 class AboutMemoplannerColumn extends StatelessWidget {
-  const AboutMemoplannerColumn({Key? key}) : super(key: key);
+  const AboutMemoplannerColumn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -138,8 +138,8 @@ class LoggedInAccountColumn extends StatelessWidget {
   final User user;
   const LoggedInAccountColumn({
     required this.user,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +160,7 @@ class LoggedInAccountColumn extends StatelessWidget {
 }
 
 class AboutDeviceColumn extends StatelessWidget {
-  const AboutDeviceColumn({Key? key}) : super(key: key);
+  const AboutDeviceColumn({super.key});
 
   Future<BaseDeviceInfo?> deviceInfo() async {
     final deviceInfo = DeviceInfoPlugin();
@@ -225,7 +225,7 @@ class AboutDeviceColumn extends StatelessWidget {
 }
 
 class ProducerColumn extends StatelessWidget {
-  const ProducerColumn({Key? key}) : super(key: key);
+  const ProducerColumn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -262,7 +262,7 @@ class ProducerColumn extends StatelessWidget {
 }
 
 class SearchForUpdateButton extends StatelessWidget {
-  const SearchForUpdateButton({Key? key}) : super(key: key);
+  const SearchForUpdateButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -292,8 +292,8 @@ class DoubleText extends StatelessWidget {
     this.text2, {
     this.vertical = false,
     this.bold = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -13,8 +13,8 @@ class TimerCard extends StatelessWidget {
     required this.timerOccasion,
     required this.day,
     this.useOpacity = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -129,8 +129,8 @@ class TimeLeft extends StatelessWidget {
   const TimeLeft(
     this.timerOccasion, {
     this.textStyle,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +155,7 @@ class TimeLeft extends StatelessWidget {
 class TimerCardWheel extends StatelessWidget {
   final TimerOccasion timerOccasion;
 
-  const TimerCardWheel(this.timerOccasion, {Key? key}) : super(key: key);
+  const TimerCardWheel(this.timerOccasion, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -186,8 +186,8 @@ class TimerTickerBuilder extends StatelessWidget {
   const TimerTickerBuilder(
     this.timer, {
     required this.builder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

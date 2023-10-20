@@ -4,9 +4,9 @@ import 'package:memoplanner/ui/all.dart';
 class WizardBottomNavigation extends StatelessWidget {
   final bool useVerticalSafeArea;
   const WizardBottomNavigation({
-    Key? key,
+    super.key,
     this.useVerticalSafeArea = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) => BottomNavigation(
@@ -17,7 +17,7 @@ class WizardBottomNavigation extends StatelessWidget {
 }
 
 class PreviousWizardStepButton extends StatelessWidget {
-  const PreviousWizardStepButton({Key? key}) : super(key: key);
+  const PreviousWizardStepButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class PreviousWizardStepButton extends StatelessWidget {
 }
 
 class NextWizardStepButton extends StatelessWidget {
-  const NextWizardStepButton({Key? key}) : super(key: key);
+  const NextWizardStepButton({super.key});
 
   @override
   Widget build(BuildContext context) =>

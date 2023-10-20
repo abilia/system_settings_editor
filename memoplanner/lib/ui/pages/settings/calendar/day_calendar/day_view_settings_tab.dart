@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class DayViewSettingsTab extends StatelessWidget {
-  const DayViewSettingsTab({Key? key}) : super(key: key);
+  const DayViewSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {

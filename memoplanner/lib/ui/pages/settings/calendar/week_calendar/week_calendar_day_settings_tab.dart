@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class WeekSettingsTab extends StatelessWidget {
-  const WeekSettingsTab({Key? key}) : super(key: key);
+  const WeekSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class WeekSettingsTab extends StatelessWidget {
 }
 
 class WeekCalendarDisplay extends StatelessWidget {
-  const WeekCalendarDisplay({Key? key}) : super(key: key);
+  const WeekCalendarDisplay({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +102,8 @@ class DayHeading extends StatelessWidget {
   const DayHeading({
     required this.day,
     required this.dayColor,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -150,8 +150,8 @@ class DayColumn extends StatelessWidget {
   const DayColumn({
     required this.day,
     required this.dayColor,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

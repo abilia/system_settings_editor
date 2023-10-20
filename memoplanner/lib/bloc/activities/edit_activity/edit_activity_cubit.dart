@@ -200,11 +200,11 @@ class EditActivityCubit extends Cubit<EditActivityState> {
 
   InfoItem _newInfoItem(Type infoItemType) {
     switch (infoItemType) {
-      case NoteInfoItem:
+      case const (NoteInfoItem):
         return const NoteInfoItem();
-      case Checklist:
+      case const (Checklist):
         return Checklist();
-      case VideoInfoItem:
+      case const (VideoInfoItem):
         return const VideoInfoItem();
       default:
         return InfoItem.none;

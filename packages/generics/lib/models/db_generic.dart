@@ -4,9 +4,9 @@ class DbGeneric extends DbModel<Generic> {
   Generic get generic => model;
   const DbGeneric._({
     required Generic generic,
-    required int revision,
-    required int dirty,
-  }) : super(model: generic, revision: revision, dirty: dirty);
+    required super.revision,
+    required super.dirty,
+  }) : super(model: generic);
 
   @override
   DbGeneric copyWith({int? revision, int? dirty}) {

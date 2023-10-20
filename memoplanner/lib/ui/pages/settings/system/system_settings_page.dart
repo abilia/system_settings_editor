@@ -5,7 +5,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class SystemSettingsPage extends StatelessWidget {
-  const SystemSettingsPage({Key? key}) : super(key: key);
+  const SystemSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

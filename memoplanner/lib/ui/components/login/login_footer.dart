@@ -5,7 +5,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class MEMOplannerLoginFooter extends StatelessWidget {
-  const MEMOplannerLoginFooter({Key? key}) : super(key: key);
+  const MEMOplannerLoginFooter({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class MEMOplannerLoginFooter extends StatelessWidget {
 }
 
 class GoToCreateAccountButton extends StatelessWidget {
-  const GoToCreateAccountButton({Key? key}) : super(key: key);
+  const GoToCreateAccountButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +73,8 @@ class GoToCreateAccountButton extends StatelessWidget {
 
 class AbiliaLogoWithReset extends StatelessWidget {
   const AbiliaLogoWithReset({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

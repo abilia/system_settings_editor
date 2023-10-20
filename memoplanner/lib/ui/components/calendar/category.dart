@@ -8,9 +8,9 @@ class LeftCategory extends StatelessWidget {
   final double maxWidth;
 
   const LeftCategory({
-    Key? key,
+    super.key,
     this.maxWidth = double.infinity,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +35,8 @@ class CategoryLeft extends StatelessWidget {
     required this.fileId,
     required this.showColors,
     this.maxWidth = double.infinity,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) =>
@@ -60,9 +60,9 @@ class RightCategory extends StatelessWidget {
   final double maxWidth;
 
   const RightCategory({
-    Key? key,
+    super.key,
     this.maxWidth = double.infinity,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +87,8 @@ class CategoryRight extends StatelessWidget {
     required this.fileId,
     required this.showColors,
     this.maxWidth = double.infinity,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) =>
@@ -127,9 +127,7 @@ class _Category extends StatefulWidget {
     required this.category,
     required this.maxWidth,
     required this.showColors,
-    Key? key,
-  })  : letters = showColors || fileId.isNotEmpty ? 0 : 1,
-        super(key: key);
+  }) : letters = showColors || fileId.isNotEmpty ? 0 : 1;
 
   @override
   __CategoryState createState() => __CategoryState();
@@ -290,13 +288,12 @@ class CategoryImage extends StatelessWidget {
     required this.color,
     required this.showBorder,
     required this.diameter,
-    Key? key,
+    super.key,
   })  : assert(fileId.isNotEmpty || showBorder),
         borderRadius = BorderRadius.circular(diameter / 2),
         noColorsImageSize = layout.category.noColorsImageSize,
         noColorsImageBorderRadius =
-            BorderRadius.circular(layout.category.noColorsImageSize / 2),
-        super(key: key);
+            BorderRadius.circular(layout.category.noColorsImageSize / 2);
 
   late final BorderRadius borderRadius;
   late final double noColorsImageSize;

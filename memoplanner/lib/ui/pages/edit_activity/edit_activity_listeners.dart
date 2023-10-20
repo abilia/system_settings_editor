@@ -9,8 +9,8 @@ class ErrorPopupListener extends StatelessWidget {
 
   const ErrorPopupListener({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +112,8 @@ class ErrorPopupListener extends StatelessWidget {
 
 class ConfirmConflictWarningDialog extends StatelessWidget {
   const ConfirmConflictWarningDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => ConfirmWarningDialog(
@@ -123,8 +123,8 @@ class ConfirmConflictWarningDialog extends StatelessWidget {
 
 class ConfirmStartTimeBeforeNowWarningDialog extends StatelessWidget {
   const ConfirmStartTimeBeforeNowWarningDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => ConfirmWarningDialog(
@@ -137,8 +137,8 @@ class PopOnSaveListener extends StatelessWidget {
 
   const PopOnSaveListener({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => BlocListener<WizardCubit, WizardState>(
@@ -155,8 +155,8 @@ class ScrollToErrorPageListener extends StatelessWidget {
   const ScrollToErrorPageListener({
     required this.child,
     required this.enabledTabs,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:ui/themes/abilia_text_style_themes.dart';
 import 'package:ui/themes/buttons/action_button/action_button_themes.dart';
 import 'package:ui/themes/buttons/icon_button/icon_button_themes.dart';
 import 'package:ui/themes/helper_box/helper_box_themes.dart';
+import 'package:ui/themes/spinner/spinner_themes.dart';
 import 'package:ui/themes/tag/tag_themes.dart';
 
 const int _breakpointMobile = 640;
@@ -16,6 +17,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
   final SeagullIconButtonThemes iconButtons;
   final SeagullHelperBoxThemes helperBox;
   final SeagullTagThemes tags;
+  final SeagullSpinnerThemes spinners;
   final AbiliaColorThemes colors;
   final AbiliaTextStyleThemes textStyles;
   final AbiliaSpacingThemes spacings;
@@ -25,6 +27,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     required this.iconButtons,
     required this.helperBox,
     required this.tags,
+    required this.spinners,
     required this.colors,
     required this.textStyles,
     required this.spacings,
@@ -59,8 +62,9 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     actionButtons: SeagullActionButtonThemes.mobile,
     iconButtons: SeagullIconButtonThemes.mobile,
     helperBox: SeagullHelperBoxThemes.mobile,
-    tags: SeagullTagThemes.mobile,
     colors: AbiliaColorThemes.colors,
+    tags: SeagullTagThemes.tags,
+    spinners: SeagullSpinnerThemes.spinners,
     textStyles: AbiliaTextStyleThemes.textStyles,
     spacings: AbiliaSpacingThemes.spacings,
   );
@@ -69,21 +73,18 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     actionButtons: SeagullActionButtonThemes.tablet,
     iconButtons: SeagullIconButtonThemes.tablet,
     helperBox: SeagullHelperBoxThemes.tablet,
-    tags: SeagullTagThemes.tablet,
   );
 
   static final AbiliaTheme desktopSmall = tablet.copyWith(
     actionButtons: SeagullActionButtonThemes.desktopSmall,
     iconButtons: SeagullIconButtonThemes.desktopSmall,
     helperBox: SeagullHelperBoxThemes.desktopSmall,
-    tags: SeagullTagThemes.desktopSmall,
   );
 
   static final AbiliaTheme desktopLarge = desktopSmall.copyWith(
     actionButtons: SeagullActionButtonThemes.desktopLarge,
     iconButtons: SeagullIconButtonThemes.desktopLarge,
     helperBox: SeagullHelperBoxThemes.desktopLarge,
-    tags: SeagullTagThemes.desktopLarge,
   );
 
   @override
@@ -92,6 +93,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
     SeagullIconButtonThemes? iconButtons,
     SeagullHelperBoxThemes? helperBox,
     SeagullTagThemes? tags,
+    SeagullSpinnerThemes? spinners,
     AbiliaColorThemes? colors,
     AbiliaTextStyleThemes? textStyles,
     AbiliaSpacingThemes? spacings,
@@ -101,6 +103,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
       iconButtons: iconButtons ?? this.iconButtons,
       helperBox: helperBox ?? this.helperBox,
       tags: tags ?? this.tags,
+      spinners: spinners ?? this.spinners,
       colors: colors ?? this.colors,
       textStyles: textStyles ?? this.textStyles,
       spacings: spacings ?? this.spacings,
@@ -115,6 +118,7 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
       iconButtons: iconButtons.lerp(other.iconButtons, t),
       helperBox: helperBox.lerp(other.helperBox, t),
       tags: tags.lerp(other.tags, t),
+      spinners: spinners.lerp(other.spinners, t),
       colors: colors.lerp(other.colors, t),
       textStyles: textStyles.lerp(other.textStyles, t),
       spacings: spacings.lerp(other.spacings, t),

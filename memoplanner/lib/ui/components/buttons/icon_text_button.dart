@@ -15,8 +15,8 @@ class IconAndTextButton extends StatelessWidget {
     this.onPressed,
     this.padding,
     this.iconSize,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +57,8 @@ class LightButton extends StatelessWidget {
     required this.text,
     required this.icon,
     this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => IconAndTextButton(
@@ -74,8 +74,8 @@ class IconAndTextButtonDark extends StatelessWidget {
     required this.icon,
     required this.text,
     required this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String text;
   final IconData icon;
@@ -99,8 +99,8 @@ class DarkGreyButton extends StatelessWidget {
     required this.text,
     required this.icon,
     this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => IconAndTextButton(
@@ -120,8 +120,8 @@ class LightGreyButton extends StatelessWidget {
     required this.text,
     required this.icon,
     this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => IconAndTextButton(
@@ -141,8 +141,8 @@ class RedButton extends StatelessWidget {
     required this.text,
     required this.icon,
     this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => IconAndTextButton(
@@ -162,8 +162,8 @@ class GreenButton extends StatelessWidget {
     required this.text,
     required this.icon,
     this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => IconAndTextButton(
@@ -177,7 +177,7 @@ class GreenButton extends StatelessWidget {
 class NextButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
-  const NextButton({Key? key, this.onPressed}) : super(key: key);
+  const NextButton({super.key, this.onPressed});
 
   @override
   Widget build(BuildContext context) => Tts.data(
@@ -206,9 +206,9 @@ class OkButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const OkButton({
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +221,7 @@ class OkButton extends StatelessWidget {
 }
 
 class PreviousButton extends StatelessWidget {
-  const PreviousButton({Key? key, this.onPressed}) : super(key: key);
+  const PreviousButton({super.key, this.onPressed});
   final VoidCallback? onPressed;
 
   @override
@@ -235,7 +235,7 @@ class PreviousButton extends StatelessWidget {
 }
 
 class CancelButton extends StatelessWidget {
-  const CancelButton({Key? key, this.onPressed}) : super(key: key);
+  const CancelButton({super.key, this.onPressed});
   final VoidCallback? onPressed;
 
   @override
@@ -249,7 +249,7 @@ class CancelButton extends StatelessWidget {
 }
 
 class BackButton extends StatelessWidget {
-  const BackButton({Key? key, this.onPressed}) : super(key: key);
+  const BackButton({super.key, this.onPressed});
   final VoidCallback? onPressed;
 
   @override
@@ -264,10 +264,10 @@ class BackButton extends StatelessWidget {
 
 class CloseButton extends StatelessWidget {
   const CloseButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.style,
-  }) : super(key: key);
+  });
   final VoidCallback? onPressed;
   final ButtonStyle? style;
 
@@ -284,7 +284,7 @@ class CloseButton extends StatelessWidget {
 
 class YesButton extends StatelessWidget {
   final Function()? onPressed;
-  const YesButton({this.onPressed, Key? key}) : super(key: key);
+  const YesButton({this.onPressed, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -300,7 +300,7 @@ class YesButton extends StatelessWidget {
 
 class NoButton extends StatelessWidget {
   final Function()? onPressed;
-  const NoButton({this.onPressed, Key? key}) : super(key: key);
+  const NoButton({this.onPressed, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -317,7 +317,7 @@ class NoButton extends StatelessWidget {
 class SaveButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
-  const SaveButton({this.onPressed, Key? key}) : super(key: key);
+  const SaveButton({this.onPressed, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -332,7 +332,7 @@ class SaveButton extends StatelessWidget {
 class StartButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
-  const StartButton({this.onPressed, Key? key}) : super(key: key);
+  const StartButton({this.onPressed, super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -67,8 +67,8 @@ class FullDayActivitiesButton extends StatelessWidget {
   const FullDayActivitiesButton({
     required this.numberOfFullDayActivities,
     required this.day,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final int numberOfFullDayActivities;
   final DateTime day;

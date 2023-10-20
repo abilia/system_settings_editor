@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carymessenger/cubit/production_guide_cubit.dart';
 import 'package:carymessenger/firebase_options.dart';
 import 'package:carymessenger/getit_initializer.dart';
@@ -8,6 +10,7 @@ import 'package:carymessenger/ui/pages/production_guide_page.dart';
 import 'package:carymessenger/ui/pages/splash_page.dart';
 import 'package:carymessenger/ui/themes/theme.dart';
 import 'package:carymessenger/ui/widgets/backend_banner.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -75,14 +78,33 @@ class MaterialAppWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: _navigatorKey,
-      localizationsDelegates: const [Lt.delegate],
       theme: caryLightTheme,
       builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: Colors.transparent,
+        value: const SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.dark,
+          systemNavigationBarColor: Colors.transparent,
+          systemNavigationBarIconBrightness: Brightness.dark,
         ),
-        child: child != null ? BackendBanner(child: child) : const SplashPage(),
+        child: child != null
+            ? ColoredBox(
+                color: Theme.of(context).colorScheme.background,
+                child: BackendBanner(child: child),
+              )
+            : const SplashPage(),
       ),
+      supportedLocales: Lt.supportedLocales,
+      localizationsDelegates: Lt.localizationsDelegates,
+      localeListResolutionCallback: (locales, supportedLocales) {
+        final language = locales
+            ?.firstWhereOrNull((l) => supportedLocales
+                .map((e) => e.languageCode)
+                .contains(l.languageCode))
+            ?.languageCode;
+        return supportedLocales
+                .firstWhereOrNull((l) => l.languageCode == language) ??
+            supportedLocales.first;
+      },
       home: home,
     );
   }

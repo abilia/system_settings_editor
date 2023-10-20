@@ -7,7 +7,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class EditTimerPage extends StatelessWidget {
-  const EditTimerPage({Key? key}) : super(key: key);
+  const EditTimerPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,8 @@ class EditBasicTimerPage extends StatelessWidget {
 
   const EditBasicTimerPage({
     required this.title,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +84,7 @@ class _EditTimerPage extends StatelessWidget {
     required this.bottomNavigation,
     required this.title,
     required this.icon,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final BottomNavigation bottomNavigation;
   final String title;
@@ -125,7 +124,7 @@ class _EditTimerPage extends StatelessWidget {
 
 @visibleForTesting
 class EditTimerWheel extends StatefulWidget {
-  const EditTimerWheel({Key? key}) : super(key: key);
+  const EditTimerWheel({super.key});
 
   @override
   State<EditTimerWheel> createState() => EditTimerWheelState();
@@ -217,7 +216,7 @@ class EditTimerWheelState extends State<EditTimerWheel>
 }
 
 class _TimerInfoInput extends StatelessWidget {
-  const _TimerInfoInput({Key? key}) : super(key: key);
+  const _TimerInfoInput();
 
   @override
   Widget build(BuildContext context) {

@@ -131,17 +131,17 @@ abstract class _NotFinalState extends InactivityState {
 }
 
 class SomethingHappened extends _NotFinalState {
-  const SomethingHappened(DateTime timeStamp) : super(timeStamp);
+  const SomethingHappened(super.timeStamp);
 }
 
 class ReturnToTodayThresholdReached extends _NotFinalState
     implements ReturnToTodayState {
-  const ReturnToTodayThresholdReached(DateTime timeStamp) : super(timeStamp);
+  const ReturnToTodayThresholdReached(super.timeStamp);
 }
 
 class HomeScreenThresholdReached extends ReturnToTodayThresholdReached
     implements HomeScreenState {
-  const HomeScreenThresholdReached(DateTime timeStamp) : super(timeStamp);
+  const HomeScreenThresholdReached(super.timeStamp);
 }
 
 // Final states

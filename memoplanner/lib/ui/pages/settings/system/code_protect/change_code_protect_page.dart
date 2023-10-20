@@ -1,7 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 class ChangeCodeProtectPage extends StatefulWidget {
-  const ChangeCodeProtectPage({Key? key}) : super(key: key);
+  const ChangeCodeProtectPage({super.key});
 
   @override
   State<ChangeCodeProtectPage> createState() => _ChangeCodeProtectPageState();

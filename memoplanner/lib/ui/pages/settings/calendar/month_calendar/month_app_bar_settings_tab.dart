@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class MonthAppBarSettingsTab extends StatelessWidget {
-  const MonthAppBarSettingsTab({Key? key}) : super(key: key);
+  const MonthAppBarSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class MonthAppBarSettingsTab extends StatelessWidget {
 }
 
 class _MonthAppBarPreview extends StatelessWidget {
-  const _MonthAppBarPreview({Key? key}) : super(key: key);
+  const _MonthAppBarPreview();
 
   @override
   Widget build(BuildContext context) {

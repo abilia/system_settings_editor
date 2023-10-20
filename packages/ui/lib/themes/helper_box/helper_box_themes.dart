@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ui/components/base_themes/icon_and_text_box_theme.dart';
 import 'package:ui/src/fonts.dart';
 import 'package:ui/src/numericals.dart';
 import 'package:ui/styles/borders.dart';
+import 'package:ui/themes/base_themes/icon_and_text_box_theme.dart';
 
 part 'helper_box_theme.dart';
 

@@ -64,3 +64,32 @@ const MaterialColor abiliaGreen = MaterialColor(
     200: abiliaGreen200,
   },
 );
+
+const MaterialColor abiliaBrown = MaterialColor(
+  _abiliaBrownPrimaryValue,
+  <int, Color>{
+    0: abiliaBrown0,
+    20: abiliaBrown20,
+    40: abiliaBrown40,
+    60: abiliaBrown60,
+    80: abiliaBrown80,
+    100: abiliaBrown100,
+    120: abiliaBrown120,
+    140: abiliaBrown140,
+    160: abiliaBrown160,
+    180: abiliaBrown180,
+    200: abiliaBrown200,
+  },
+);
+const int _abiliaBrownPrimaryValue = 0xFF592C04;
+const abiliaBrown200 = Color(0xFF090401),
+    abiliaBrown180 = Color(0xFF190C02),
+    abiliaBrown160 = Color(0xFF291402),
+    abiliaBrown140 = Color(0xFF391D03),
+    abiliaBrown120 = Color(0xFF492504),
+    abiliaBrown100 = Color(_abiliaBrownPrimaryValue),
+    abiliaBrown80 = Color(0xFF775231),
+    abiliaBrown60 = Color(0xFF95785F),
+    abiliaBrown40 = Color(0xFFB39F8C),
+    abiliaBrown20 = Color(0xFFD1C5BA),
+    abiliaBrown0 = Color(0xFFEFEBE8);

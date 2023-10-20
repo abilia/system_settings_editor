@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class DayCalendarAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const DayCalendarAppBar({Key? key}) : super(key: key);
+  const DayCalendarAppBar({super.key});
   @override
   Size get preferredSize => CalendarAppBar.size;
 

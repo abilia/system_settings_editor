@@ -1,7 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 class AbiliaProgressIndicator extends StatelessWidget {
-  const AbiliaProgressIndicator({this.strokeWidth, Key? key}) : super(key: key);
+  const AbiliaProgressIndicator({this.strokeWidth, super.key});
   final double? strokeWidth;
   @override
   Widget build(BuildContext context) => CircularProgressIndicator(

@@ -59,8 +59,8 @@ class PastDots extends StatelessWidget {
 
   const PastDots({
     required this.isNight,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => isNight
@@ -73,8 +73,8 @@ class FutureDots extends StatelessWidget {
 
   const FutureDots({
     required this.isNight,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => isNight
@@ -87,8 +87,8 @@ class Dots extends StatelessWidget {
 
   const Dots({
     required this.decoration,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -121,8 +121,8 @@ class AnimatedDot extends StatelessWidget {
     this.size,
     this.child,
     this.duration,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) =>
@@ -150,8 +150,8 @@ class SideDots extends StatelessWidget {
     required this.endTime,
     required this.dots,
     required this.dayParts,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +199,7 @@ class ActivityInfoSideDots extends StatelessWidget {
 
   Activity get activity => activityDay.activity;
 
-  const ActivityInfoSideDots(this.activityDay, {Key? key}) : super(key: key);
+  const ActivityInfoSideDots(this.activityDay, {super.key});
 
   factory ActivityInfoSideDots.from({
     required Activity activity,
@@ -262,8 +262,8 @@ class SideDotsLarge extends StatelessWidget {
     required this.startTime,
     required this.endTime,
     required this.now,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final int dots;
   final DateTime startTime, endTime, now;
@@ -316,8 +316,7 @@ class _BigDots extends StatelessWidget {
     required this.startTime,
     required this.endTime,
     required this.now,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -351,8 +350,8 @@ class SubQuarterDot extends StatelessWidget {
 
   const SubQuarterDot({
     required this.minutes,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => minutes > minutesPerDot
@@ -384,7 +383,7 @@ class SubQuarterDot extends StatelessWidget {
 class MiniDot extends StatelessWidget {
   final bool visible;
 
-  const MiniDot(this.visible, {Key? key}) : super(key: key);
+  const MiniDot(this.visible, {super.key});
 
   @override
   Widget build(BuildContext context) => AnimatedContainer(
@@ -396,7 +395,7 @@ class MiniDot extends StatelessWidget {
 }
 
 class OrangePermissioinDot extends StatelessWidget {
-  const OrangePermissioinDot({Key? key}) : super(key: key);
+  const OrangePermissioinDot({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -414,8 +413,8 @@ class ColorDot extends StatelessWidget {
   const ColorDot({
     required this.radius,
     this.color = AbiliaColors.white,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

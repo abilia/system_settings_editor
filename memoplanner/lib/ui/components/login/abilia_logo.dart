@@ -1,7 +1,7 @@
 import 'package:memoplanner/ui/all.dart';
 
 class AbiliaLogo extends StatelessWidget {
-  const AbiliaLogo({Key? key}) : super(key: key);
+  const AbiliaLogo({super.key});
 
   @override
   Widget build(BuildContext context) {

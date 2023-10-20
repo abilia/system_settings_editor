@@ -115,26 +115,22 @@ abstract class EditActivityState extends Equatable with Finest {
 
 class UnstoredActivityState extends EditActivityState {
   const UnstoredActivityState(
-    Activity activity,
-    TimeInterval timeInterval,
+    super.activity,
+    super.timeInterval,
     RecurrentType selectedRecurrentType,
   ) : super(
-          activity,
-          timeInterval,
           originalActivity: activity,
           originalTimeInterval: timeInterval,
           selectedRecurrentType: selectedRecurrentType,
         );
 
   const UnstoredActivityState._(
-    Activity activity,
-    TimeInterval timeInterval,
+    super.activity,
+    super.timeInterval,
     Activity originalActivity,
     TimeInterval originalTimeInterval,
     RecurrentType selectedRecurrentType,
   ) : super(
-          activity,
-          timeInterval,
           originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
           selectedRecurrentType: selectedRecurrentType,
@@ -159,28 +155,24 @@ class StoredActivityState extends EditActivityState {
   final DateTime day;
 
   const StoredActivityState(
-    Activity activity,
-    TimeInterval timeInterval,
+    super.activity,
+    super.timeInterval,
     this.day,
     RecurrentType recurrentType,
   ) : super(
-          activity,
-          timeInterval,
           originalActivity: activity,
           originalTimeInterval: timeInterval,
           selectedRecurrentType: recurrentType,
         );
 
   const StoredActivityState._(
-    Activity activity,
-    TimeInterval timeInterval,
+    super.activity,
+    super.timeInterval,
     Activity originalActivity,
     TimeInterval originalTimeInterval,
     this.day,
     RecurrentType recurrentType,
   ) : super(
-          activity,
-          timeInterval,
           originalActivity: originalActivity,
           originalTimeInterval: originalTimeInterval,
           selectedRecurrentType: recurrentType,

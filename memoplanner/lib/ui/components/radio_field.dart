@@ -18,8 +18,8 @@ class RadioField<T> extends StatelessWidget {
     this.heigth,
     this.width,
     this.padding,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   bool get disabled => onChanged == null;
 
@@ -99,8 +99,8 @@ class PositionedRadio<T> extends StatelessWidget {
     required this.groupValue,
     required this.onChanged,
     this.radioKey,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final T value;
   final T? groupValue;

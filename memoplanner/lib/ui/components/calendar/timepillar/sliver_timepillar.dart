@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 
 class SliverTimePillar extends SingleChildRenderObjectWidget {
   const SliverTimePillar({
-    Key? key,
-    Widget? child,
-  }) : super(key: key, child: child);
+    super.key,
+    super.child,
+  });
   @override
   RenderObject createRenderObject(BuildContext context) =>
       RenderSliverTimePillar();
@@ -16,8 +16,8 @@ class RenderSliverTimePillar extends RenderSliverSingleBoxAdapter {
   Offset? _trailingEdgeOffset;
 
   RenderSliverTimePillar({
-    RenderBox? child,
-  }) : super(child: child);
+    super.child,
+  });
 
   @override
   void performLayout() {

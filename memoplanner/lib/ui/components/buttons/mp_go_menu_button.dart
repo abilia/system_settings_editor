@@ -4,8 +4,8 @@ import 'package:memoplanner/utils/all.dart';
 
 class MpGoMenuButton extends StatelessWidget {
   const MpGoMenuButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

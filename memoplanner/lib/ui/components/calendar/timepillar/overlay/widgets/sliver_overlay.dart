@@ -31,8 +31,8 @@ class SliverOverlay extends RenderObjectWidget {
     required this.overlay,
     required this.sliver,
     required this.height,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget overlay;
 
@@ -63,8 +63,8 @@ class SliverOverlayBuilder extends StatelessWidget {
     required this.builder,
     required this.sliver,
     required this.height,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final SliverOverlayWidgetBuilder builder;
 
@@ -86,7 +86,7 @@ class SliverOverlayBuilder extends StatelessWidget {
 
 class SliverOverlayRenderObjectElement extends RenderObjectElement {
   /// Creates an element that uses the given widget as its configuration.
-  SliverOverlayRenderObjectElement(SliverOverlay widget) : super(widget);
+  SliverOverlayRenderObjectElement(SliverOverlay super.widget);
 
   SliverOverlay get sliverOverlay => widget as SliverOverlay;
 

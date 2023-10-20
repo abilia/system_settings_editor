@@ -9,8 +9,8 @@ class AbiliaNumPad extends StatelessWidget {
     required this.delete,
     required this.onClear,
     required this.onNumPress,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +52,8 @@ class KeyboardNumberButton extends StatelessWidget {
   const KeyboardNumberButton({
     required this.number,
     required this.onNumPress,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +71,9 @@ class KeyboardNumberButton extends StatelessWidget {
 class KeyboardActionButton extends StatelessWidget {
   const KeyboardActionButton({
     required this.iconData,
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final VoidCallback? onPressed;
   final IconData iconData;

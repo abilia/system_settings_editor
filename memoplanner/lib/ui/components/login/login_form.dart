@@ -5,8 +5,8 @@ import 'package:memoplanner/ui/all.dart';
 class LoginForm extends StatelessWidget {
   const LoginForm({
     required this.message,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String message;
 
@@ -78,8 +78,8 @@ class UsernameInput extends StatelessWidget {
     this.errorState = false,
     this.onChanged,
     this.inputValid,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String initialValue;
   final bool errorState;
@@ -106,7 +106,7 @@ class UsernameInput extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  const LoginButton({Key? key}) : super(key: key);
+  const LoginButton({super.key});
 
   @override
   Widget build(BuildContext context) {

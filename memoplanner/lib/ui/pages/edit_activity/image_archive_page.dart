@@ -6,9 +6,9 @@ class ImageArchivePage extends StatelessWidget {
   final SearchHeader searchHeader;
 
   const ImageArchivePage({
-    Key? key,
+    super.key,
     this.searchHeader = SearchHeader.searchButton,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +107,8 @@ class ArchiveImage extends StatelessWidget {
 
   const ArchiveImage({
     required this.sortable,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -128,8 +128,8 @@ class ArchiveImage extends StatelessWidget {
 class FullScreenArchiveImage extends StatelessWidget {
   const FullScreenArchiveImage({
     required this.selected,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final ImageArchiveData selected;
 
   @override
