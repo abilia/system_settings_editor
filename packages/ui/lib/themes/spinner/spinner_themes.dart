@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:ui/tokens/numericals.dart';
+import 'package:ui/src/numericals.dart';
 
 part 'spinner_theme.dart';
 
@@ -14,7 +14,7 @@ class SeagullSpinnerThemes extends ThemeExtension<SeagullSpinnerThemes> {
     required this.medium,
   });
 
-  static const SeagullSpinnerThemes themes = SeagullSpinnerThemes(
+  static const SeagullSpinnerThemes spinners = SeagullSpinnerThemes(
     small: SeagullSpinnerTheme.small,
     medium: SeagullSpinnerTheme.medium,
   );

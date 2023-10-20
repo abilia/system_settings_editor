@@ -33,9 +33,9 @@ class SeagullSpinner extends StatelessWidget {
     final abiliaTheme = AbiliaTheme.of(context);
     switch (size) {
       case SpinnerSize.small:
-        return abiliaTheme.spinner.small;
+        return abiliaTheme.spinners.small;
       case SpinnerSize.medium:
-        return abiliaTheme.spinner.medium;
+        return abiliaTheme.spinners.medium;
     }
   }
 }

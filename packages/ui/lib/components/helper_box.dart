@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/helper_box/helper_box_themes.dart';
-import 'package:ui/tokens/colors.dart';
 
 enum HelperBoxState {
   caution,
@@ -28,7 +27,7 @@ class SeagullHelperBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _getColor();
+    final color = _getColor(context);
     final helperBoxTheme = _getTheme(context);
     final iconAndTextBoxTheme = helperBoxTheme.iconAndTextBoxTheme;
     return DecoratedBox(
@@ -60,16 +59,17 @@ class SeagullHelperBox extends StatelessWidget {
     );
   }
 
-  Color _getColor() {
+  Color _getColor(BuildContext context) {
+    final colors = AbiliaTheme.of(context).colors;
     switch (state) {
       case HelperBoxState.caution:
-        return AbiliaColors.yellow.shade100;
+        return colors.yellow.shade100;
       case HelperBoxState.info:
-        return AbiliaColors.greyscale.shade100;
+        return colors.greyscale.shade100;
       case HelperBoxState.error:
-        return AbiliaColors.peach.shade100;
+        return colors.peach.shade100;
       case HelperBoxState.success:
-        return AbiliaColors.secondary.shade100;
+        return colors.secondary.shade100;
     }
   }
 

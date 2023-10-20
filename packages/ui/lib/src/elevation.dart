@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:ui/tokens/colors.dart';
+import 'package:ui/src/colors.dart';
 
 class Elevation {
   final int yDistance;

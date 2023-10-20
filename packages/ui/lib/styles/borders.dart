@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui/tokens/numericals.dart';
+import 'package:ui/src/numericals.dart';
 
 const border200 = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(

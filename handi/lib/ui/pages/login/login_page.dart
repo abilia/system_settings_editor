@@ -11,6 +11,7 @@ import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ui/components/buttons/buttons.dart';
+import 'package:ui/themes/abilia_theme.dart';
 
 part 'logo_with_change_server.dart';
 
@@ -23,6 +24,9 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final reason = unauthenticatedState.loggedOutReason;
     final translate = Lt.of(context);
+    final abiliaTheme = AbiliaTheme.of(context);
+    final textStyles = abiliaTheme.textStyles;
+    final spacings = abiliaTheme.spacings;
     if (reason != LoggedOutReason.logOut) {
       Future(
         () async => showDialog(
@@ -77,13 +81,21 @@ class LoginPage extends StatelessWidget {
           child: BlocBuilder<LoginCubit, LoginState>(
             builder: (context, state) => SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(24.0),
+                padding: EdgeInsets.symmetric(
+                  horizontal: spacings.spacing400,
+                  vertical: spacings.spacing600,
+                ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const LogoWithChangeServer(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: spacings.spacing800),
+                    Text(
+                      'Welcome to Handi!',
+                      style: textStyles.primary525,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: spacings.spacing800),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -97,7 +109,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: spacings.spacing300),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -111,7 +123,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const Spacer(),
+                    SizedBox(height: spacings.spacing600),
                     SeagullActionButton(
                       text: translate.signIn,
                       type: ActionButtonType.primary,

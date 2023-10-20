@@ -58,9 +58,9 @@ class SeagullTag extends StatelessWidget {
     final abiliaTheme = AbiliaTheme.of(context);
     switch (size) {
       case TagSize.size700:
-        return abiliaTheme.tag.size700;
+        return abiliaTheme.tags.size700;
       case TagSize.size600:
-        return abiliaTheme.tag.size600;
+        return abiliaTheme.tags.size600;
     }
   }
 }
