@@ -49,7 +49,6 @@ Future<void> initServices() async {
     preferences: preferences,
     app: Config.flavor.id,
   );
-  await seagullLogger.maybeUploadLogs();
   _log.fine('Initializing services');
   final analytics = kReleaseMode
       ? await _initAnalytics(supportId, BaseUrlDb(preferences).environment)
