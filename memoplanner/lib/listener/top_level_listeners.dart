@@ -40,8 +40,6 @@ class _TopLevelListenersState extends State<TopLevelListeners>
         child: MultiBlocListener(
           listeners: [
             BlocListener<ClockCubit, DateTime>(
-              listenWhen: (previous, current) =>
-                  previous.minute != 0 && current.minute == 0,
               listener: (context, state) async =>
                   GetIt.I<SeagullLogger>().maybeUploadLogs(),
             ),
