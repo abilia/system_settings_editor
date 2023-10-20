@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/generated/l10n.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
@@ -76,9 +75,11 @@ class LoginPage extends StatelessWidget {
         body: BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) => SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: spacings.spacing400,
-                vertical: spacings.spacing600,
+              padding: EdgeInsets.fromLTRB(
+                spacings.spacing400,
+                spacings.spacing800,
+                spacings.spacing400,
+                spacings.spacing1000,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -122,7 +123,7 @@ class LoginPage extends StatelessWidget {
                     type: ActionButtonType.primary,
                     size: ButtonSize.large,
                     isLoading: state is LoginLoading,
-                    leadingIcon: MdiIcons.login,
+                    leadingIcon: Symbols.login,
                     onPressed: state.isFormValid
                         ? context.read<LoginCubit>().loginButtonPressed
                         : null,
