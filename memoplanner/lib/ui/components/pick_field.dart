@@ -16,7 +16,7 @@ class PickField extends StatelessWidget {
 
   const PickField({
     required this.text,
-    Key? key,
+    super.key,
     this.leading,
     this.extras,
     this.trailing,
@@ -28,7 +28,7 @@ class PickField extends StatelessWidget {
     this.leadingPadding,
     this.verticalPadding,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

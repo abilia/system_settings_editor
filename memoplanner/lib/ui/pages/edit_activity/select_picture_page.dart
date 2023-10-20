@@ -19,8 +19,8 @@ class SelectPicturePage extends StatelessWidget {
   const SelectPicturePage({
     required this.selectedImage,
     this.label,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +67,8 @@ class SelectPictureBody extends StatelessWidget {
     required this.imageCallback,
     required this.selectedImage,
     this.onCancel,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   void _imageCallbackAndTrackEvent(SelectedImageData selectedImageData) {
     GetIt.I<SeagullAnalytics>().trackEvent(
@@ -213,8 +213,8 @@ class ImageSourceWidget extends StatelessWidget {
     required this.permission,
     required this.text,
     required this.imageCallback,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ImageSource imageSource;
   final Permission permission;

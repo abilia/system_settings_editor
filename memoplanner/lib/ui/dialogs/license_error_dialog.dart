@@ -7,8 +7,8 @@ class LicenseErrorDialog extends StatelessWidget {
   const LicenseErrorDialog({
     required this.message,
     this.heading,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

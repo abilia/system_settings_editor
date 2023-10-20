@@ -11,8 +11,7 @@ abstract class AuthenticationState extends Equatable {
 }
 
 class AuthenticationLoading extends AuthenticationState {
-  const AuthenticationLoading([bool forcedNewState = false])
-      : super(forcedNewState);
+  const AuthenticationLoading([super.forcedNewState = false]);
 
   @override
   AuthenticationLoading _forceNew() => AuthenticationLoading(!forcedNewState);

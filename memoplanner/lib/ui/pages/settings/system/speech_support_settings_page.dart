@@ -7,8 +7,8 @@ class SpeechSupportSettingsPage extends StatelessWidget {
   const SpeechSupportSettingsPage({
     required this.textToSpeech,
     required this.speechRate,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool textToSpeech;
   final double speechRate;

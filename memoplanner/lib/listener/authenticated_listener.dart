@@ -13,8 +13,8 @@ import 'package:system_settings_editor/system_settings_editor.dart';
 class AuthenticatedListener extends StatefulWidget {
   const AuthenticatedListener({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
 
@@ -145,8 +145,8 @@ class _AuthenticatedListenerState extends State<AuthenticatedListener>
 
 class LicenseExpiredWarningDialog extends StatelessWidget {
   const LicenseExpiredWarningDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

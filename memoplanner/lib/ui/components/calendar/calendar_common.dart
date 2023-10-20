@@ -8,8 +8,8 @@ class FullDayStack extends StatelessWidget {
     required this.numberOfActivities,
     this.width,
     this.height,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final double? width;
   final double? height;
@@ -59,8 +59,8 @@ class ClickableFullDayStack extends StatelessWidget {
     required this.day,
     this.width,
     this.height,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final FullDayActivitiesBuilder fullDayActivitiesBuilder;
   final int numberOfActivities;

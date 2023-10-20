@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class TextToSpeechSwitch extends StatelessWidget {
-  const TextToSpeechSwitch({Key? key}) : super(key: key);
+  const TextToSpeechSwitch({super.key});
 
   @override
   Widget build(BuildContext context) {

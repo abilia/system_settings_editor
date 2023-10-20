@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class MenuSettingsPage extends StatelessWidget {
-  const MenuSettingsPage({Key? key}) : super(key: key);
+  const MenuSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

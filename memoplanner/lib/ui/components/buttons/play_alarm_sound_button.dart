@@ -6,8 +6,8 @@ class PlayAlarmSoundButton extends StatelessWidget {
   final Sound sound;
   const PlayAlarmSoundButton({
     required this.sound,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

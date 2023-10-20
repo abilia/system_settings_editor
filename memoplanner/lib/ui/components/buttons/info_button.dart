@@ -4,9 +4,9 @@ class InfoButton extends StatelessWidget {
   final VoidCallback? onTap;
 
   const InfoButton({
-    Key? key,
+    super.key,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

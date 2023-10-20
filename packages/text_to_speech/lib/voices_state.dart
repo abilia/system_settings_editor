@@ -45,8 +45,7 @@ class VoicesState extends Equatable {
 }
 
 class VoicesLoading extends VoicesState {
-  VoicesLoading({required String languageCode})
-      : super(languageCode: languageCode);
+  VoicesLoading({required super.languageCode});
 
   @override
   VoicesState copyWith({

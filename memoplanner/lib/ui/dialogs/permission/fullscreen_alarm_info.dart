@@ -77,8 +77,8 @@ class FullscreenAlarmInfoDialog extends StatelessWidget {
 
 class ActivityAlarmPreview extends StatelessWidget {
   const ActivityAlarmPreview({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

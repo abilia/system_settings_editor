@@ -9,8 +9,8 @@ class EditNoteWidget extends StatelessWidget {
 
   const EditNoteWidget({
     required this.infoItem,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +63,11 @@ class NoteBlock extends StatefulWidget {
   final ScrollController? scrollController;
 
   const NoteBlock({
-    Key? key,
+    super.key,
     this.text = '',
     this.textStyle,
     this.scrollController,
-  }) : super(key: key);
+  });
 
   @override
   State createState() => _NoteBlockState();
@@ -124,8 +124,8 @@ class Lines extends StatelessWidget {
 
   const Lines({
     required this.textRenderingSize,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

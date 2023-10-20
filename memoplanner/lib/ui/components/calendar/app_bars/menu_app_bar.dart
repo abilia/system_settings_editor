@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class MenuAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MenuAppBar({Key? key}) : super(key: key);
+  const MenuAppBar({super.key});
 
   @override
   Size get preferredSize => Size.fromHeight(layout.appBar.largeHeight);

@@ -25,8 +25,7 @@ Future<bool> codeProtectAccess(
 
 class CodeProtectPage extends StatefulWidget {
   final String code, name;
-  const CodeProtectPage({required this.code, required this.name, Key? key})
-      : super(key: key);
+  const CodeProtectPage({required this.code, required this.name, super.key});
 
   @override
   State<CodeProtectPage> createState() => _CodeProtectPageState();
@@ -90,8 +89,8 @@ class PinCodeWidget extends StatelessWidget {
     required this.controller,
     this.fieldMessage,
     this.onEditingComplete,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final CodeProtectTextEditController controller;
   final VoidCallback? onEditingComplete;

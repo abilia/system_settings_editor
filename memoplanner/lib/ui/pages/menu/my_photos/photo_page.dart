@@ -6,8 +6,8 @@ import 'package:sortables/sortables.dart';
 class PhotoPage extends StatelessWidget {
   const PhotoPage({
     required this.sortable,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Sortable<ImageArchiveData> sortable;
 
@@ -133,8 +133,8 @@ class PhotoPage extends StatelessWidget {
 
 class RemoveFromPhotoCalendarDialog extends StatelessWidget {
   const RemoveFromPhotoCalendarDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -148,8 +148,8 @@ class RemoveFromPhotoCalendarDialog extends StatelessWidget {
 
 class AddToPhotoCalendarDialog extends StatelessWidget {
   const AddToPhotoCalendarDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -165,8 +165,7 @@ class _AddOrRemoveFromPhotoCalendarDialog extends StatelessWidget {
   const _AddOrRemoveFromPhotoCalendarDialog({
     required this.bodyText,
     required this.buttonText,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final String bodyText, buttonText;
 
@@ -209,7 +208,7 @@ Future _deletePhoto(
 }
 
 class DeletePhotoDialog extends StatelessWidget {
-  const DeletePhotoDialog({Key? key}) : super(key: key);
+  const DeletePhotoDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

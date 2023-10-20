@@ -23,14 +23,13 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.showBottomNavigationBar = true,
     this.gridCrossAxisCount,
     this.gridChildAspectRatio,
-    Key? key,
+    super.key,
   })  : selectableItems = false,
         selectedItemGenerator = null,
         onOk = null,
         searchHeader = SearchHeader.noSearch,
         useHeading = true,
-        headerBackNavigation = true,
-        super(key: key);
+        headerBackNavigation = true;
 
   const LibraryPage.selectable({
     required this.selectedItemGenerator,
@@ -45,14 +44,13 @@ class LibraryPage<T extends SortableData> extends StatelessWidget {
     this.gridChildAspectRatio,
     this.searchHeader = SearchHeader.noSearch,
     this.useHeading = true,
-    Key? key,
+    super.key,
   })  : selectableItems = true,
         headerBackNavigation = false,
         assert(
             onOk != null, 'onOk should not be null in LibraryPage.selectable'),
         assert(selectedItemGenerator != null,
-            'selectedItemGenerator should not be null in LibraryPage.selectable'),
-        super(key: key);
+            'selectedItemGenerator should not be null in LibraryPage.selectable');
   final bool selectableItems, showBottomNavigationBar;
   final PreferredSizeWidget? appBar;
   final Function(Sortable<T>)? onOk;
@@ -152,8 +150,8 @@ class LibraryHeading<T extends SortableData> extends StatelessWidget {
     required this.rootHeading,
     this.showOnlyFolders = false,
     this.back,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   final SortableArchiveState<T> sortableArchiveState;
   final String rootHeading;
   final bool showOnlyFolders;
@@ -252,7 +250,7 @@ class SearchButton extends StatelessWidget {
 }
 
 class _SearchHeading extends StatefulWidget {
-  const _SearchHeading({Key? key}) : super(key: key);
+  const _SearchHeading();
 
   @override
   State<_SearchHeading> createState() => _SearchHeadingState();
@@ -333,8 +331,8 @@ class SortableLibrary<T extends SortableData> extends StatefulWidget {
     required this.selectableItems,
     required this.crossAxisCount,
     required this.childAspectRatio,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State createState() => _SortableLibraryState<T>();
@@ -454,8 +452,8 @@ class LibraryImage extends StatelessWidget {
 class Folder<T extends SortableData> extends StatelessWidget {
   const Folder({
     required this.sortable,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Sortable<T> sortable;
 
@@ -477,8 +475,8 @@ class SelectableItem<T extends SortableData> extends StatelessWidget {
   const SelectableItem({
     required this.sortable,
     required this.libraryItemGenerator,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Sortable<T> sortable;
   final LibraryItemGenerator<T> libraryItemGenerator;
@@ -501,8 +499,8 @@ class EmptyLibraryMessage extends StatelessWidget {
   const EmptyLibraryMessage({
     required this.emptyLibraryMessage,
     required this.rootFolder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String emptyLibraryMessage;
   final bool rootFolder;
@@ -532,8 +530,8 @@ class LibraryFolder extends StatelessWidget {
 
   const LibraryFolder({
     required this.sortableData,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

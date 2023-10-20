@@ -17,9 +17,9 @@ class TopLevelListeners extends StatefulWidget {
   const TopLevelListeners({
     required this.child,
     required this.navigatorKey,
-    Key? key,
+    super.key,
     this.payload,
-  }) : super(key: key);
+  });
 
   @override
   State<TopLevelListeners> createState() => _TopLevelListenersState();

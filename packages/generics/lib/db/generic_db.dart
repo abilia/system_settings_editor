@@ -4,10 +4,9 @@ import 'package:collection/collection.dart';
 import 'package:generics/generics.dart';
 import 'package:logging/logging.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:sqflite/sqflite.dart';
 
 class GenericDb extends DataDb<Generic> {
-  GenericDb(Database database) : super(database);
+  GenericDb(super.database);
 
   Future<Iterable<Generic>> getAllNonDeletedMaxRevision() async {
     final result = await db.rawQuery(getAllNonDeletedSql);

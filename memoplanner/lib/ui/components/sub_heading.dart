@@ -2,7 +2,7 @@ import 'package:memoplanner/ui/all.dart';
 
 class SubHeading extends StatelessWidget {
   final String data;
-  const SubHeading(this.data, {Key? key}) : super(key: key);
+  const SubHeading(this.data, {super.key});
   @override
   Widget build(BuildContext context) {
     return Tts.fromSemantics(

@@ -107,14 +107,14 @@ class _InfoItemData {
 
   static _InfoItemData fromType<InfoItemType extends InfoItem>(Lt translate) {
     switch (InfoItemType) {
-      case Checklist:
+      case const (Checklist):
         return _InfoItemData._(
           title: translate.addChecklist,
           iconData: AbiliaIcons.ok,
           buttonText: translate.newChecklist,
           page: const ChecklistLibraryPage(),
         );
-      case NoteInfoItem:
+      case const (NoteInfoItem):
         return _InfoItemData._(
           title: translate.addNote,
           iconData: AbiliaIcons.edit,

@@ -18,8 +18,8 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
     this.onTapEdit,
     this.selectableItems = true,
     this.useHeading = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +119,7 @@ class ListLibrary<T extends SortableData> extends StatelessWidget {
 }
 
 class ConfirmDeleteTimerTemplateDialog extends StatelessWidget {
-  const ConfirmDeleteTimerTemplateDialog({Key? key}) : super(key: key);
+  const ConfirmDeleteTimerTemplateDialog({super.key});
 
   @override
   Widget build(BuildContext context) =>
@@ -127,7 +127,7 @@ class ConfirmDeleteTimerTemplateDialog extends StatelessWidget {
 }
 
 class ConfirmDeleteActivityTemplateDialog extends StatelessWidget {
-  const ConfirmDeleteActivityTemplateDialog({Key? key}) : super(key: key);
+  const ConfirmDeleteActivityTemplateDialog({super.key});
 
   @override
   Widget build(BuildContext context) =>
@@ -135,7 +135,7 @@ class ConfirmDeleteActivityTemplateDialog extends StatelessWidget {
 }
 
 class ConfirmDeleteDialog extends StatelessWidget {
-  const ConfirmDeleteDialog({required this.text, Key? key}) : super(key: key);
+  const ConfirmDeleteDialog({required this.text, super.key});
 
   final String text;
 

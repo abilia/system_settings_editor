@@ -13,8 +13,8 @@ class EyeButtonDayDialog extends StatefulWidget {
     required this.currentDotsInTimepillar,
     required this.currentZoom,
     required this.currentDayInterval,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State createState() => _EyeButtonDayDialogState();

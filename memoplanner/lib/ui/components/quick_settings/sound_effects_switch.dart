@@ -6,7 +6,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:system_settings_editor/system_settings_editor.dart';
 
 class SoundEffectsSwitch extends StatefulWidget {
-  const SoundEffectsSwitch({Key? key}) : super(key: key);
+  const SoundEffectsSwitch({super.key});
 
   @override
   State<StatefulWidget> createState() {

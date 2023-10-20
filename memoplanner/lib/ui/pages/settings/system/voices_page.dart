@@ -3,7 +3,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:text_to_speech/voice_data.dart';
 
 class VoicesPage extends StatelessWidget {
-  const VoicesPage({Key? key}) : super(key: key);
+  const VoicesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +63,7 @@ class _VoiceRow extends StatelessWidget {
     required this.selectedVoice,
     this.downloaded = false,
     this.downloading = false,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

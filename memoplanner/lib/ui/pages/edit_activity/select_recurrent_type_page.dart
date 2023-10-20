@@ -11,8 +11,8 @@ class SelectRecurrentTypePage extends StatefulWidget {
     required this.headingIcon,
     this.allDaysVisible = false,
     this.thisDayAndForwardVisible = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   State createState() => _SelectRecurrentTypePageState();
 }

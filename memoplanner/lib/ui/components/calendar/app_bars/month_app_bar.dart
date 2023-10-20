@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class MonthAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MonthAppBar({Key? key}) : super(key: key);
+  const MonthAppBar({super.key});
   @override
   Size get preferredSize => CalendarAppBar.size;
 
@@ -31,13 +31,13 @@ class MonthAppBarStepper extends StatelessWidget
   final bool showYear, showDay, showBrowseButtons, showClock;
   final DayColor dayColor;
   const MonthAppBarStepper({
-    Key? key,
+    super.key,
     this.showYear = true,
     this.showDay = false,
     this.showBrowseButtons = true,
     this.showClock = false,
     this.dayColor = DayColor.noColors,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -13,8 +13,8 @@ class MyPhotosPage extends StatelessWidget {
 
   const MyPhotosPage({
     required this.myPhotoFolderId,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +77,8 @@ class _AllPhotosTab extends StatelessWidget {
 
   const _AllPhotosTab({
     required this.myPhotoFolderId,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +98,8 @@ class _PhotoCalendarTab extends StatelessWidget {
 
   const _PhotoCalendarTab({
     required this.myPhotoFolderId,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +127,7 @@ class _AddPhotoButton extends StatelessWidget {
   const _AddPhotoButton({
     required this.myPhotoFolderId,
     required this.photoCalendarTabIndex,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final String myPhotoFolderId;
   final int photoCalendarTabIndex;
@@ -246,8 +245,8 @@ class ThumbnailPhoto extends StatelessWidget {
 
   const ThumbnailPhoto({
     required this.sortable,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -317,7 +316,7 @@ class ThumbnailPhoto extends StatelessWidget {
 }
 
 class PhotoCalendarSticker extends StatelessWidget {
-  const PhotoCalendarSticker({Key? key}) : super(key: key);
+  const PhotoCalendarSticker({super.key});
 
   @override
   Widget build(BuildContext context) {

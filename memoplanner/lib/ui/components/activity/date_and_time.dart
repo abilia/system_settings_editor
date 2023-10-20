@@ -5,7 +5,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class DateAndTimeWidget extends StatelessWidget {
-  const DateAndTimeWidget({Key? key}) : super(key: key);
+  const DateAndTimeWidget({super.key});
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);
@@ -75,8 +75,8 @@ class DateAndTimeWidget extends StatelessWidget {
 class ReminderSwitch extends StatelessWidget {
   const ReminderSwitch({
     required this.activity,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Activity activity;
 
@@ -111,8 +111,8 @@ class DatePicker extends StatelessWidget {
     this.notBefore,
     this.emptyText = false,
     this.errorState = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -174,8 +174,7 @@ class TimeIntervalPicker extends StatelessWidget {
   final TimeInterval timeInterval;
   final bool startTimeError;
   const TimeIntervalPicker(this.timeInterval,
-      {this.startTimeError = false, Key? key})
-      : super(key: key);
+      {this.startTimeError = false, super.key});
   @override
   Widget build(BuildContext context) {
     final authProviders = copiedAuthProviders(context);
@@ -237,8 +236,8 @@ class TimePicker extends StatelessWidget {
     this.timeInput, {
     required this.onTap,
     this.errorState = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -280,8 +279,8 @@ class Reminders extends StatelessWidget {
   const Reminders({
     required this.activity,
     this.expanded = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final translate = Lt.of(context);

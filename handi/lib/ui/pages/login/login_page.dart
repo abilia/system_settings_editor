@@ -68,6 +68,7 @@ class LoginPage extends StatelessWidget {
             if (state is LoginFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
+                  duration: const Duration(milliseconds: 500),
                   content: Text(state.cause.name),
                 ),
               );
@@ -115,10 +116,11 @@ class LoginPage extends StatelessWidget {
                       text: translate.signIn,
                       type: ActionButtonType.primary,
                       size: ButtonSize.large,
+                      isLoading: state is LoginLoading,
+                      leadingIcon: MdiIcons.login,
                       onPressed: state.isFormValid
                           ? context.read<LoginCubit>().loginButtonPressed
                           : null,
-                      leadingIcon: MdiIcons.login,
                     )
                   ],
                 ),

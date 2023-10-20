@@ -18,8 +18,8 @@ class Selector<T> extends StatelessWidget {
     this.heading,
     this.groupValue,
     this.onChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +86,8 @@ class _SelectButton<T> extends StatelessWidget {
     required this.icon,
     this.onPressed,
     this.groupValue,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

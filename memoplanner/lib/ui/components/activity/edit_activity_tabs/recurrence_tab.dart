@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class RecurrenceTab extends StatelessWidget with EditActivityTab {
-  const RecurrenceTab({Key? key}) : super(key: key);
+  const RecurrenceTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +94,8 @@ class Weekly extends StatelessWidget with EditActivityTab {
 
   Weekly({
     required this.errorState,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -149,8 +149,8 @@ class Weekly extends StatelessWidget with EditActivityTab {
 
 class EveryOtherWeekSwitch extends StatelessWidget {
   const EveryOtherWeekSwitch({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

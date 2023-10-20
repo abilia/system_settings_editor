@@ -45,7 +45,7 @@ extension StartViewExtension on StartView {
 }
 
 class SlideShow extends StatelessWidget {
-  const SlideShow({Key? key}) : super(key: key);
+  const SlideShow({super.key});
 
   @override
   Widget build(BuildContext context) {

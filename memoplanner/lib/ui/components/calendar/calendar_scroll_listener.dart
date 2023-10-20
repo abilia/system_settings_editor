@@ -18,8 +18,8 @@ class CalendarScrollListener extends StatelessWidget {
     this.agendaEvents,
     this.enabled = true,
     this.disabledInitOffset,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ScrollListenerWidgetBuilder builder;
   final GetNowOffset getNowOffset;
@@ -61,8 +61,7 @@ class _CalendarScrollListener extends StatefulWidget {
     required this.builder,
     this.timepillarMeasures,
     this.agendaEvents,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final GetNowOffset getNowOffset;
   final ScrollListenerWidgetBuilder builder;
@@ -159,8 +158,7 @@ class _AutoScrollToNow extends StatelessWidget {
   const _AutoScrollToNow({
     required this.child,
     required this.getNowOffset,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final GetNowOffset getNowOffset;

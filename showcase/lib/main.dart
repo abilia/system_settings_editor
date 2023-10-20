@@ -4,6 +4,7 @@ import 'package:showcase/addons/breakpoint_addon.dart';
 import 'package:showcase/use_cases/buttons/action_button_use_case.dart';
 import 'package:showcase/use_cases/buttons/icon_button_use_case.dart';
 import 'package:showcase/use_cases/helper_box_use_case.dart';
+import 'package:showcase/use_cases/spinner_use_case.dart';
 import 'package:showcase/use_cases/tag_use_case.dart';
 import 'package:widgetbook/widgetbook.dart';
 
@@ -12,7 +13,7 @@ void main() {
 }
 
 class WidgetBook extends StatelessWidget {
-  const WidgetBook({Key? key}) : super(key: key);
+  const WidgetBook({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,12 @@ class WidgetBook extends StatelessWidget {
           useCases: [
             HelperBoxUseCase(),
             TagUseCase(),
+          ],
+        ),
+        WidgetbookComponent(
+          name: 'Misc',
+          useCases: [
+            SpinnerUseCase(),
           ],
         ),
       ],

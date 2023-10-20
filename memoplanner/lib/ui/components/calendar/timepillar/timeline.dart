@@ -6,8 +6,8 @@ class Timeline extends StatelessWidget {
   const Timeline({
     required this.width,
     this.top = 0,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => AnimatedPositioned(

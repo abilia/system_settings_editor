@@ -15,8 +15,8 @@ class AcceptTermsSwitch extends StatelessWidget {
     required this.value,
     required this.onChanged,
     this.errorState = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

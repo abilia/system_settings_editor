@@ -3,7 +3,7 @@ import 'package:memoplanner/bloc/activities/edit_activity/edit_activity_cubit.da
 import 'package:memoplanner/ui/all.dart';
 
 class RemoveAfterWiz extends StatelessWidget {
-  const RemoveAfterWiz({Key? key}) : super(key: key);
+  const RemoveAfterWiz({super.key});
 
   @override
   Widget build(BuildContext context) {

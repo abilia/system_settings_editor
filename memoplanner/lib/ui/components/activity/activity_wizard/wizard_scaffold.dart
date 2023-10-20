@@ -20,8 +20,8 @@ class WizardScaffold extends StatelessWidget {
     this.appBarHeight,
     this.showAppBar = true,
     this.backgroundColor,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => Scaffold(

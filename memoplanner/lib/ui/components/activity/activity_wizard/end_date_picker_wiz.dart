@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class EndDatePickerWiz extends StatelessWidget {
-  const EndDatePickerWiz({Key? key}) : super(key: key);
+  const EndDatePickerWiz({super.key});
 
   @override
   Widget build(BuildContext context) {

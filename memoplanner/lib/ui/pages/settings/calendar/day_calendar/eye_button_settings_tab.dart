@@ -2,7 +2,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class EyeButtonSettingsTab extends StatelessWidget {
-  const EyeButtonSettingsTab({Key? key}) : super(key: key);
+  const EyeButtonSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {

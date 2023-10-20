@@ -14,8 +14,8 @@ class InfoItemTab extends StatefulWidget with EditActivityTab {
   const InfoItemTab({
     required this.showNote,
     required this.showChecklist,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() => InfoItemTabState();

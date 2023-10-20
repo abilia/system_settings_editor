@@ -3,7 +3,7 @@ import 'package:memoplanner/bloc/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class DayCalendarSettingsPage extends StatelessWidget {
-  const DayCalendarSettingsPage({Key? key}) : super(key: key);
+  const DayCalendarSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

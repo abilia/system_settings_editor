@@ -7,8 +7,8 @@ class PopAwareDiscardListener extends StatelessWidget {
   const PopAwareDiscardListener({
     required this.child,
     required this.showDiscardDialogCondition,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

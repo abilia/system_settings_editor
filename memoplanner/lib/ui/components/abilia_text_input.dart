@@ -31,8 +31,8 @@ class AbiliaTextInput extends StatelessWidget {
     this.autoCorrect = true,
     this.inputValid,
     this.wrapWithAuthProviders = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +110,8 @@ class DefaultTextInput extends StatefulWidget {
     required this.inputValid,
     required this.autocorrect,
     this.keyboardType,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String inputHeading;
   final IconData icon;

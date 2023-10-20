@@ -3,7 +3,7 @@ import 'package:memoplanner/models/all.dart';
 import 'package:memoplanner/ui/all.dart';
 
 class DayColorsSettingsTab extends StatelessWidget {
-  const DayColorsSettingsTab({Key? key}) : super(key: key);
+  const DayColorsSettingsTab({super.key});
   @override
   Widget build(BuildContext context) {
     final languageCode = Localizations.localeOf(context).languageCode;

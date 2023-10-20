@@ -3,7 +3,7 @@ import 'package:memoplanner/bloc/activities/edit_activity/edit_activity_cubit.da
 import 'package:memoplanner/ui/all.dart';
 
 class CheckableWiz extends StatelessWidget {
-  const CheckableWiz({Key? key}) : super(key: key);
+  const CheckableWiz({super.key});
 
   @override
   Widget build(BuildContext context) {

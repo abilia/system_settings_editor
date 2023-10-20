@@ -5,8 +5,8 @@ class DefaultTabControllerBuilder extends StatefulWidget {
       builder;
   const DefaultTabControllerBuilder({
     required this.builder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<DefaultTabControllerBuilder> createState() =>

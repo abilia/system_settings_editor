@@ -11,8 +11,8 @@ class FullScreenActivityPage extends StatelessWidget {
 
   const FullScreenActivityPage({
     required this.alarm,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +61,7 @@ class _FullScreenActivityTabBar extends StatelessWidget
 
   _FullScreenActivityTabBar({
     required this.selectedActivityDay,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +97,8 @@ class _FullScreenActivityTabBar extends StatelessWidget
 class FullScreenActivityTabItem extends StatelessWidget {
   const FullScreenActivityTabItem({
     required this.activityOccasion,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ActivityOccasion activityOccasion;
 
@@ -210,8 +209,7 @@ class _ActivityArrow extends StatelessWidget {
   const _ActivityArrow({
     required this.border,
     required this.color,
-    Key? key,
-  }) : super(key: key);
+  });
 
   static Path arrrowPath(Size size) {
     final tweak = layout.ongoingFullscreen.activity.arrowPointRadius.x;
@@ -290,8 +288,7 @@ class _CategoryDot extends StatelessWidget {
   const _CategoryDot({
     required this.category,
     required this.selected,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Duration _animationDuration = ActivityInfo.animationDuration;
 

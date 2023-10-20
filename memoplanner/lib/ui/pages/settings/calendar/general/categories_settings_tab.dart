@@ -4,7 +4,7 @@ import 'package:memoplanner/ui/all.dart';
 import 'package:memoplanner/utils/all.dart';
 
 class CategoriesSettingsTab extends StatelessWidget {
-  const CategoriesSettingsTab({Key? key}) : super(key: key);
+  const CategoriesSettingsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +70,8 @@ class _CategoryPickField extends StatelessWidget {
     required this.imageAndName,
     required this.defaultName,
     required this.onResult,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -122,8 +122,7 @@ class _CategoryPickField extends StatelessWidget {
 class _CategoriesPreview extends StatelessWidget {
   const _CategoriesPreview({
     required this.state,
-    Key? key,
-  }) : super(key: key);
+  });
   final GeneralCalendarSettings state;
 
   @override

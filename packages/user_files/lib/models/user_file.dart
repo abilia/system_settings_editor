@@ -52,10 +52,10 @@ class DbUserFile extends DbModel<UserFile> {
   UserFile get userFile => model;
 
   const DbUserFile._({
-    required int dirty,
-    required int revision,
+    required super.dirty,
+    required super.revision,
     required UserFile userFile,
-  }) : super(dirty: dirty, revision: revision, model: userFile);
+  }) : super(model: userFile);
 
   static DbUserFile fromDbMap(Map<String, dynamic> dbRow) => DbUserFile._(
       userFile: UserFile(
