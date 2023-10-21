@@ -14,7 +14,7 @@ class SupportIdText extends StatelessWidget {
       // ignore: discarded_futures
       future: GetIt.I<DeviceDb>().getSupportId(),
       builder: (context, snapshot) => GestureDetector(
-        onLongPress: () async => GetIt.I<SeagullLogger>().maybeUploadLogs(),
+        onLongPress: () async => GetIt.I<SeagullLogger>().uploadLogsToBackend(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
