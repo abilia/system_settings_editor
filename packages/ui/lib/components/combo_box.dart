@@ -133,19 +133,15 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             obscureText: widget.obscureText,
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(top: spacings.spacing300),
-          child: CollapsableWidget(
-            collapsed: !showHelperBox,
-            child: messageState != null
-                ? SeagullHelperBox(
-                    iconThemeData: helperBoxIconThemeData,
-                    icon: helperBoxIcon,
-                    text: widget.message ?? '',
-                    size: widget.size,
-                    state: messageState,
-                  )
-                : const SizedBox.shrink(),
+        SizedBox(height: spacings.spacing300),
+        CollapsableWidget(
+          collapsed: !showHelperBox,
+          child: SeagullHelperBox(
+            iconThemeData: helperBoxIconThemeData,
+            icon: helperBoxIcon,
+            text: widget.message ?? '',
+            size: widget.size,
+            state: messageState ?? MessageState.info,
           ),
         ),
       ],
