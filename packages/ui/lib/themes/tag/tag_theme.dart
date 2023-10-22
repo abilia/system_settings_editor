@@ -16,7 +16,7 @@ class SeagullTagTheme extends ThemeExtension<SeagullTagTheme> {
       ),
       iconSize: numerical600,
       iconSpacing: numerical200,
-      border: border600,
+      border: roundedRectangleBorder600,
     ),
   );
 

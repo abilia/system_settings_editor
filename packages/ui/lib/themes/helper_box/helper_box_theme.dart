@@ -13,7 +13,7 @@ class SeagullHelperBoxTheme extends ThemeExtension<SeagullHelperBoxTheme> {
       padding: const EdgeInsets.all(numerical300),
       iconSize: numerical600,
       iconSpacing: numerical200,
-      border: border200,
+      border: roundedRectangleBorder200,
     ),
   );
 

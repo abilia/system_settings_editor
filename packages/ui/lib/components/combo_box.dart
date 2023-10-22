@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ui/components/collapsable_widget.dart';
 import 'package:ui/components/helper_box.dart';
-import 'package:ui/src/styles/borders.dart';
-import 'package:ui/src/themes/icon_themes.dart';
+import 'package:ui/src/components/collapsable_widget.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/combo_box/combo_box_themes.dart';
 import 'package:ui/utils/sizes.dart';
@@ -64,6 +62,9 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
   Widget build(BuildContext context) {
     final spacings = AbiliaTheme.of(context).spacings;
     final comboBoxTheme = _getTheme(context);
+    final helperBoxIconTheme = _getHelperBoxIconTheme(comboBoxTheme);
+    final inputBorder = _getInputBorder(comboBoxTheme);
+    final inputDecorationTheme = comboBoxTheme.inputDecorationTheme;
     final label = widget.label;
     final messageState = widget.messageState;
     final showHelperBox = widget.message != null &&
@@ -92,7 +93,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             decoration: InputDecoration(
               hintText: widget.hintText,
               enabled: widget.enabled,
-              hintStyle: comboBoxTheme.inputDecorationTheme.hintStyle,
+              hintStyle: inputDecorationTheme.hintStyle,
               prefixIcon: widget.leadingIcon != null
                   ? Padding(
                       padding: EdgeInsets.only(
@@ -117,13 +118,11 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
                       ),
                     )
                   : null,
-              enabledBorder: _getBorder(widget.messageState) ??
-                  comboBoxTheme.inputDecorationTheme.enabledBorder,
-              focusedBorder: _getBorder(widget.messageState) ??
-                  comboBoxTheme.inputDecorationTheme.focusedBorder,
-              focusedErrorBorder: _getBorder(widget.messageState) ??
-                  comboBoxTheme.inputDecorationTheme.focusedErrorBorder,
-            ).applyDefaults(comboBoxTheme.inputDecorationTheme),
+              enabledBorder: inputBorder ?? inputDecorationTheme.enabledBorder,
+              focusedBorder: inputBorder ?? inputDecorationTheme.focusedBorder,
+              focusedErrorBorder:
+                  inputBorder ?? inputDecorationTheme.focusedErrorBorder,
+            ).applyDefaults(inputDecorationTheme),
             textInputAction: widget.textInputAction,
             style: comboBoxTheme.textStyle,
             onChanged: widget.onChanged,
@@ -138,11 +137,9 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             collapsed: !showHelperBox,
             child: messageState != null
                 ? SeagullHelperBox(
-                    iconTheme: _getIconTheme(widget.messageState),
+                    iconTheme: helperBoxIconTheme,
                     text: widget.message ?? '',
-                    size: widget.size == ComboBoxSize.large
-                        ? HelperBoxSize.large
-                        : HelperBoxSize.medium,
+                    size: widget.size,
                     state: messageState,
                   )
                 : const SizedBox.shrink(),
@@ -152,23 +149,23 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
     );
   }
 
-  IconTheme? _getIconTheme(MessageState? state) {
-    switch (state) {
+  IconTheme? _getHelperBoxIconTheme(SeagullComboBoxTheme comboBoxTheme) {
+    switch (widget.messageState) {
       case MessageState.error:
-        return iconThemeError;
+        return comboBoxTheme.helperBoxIconThemeError;
       case MessageState.success:
-        return iconThemeSuccess;
+        return comboBoxTheme.helperBoxIconThemeSuccess;
       default:
         return null;
     }
   }
 
-  OutlineInputBorder? _getBorder(MessageState? state) {
-    switch (state) {
+  OutlineInputBorder? _getInputBorder(SeagullComboBoxTheme comboBoxTheme) {
+    switch (widget.messageState) {
       case MessageState.error:
-        return errorBorder;
+        return comboBoxTheme.inputBorderError;
       case MessageState.success:
-        return successBorder;
+        return comboBoxTheme.inputBorderSuccess;
       default:
         return null;
     }

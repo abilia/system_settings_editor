@@ -5,7 +5,7 @@ import 'package:ui/src/tokens/fonts.dart';
 import 'package:ui/src/tokens/numericals.dart';
 import 'package:ui/themes/abilia_text_style_themes.dart';
 
-final textFieldInputThemeMedium = InputDecorationTheme(
+final textFieldInputTheme700 = InputDecorationTheme(
   fillColor: MaterialStateColor.resolveWith(
     (states) {
       if (states.contains(MaterialState.disabled) &&
@@ -38,7 +38,7 @@ final textFieldInputThemeMedium = InputDecorationTheme(
   ),
 );
 
-final textFieldInputThemeLarge = textFieldInputThemeMedium.copyWith(
+final textFieldInputTheme800 = textFieldInputTheme700.copyWith(
   hintStyle: AbiliaFonts.primary525.withColor(SurfaceColors.textSecondary),
   contentPadding: const EdgeInsets.symmetric(
     horizontal: numerical400,

@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:ui/src/tokens/colors.dart';
 import 'package:ui/src/tokens/numericals.dart';
 
-const border200 = RoundedRectangleBorder(
+const roundedRectangleBorder200 = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(
     Radius.circular(numerical200),
   ),
 );
 
-const border300 = RoundedRectangleBorder(
+const roundedRectangleBorder300 = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(
     Radius.circular(numerical300),
   ),
 );
 
-const border500 = RoundedRectangleBorder(
+const roundedRectangleBorder500 = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(
     Radius.circular(numerical500),
   ),
 );
 
-const border600 = RoundedRectangleBorder(
+const roundedRectangleBorder600 = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(
     Radius.circular(numerical600),
   ),

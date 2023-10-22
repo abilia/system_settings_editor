@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:ui/src/styles/decoration.dart';
-import 'package:ui/src/themes/input_themes.dart';
+import 'package:ui/src/styles/borders.dart';
+import 'package:ui/src/styles/box_decorations.dart';
+import 'package:ui/src/themes/icon_themes.dart';
+import 'package:ui/src/themes/input_decoration_themes.dart';
 import 'package:ui/src/tokens/colors.dart';
 import 'package:ui/src/tokens/fonts.dart';
 import 'package:ui/src/tokens/numericals.dart';
