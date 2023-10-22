@@ -53,6 +53,7 @@ class Lt {
     'clockTwentyMinutesPastTts': [],
     'clockTwentyMinutesToTts': [],
     'close': [],
+    'connect': [],
     'connect_to_myabilia': [],
     'connected': [],
     'early_morning': [],
@@ -70,6 +71,7 @@ class Lt {
     'no_license': [],
     'not_connected': [],
     'ok': [],
+    'onboarding_hint': [],
     'password': [],
     'play': [],
     'producer': [],
@@ -275,6 +277,16 @@ class Lt {
     );
   }
 
+  /// `Connect`
+  String get connect {
+    return Intl.message(
+      'Connect',
+      name: 'connect',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Connect to myAbilia`
   String get connect_to_myabilia {
     return Intl.message(
@@ -435,11 +447,21 @@ class Lt {
     );
   }
 
-  /// `Ok`
+  /// `OK`
   String get ok {
     return Intl.message(
-      'Ok',
+      'OK',
       name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To start using CARY Mobile connect to the Internet`
+  String get onboarding_hint {
+    return Intl.message(
+      'To start using CARY Mobile connect to the Internet',
+      name: 'onboarding_hint',
       desc: '',
       args: [],
     );

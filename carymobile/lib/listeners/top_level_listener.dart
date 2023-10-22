@@ -1,8 +1,8 @@
 import 'package:auth/listeners/authentication_listener.dart';
 import 'package:carymessenger/listeners/authenticated_listener.dart';
 import 'package:carymessenger/providers.dart';
-import 'package:carymessenger/ui/pages/login/login_page.dart';
 import 'package:carymessenger/ui/pages/main/main_page.dart';
+import 'package:carymessenger/ui/pages/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:seagull_analytics/seagull_analytics.dart';
 
@@ -40,8 +40,8 @@ class TopLevelListener extends StatelessWidget {
         await navigator.pushAndRemoveUntil<void>(
           MaterialPageRoute<void>(
             builder: (_) =>
-                LoginPage(unauthenticatedState: authenticationState),
-            settings: (LoginPage).routeSetting(
+                Onboarding(unauthenticatedState: authenticationState),
+            settings: (Onboarding).routeSetting(
               properties: {
                 'logout reason': authenticationState.loggedOutReason.name,
               },
