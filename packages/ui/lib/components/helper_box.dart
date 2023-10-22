@@ -9,7 +9,7 @@ typedef HelperBoxSize = MediumLargeSize;
 class SeagullHelperBox extends StatelessWidget {
   final String text;
   final IconData? icon;
-  final IconTheme? iconTheme;
+  final IconThemeData? iconThemeData;
   final MessageState state;
   final HelperBoxSize size;
 
@@ -18,7 +18,7 @@ class SeagullHelperBox extends StatelessWidget {
     required this.state,
     required this.size,
     this.icon,
-    this.iconTheme,
+    this.iconThemeData,
     super.key,
   });
 
@@ -27,7 +27,8 @@ class SeagullHelperBox extends StatelessWidget {
     final color = _getColor(context);
     final helperBoxTheme = _getTheme(context);
     final iconAndTextBoxTheme = helperBoxTheme.iconAndTextBoxTheme;
-    final showIcon = icon != null || iconTheme != null;
+    final icon = this.icon;
+    final iconThemeData = this.iconThemeData ?? const IconThemeData();
     return DecoratedBox(
       decoration: ShapeDecoration(
         shape: iconAndTextBoxTheme.border,
@@ -38,13 +39,14 @@ class SeagullHelperBox extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (showIcon) ...[
-              if (icon != null)
-                Icon(
+            if (icon != null) ...[
+              IconTheme(
+                data: iconThemeData,
+                child: Icon(
                   icon,
                   size: iconAndTextBoxTheme.iconSize,
                 ),
-              if (iconTheme != null) iconTheme!,
+              ),
               SizedBox(width: iconAndTextBoxTheme.iconSpacing),
             ],
             Expanded(

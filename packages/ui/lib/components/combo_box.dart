@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/helper_box.dart';
 import 'package:ui/src/components/collapsable_widget.dart';
 import 'package:ui/themes/abilia_theme.dart';
@@ -62,7 +63,8 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
   Widget build(BuildContext context) {
     final spacings = AbiliaTheme.of(context).spacings;
     final comboBoxTheme = _getTheme(context);
-    final helperBoxIconTheme = _getHelperBoxIconTheme(comboBoxTheme);
+    final helperBoxIconThemeData = _getHelperBoxIconThemeData(comboBoxTheme);
+    final helperBoxIcon = _getHelperBoxIcon();
     final inputBorder = _getInputBorder(comboBoxTheme);
     final inputDecorationTheme = comboBoxTheme.inputDecorationTheme;
     final label = widget.label;
@@ -137,7 +139,8 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             collapsed: !showHelperBox,
             child: messageState != null
                 ? SeagullHelperBox(
-                    iconTheme: helperBoxIconTheme,
+                    iconThemeData: helperBoxIconThemeData,
+                    icon: helperBoxIcon,
                     text: widget.message ?? '',
                     size: widget.size,
                     state: messageState,
@@ -149,12 +152,24 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
     );
   }
 
-  IconTheme? _getHelperBoxIconTheme(SeagullComboBoxTheme comboBoxTheme) {
+  IconThemeData? _getHelperBoxIconThemeData(
+      SeagullComboBoxTheme comboBoxTheme) {
     switch (widget.messageState) {
       case MessageState.error:
-        return comboBoxTheme.helperBoxIconThemeError;
+        return comboBoxTheme.helperBoxIconThemeDataError;
       case MessageState.success:
-        return comboBoxTheme.helperBoxIconThemeSuccess;
+        return comboBoxTheme.helperBoxIconThemeDataSuccess;
+      default:
+        return null;
+    }
+  }
+
+  IconData? _getHelperBoxIcon() {
+    switch (widget.messageState) {
+      case MessageState.error:
+        return Symbols.error;
+      case MessageState.success:
+        return Symbols.check_circle;
       default:
         return null;
     }

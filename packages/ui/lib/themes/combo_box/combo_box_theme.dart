@@ -6,8 +6,8 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
   final TextStyle textStyle;
   final EdgeInsets padding;
   final double iconSize;
-  final IconTheme helperBoxIconThemeError;
-  final IconTheme helperBoxIconThemeSuccess;
+  final IconThemeData helperBoxIconThemeDataError;
+  final IconThemeData helperBoxIconThemeDataSuccess;
   final OutlineInputBorder inputBorderError;
   final OutlineInputBorder inputBorderSuccess;
   final BoxDecoration boxDecoration;
@@ -21,8 +21,8 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
     required this.iconSize,
     required this.boxDecoration,
     required this.boxShadow,
-    required this.helperBoxIconThemeError,
-    required this.helperBoxIconThemeSuccess,
+    required this.helperBoxIconThemeDataError,
+    required this.helperBoxIconThemeDataSuccess,
     required this.inputBorderError,
     required this.inputBorderSuccess,
   });
@@ -33,8 +33,8 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
         AbiliaFonts.primary525.copyWith(color: SurfaceColors.textPrimary),
     labelStyle: AbiliaFonts.primary425.withColor(SurfaceColors.textSecondary),
     iconSize: numerical800,
-    helperBoxIconThemeError: iconThemeError,
-    helperBoxIconThemeSuccess: iconThemeSuccess,
+    helperBoxIconThemeDataError: iconThemeDataError,
+    helperBoxIconThemeDataSuccess: iconThemeDataSuccess,
     inputBorderError: errorBorder,
     inputBorderSuccess: successBorder,
     padding: const EdgeInsets.symmetric(
@@ -74,8 +74,8 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
     BoxDecoration? boxDecoration,
     EdgeInsets? padding,
     BoxShadow? boxShadow,
-    IconTheme? helperBoxIconThemeError,
-    IconTheme? helperBoxIconThemeSuccess,
+    IconThemeData? helperBoxIconThemeDataError,
+    IconThemeData? helperBoxIconThemeDataSuccess,
     OutlineInputBorder? inputBorderError,
     OutlineInputBorder? inputBorderSuccess,
   }) {
@@ -87,10 +87,10 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
       boxDecoration: boxDecoration ?? this.boxDecoration,
       boxShadow: boxShadow ?? this.boxShadow,
       padding: padding ?? this.padding,
-      helperBoxIconThemeError:
-          helperBoxIconThemeError ?? this.helperBoxIconThemeError,
-      helperBoxIconThemeSuccess:
-          helperBoxIconThemeSuccess ?? this.helperBoxIconThemeSuccess,
+      helperBoxIconThemeDataError:
+          helperBoxIconThemeDataError ?? this.helperBoxIconThemeDataError,
+      helperBoxIconThemeDataSuccess:
+          helperBoxIconThemeDataSuccess ?? this.helperBoxIconThemeDataSuccess,
       inputBorderError: inputBorderError ?? this.inputBorderError,
       inputBorderSuccess: inputBorderSuccess ?? this.inputBorderSuccess,
     );
