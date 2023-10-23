@@ -13,13 +13,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
+import 'package:seagull_clock/seagull_clock.dart';
 import 'package:text_to_speech/text_to_speech.dart';
 import 'package:user_files/user_files.dart';
 
-class AuthenticatedListener extends StatelessWidget {
+class AuthenticatedListener extends StatefulWidget {
   final Widget child;
 
   const AuthenticatedListener({required this.child, super.key});
+
+  @override
+  State<AuthenticatedListener> createState() => _AuthenticatedListenerState();
+}
+
+class _AuthenticatedListenerState extends State<AuthenticatedListener>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      await context.read<ClockCubit>().setTime(DateTime.now());
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +98,7 @@ class AuthenticatedListener extends StatelessWidget {
           },
         ),
       ],
-      child: child,
+      child: widget.child,
     );
   }
 }
