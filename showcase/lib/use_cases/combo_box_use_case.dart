@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:showcase/knobs.dart';
 import 'package:ui/components/combo_box.dart';
 import 'package:ui/utils/states.dart';
@@ -39,13 +40,13 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                     label: 'Leading icon',
                     initialValue: false,
                   )
-                      ? Icons.account_circle
+                      ? Symbols.account_circle
                       : null,
                   trailingIcon: context.knobs.boolean(
                     label: 'Trailing icon',
                     initialValue: false,
                   )
-                      ? Icons.visibility
+                      ? Symbols.visibility
                       : null,
                   messageState: context.knobs.list(
                     label: 'State',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/buttons/buttons.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/utils/sizes.dart';
@@ -7,20 +8,20 @@ import 'package:widgetbook/widgetbook.dart';
 IconData iconKnob(BuildContext context) => context.knobs.list(
       label: 'Icon',
       options: [
-        Icons.add,
-        Icons.edit,
-        Icons.delete,
-        Icons.login,
+        Symbols.add,
+        Symbols.edit,
+        Symbols.delete,
+        Symbols.login,
       ],
-      initialOption: Icons.add,
+      initialOption: Symbols.add,
       labelBuilder: (icon) {
-        if (icon == Icons.add) {
+        if (icon == Symbols.add) {
           return 'Add';
         }
-        if (icon == Icons.edit) {
+        if (icon == Symbols.edit) {
           return 'Edit';
         }
-        if (icon == Icons.delete) {
+        if (icon == Symbols.delete) {
           return 'Delete';
         }
         return 'Login';

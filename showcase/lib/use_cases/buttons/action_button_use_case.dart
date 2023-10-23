@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:showcase/knobs.dart';
 import 'package:ui/components/buttons/buttons.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -56,13 +57,13 @@ class ActionButtonUseCase extends WidgetbookUseCase {
                     label: 'Leading icon',
                     initialValue: true,
                   )
-                      ? Icons.login
+                      ? Symbols.login
                       : null,
                   trailingIcon: context.knobs.boolean(
                     label: 'Trailing icon',
                     initialValue: false,
                   )
-                      ? Icons.login
+                      ? Symbols.login
                       : null,
                 ),
               ),

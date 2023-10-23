@@ -6,7 +6,6 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
   final TextStyle textStyle;
   final EdgeInsets padding;
   final double iconSize;
-  final IconThemeData helperBoxIconThemeDataError;
   final IconThemeData helperBoxIconThemeDataSuccess;
   final OutlineInputBorder inputBorderError;
   final OutlineInputBorder inputBorderSuccess;
@@ -21,7 +20,6 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
     required this.iconSize,
     required this.boxDecoration,
     required this.boxShadow,
-    required this.helperBoxIconThemeDataError,
     required this.helperBoxIconThemeDataSuccess,
     required this.inputBorderError,
     required this.inputBorderSuccess,
@@ -29,11 +27,9 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
 
   static final size800 = SeagullComboBoxTheme(
     inputDecorationTheme: textFieldInputTheme800,
-    textStyle:
-        AbiliaFonts.primary525.copyWith(color: SurfaceColors.textPrimary),
+    textStyle: AbiliaFonts.primary525.withColor(SurfaceColors.textPrimary),
     labelStyle: AbiliaFonts.primary425.withColor(SurfaceColors.textSecondary),
     iconSize: numerical800,
-    helperBoxIconThemeDataError: iconThemeDataError,
     helperBoxIconThemeDataSuccess: iconThemeDataSuccess,
     inputBorderError: errorBorder,
     inputBorderSuccess: successBorder,
@@ -50,14 +46,12 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
 
   static final size700 = size800.copyWith(
     inputDecorationTheme: textFieldInputTheme700,
-    textStyle:
-        AbiliaFonts.primary425.copyWith(color: SurfaceColors.textPrimary),
+    textStyle: AbiliaFonts.primary425.withColor(SurfaceColors.textPrimary),
     iconSize: numerical600,
     padding: const EdgeInsets.symmetric(
       horizontal: numerical400,
       vertical: numerical500,
     ),
-    messagePadding: const EdgeInsets.all(numerical300),
   );
 
   @override
@@ -65,16 +59,10 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
     InputDecorationTheme? inputDecorationTheme,
     TextStyle? textStyle,
     TextStyle? labelStyle,
-    Widget? leading,
-    Widget? trailing,
-    bool? obscureText,
     double? iconSize,
-    EdgeInsets? messagePadding,
-    double? iconGap,
     BoxDecoration? boxDecoration,
     EdgeInsets? padding,
     BoxShadow? boxShadow,
-    IconThemeData? helperBoxIconThemeDataError,
     IconThemeData? helperBoxIconThemeDataSuccess,
     OutlineInputBorder? inputBorderError,
     OutlineInputBorder? inputBorderSuccess,
@@ -87,8 +75,6 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
       boxDecoration: boxDecoration ?? this.boxDecoration,
       boxShadow: boxShadow ?? this.boxShadow,
       padding: padding ?? this.padding,
-      helperBoxIconThemeDataError:
-          helperBoxIconThemeDataError ?? this.helperBoxIconThemeDataError,
       helperBoxIconThemeDataSuccess:
           helperBoxIconThemeDataSuccess ?? this.helperBoxIconThemeDataSuccess,
       inputBorderError: inputBorderError ?? this.inputBorderError,
@@ -98,12 +84,23 @@ class SeagullComboBoxTheme extends ThemeExtension<SeagullComboBoxTheme> {
 
   @override
   SeagullComboBoxTheme lerp(covariant SeagullComboBoxTheme? other, double t) {
-    return copyWith(
-      iconSize: lerpDouble(iconSize, other?.iconSize, t),
-      textStyle: TextStyle.lerp(textStyle, other?.textStyle, t),
-      labelStyle: TextStyle.lerp(labelStyle, other?.labelStyle, t),
-      boxDecoration: boxDecoration.lerpTo(other?.boxDecoration, t),
-      padding: EdgeInsets.lerp(padding, other?.padding, t),
+    if (other is! SeagullComboBoxTheme) return this;
+    return SeagullComboBoxTheme(
+      iconSize: lerpDouble(iconSize, other.iconSize, t) ?? iconSize,
+      textStyle: TextStyle.lerp(textStyle, other.textStyle, t) ?? textStyle,
+      labelStyle: TextStyle.lerp(labelStyle, other.labelStyle, t) ?? labelStyle,
+      boxDecoration:
+          boxDecoration.lerpTo(other.boxDecoration, t) ?? boxDecoration,
+      padding: EdgeInsets.lerp(padding, other.padding, t) ?? padding,
+      boxShadow: BoxShadow.lerp(boxShadow, other.boxShadow, t) ?? boxShadow,
+      inputDecorationTheme:
+          inputDecorationTheme.merge(other.inputDecorationTheme),
+      helperBoxIconThemeDataSuccess: IconThemeData.lerp(
+          helperBoxIconThemeDataSuccess,
+          other.helperBoxIconThemeDataSuccess,
+          t),
+      inputBorderError: other.inputBorderError,
+      inputBorderSuccess: other.inputBorderSuccess,
     );
   }
 }

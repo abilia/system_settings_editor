@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:showcase/knobs.dart';
 import 'package:ui/components/tag.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -29,7 +30,7 @@ class TagUseCase extends WidgetbookUseCase {
                 label: 'Icon',
                 initialValue: true,
               )
-                  ? Icons.add
+                  ? Symbols.add
                   : null,
               color: colorKnob(context),
             ),

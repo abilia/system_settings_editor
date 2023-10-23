@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ui/src/extensions/text_style_extensions.dart';
 import 'package:ui/src/styles/borders.dart';
 import 'package:ui/src/tokens/colors.dart';
 import 'package:ui/src/tokens/fonts.dart';
 import 'package:ui/src/tokens/numericals.dart';
-import 'package:ui/themes/abilia_text_style_themes.dart';
 
 final textFieldInputTheme700 = InputDecorationTheme(
   fillColor: MaterialStateColor.resolveWith(

@@ -75,11 +75,9 @@ class LoginPage extends StatelessWidget {
         body: BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) => SafeArea(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                spacings.spacing400,
-                spacings.spacing800,
-                spacings.spacing400,
-                spacings.spacing1000,
+              padding: EdgeInsets.symmetric(
+                horizontal: spacings.spacing400,
+                vertical: spacings.spacing600,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/helper_box.dart';
-import 'package:ui/src/components/collapsable_widget.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/combo_box/combo_box_themes.dart';
 import 'package:ui/utils/sizes.dart';
@@ -22,6 +21,7 @@ class SeagullComboBox extends StatefulWidget {
   final TextEditingController? controller;
   final MessageState? messageState;
   final ComboBoxSize size;
+  final VoidCallback? onTrailingIconOnTap;
 
   const SeagullComboBox({
     required this.size,
@@ -36,6 +36,7 @@ class SeagullComboBox extends StatefulWidget {
     this.enabled = true,
     this.obscureText = false,
     this.messageState,
+    this.onTrailingIconOnTap,
     super.key,
   });
 
@@ -47,25 +48,21 @@ class SeagullComboBox extends StatefulWidget {
 
 class _SeagullComboBoxState extends State<SeagullComboBox> {
   final FocusNode focusNode = FocusNode();
-  bool selected = false;
 
   @override
   void initState() {
-    focusNode.addListener(
-      () => setState(
-        () => selected = focusNode.hasFocus,
-      ),
-    );
+    focusNode.addListener(() => setState(() {}));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final spacings = AbiliaTheme.of(context).spacings;
+    final abiliaTheme = AbiliaTheme.of(context);
+    final spacings = abiliaTheme.spacings;
     final comboBoxTheme = _getTheme(context);
     final helperBoxIconThemeData = _getHelperBoxIconThemeData(comboBoxTheme);
     final helperBoxIcon = _getHelperBoxIcon();
-    final inputBorder = _getInputBorder(comboBoxTheme);
+    final stateInputBorder = _getStateInputBorder(comboBoxTheme);
     final inputDecorationTheme = comboBoxTheme.inputDecorationTheme;
     final label = widget.label;
     final messageState = widget.messageState;
@@ -88,7 +85,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
         ],
         AnimatedContainer(
           decoration: comboBoxTheme.boxDecoration.copyWith(
-            boxShadow: selected ? [comboBoxTheme.boxShadow] : [],
+            boxShadow: focusNode.hasFocus ? [comboBoxTheme.boxShadow] : [],
           ),
           duration: const Duration(milliseconds: 150),
           child: TextField(
@@ -105,6 +102,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
                       child: Icon(
                         widget.leadingIcon,
                         size: comboBoxTheme.iconSize,
+                        color: abiliaTheme.colors.greyscale.shade900,
                       ),
                     )
                   : null,
@@ -114,16 +112,22 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
                         right: comboBoxTheme.padding.right,
                         left: spacings.spacing200,
                       ),
-                      child: Icon(
-                        widget.trailingIcon,
-                        size: comboBoxTheme.iconSize,
+                      child: GestureDetector(
+                        onTap: widget.onTrailingIconOnTap,
+                        child: Icon(
+                          widget.trailingIcon,
+                          size: comboBoxTheme.iconSize,
+                          color: abiliaTheme.colors.greyscale.shade900,
+                        ),
                       ),
                     )
                   : null,
-              enabledBorder: inputBorder ?? inputDecorationTheme.enabledBorder,
-              focusedBorder: inputBorder ?? inputDecorationTheme.focusedBorder,
+              enabledBorder:
+                  stateInputBorder ?? inputDecorationTheme.enabledBorder,
+              focusedBorder:
+                  stateInputBorder ?? inputDecorationTheme.focusedBorder,
               focusedErrorBorder:
-                  inputBorder ?? inputDecorationTheme.focusedErrorBorder,
+                  stateInputBorder ?? inputDecorationTheme.focusedErrorBorder,
             ).applyDefaults(inputDecorationTheme),
             textInputAction: widget.textInputAction,
             style: comboBoxTheme.textStyle,
@@ -134,30 +138,24 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
           ),
         ),
         SizedBox(height: spacings.spacing300),
-        CollapsableWidget(
-          collapsed: !showHelperBox,
-          child: SeagullHelperBox(
+        if (showHelperBox)
+          SeagullHelperBox(
             iconThemeData: helperBoxIconThemeData,
             icon: helperBoxIcon,
             text: widget.message ?? '',
             size: widget.size,
             state: messageState ?? MessageState.info,
           ),
-        ),
       ],
     );
   }
 
   IconThemeData? _getHelperBoxIconThemeData(
       SeagullComboBoxTheme comboBoxTheme) {
-    switch (widget.messageState) {
-      case MessageState.error:
-        return comboBoxTheme.helperBoxIconThemeDataError;
-      case MessageState.success:
-        return comboBoxTheme.helperBoxIconThemeDataSuccess;
-      default:
-        return null;
+    if (widget.messageState == MessageState.success) {
+      return comboBoxTheme.helperBoxIconThemeDataSuccess;
     }
+    return null;
   }
 
   IconData? _getHelperBoxIcon() {
@@ -171,7 +169,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
     }
   }
 
-  OutlineInputBorder? _getInputBorder(SeagullComboBoxTheme comboBoxTheme) {
+  OutlineInputBorder? _getStateInputBorder(SeagullComboBoxTheme comboBoxTheme) {
     switch (widget.messageState) {
       case MessageState.error:
         return comboBoxTheme.inputBorderError;
