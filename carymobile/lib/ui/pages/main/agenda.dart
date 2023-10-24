@@ -36,20 +36,14 @@ class AgendaContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-    return BlocListener<SyncBloc, SyncState>(
-      listenWhen: (oldState, newState) => newState is Syncing,
-      listener: (oldState, newState) async =>
-          refreshIndicatorKey.currentState?.show(),
-      child: Expanded(
-        child: ColoredBox(
-          color: abiliaBrown0,
-          child: switch (context.watch<AgendaCubit>().state) {
-            AgendaLoading() => const SizedBox.shrink(),
-            AgendaLoaded(activities: final dayActivities) =>
-              AgendaList(dayActivities: dayActivities),
-          },
-        ),
+    return Expanded(
+      child: ColoredBox(
+        color: abiliaBrown0,
+        child: switch (context.watch<AgendaCubit>().state) {
+          AgendaLoading() => const SizedBox.shrink(),
+          AgendaLoaded(activities: final dayActivities) =>
+            AgendaList(dayActivities: dayActivities),
+        },
       ),
     );
   }

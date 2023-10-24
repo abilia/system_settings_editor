@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:abilia_sync/abilia_sync.dart';
 import 'package:auth/auth.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:calendar_events/calendar_events.dart';
