@@ -62,6 +62,7 @@ Future<void> initGetItWith({
   SeagullLogger? seagullLogger,
   TtsHandler? ttsHandler,
   VoiceDb? voiceDb,
+  Connectivity? connectivity,
 }) async {
   GetIt.I
     ..registerSingleton(directories)
@@ -98,7 +99,7 @@ Future<void> initGetItWith({
     )
     ..registerSingleton(firebasePushService ?? FirebasePushService())
     ..registerSingleton(notificationsPlugin)
-    ..registerSingleton(Connectivity())
+    ..registerSingleton(connectivity ?? Connectivity())
     ..registerSingleton(
       MyAbiliaConnection(
         baseUrlDb: GetIt.I<BaseUrlDb>(),
