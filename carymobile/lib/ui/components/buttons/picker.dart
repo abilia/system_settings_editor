@@ -35,9 +35,11 @@ abstract class PickerButton extends FilledButton {
                       Flexible(
                         fit: FlexFit.tight,
                         child: trailing,
-                      ) else const Spacer(),
+                      )
+                    else
+                      const Spacer(),
                     const Icon(AbiliaIcons.navigationNext),
-                  ] ,
+                  ],
                 ),
               ),
             ],

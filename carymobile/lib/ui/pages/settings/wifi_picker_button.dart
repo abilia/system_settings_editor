@@ -12,9 +12,7 @@ class WifiPickerButton extends StatelessWidget {
       leading: Icon(isConnected ? AbiliaIcons.wifi : AbiliaIcons.noWifi),
       leadingText: Lt.of(context).internet,
       trailing: Text(
-        isConnected
-            ? Lt.of(context).connected
-            : Lt.of(context).not_connected,
+        isConnected ? Lt.of(context).connected : Lt.of(context).not_connected,
         style: style,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.end,
