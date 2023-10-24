@@ -11,9 +11,14 @@ class WifiPickerButton extends StatelessWidget {
     return PickerButtonWhite(
       leading: Icon(isConnected ? AbiliaIcons.wifi : AbiliaIcons.noWifi),
       leadingText: Lt.of(context).internet,
-      trailing: isConnected
-          ? Text(Lt.of(context).connected, style: style)
-          : Text(Lt.of(context).not_connected, style: style),
+      trailing: Text(
+        isConnected
+            ? Lt.of(context).connected
+            : Lt.of(context).not_connected,
+        style: style,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.end,
+      ),
       onPressed: () async => const AndroidIntent(
         action: 'android.settings.WIFI_SETTINGS',
         flags: [Flag.FLAG_ACTIVITY_NEW_TASK, Flag.FLAG_ACTIVITY_CLEAR_TASK],

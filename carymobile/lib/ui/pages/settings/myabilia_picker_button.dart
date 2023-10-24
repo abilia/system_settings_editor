@@ -9,7 +9,12 @@ class MyAbiliaPickerButton extends StatelessWidget {
     return PickerButtonWhite(
       leading: const MyAbiliaIcon(),
       leadingText: 'myAbilia',
-      trailing: user != null ? Text(user.username) : null,
+      trailing: user != null ?
+       Text(
+        user.username,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.end,
+      ) : null,
       onPressed: () async {
         final authProviders = copiedAuthProviders(context);
         await Navigator.of(context).push(

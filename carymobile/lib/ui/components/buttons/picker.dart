@@ -18,20 +18,28 @@ abstract class PickerButton extends FilledButton {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(children: [
-                if (leading != null)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: leading,
-                  ),
-                if (leadingText != null) Text(leadingText),
-              ]),
               Row(
                 children: [
-                  if (trailing != null) trailing,
-                  const Icon(AbiliaIcons.navigationNext),
+                  if (leading != null)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: leading,
+                    ),
+                  if (leadingText != null) Text(leadingText),
                 ],
-              )
+              ),
+              Expanded(
+                child: Row(
+                  children: [
+                    if (trailing != null)
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: trailing,
+                      ) else const Spacer(),
+                    const Icon(AbiliaIcons.navigationNext),
+                  ] ,
+                ),
+              ),
             ],
           ),
         );
