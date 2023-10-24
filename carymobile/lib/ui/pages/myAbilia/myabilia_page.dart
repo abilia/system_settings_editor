@@ -61,17 +61,16 @@ class LastSyncText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final syncState = context.watch<SyncBloc>().state;
-    final lastSyncedTime = syncState.lastSynced;
-    final successFullSync = syncState is! SyncedFailed
-        ? Lt.of(context).successful
-        : Lt.of(context).failed;
+    final lastSyncedTime = context.watch<SyncBloc>().state.lastSynced;
     final lastSync = lastSyncedTime != null
         ? DateFormat.yMd().add_jm().format(lastSyncedTime)
         : '?';
-    return Text(
-      '${Lt.of(context).last_sync}\n$lastSync $successFullSync',
-      style: grey,
+    return GestureDetector(
+      onTap: () => context.read<SyncBloc>().add(const SyncAll()),
+      child: Text(
+        '${Lt.of(context).last_sync} $lastSync',
+        style: grey,
+      ),
     );
   }
 }
