@@ -170,6 +170,7 @@ class AuthenticationBlocProvider extends StatelessWidget {
       BaseUrlDb.baseUrlRecord,
       ...VoiceDb.storeOnLogoutRecords,
     };
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final removeKeys = prefs.getKeys().difference(records);
     for (final key in removeKeys) {

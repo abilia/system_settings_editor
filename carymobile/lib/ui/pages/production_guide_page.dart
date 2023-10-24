@@ -1,9 +1,14 @@
-import 'package:carymessenger/ui/widgets/buttons/android_settings_button.dart';
+import 'dart:async';
+
+import 'package:carymessenger/ui/widgets/version_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permissions/permission_cubit.dart';
 import 'package:text_to_speech/speech_settings_cubit.dart';
 import 'package:text_to_speech/voices_cubit.dart';
+
+const swedishVoiceName = 'Erik';
 
 class ProductionGuidePage extends StatelessWidget {
   const ProductionGuidePage({super.key});
@@ -21,10 +26,10 @@ class ProductionGuidePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const VersionText(),
+            const SizedBox(height: 8),
             const Expanded(child: Voices()),
             if (!batteryOptimizationGranted) const BatteryOptimizationButton(),
-            const SizedBox(height: 8),
-            const AndroidSettingsButton(),
             const SizedBox(height: 8),
           ],
         ),
@@ -61,38 +66,55 @@ class Voices extends StatelessWidget {
     final downloading = voicesState.downloading;
     final isDownloading = voicesState.downloading.isNotEmpty;
 
-    return ListView.builder(
-      itemCount: swedish.length,
-      itemBuilder: (context, index) {
-        final voice = swedish[index];
-        final isDownloadingVoice = downloading.contains(voice.name);
-        final voiceIsDownloaded = downloaded.contains(voice.name);
-        final isSelectedVoice = selectedVoice == voice.name;
-        return TextButton(
-          onPressed: isDownloading || voiceIsDownloaded
-              ? null
-              : () async => voicesCubit.downloadVoice(voice),
-          child: Row(
-            children: [
-              if (isDownloadingVoice)
-                const SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(),
-                )
-              else if (isSelectedVoice)
-                const Icon(Icons.done_all)
-              else if (voiceIsDownloaded)
-                const Icon(Icons.check)
-              else
-                const Icon(Icons.download),
-              const SizedBox(width: 8),
-              Text(
-                  '${voice.name} ${voice.lang}-${voice.countryCode} ${voice.file.sizeInMB} MB'),
-            ],
-          ),
+    return BlocListener<VoicesCubit, VoicesState>(
+      listenWhen: (oldState, newState) =>
+          oldState.available.isEmpty &&
+          newState.available.isNotEmpty &&
+          newState.available.map((v) => v.name).contains(swedishVoiceName),
+      listener: (oldState, newState) {
+        final erik = newState.available.firstWhereOrNull(
+          (v) => v.name == swedishVoiceName,
         );
+        if (erik != null) {
+          unawaited(voicesCubit.downloadVoice(erik));
+        }
       },
+      child: ListView.builder(
+        itemCount: swedish.length,
+        itemBuilder: (context, index) {
+          final voice = swedish[index];
+          final isDownloadingVoice = downloading.contains(voice.name);
+          final voiceIsDownloaded = downloaded.contains(voice.name);
+          final isSelectedVoice = selectedVoice == voice.name;
+          return TextButton(
+            onPressed: isDownloading
+                ? null
+                : voiceIsDownloaded
+                    ? () async =>
+                        voicesCubit.speechSettingsCubit.setVoice(voice.name)
+                    : () async => voicesCubit.downloadVoice(voice),
+            child: Row(
+              children: [
+                if (isDownloadingVoice)
+                  const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(),
+                  )
+                else if (isSelectedVoice)
+                  const Icon(Icons.done_all)
+                else if (voiceIsDownloaded)
+                  const Icon(Icons.check)
+                else
+                  const Icon(Icons.download),
+                const SizedBox(width: 8),
+                Text(
+                    '${voice.name} ${voice.lang}-${voice.countryCode} ${voice.file.sizeInMB} MB'),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -14,7 +14,11 @@ class ClockAndDate extends StatelessWidget {
         child: BlocBuilder<ClockCubit, DateTime>(
           builder: (context, time) => Tts.data(
             data: '${Lt.of(context).tts_the_time_is}: '
-                '${DateFormat.Hm().format(time)}. '
+                '${analogTimeString(
+              Lt.of(context),
+              Localizations.localeOf(context).languageCode,
+              time,
+            )}. '
                 '${DateFormat.EEEE().format(time)}, '
                 '${Lt.of(context).mid_morning}, '
                 '${DateFormat.yMMMMd().format(time)}',

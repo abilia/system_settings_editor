@@ -12,7 +12,7 @@ class FakeVoiceDb extends Fake implements VoiceDb {
   bool get speakEveryWord => false;
 
   @override
-  String get voice => 'erik';
+  String get voice => 'Erik';
 
   @override
   double get speechRate => 100;

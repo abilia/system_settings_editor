@@ -23,6 +23,11 @@ final caryLightTheme = ThemeData.from(
   ),
   inputDecorationTheme: inputDecorationTheme,
   iconTheme: const IconThemeData(size: 32),
+  dividerTheme: const DividerThemeData(
+    color: abiliaWhite120,
+    thickness: 1,
+    space: 64,
+  ),
 );
 
 ThemeData collapsed(ThemeData data) {
@@ -60,6 +65,71 @@ final greenActionCaryMobileButtonStyle =
       if (states.contains(MaterialState.disabled)) return null;
       return const RoundedRectangleBorder(
         side: BorderSide(width: 2, color: abiliaGreen120),
+        borderRadius: borderRadius,
+      );
+    },
+  ),
+);
+
+final whiteActionCaryMobileButtonStyle =
+    blackActionCaryMobileButtonStyle.copyWith(
+  foregroundColor: const MaterialStatePropertyAll(Colors.black),
+  textStyle: MaterialStatePropertyAll(
+      actionButtonTextStyle.copyWith(color: Colors.black)),
+  backgroundColor: MaterialStateProperty.resolveWith(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return abiliaWhite.withOpacity(.6);
+      }
+      if (states.contains(MaterialState.pressed)) {
+        return abiliaWhite110;
+      }
+      return abiliaWhite;
+    },
+  ),
+  shape: MaterialStateProperty.resolveWith(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return const RoundedRectangleBorder(
+          side: BorderSide(width: 2, color: abiliaWhite120),
+          borderRadius: borderRadius,
+        );
+      }
+      return const RoundedRectangleBorder(
+        side: BorderSide(width: 2, color: abiliaWhite140),
+        borderRadius: borderRadius,
+      );
+    },
+  ),
+);
+
+final redActionCaryMobileButtonStyle =
+    blackActionCaryMobileButtonStyle.copyWith(
+  foregroundColor: const MaterialStatePropertyAll(abiliaRed120),
+  textStyle: MaterialStateProperty.resolveWith((states) {
+    if (states.contains(MaterialState.disabled)) {
+      return actionButtonTextStyle.copyWith(color: abiliaRed40);
+    }
+    return actionButtonTextStyle.copyWith(color: abiliaRed120);
+  }),
+  backgroundColor: MaterialStateProperty.resolveWith(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.pressed)) {
+        return abiliaRed0;
+      }
+      return abiliaWhite;
+    },
+  ),
+  shape: MaterialStateProperty.resolveWith(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return const RoundedRectangleBorder(
+          side: BorderSide(width: 2, color: abiliaRed40),
+          borderRadius: borderRadius,
+        );
+      }
+      return const RoundedRectangleBorder(
+        side: BorderSide(width: 2, color: abiliaRed120),
         borderRadius: borderRadius,
       );
     },

@@ -1,29 +1,13 @@
-part of 'main_page.dart';
-
-class HiddenExtra extends StatelessWidget {
-  const HiddenExtra({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          const VersionText(),
-          FakeTime(),
-          const AndroidSettingsButton(),
-          const GooglePlayButton(),
-          const LogoutButton(),
-        ],
-      ),
-    );
-  }
-}
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
+import 'package:seagull_clock/seagull_clock.dart';
+import 'package:utils/date_time_extensions.dart';
 
 class FakeTime extends StatelessWidget {
-  FakeTime({super.key});
-  late final Ticker ticker = GetIt.I<Ticker>();
+  const FakeTime({super.key});
+
   final aYear = const Duration(days: 365);
 
   @override
@@ -39,10 +23,11 @@ class FakeTime extends StatelessWidget {
               context: context,
             );
             if (t != null) {
-              ticker.setFakeTime(now.withTime(t));
+              GetIt.I<Ticker>().setFakeTime(now.withTime(t));
             }
           },
         ),
+        const SizedBox(height: 8),
         FilledButton(
           child: Text(DateFormat.yMMMMd().format(now)),
           onPressed: () async {
@@ -53,22 +38,17 @@ class FakeTime extends StatelessWidget {
               context: context,
             );
             if (t != null) {
-              ticker.setFakeTime(t.withTime(TimeOfDay.fromDateTime(now)));
+              GetIt.I<Ticker>()
+                  .setFakeTime(t.withTime(TimeOfDay.fromDateTime(now)));
             }
           },
         ),
+        const SizedBox(height: 8),
         FilledButton(
-          onPressed: ticker.reset,
+          onPressed: GetIt.I<Ticker>().reset,
           child: const Text('Reset'),
         ),
-      ]
-          .map(
-            (w) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: w,
-            ),
-          )
-          .toList(),
+      ],
     );
   }
 }

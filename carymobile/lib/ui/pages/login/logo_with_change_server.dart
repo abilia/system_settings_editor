@@ -13,7 +13,7 @@ class LogoWithChangeServer extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Wrap(
             children: [
-              const Center(child: AndroidSettingsButton()),
+              const Center(child: SupportIdText()),
               const Center(child: VersionText()),
               ...backendEnvironments.entries.map(
                 (kvp) => Builder(

@@ -41,10 +41,23 @@ class Lt {
     'app_version': [],
     'back': [],
     'check_for_updates': [],
+    'clockFiveMinutesHalfPastTts': [],
+    'clockFiveMinutesPastTts': [],
+    'clockFiveMinutesToHalfPastTts': [],
+    'clockFiveMinutesToTts': [],
+    'clockHalfPastTts': [],
+    'clockQuarterPastTts': [],
+    'clockQuarterToTts': [],
+    'clockTenMinutesPastTts': [],
+    'clockTenMinutesToTts': [],
+    'clockTwentyMinutesPastTts': [],
+    'clockTwentyMinutesToTts': [],
     'close': [],
     'connect_to_myabilia': [],
+    'connected': [],
     'early_morning': [],
     'evening': [],
+    'failed': [],
     'hide': [],
     'internet': [],
     'last_sync': [],
@@ -55,6 +68,7 @@ class Lt {
     'mid_morning': [],
     'night': [],
     'no_license': [],
+    'not_connected': [],
     'ok': [],
     'password': [],
     'play': [],
@@ -62,6 +76,8 @@ class Lt {
     'settings': [],
     'show': [],
     'stop': [],
+    'successful': [],
+    'support_id': [],
     'today': [],
     'tts_the_time_is': [],
     'username_email': [],
@@ -139,6 +155,116 @@ class Lt {
     );
   }
 
+  /// `twenty five to %s`
+  String get clockFiveMinutesHalfPastTts {
+    return Intl.message(
+      'twenty five to %s',
+      name: 'clockFiveMinutesHalfPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `five past %s`
+  String get clockFiveMinutesPastTts {
+    return Intl.message(
+      'five past %s',
+      name: 'clockFiveMinutesPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `twenty five past %s`
+  String get clockFiveMinutesToHalfPastTts {
+    return Intl.message(
+      'twenty five past %s',
+      name: 'clockFiveMinutesToHalfPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `five to %s`
+  String get clockFiveMinutesToTts {
+    return Intl.message(
+      'five to %s',
+      name: 'clockFiveMinutesToTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Half past %s`
+  String get clockHalfPastTts {
+    return Intl.message(
+      'Half past %s',
+      name: 'clockHalfPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `quarter past %s`
+  String get clockQuarterPastTts {
+    return Intl.message(
+      'quarter past %s',
+      name: 'clockQuarterPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quarter to %s`
+  String get clockQuarterToTts {
+    return Intl.message(
+      'Quarter to %s',
+      name: 'clockQuarterToTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ten past %s`
+  String get clockTenMinutesPastTts {
+    return Intl.message(
+      'ten past %s',
+      name: 'clockTenMinutesPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ten to %s`
+  String get clockTenMinutesToTts {
+    return Intl.message(
+      'ten to %s',
+      name: 'clockTenMinutesToTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `twenty past %s`
+  String get clockTwentyMinutesPastTts {
+    return Intl.message(
+      'twenty past %s',
+      name: 'clockTwentyMinutesPastTts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `twenty to %s`
+  String get clockTwentyMinutesToTts {
+    return Intl.message(
+      'twenty to %s',
+      name: 'clockTwentyMinutesToTts',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Close`
   String get close {
     return Intl.message(
@@ -159,6 +285,16 @@ class Lt {
     );
   }
 
+  /// `Connected`
+  String get connected {
+    return Intl.message(
+      'Connected',
+      name: 'connected',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Early morning`
   String get early_morning {
     return Intl.message(
@@ -174,6 +310,16 @@ class Lt {
     return Intl.message(
       'Evening',
       name: 'evening',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed`
+  String get failed {
+    return Intl.message(
+      'Failed',
+      name: 'failed',
       desc: '',
       args: [],
     );
@@ -209,10 +355,10 @@ class Lt {
     );
   }
 
-  /// ``
+  /// `Your licence has expired.`
   String get license_expired {
     return Intl.message(
-      '',
+      'Your licence has expired.',
       name: 'license_expired',
       desc: '',
       args: [],
@@ -269,11 +415,21 @@ class Lt {
     );
   }
 
-  /// ``
+  /// `We could not find a licence for your account. Make sure that CARY Base is connected to myAbilia before logging in here with the same account.`
   String get no_license {
     return Intl.message(
-      '',
+      'We could not find a licence for your account. Make sure that CARY Base is connected to myAbilia before logging in here with the same account.',
       name: 'no_license',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not connected`
+  String get not_connected {
+    return Intl.message(
+      'Not connected',
+      name: 'not_connected',
       desc: '',
       args: [],
     );
@@ -344,6 +500,26 @@ class Lt {
     return Intl.message(
       'Stop',
       name: 'stop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Successful`
+  String get successful {
+    return Intl.message(
+      'Successful',
+      name: 'successful',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Support id`
+  String get support_id {
+    return Intl.message(
+      'Support id',
+      name: 'support_id',
       desc: '',
       args: [],
     );

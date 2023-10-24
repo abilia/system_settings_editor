@@ -31,22 +31,49 @@ class MessageLookup extends MessageLookupByLibrary {
         'back': MessageLookupByLibrary.simpleMessage('Back'),
         'check_for_updates':
             MessageLookupByLibrary.simpleMessage('Check for updates'),
+        'clockFiveMinutesHalfPastTts':
+            MessageLookupByLibrary.simpleMessage('twenty five to %s'),
+        'clockFiveMinutesPastTts':
+            MessageLookupByLibrary.simpleMessage('five past %s'),
+        'clockFiveMinutesToHalfPastTts':
+            MessageLookupByLibrary.simpleMessage('twenty five past %s'),
+        'clockFiveMinutesToTts':
+            MessageLookupByLibrary.simpleMessage('five to %s'),
+        'clockHalfPastTts':
+            MessageLookupByLibrary.simpleMessage('Half past %s'),
+        'clockQuarterPastTts':
+            MessageLookupByLibrary.simpleMessage('quarter past %s'),
+        'clockQuarterToTts':
+            MessageLookupByLibrary.simpleMessage('Quarter to %s'),
+        'clockTenMinutesPastTts':
+            MessageLookupByLibrary.simpleMessage('ten past %s'),
+        'clockTenMinutesToTts':
+            MessageLookupByLibrary.simpleMessage('ten to %s'),
+        'clockTwentyMinutesPastTts':
+            MessageLookupByLibrary.simpleMessage('twenty past %s'),
+        'clockTwentyMinutesToTts':
+            MessageLookupByLibrary.simpleMessage('twenty to %s'),
         'close': MessageLookupByLibrary.simpleMessage('Close'),
         'connect_to_myabilia':
             MessageLookupByLibrary.simpleMessage('Connect to myAbilia'),
+        'connected': MessageLookupByLibrary.simpleMessage('Connected'),
         'early_morning': MessageLookupByLibrary.simpleMessage('Early morning'),
         'evening': MessageLookupByLibrary.simpleMessage('Evening'),
+        'failed': MessageLookupByLibrary.simpleMessage('Failed'),
         'hide': MessageLookupByLibrary.simpleMessage('Hide'),
         'internet': MessageLookupByLibrary.simpleMessage('Internet'),
         'last_sync': MessageLookupByLibrary.simpleMessage('Last sync:'),
-        'license_expired': MessageLookupByLibrary.simpleMessage(''),
+        'license_expired':
+            MessageLookupByLibrary.simpleMessage('Your licence has expired.'),
         'log_in': MessageLookupByLibrary.simpleMessage('Log in'),
         'log_out': MessageLookupByLibrary.simpleMessage('Log out'),
         'login_hint': MessageLookupByLibrary.simpleMessage(
             'Make sure that CARY Base is connected to myAbilia. Log in here with the same account.'),
         'mid_morning': MessageLookupByLibrary.simpleMessage('Mid-morning'),
         'night': MessageLookupByLibrary.simpleMessage('Night'),
-        'no_license': MessageLookupByLibrary.simpleMessage(''),
+        'no_license': MessageLookupByLibrary.simpleMessage(
+            'We could not find a licence for your account. Make sure that CARY Base is connected to myAbilia before logging in here with the same account.'),
+        'not_connected': MessageLookupByLibrary.simpleMessage('Not connected'),
         'ok': MessageLookupByLibrary.simpleMessage('Ok'),
         'password': MessageLookupByLibrary.simpleMessage('Password'),
         'play': MessageLookupByLibrary.simpleMessage('Play'),
@@ -54,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
         'settings': MessageLookupByLibrary.simpleMessage('Settings'),
         'show': MessageLookupByLibrary.simpleMessage('Show'),
         'stop': MessageLookupByLibrary.simpleMessage('Stop'),
+        'successful': MessageLookupByLibrary.simpleMessage('Successful'),
+        'support_id': MessageLookupByLibrary.simpleMessage('Support id'),
         'today': MessageLookupByLibrary.simpleMessage('Today'),
         'tts_the_time_is': MessageLookupByLibrary.simpleMessage('The time is'),
         'username_email':

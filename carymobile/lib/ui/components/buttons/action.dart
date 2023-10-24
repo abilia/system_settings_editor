@@ -1,5 +1,4 @@
 import 'package:carymessenger/ui/themes/theme.dart';
-
 import 'package:flutter/material.dart';
 
 abstract class ActionButton extends FilledButton {
@@ -8,6 +7,7 @@ abstract class ActionButton extends FilledButton {
 
   ActionButton({
     required super.onPressed,
+    required super.onLongPress,
     required super.style,
     required this.leading,
     required this.text,
@@ -32,6 +32,7 @@ abstract class ActionButton extends FilledButton {
 class ActionButtonBlack extends ActionButton {
   ActionButtonBlack({
     required super.onPressed,
+    super.onLongPress,
     super.key,
     super.leading,
     super.text,
@@ -41,8 +42,29 @@ class ActionButtonBlack extends ActionButton {
 class ActionButtonGreen extends ActionButton {
   ActionButtonGreen({
     required super.onPressed,
+    super.onLongPress,
     super.leading,
     super.text,
     super.key,
   }) : super(style: greenActionCaryMobileButtonStyle);
+}
+
+class ActionButtonWhite extends ActionButton {
+  ActionButtonWhite({
+    required super.onPressed,
+    super.onLongPress,
+    super.leading,
+    super.text,
+    super.key,
+  }) : super(style: whiteActionCaryMobileButtonStyle);
+}
+
+class ActionButtonRed extends ActionButton {
+  ActionButtonRed({
+    required super.onPressed,
+    super.onLongPress,
+    super.leading,
+    super.text,
+    super.key,
+  }) : super(style: redActionCaryMobileButtonStyle);
 }
