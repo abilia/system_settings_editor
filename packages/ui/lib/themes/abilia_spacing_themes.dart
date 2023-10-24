@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:ui/src/numericals.dart';
+import 'package:ui/src/tokens/numericals.dart';
 
 class AbiliaSpacingThemes extends ThemeExtension<AbiliaSpacingThemes> {
+  final double spacing100;
+  final double spacing200;
   final double spacing300;
   final double spacing400;
   final double spacing600;
@@ -11,6 +13,8 @@ class AbiliaSpacingThemes extends ThemeExtension<AbiliaSpacingThemes> {
   final double spacing1000;
 
   const AbiliaSpacingThemes({
+    required this.spacing100,
+    required this.spacing200,
     required this.spacing300,
     required this.spacing400,
     required this.spacing600,
@@ -19,6 +23,8 @@ class AbiliaSpacingThemes extends ThemeExtension<AbiliaSpacingThemes> {
   });
 
   static const AbiliaSpacingThemes spacings = AbiliaSpacingThemes(
+    spacing100: numerical100,
+    spacing200: numerical200,
     spacing300: numerical300,
     spacing400: numerical400,
     spacing600: numerical600,
@@ -28,6 +34,8 @@ class AbiliaSpacingThemes extends ThemeExtension<AbiliaSpacingThemes> {
 
   @override
   AbiliaSpacingThemes copyWith({
+    double? spacing100,
+    double? spacing200,
     double? spacing300,
     double? spacing400,
     double? spacing600,
@@ -35,6 +43,8 @@ class AbiliaSpacingThemes extends ThemeExtension<AbiliaSpacingThemes> {
     double? spacing1000,
   }) {
     return AbiliaSpacingThemes(
+      spacing100: spacing100 ?? this.spacing100,
+      spacing200: spacing200 ?? this.spacing200,
       spacing300: spacing300 ?? this.spacing300,
       spacing400: spacing400 ?? this.spacing400,
       spacing600: spacing600 ?? this.spacing600,
@@ -47,6 +57,8 @@ class AbiliaSpacingThemes extends ThemeExtension<AbiliaSpacingThemes> {
   AbiliaSpacingThemes lerp(AbiliaSpacingThemes? other, double t) {
     if (other is! AbiliaSpacingThemes) return this;
     return AbiliaSpacingThemes(
+      spacing100: lerpDouble(spacing100, other.spacing100, t) ?? spacing100,
+      spacing200: lerpDouble(spacing200, other.spacing200, t) ?? spacing200,
       spacing300: lerpDouble(spacing300, other.spacing300, t) ?? spacing300,
       spacing400: lerpDouble(spacing400, other.spacing400, t) ?? spacing400,
       spacing600: lerpDouble(spacing600, other.spacing600, t) ?? spacing600,

@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/helper_box/helper_box_themes.dart';
+import 'package:ui/utils/sizes.dart';
+import 'package:ui/utils/states.dart';
 
-enum HelperBoxState {
-  caution,
-  info,
-  error,
-  success,
-}
-
-enum HelperBoxSize { medium, large }
+typedef HelperBoxSize = MediumLargeSize;
 
 class SeagullHelperBox extends StatelessWidget {
   final String text;
   final IconData? icon;
-  final HelperBoxState state;
+  final IconThemeData? iconThemeData;
+  final MessageState state;
   final HelperBoxSize size;
 
   const SeagullHelperBox({
@@ -22,6 +18,7 @@ class SeagullHelperBox extends StatelessWidget {
     required this.state,
     required this.size,
     this.icon,
+    this.iconThemeData,
     super.key,
   });
 
@@ -30,6 +27,8 @@ class SeagullHelperBox extends StatelessWidget {
     final color = _getColor(context);
     final helperBoxTheme = _getTheme(context);
     final iconAndTextBoxTheme = helperBoxTheme.iconAndTextBoxTheme;
+    final icon = this.icon;
+    final iconThemeData = this.iconThemeData ?? const IconThemeData();
     return DecoratedBox(
       decoration: ShapeDecoration(
         shape: iconAndTextBoxTheme.border,
@@ -41,9 +40,12 @@ class SeagullHelperBox extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (icon != null) ...[
-              Icon(
-                icon,
-                size: iconAndTextBoxTheme.iconSize,
+              IconTheme(
+                data: iconThemeData,
+                child: Icon(
+                  icon,
+                  size: iconAndTextBoxTheme.iconSize,
+                ),
               ),
               SizedBox(width: iconAndTextBoxTheme.iconSpacing),
             ],
@@ -62,13 +64,13 @@ class SeagullHelperBox extends StatelessWidget {
   Color _getColor(BuildContext context) {
     final colors = AbiliaTheme.of(context).colors;
     switch (state) {
-      case HelperBoxState.caution:
+      case MessageState.caution:
         return colors.yellow.shade100;
-      case HelperBoxState.info:
+      case MessageState.info:
         return colors.greyscale.shade100;
-      case HelperBoxState.error:
+      case MessageState.error:
         return colors.peach.shade100;
-      case HelperBoxState.success:
+      case MessageState.success:
         return colors.secondary.shade100;
     }
   }

@@ -11,13 +11,13 @@ class SeagullSpinnerTheme extends ThemeExtension<SeagullSpinnerTheme> {
     required this.thickness,
   });
 
-  static const small = SeagullSpinnerTheme(
+  static const medium = SeagullSpinnerTheme(
     size: numerical500,
     padding: numerical2px,
     thickness: numerical2px,
   );
 
-  static const medium = SeagullSpinnerTheme(
+  static const large = SeagullSpinnerTheme(
     size: numerical700,
     padding: numerical4px,
     thickness: numerical5px,

@@ -6,17 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/generated/l10n.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:ui/components/buttons/buttons.dart';
+import 'package:ui/components/combo_box.dart';
 import 'package:ui/themes/abilia_theme.dart';
+import 'package:ui/utils/states.dart';
 
 part 'logo_with_change_server.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({required this.unauthenticatedState, super.key});
+  const LoginPage({
+    required this.unauthenticatedState,
+    super.key,
+  });
 
   final Unauthenticated unauthenticatedState;
 
@@ -67,75 +72,63 @@ class LoginPage extends StatelessWidget {
         product: Product.handicalendar,
       ),
       child: Scaffold(
-        body: BlocListener<LoginCubit, LoginState>(
-          listener: (context, state) {
-            if (state is LoginFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(milliseconds: 500),
-                  content: Text(state.cause.name),
-                ),
-              );
-            }
-          },
-          child: BlocBuilder<LoginCubit, LoginState>(
-            builder: (context, state) => SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: spacings.spacing400,
-                  vertical: spacings.spacing600,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const LogoWithChangeServer(),
-                    SizedBox(height: spacings.spacing800),
-                    Text(
-                      'Welcome to Handi!',
-                      style: textStyles.primary525,
-                      textAlign: TextAlign.center,
+        body: BlocBuilder<LoginCubit, LoginState>(
+          builder: (context, state) => SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: spacings.spacing400,
+                vertical: spacings.spacing600,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const LogoWithChangeServer(),
+                  SizedBox(height: spacings.spacing800),
+                  Text(
+                    'Welcome to Handi!',
+                    style: textStyles.primary525,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: spacings.spacing800),
+                  Tooltip(
+                    message: 'Username',
+                    child: SeagullComboBox(
+                      label: 'Username',
+                      size: ComboBoxSize.medium,
+                      leadingIcon: Symbols.account_circle,
+                      textInputAction: TextInputAction.next,
+                      onChanged: context.read<LoginCubit>().usernameChanged,
+                      messageState:
+                          state is LoginFailure ? MessageState.error : null,
                     ),
-                    SizedBox(height: spacings.spacing800),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Username'),
-                        Tooltip(
-                          message: 'Username',
-                          child: TextField(
-                            onChanged:
-                                context.read<LoginCubit>().usernameChanged,
-                          ),
-                        ),
-                      ],
+                  ),
+                  SizedBox(height: spacings.spacing300),
+                  Tooltip(
+                    message: 'Password',
+                    child: SeagullComboBox(
+                      label: 'Password',
+                      size: ComboBoxSize.medium,
+                      leadingIcon: Symbols.key,
+                      trailingIcon: Symbols.visibility,
+                      obscureText: true,
+                      onChanged: context.read<LoginCubit>().passwordChanged,
+                      messageState:
+                          state is LoginFailure ? MessageState.error : null,
+                      message: state is LoginFailure ? state.cause.name : null,
                     ),
-                    SizedBox(height: spacings.spacing300),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Password'),
-                        Tooltip(
-                          message: 'Password',
-                          child: TextField(
-                            onChanged:
-                                context.read<LoginCubit>().passwordChanged,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: spacings.spacing600),
-                    SeagullActionButton(
-                      text: translate.signIn,
-                      type: ActionButtonType.primary,
-                      size: ButtonSize.large,
-                      isLoading: state is LoginLoading,
-                      leadingIcon: MdiIcons.login,
-                      onPressed: state.isFormValid
-                          ? context.read<LoginCubit>().loginButtonPressed
-                          : null,
-                    )
-                  ],
-                ),
+                  ),
+                  SizedBox(height: spacings.spacing600),
+                  SeagullActionButton(
+                    text: translate.signIn,
+                    type: ActionButtonType.primary,
+                    size: ButtonSize.large,
+                    isLoading: state is LoginLoading,
+                    leadingIcon: Symbols.login,
+                    onPressed: state.isFormValid
+                        ? context.read<LoginCubit>().loginButtonPressed
+                        : null,
+                  )
+                ],
               ),
             ),
           ),

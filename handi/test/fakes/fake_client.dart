@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:auth/models/all.dart';
 import 'package:http/http.dart';
 import 'package:seagull_fakes/all.dart';
@@ -12,7 +15,15 @@ const String token = 'token',
     supportUserName = 'supportUser';
 
 ListenableMockClient fakeClient = ListenableMockClient((request) async {
+  final incorrect =
+      'Basic ${base64Encode(utf8.encode('$username:$incorrectPassword'))}';
   final pathSegments = request.url.pathSegments.toSet();
+  final authHeaders = request.headers[HttpHeaders.authorizationHeader];
+  if (authHeaders == incorrect) {
+    return Response(
+        '{"timestamp":"${DateTime.now()}","status":401,"error":"Unauthorized","message":"Unable to authorize","path":"//api/v1/auth/client/me"}',
+        401);
+  }
   if (pathSegments.containsAll(<String>{'auth', 'client', 'me'})) {
     return Response('''
     {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ui/src/colors.dart';
-import 'package:ui/src/fonts.dart';
-import 'package:ui/src/numericals.dart';
-import 'package:ui/styles/borders.dart';
+import 'package:ui/src/styles/borders.dart';
+import 'package:ui/src/tokens/colors.dart';
+import 'package:ui/src/tokens/fonts.dart';
+import 'package:ui/src/tokens/numericals.dart';
 
 part 'action_button_styles.dart';
 part 'icon_button_styles.dart';
@@ -28,72 +28,72 @@ final _padding300 = MaterialStateProperty.all(
 final _noBorderShape200 = MaterialStateProperty.resolveWith(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.focused)) {
-      return border200.copyWith(side: _borderSidePeach400);
+      return roundedRectangleBorder200.copyWith(side: _borderSidePeach400);
     }
-    return border200;
+    return roundedRectangleBorder200;
   },
 );
 
 final _noBorderShape300 = MaterialStateProperty.resolveWith(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.focused)) {
-      return border300.copyWith(side: _borderSidePeach400);
+      return roundedRectangleBorder300.copyWith(side: _borderSidePeach400);
     }
-    return border300;
+    return roundedRectangleBorder300;
   },
 );
 
 final _noBorderShape500 = MaterialStateProperty.resolveWith(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.focused)) {
-      return border500.copyWith(side: _borderSidePeach400);
+      return roundedRectangleBorder500.copyWith(side: _borderSidePeach400);
     }
-    return border500;
+    return roundedRectangleBorder500;
   },
 );
 
 final _borderShape300 = MaterialStateProperty.resolveWith(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
-      return border300;
+      return roundedRectangleBorder300;
     }
     if (states.contains(MaterialState.pressed)) {
-      return border300;
+      return roundedRectangleBorder300;
     }
     if (states.contains(MaterialState.focused)) {
-      return border300.copyWith(side: _borderSidePeach400);
+      return roundedRectangleBorder300.copyWith(side: _borderSidePeach400);
     }
-    return border300.copyWith(side: _borderSideGrey300);
+    return roundedRectangleBorder300.copyWith(side: _borderSideGrey300);
   },
 );
 
 final _borderShape200 = MaterialStateProperty.resolveWith(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
-      return border200;
+      return roundedRectangleBorder200;
     }
     if (states.contains(MaterialState.pressed)) {
-      return border200;
+      return roundedRectangleBorder200;
     }
     if (states.contains(MaterialState.focused)) {
-      return border200.copyWith(side: _borderSidePeach400);
+      return roundedRectangleBorder200.copyWith(side: _borderSidePeach400);
     }
-    return border200.copyWith(side: _borderSideGrey300);
+    return roundedRectangleBorder200.copyWith(side: _borderSideGrey300);
   },
 );
 
 final _borderShape500 = MaterialStateProperty.resolveWith(
   (Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
-      return border500;
+      return roundedRectangleBorder500;
     }
     if (states.contains(MaterialState.pressed)) {
-      return border500;
+      return roundedRectangleBorder500;
     }
     if (states.contains(MaterialState.focused)) {
-      return border500.copyWith(side: _borderSidePeach400);
+      return roundedRectangleBorder500.copyWith(side: _borderSidePeach400);
     }
-    return border500.copyWith(side: _borderSideGrey300);
+    return roundedRectangleBorder500.copyWith(side: _borderSideGrey300);
   },
 );
 

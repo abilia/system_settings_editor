@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui/src/fonts.dart';
+import 'package:ui/src/tokens/fonts.dart';
 
 class AbiliaTextStyleThemes extends ThemeExtension<AbiliaTextStyleThemes> {
   final TextStyle primary125;

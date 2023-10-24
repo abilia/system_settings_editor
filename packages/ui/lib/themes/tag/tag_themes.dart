@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ui/src/fonts.dart';
-import 'package:ui/src/numericals.dart';
-import 'package:ui/styles/borders.dart';
+import 'package:ui/src/styles/borders.dart';
+import 'package:ui/src/tokens/fonts.dart';
+import 'package:ui/src/tokens/numericals.dart';
 import 'package:ui/themes/base_themes/icon_and_text_box_theme.dart';
 
 part 'tag_theme.dart';
@@ -16,8 +16,8 @@ class SeagullTagThemes extends ThemeExtension<SeagullTagThemes> {
   });
 
   static final SeagullTagThemes tags = SeagullTagThemes(
-    size600: SeagullTagTheme.primary600,
-    size700: SeagullTagTheme.primary700,
+    size600: SeagullTagTheme.size600,
+    size700: SeagullTagTheme.size700,
   );
 
   @override
