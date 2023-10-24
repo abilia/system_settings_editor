@@ -25,7 +25,27 @@ class MessageLookup extends MessageLookupByLibrary {
       _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
+        'connectToInternet': MessageLookupByLibrary.simpleMessage(
+            'Anslut till internet för att fortsätta.'),
+        'lincenseExpired': MessageLookupByLibrary.simpleMessage(
+            'Din licens har upphört, vänligen kontakta support och förläng licensen.'),
         'logOut': MessageLookupByLibrary.simpleMessage('Logga ut'),
-        'signIn': MessageLookupByLibrary.simpleMessage('Logga in')
+        'noHandiLicence': MessageLookupByLibrary.simpleMessage(
+            'Du behöver en Handi licens för att kunna använda appen.'),
+        'password': MessageLookupByLibrary.simpleMessage('Lösenord'),
+        'signIn': MessageLookupByLibrary.simpleMessage('Logga in'),
+        'somethingWentWrong': MessageLookupByLibrary.simpleMessage(
+            'Något gick fel på vår sida, vänligen försök igen senare.'),
+        'sync': MessageLookupByLibrary.simpleMessage('Synkronisera'),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'För många försök. Vänligen vänta en stund innan du försöker igen.'),
+        'unsupportedUserType': MessageLookupByLibrary.simpleMessage(
+            'Du behöver ett myAbilia konto med typen \"Användare\" för att kunna använda Handi appen.'),
+        'userNameOrEmail': MessageLookupByLibrary.simpleMessage(
+            'Användarnamn eller e-postadress'),
+        'verifyCredentials': MessageLookupByLibrary.simpleMessage(
+            'Användarnamn eller lösenord stämmer inte överens. Verifiera dina uppgifter och försök igen'),
+        'welcomeToHandi':
+            MessageLookupByLibrary.simpleMessage('Välkommen till Handi!')
       };
 }

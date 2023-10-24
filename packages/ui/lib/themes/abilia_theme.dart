@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ui/themes/abilia_color_themes.dart';
 import 'package:ui/themes/abilia_spacing_themes.dart';
 import 'package:ui/themes/abilia_text_style_themes.dart';
 import 'package:ui/themes/buttons/action_button/action_button_themes.dart';
 import 'package:ui/themes/buttons/icon_button/icon_button_themes.dart';
+import 'package:ui/themes/colors/abilia_color_themes.dart';
 import 'package:ui/themes/combo_box/combo_box_themes.dart';
 import 'package:ui/themes/helper_box/helper_box_themes.dart';
 import 'package:ui/themes/spinner/spinner_themes.dart';
@@ -45,6 +45,9 @@ class AbiliaTheme extends ThemeExtension<AbiliaTheme> {
       useMaterial3: true,
       visualDensity: VisualDensity.standard,
       extensions: [abiliaTheme],
+      iconTheme: const IconThemeData(
+        weight: 1000,
+      ),
     );
   }
 

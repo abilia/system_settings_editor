@@ -70,7 +70,13 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                       return 'Success';
                     },
                   ),
-                  message: context.knobs.string(
+                  helperBoxIcon: context.knobs.boolean(
+                    label: 'Show helper box',
+                    initialValue: false,
+                  )
+                      ? Symbols.info
+                      : null,
+                  helperBoxMessage: context.knobs.string(
                     label: 'Message',
                   ),
                 ),

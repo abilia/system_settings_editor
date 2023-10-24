@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/helper_box.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/themes/combo_box/combo_box_themes.dart';
@@ -11,17 +10,21 @@ typedef ComboBoxSize = MediumLargeSize;
 class SeagullComboBox extends StatefulWidget {
   final String? hintText;
   final String? label;
-  final String? message;
+  final String? helperBoxMessage;
+  final MessageState? messageState;
+  final IconData? helperBoxIcon;
   final IconData? leadingIcon;
   final IconData? trailingIcon;
   final bool obscureText;
   final bool enabled;
+  final int? maxLength;
   final TextInputAction? textInputAction;
   final Function(String)? onChanged;
   final TextEditingController? controller;
-  final MessageState? messageState;
   final ComboBoxSize size;
   final VoidCallback? onTrailingIconOnTap;
+  final VoidCallback? onFocused;
+  final Function(String)? onSubmitted;
 
   const SeagullComboBox({
     required this.size,
@@ -29,14 +32,18 @@ class SeagullComboBox extends StatefulWidget {
     this.hintText,
     this.onChanged,
     this.label,
-    this.message,
+    this.helperBoxMessage,
+    this.maxLength,
+    this.messageState,
+    this.helperBoxIcon,
     this.leadingIcon,
     this.trailingIcon,
     this.textInputAction,
+    this.onTrailingIconOnTap,
+    this.onFocused,
+    this.onSubmitted,
     this.enabled = true,
     this.obscureText = false,
-    this.messageState,
-    this.onTrailingIconOnTap,
     super.key,
   });
 
@@ -51,7 +58,12 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
 
   @override
   void initState() {
-    focusNode.addListener(() => setState(() {}));
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        widget.onFocused?.call();
+      }
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -61,14 +73,13 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
     final spacings = abiliaTheme.spacings;
     final comboBoxTheme = _getTheme(context);
     final helperBoxIconThemeData = _getHelperBoxIconThemeData(comboBoxTheme);
-    final helperBoxIcon = _getHelperBoxIcon();
     final stateInputBorder = _getStateInputBorder(comboBoxTheme);
     final inputDecorationTheme = comboBoxTheme.inputDecorationTheme;
     final label = widget.label;
     final messageState = widget.messageState;
-    final showHelperBox = widget.message != null &&
-        (messageState == MessageState.error ||
-            messageState == MessageState.success);
+    final showHelperBox = widget.helperBoxMessage != null &&
+        messageState != null &&
+        widget.helperBoxIcon != null;
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -88,63 +99,67 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             boxShadow: focusNode.hasFocus ? [comboBoxTheme.boxShadow] : [],
           ),
           duration: const Duration(milliseconds: 150),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: widget.hintText,
-              enabled: widget.enabled,
-              hintStyle: inputDecorationTheme.hintStyle,
-              prefixIcon: widget.leadingIcon != null
-                  ? Padding(
-                      padding: EdgeInsets.only(
-                        left: comboBoxTheme.padding.left,
-                        right: spacings.spacing200,
-                      ),
-                      child: Icon(
-                        widget.leadingIcon,
-                        size: comboBoxTheme.iconSize,
-                        color: abiliaTheme.colors.greyscale.shade900,
-                      ),
-                    )
-                  : null,
-              suffixIcon: widget.trailingIcon != null
-                  ? Padding(
-                      padding: EdgeInsets.only(
-                        right: comboBoxTheme.padding.right,
-                        left: spacings.spacing200,
-                      ),
-                      child: GestureDetector(
-                        onTap: widget.onTrailingIconOnTap,
-                        child: Icon(
-                          widget.trailingIcon,
-                          size: comboBoxTheme.iconSize,
-                          color: abiliaTheme.colors.greyscale.shade900,
+          child: IconTheme(
+            data: comboBoxTheme.iconThemeData,
+            child: TextField(
+              textInputAction: widget.textInputAction,
+              style: comboBoxTheme.textStyle,
+              onChanged: widget.onChanged,
+              focusNode: focusNode,
+              controller: widget.controller,
+              obscureText: widget.obscureText,
+              onSubmitted: widget.onSubmitted,
+              maxLength: widget.maxLength,
+              decoration: InputDecoration(
+                hintText: widget.hintText,
+                enabled: widget.enabled,
+                counterText: '',
+                hintStyle: inputDecorationTheme.hintStyle,
+                prefixIcon: widget.leadingIcon != null
+                    ? Padding(
+                        padding: EdgeInsets.only(
+                          left: comboBoxTheme.padding.left,
+                          right: spacings.spacing200,
                         ),
-                      ),
-                    )
-                  : null,
-              enabledBorder:
-                  stateInputBorder ?? inputDecorationTheme.enabledBorder,
-              focusedBorder:
-                  stateInputBorder ?? inputDecorationTheme.focusedBorder,
-              focusedErrorBorder:
-                  stateInputBorder ?? inputDecorationTheme.focusedErrorBorder,
-            ).applyDefaults(inputDecorationTheme),
-            textInputAction: widget.textInputAction,
-            style: comboBoxTheme.textStyle,
-            onChanged: widget.onChanged,
-            focusNode: focusNode,
-            controller: widget.controller,
-            obscureText: widget.obscureText,
+                        child: Icon(
+                          widget.leadingIcon,
+                          size: comboBoxTheme.iconThemeData.size,
+                        ),
+                      )
+                    : null,
+                suffixIcon: widget.trailingIcon != null
+                    ? Padding(
+                        padding: EdgeInsets.only(
+                          right: comboBoxTheme.padding.right,
+                          left: spacings.spacing200,
+                        ),
+                        child: GestureDetector(
+                          onTap: widget.onTrailingIconOnTap,
+                          child: Icon(
+                            widget.trailingIcon,
+                            size: comboBoxTheme.iconThemeData.size,
+                          ),
+                        ),
+                      )
+                    : null,
+                enabledBorder:
+                    stateInputBorder ?? inputDecorationTheme.enabledBorder,
+                focusedBorder:
+                    stateInputBorder ?? inputDecorationTheme.focusedBorder,
+                focusedErrorBorder:
+                    stateInputBorder ?? inputDecorationTheme.focusedErrorBorder,
+              ).applyDefaults(inputDecorationTheme),
+            ),
           ),
         ),
         SizedBox(height: spacings.spacing300),
         if (showHelperBox)
           SeagullHelperBox(
             iconThemeData: helperBoxIconThemeData,
-            icon: helperBoxIcon,
-            text: widget.message ?? '',
+            icon: widget.helperBoxIcon,
+            text: widget.helperBoxMessage ?? '',
             size: widget.size,
-            state: messageState ?? MessageState.info,
+            state: messageState,
           ),
       ],
     );
@@ -156,17 +171,6 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
       return comboBoxTheme.helperBoxIconThemeDataSuccess;
     }
     return null;
-  }
-
-  IconData? _getHelperBoxIcon() {
-    switch (widget.messageState) {
-      case MessageState.error:
-        return Symbols.error;
-      case MessageState.success:
-        return Symbols.check_circle;
-      default:
-        return null;
-    }
   }
 
   OutlineInputBorder? _getStateInputBorder(SeagullComboBoxTheme comboBoxTheme) {

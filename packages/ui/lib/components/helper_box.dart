@@ -28,7 +28,7 @@ class SeagullHelperBox extends StatelessWidget {
     final helperBoxTheme = _getTheme(context);
     final iconAndTextBoxTheme = helperBoxTheme.iconAndTextBoxTheme;
     final icon = this.icon;
-    final iconThemeData = this.iconThemeData ?? const IconThemeData();
+    final iconThemeData = this.iconThemeData ?? Theme.of(context).iconTheme;
     return DecoratedBox(
       decoration: ShapeDecoration(
         shape: iconAndTextBoxTheme.border,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/src/tokens/colors.dart';
+import 'package:ui/themes/colors/surface_color_theme.dart';
 
 class AbiliaColorThemes extends ThemeExtension<AbiliaColorThemes> {
   final AbiliaMaterialColor primary;
@@ -7,6 +8,7 @@ class AbiliaColorThemes extends ThemeExtension<AbiliaColorThemes> {
   final AbiliaMaterialColor yellow;
   final AbiliaMaterialColor peach;
   final AbiliaMaterialColor greyscale;
+  final SurfaceColorTheme surface;
 
   const AbiliaColorThemes({
     required this.primary,
@@ -14,14 +16,16 @@ class AbiliaColorThemes extends ThemeExtension<AbiliaColorThemes> {
     required this.yellow,
     required this.peach,
     required this.greyscale,
+    required this.surface,
   });
 
-  static const AbiliaColorThemes colors = AbiliaColorThemes(
+  static final AbiliaColorThemes colors = AbiliaColorThemes(
     primary: AbiliaColors.primary,
     secondary: AbiliaColors.secondary,
     yellow: AbiliaColors.yellow,
     peach: AbiliaColors.peach,
     greyscale: AbiliaColors.greyscale,
+    surface: SurfaceColorTheme.colors,
   );
 
   @override
@@ -31,6 +35,7 @@ class AbiliaColorThemes extends ThemeExtension<AbiliaColorThemes> {
     AbiliaMaterialColor? yellow,
     AbiliaMaterialColor? peach,
     AbiliaMaterialColor? greyscale,
+    SurfaceColorTheme? surface,
   }) {
     return AbiliaColorThemes(
       primary: primary ?? this.primary,
@@ -38,6 +43,7 @@ class AbiliaColorThemes extends ThemeExtension<AbiliaColorThemes> {
       yellow: yellow ?? this.yellow,
       peach: peach ?? this.peach,
       greyscale: greyscale ?? this.greyscale,
+      surface: surface ?? this.surface,
     );
   }
 
@@ -50,6 +56,7 @@ class AbiliaColorThemes extends ThemeExtension<AbiliaColorThemes> {
       yellow: other.yellow,
       peach: other.peach,
       greyscale: other.greyscale,
+      surface: surface.lerp(other.surface, t),
     );
   }
 }

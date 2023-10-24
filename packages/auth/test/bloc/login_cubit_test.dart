@@ -150,11 +150,37 @@ void main() {
       await expected;
     });
 
+    test('Toggle obscure password toggles obscure password back and forth',
+        () async {
+      final initial = LoginState.initial();
+      final obscurePasswordTrue = initial.copyWith(obscurePassword: true);
+      final obscurePasswordFalse = initial.copyWith(obscurePassword: false);
+
+      expect(loginCubit.state, initial);
+
+      final expected = expectLater(
+        loginCubit.stream,
+        emitsInOrder([
+          obscurePasswordFalse,
+          obscurePasswordTrue,
+          obscurePasswordFalse,
+        ]),
+      );
+
+      loginCubit
+        ..toggleObscurePassword()
+        ..toggleObscurePassword()
+        ..toggleObscurePassword();
+
+      await expected;
+    });
+
     test('LoginButtonPressed twice still yeilds LoginFailure twice on password',
         () async {
       const username = 'username';
 
-      const s1 = LoginState(username: username, password: '');
+      const s1 =
+          LoginState(username: username, password: '', obscurePassword: true);
       final l1 = s1.loading();
       final e1 = s1.failure(cause: LoginFailureCause.noPassword);
 
@@ -192,9 +218,11 @@ void main() {
       await expectLater(
         loginCubit.stream,
         emitsInOrder([
-          const LoginState(username: 'username', password: 'password')
-              .loading()
-              .failure(cause: LoginFailureCause.notEmptyDatabase),
+          const LoginState(
+            username: 'username',
+            password: 'password',
+            obscurePassword: true,
+          ).loading().failure(cause: LoginFailureCause.notEmptyDatabase),
         ]),
       );
     });
@@ -226,9 +254,11 @@ void main() {
       await expectLater(
         loginCubit.stream,
         emitsInOrder([
-          const LoginState(username: 'username', password: 'password')
-              .loading()
-              .failure(cause: LoginFailureCause.tooManyAttempts),
+          const LoginState(
+            username: 'username',
+            password: 'password',
+            obscurePassword: true,
+          ).loading().failure(cause: LoginFailureCause.tooManyAttempts),
         ]),
       );
     });
@@ -399,9 +429,11 @@ void main() {
       final expected = expectLater(
         loginCubit.stream,
         emitsThrough(
-          const LoginState(username: username, password: password)
-              .loading()
-              .failure(cause: LoginFailureCause.noLicense),
+          const LoginState(
+            username: username,
+            password: password,
+            obscurePassword: true,
+          ).loading().failure(cause: LoginFailureCause.noLicense),
         ),
       );
 
@@ -444,9 +476,11 @@ void main() {
       final expected = expectLater(
         loginCubit.stream,
         emitsThrough(
-          const LoginState(username: username, password: password)
-              .loading()
-              .failure(cause: LoginFailureCause.noLicense),
+          const LoginState(
+            username: username,
+            password: password,
+            obscurePassword: true,
+          ).loading().failure(cause: LoginFailureCause.noLicense),
         ),
       );
 
