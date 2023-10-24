@@ -44,8 +44,10 @@ void main() {
       isNull,
     );
     await tester.enterText(
-        find.byTooltip('Username'), FakeListenableClient.username);
-    await tester.enterText(find.byTooltip('Password'), 'pword');
+      find.byTooltip(translate.userNameOrEmail),
+      FakeListenableClient.username,
+    );
+    await tester.enterText(find.byTooltip(translate.password), 'pword');
     await tester.pumpAndSettle();
     expect(
       tester.widget<SeagullActionButton>(loginButtonFinder).onPressed,
@@ -68,8 +70,8 @@ void main() {
       tester.widget<SeagullActionButton>(loginButtonFinder).onPressed,
       isNull,
     );
-    await tester.enterText(
-        find.byTooltip('Username'), FakeListenableClient.username);
+    await tester.enterText(find.byTooltip(translate.userNameOrEmail),
+        FakeListenableClient.username);
     await tester.pumpAndSettle();
     expect(
       tester.widget<SeagullActionButton>(loginButtonFinder).onPressed,
@@ -88,9 +90,13 @@ void main() {
       translate.signIn,
     );
     await tester.enterText(
-        find.byTooltip('Username'), FakeListenableClient.username);
+      find.byTooltip(translate.userNameOrEmail),
+      FakeListenableClient.username,
+    );
     await tester.enterText(
-        find.byTooltip('Password'), FakeListenableClient.incorrectPassword);
+      find.byTooltip(translate.password),
+      FakeListenableClient.incorrectPassword,
+    );
     await tester.pumpAndSettle();
     await tester.tap(loginButtonFinder);
     await tester.pumpAndSettle();
