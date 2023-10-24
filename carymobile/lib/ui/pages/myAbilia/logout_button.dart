@@ -8,6 +8,7 @@ class LogoutButton extends StatelessWidget {
     return ActionButtonRed(
       onPressed: () =>
           context.read<AuthenticationBloc>().add(const LoggedOut()),
+      leading: const Icon(AbiliaIcons.openDoor),
       text: Lt.of(context).log_out,
     );
   }
