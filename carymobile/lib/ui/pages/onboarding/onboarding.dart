@@ -24,6 +24,7 @@ class Onboarding extends StatelessWidget {
       },
       child: PageView(
         controller: pageController,
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           const ConnectToWifiPage(),
           LoginPage(unauthenticatedState: unauthenticatedState),
