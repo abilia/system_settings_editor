@@ -41,6 +41,8 @@ abstract class TtsHandler {
   Future<dynamic> setSpeechRate(double speechRate);
 
   Future<List<Object?>> get availableVoices;
+
+  Future<bool> get isSpeaking;
 }
 
 class AcapelaTtsHandler extends AcapelaTts implements TtsHandler {
@@ -75,33 +77,48 @@ class AcapelaTtsHandler extends AcapelaTts implements TtsHandler {
 class FlutterTtsHandler extends FlutterTts implements TtsHandler {
   static final Logger _log = Logger((FlutterTts).toString());
 
+  bool _speaking = false;
   static Future<FlutterTtsHandler> implementation() async {
     final tts = FlutterTtsHandler();
 
     if (Platform.isIOS) {
-      await tts
-          .setIosAudioCategory(IosTextToSpeechAudioCategory.playAndRecord, [
-        IosTextToSpeechAudioCategoryOptions.allowBluetooth,
-        IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
-        IosTextToSpeechAudioCategoryOptions.mixWithOthers,
-        IosTextToSpeechAudioCategoryOptions.defaultToSpeaker
-      ]);
+      await tts.setIosAudioCategory(
+        IosTextToSpeechAudioCategory.playAndRecord,
+        [
+          IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+          IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
+          IosTextToSpeechAudioCategoryOptions.mixWithOthers,
+          IosTextToSpeechAudioCategoryOptions.defaultToSpeaker
+        ],
+      );
     }
 
     await tts.awaitSpeakCompletion(true);
 
     tts
-      ..setStartHandler(() => _log.finest('start'))
-      ..setCompletionHandler(() => _log.finest('complete'))
+      ..setStartHandler(() {
+        tts._speaking = true;
+        _log.finest('start');
+      })
+      ..setCompletionHandler(() {
+        tts._speaking = false;
+        _log.finest('complete');
+      })
       ..setProgressHandler(
           (String text, int startOffset, int endOffset, String word) => _log
             ..finest(text)
             ..finest('^'.padLeft(startOffset) + word))
-      ..setErrorHandler((msg) => _log.warning('error: $msg'));
+      ..setErrorHandler((msg) {
+        tts._speaking = false;
+        _log.warning('error: $msg');
+      });
 
     return tts;
   }
 
   @override
   Future<List<Object?>> get availableVoices => Future.value(List.empty());
+
+  @override
+  Future<bool> get isSpeaking async => _speaking;
 }
