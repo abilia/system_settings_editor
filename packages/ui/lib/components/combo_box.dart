@@ -23,7 +23,6 @@ class SeagullComboBox extends StatefulWidget {
   final TextEditingController? controller;
   final ComboBoxSize size;
   final VoidCallback? onTrailingIconOnTap;
-  final VoidCallback? onFocused;
   final Function(String)? onSubmitted;
 
   const SeagullComboBox({
@@ -40,7 +39,6 @@ class SeagullComboBox extends StatefulWidget {
     this.trailingIcon,
     this.textInputAction,
     this.onTrailingIconOnTap,
-    this.onFocused,
     this.onSubmitted,
     this.enabled = true,
     this.obscureText = false,
@@ -58,12 +56,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
 
   @override
   void initState() {
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        widget.onFocused?.call();
-      }
-      setState(() {});
-    });
+    focusNode.addListener(() => setState(() {}));
     super.initState();
   }
 
@@ -77,9 +70,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
     final inputDecorationTheme = comboBoxTheme.inputDecorationTheme;
     final label = widget.label;
     final messageState = widget.messageState;
-    final showHelperBox = widget.helperBoxMessage != null &&
-        messageState != null &&
-        widget.helperBoxIcon != null;
+    final helperBoxMessage = widget.helperBoxMessage;
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -152,8 +143,8 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             ),
           ),
         ),
-        SizedBox(height: spacings.spacing300),
-        if (showHelperBox)
+        if (helperBoxMessage != null && messageState != null) ...[
+          SizedBox(height: spacings.spacing300),
           SeagullHelperBox(
             iconThemeData: helperBoxIconThemeData,
             icon: widget.helperBoxIcon,
@@ -161,6 +152,7 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
             size: widget.size,
             state: messageState,
           ),
+        ]
       ],
     );
   }
