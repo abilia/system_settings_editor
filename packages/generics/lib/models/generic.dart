@@ -32,7 +32,7 @@ class Generic<T extends GenericData> extends DataModel {
     );
   }
 
-  Generic<T> copyWithNewData({required T newData}) => Generic._(
+  Generic copyWithNewData({required newData}) => Generic._(
         id: id,
         type: type,
         data: newData,
