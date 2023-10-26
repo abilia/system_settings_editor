@@ -45,13 +45,13 @@ class GeneralCalendarSettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: clockType.index,
           identifier: settingClockTypeKey,
         ),
         ...timepillar.memoplannerSettingData,
         ...dayParts.memoplannerSettingData,
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: dayColor.index,
           identifier: calendarDayColorKey,
         ),

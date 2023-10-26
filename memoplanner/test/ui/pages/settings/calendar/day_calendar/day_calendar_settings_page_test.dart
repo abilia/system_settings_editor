@@ -141,32 +141,32 @@ void main() {
           'BUG SGC-1683 - Header shown in menu page even when turned off',
           (tester) async {
         generics = [
-          Generic.createNew<GenericSettingData>(
-            data: GenericSettingData.fromData(
+          Generic.createNew(
+            data: MemoplannerSettingData(
               data: false,
               identifier: DayAppBarSettings.dayCaptionShowDayButtonsKey,
             ),
           ),
-          Generic.createNew<GenericSettingData>(
-            data: GenericSettingData.fromData(
+          Generic.createNew(
+            data: MemoplannerSettingData(
               data: false,
               identifier: DayAppBarSettings.activityDisplayWeekdayKey,
             ),
           ),
-          Generic.createNew<GenericSettingData>(
-            data: GenericSettingData.fromData(
+          Generic.createNew(
+            data: MemoplannerSettingData(
               data: false,
               identifier: DayAppBarSettings.activityDisplayDayPeriodKey,
             ),
           ),
-          Generic.createNew<GenericSettingData>(
-            data: GenericSettingData.fromData(
+          Generic.createNew(
+            data: MemoplannerSettingData(
               data: false,
               identifier: DayAppBarSettings.activityDisplayDateKey,
             ),
           ),
-          Generic.createNew<GenericSettingData>(
-            data: GenericSettingData.fromData(
+          Generic.createNew(
+            data: MemoplannerSettingData(
               data: false,
               identifier: DayAppBarSettings.activityDisplayClockKey,
             ),

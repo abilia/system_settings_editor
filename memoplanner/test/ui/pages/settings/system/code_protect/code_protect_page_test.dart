@@ -193,8 +193,8 @@ void main() {
     testWidgets('settings is protected', (tester) async {
       // Arrange
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: CodeProtectSettings.protectSettingsKey,
               ),
@@ -211,14 +211,14 @@ void main() {
     testWidgets('hidden settings is protected', (tester) async {
       // Arrange
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: CodeProtectSettings.protectSettingsKey,
               ),
             ),
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: MenuSettings.showSettingsKey,
               ),
@@ -241,8 +241,8 @@ void main() {
     testWidgets('android settings is protected', (tester) async {
       // Arrange
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: CodeProtectSettings.protectAndroidSettingsKey,
               ),
@@ -263,14 +263,14 @@ void main() {
         (tester) async {
       // Assert
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: CodeProtectSettings.protectCodeProtectKey,
               ),
             ),
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: '1234',
                 identifier: CodeProtectSettings.codeKey,
               ),

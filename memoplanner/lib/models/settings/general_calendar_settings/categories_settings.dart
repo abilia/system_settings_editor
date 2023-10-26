@@ -70,27 +70,27 @@ class CategoriesSettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: show,
           identifier: calendarActivityTypeShowTypesKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: colors,
           identifier: calendarActivityTypeShowColorKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: left.name,
           identifier: calendarActivityTypeLeftKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: right.name,
           identifier: calendarActivityTypeRightKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: left.image.id,
           identifier: calendarActivityTypeLeftImageKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: right.image.id,
           identifier: calendarActivityTypeRightImageKey,
         ),

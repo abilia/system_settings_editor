@@ -101,6 +101,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       genericDb: GenericDb(database),
       userId: user.id,
       noSyncSettings: MemoplannerSettings.noSyncSettings,
+      type: MemoplannerSettingData.genericType,
     );
     await genericRepository.fetchIntoDatabase();
     final generics = await genericRepository.getAll();

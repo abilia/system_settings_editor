@@ -3,6 +3,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:memoplanner/config.dart';
 import 'package:memoplanner/models/all.dart';
+import 'package:memoplanner/utils/all.dart';
 
 class MemoplannerSettings extends Equatable {
   static const Set<String> noSyncSettings =
@@ -92,17 +93,12 @@ class MemoplannerSettingsFailed extends MemoplannerSettings {
   const MemoplannerSettingsFailed() : super();
 }
 
-extension Parsing on Map<String, GenericSettingData> {
-  T parse<T>(String settingName, T defaultValue) {
-    try {
-      return this[GenericData.uniqueId(
-                  GenericType.memoPlannerSettings, settingName)]
-              ?.data ??
-          defaultValue;
-    } catch (e) {
-      return defaultValue;
-    }
-  }
+extension MemoSettingsParsing on Map<String, GenericSettingData> {
+  T parse<T>(String settingName, T defaultValue) => parseType(
+        settingName,
+        MemoplannerSettingData.genericType,
+        defaultValue,
+      );
 
   bool getBool(
     String settingName, {

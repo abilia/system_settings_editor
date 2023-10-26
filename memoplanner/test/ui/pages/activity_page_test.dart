@@ -1365,7 +1365,12 @@ void main() {
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            genericSetting(false, ActivityViewSettings.displayDeleteButtonKey)
+            Generic.createNew(
+              data: MemoplannerSettingData(
+                data: false,
+                identifier: ActivityViewSettings.displayDeleteButtonKey,
+              ),
+            ),
           ],
         ),
       );
@@ -1381,9 +1386,24 @@ void main() {
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            genericSetting(false, ActivityViewSettings.displayDeleteButtonKey),
-            genericSetting(false, ActivityViewSettings.displayAlarmButtonKey),
-            genericSetting(false, ActivityViewSettings.displayEditButtonKey),
+            Generic.createNew(
+              data: MemoplannerSettingData(
+                data: false,
+                identifier: ActivityViewSettings.displayDeleteButtonKey,
+              ),
+            ),
+            Generic.createNew(
+              data: MemoplannerSettingData(
+                data: false,
+                identifier: ActivityViewSettings.displayAlarmButtonKey,
+              ),
+            ),
+            Generic.createNew(
+              data: MemoplannerSettingData(
+                data: false,
+                identifier: ActivityViewSettings.displayEditButtonKey,
+              ),
+            ),
           ],
         ),
       );
@@ -1399,7 +1419,12 @@ void main() {
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           <Generic>[
-            genericSetting(false, ActivityViewSettings.displayQuarterHourKey),
+            Generic.createNew(
+              data: MemoplannerSettingData(
+                data: false,
+                identifier: ActivityViewSettings.displayQuarterHourKey,
+              ),
+            ),
           ],
         ),
       );

@@ -83,22 +83,20 @@ class GeneralAddActivitySettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
             data: allowPassedStartTime, identifier: allowPassedStartTimeKey),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
             data: addRecurringActivity, identifier: addRecurringActivityKey),
-        GenericSettingData.fromData(
-            data: showEndTime, identifier: showEndTimeKey),
-        GenericSettingData.fromData(data: showAlarm, identifier: showAlarmKey),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(data: showEndTime, identifier: showEndTimeKey),
+        MemoplannerSettingData(data: showAlarm, identifier: showAlarmKey),
+        MemoplannerSettingData(
             data: showVibrationAlarm, identifier: showVibrationAlarmKey),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
             data: showSilentAlarm, identifier: showSilentAlarmKey),
-        GenericSettingData.fromData(
-            data: showNoAlarm, identifier: showNoAlarmKey),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(data: showNoAlarm, identifier: showNoAlarmKey),
+        MemoplannerSettingData(
             data: showAlarmOnlyAtStart, identifier: showAlarmOnlyAtStartKey),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
             data: showSpeechAtAlarm, identifier: showSpeechAtAlarmKey),
       ];
 

@@ -179,7 +179,6 @@ class AuthenticatedProviders extends StatelessWidget {
             client: GetIt.I<ListenableClient>(),
             genericDb: GetIt.I<GenericDb>(),
             userId: userId,
-            noSyncSettings: const {},
           ),
         ),
         RepositoryProvider<SupportPersonsRepository>(

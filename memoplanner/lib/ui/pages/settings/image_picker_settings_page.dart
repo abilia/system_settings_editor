@@ -37,15 +37,15 @@ class _ImagePickerSettingsPageState extends State<ImagePickerSettingsPage> {
               Navigator.of(context).pop();
               await context.read<GenericCubit>().genericUpdated(
                 [
-                  GenericSettingData.fromData(
+                  MemoplannerSettingData(
                     data: _displayMyPhotos,
                     identifier: PhotoMenuSettings.displayMyPhotosKey,
                   ),
-                  GenericSettingData.fromData(
+                  MemoplannerSettingData(
                     data: _displayCamera,
                     identifier: PhotoMenuSettings.displayCameraKey,
                   ),
-                  GenericSettingData.fromData(
+                  MemoplannerSettingData(
                     data: _displayLocalImages,
                     identifier: PhotoMenuSettings.displayPhotoKey,
                   ),

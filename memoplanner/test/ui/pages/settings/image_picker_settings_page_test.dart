@@ -121,8 +121,8 @@ void main() {
     testWidgets('hides camera image option', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: PhotoMenuSettings.displayCameraKey,
           ),
@@ -135,8 +135,8 @@ void main() {
     testWidgets('hides my photo image option', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: PhotoMenuSettings.displayPhotoKey,
           ),

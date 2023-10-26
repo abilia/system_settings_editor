@@ -78,27 +78,27 @@ class MenuSettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showCamera,
           identifier: MenuSettings.showCameraKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showPhotos,
           identifier: MenuSettings.showPhotosKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showPhotoCalendar,
           identifier: MenuSettings.showPhotoCalendarKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showTemplates,
           identifier: MenuSettings.showTemplatesKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showQuickSettings,
           identifier: MenuSettings.showQuickSettingsKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showSettings,
           identifier: MenuSettings.showSettingsKey,
         ),

@@ -61,20 +61,18 @@ class EditActivitySettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(data: template, identifier: templateKey),
-        GenericSettingData.fromData(data: title, identifier: titleKey),
-        GenericSettingData.fromData(data: image, identifier: imageKey),
-        GenericSettingData.fromData(data: date, identifier: dateKey),
-        GenericSettingData.fromData(data: fullDay, identifier: fullDayKey),
-        GenericSettingData.fromData(data: checkable, identifier: checkableKey),
-        GenericSettingData.fromData(
-            data: availability, identifier: availabilityKey),
-        GenericSettingData.fromData(
-            data: removeAfter, identifier: removeAfterKey),
-        GenericSettingData.fromData(data: alarm, identifier: alarmKey),
-        GenericSettingData.fromData(data: checklist, identifier: checklistKey),
-        GenericSettingData.fromData(data: notes, identifier: notesKey),
-        GenericSettingData.fromData(data: reminders, identifier: remindersKey),
+        MemoplannerSettingData(data: template, identifier: templateKey),
+        MemoplannerSettingData(data: title, identifier: titleKey),
+        MemoplannerSettingData(data: image, identifier: imageKey),
+        MemoplannerSettingData(data: date, identifier: dateKey),
+        MemoplannerSettingData(data: fullDay, identifier: fullDayKey),
+        MemoplannerSettingData(data: checkable, identifier: checkableKey),
+        MemoplannerSettingData(data: availability, identifier: availabilityKey),
+        MemoplannerSettingData(data: removeAfter, identifier: removeAfterKey),
+        MemoplannerSettingData(data: alarm, identifier: alarmKey),
+        MemoplannerSettingData(data: checklist, identifier: checklistKey),
+        MemoplannerSettingData(data: notes, identifier: notesKey),
+        MemoplannerSettingData(data: reminders, identifier: remindersKey),
       ];
 
   EditActivitySettings copyWith({

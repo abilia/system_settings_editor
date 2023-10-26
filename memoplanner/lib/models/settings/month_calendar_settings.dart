@@ -55,19 +55,19 @@ class MonthCalendarSettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showBrowseButtons,
           identifier: monthCaptionShowMonthButtonsKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showYear,
           identifier: monthCaptionShowYearKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showClock,
           identifier: monthCaptionShowClockKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: colorTypeIndex,
           identifier: calendarMonthViewShowColorsKey,
         ),

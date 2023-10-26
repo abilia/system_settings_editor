@@ -60,7 +60,7 @@ class AddActivitySettings extends Equatable {
         ...editActivity.memoplannerSettingData,
         ...general.memoplannerSettingData,
         ...defaults.memoplannerSettingData,
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: mode == AddActivityMode.editView,
           identifier: addActivityTypeAdvancedKey,
         ),

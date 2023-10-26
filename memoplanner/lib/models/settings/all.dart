@@ -9,6 +9,7 @@ export 'general_calendar_settings/all.dart';
 export 'keep_screen_awake_settings.dart';
 export 'memoplanner_settings.dart';
 export 'memoplanner_settings_enums.dart';
+export 'memoplanner_settings_generic.dart';
 export 'menu_settings.dart';
 export 'month_calendar_settings.dart';
 export 'photo_menu_settings.dart';

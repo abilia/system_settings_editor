@@ -65,23 +65,23 @@ class DisplaySettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: week,
           identifier: functionMenuDisplayWeekKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: month,
           identifier: functionMenuDisplayMonthKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: newActivity,
           identifier: functionMenuDisplayNewActivityKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: newTimer,
           identifier: functionMenuDisplayNewTimerKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: menuValue,
           identifier: functionMenuDisplayMenuKey,
         ),

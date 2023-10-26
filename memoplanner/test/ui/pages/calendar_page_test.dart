@@ -322,8 +322,8 @@ void main() {
   });
 
   group('Chosen calendar setting', () {
-    final timepillarGeneric = Generic.createNew<GenericSettingData>(
-      data: GenericSettingData.fromData(
+    final timepillarGeneric = Generic.createNew(
+      data: MemoplannerSettingData(
         data: DayCalendarType.oneTimepillar.index,
         identifier: DayCalendarViewSettings.viewOptionsCalendarTypeKey,
       ),
@@ -374,8 +374,8 @@ void main() {
 
       testWidgets('week', (WidgetTester tester) async {
         genericResponse = () => [
-              Generic.createNew<GenericSettingData>(
-                data: GenericSettingData.fromData(
+              Generic.createNew(
+                data: MemoplannerSettingData(
                   data: StartView.weekCalendar.index,
                   identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
@@ -389,8 +389,8 @@ void main() {
 
       testWidgets('month', (WidgetTester tester) async {
         genericResponse = () => [
-              Generic.createNew<GenericSettingData>(
-                data: GenericSettingData.fromData(
+              Generic.createNew(
+                data: MemoplannerSettingData(
                   data: StartView.monthCalendar.index,
                   identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
@@ -404,8 +404,8 @@ void main() {
 
       testWidgets('photo album', (WidgetTester tester) async {
         genericResponse = () => [
-              Generic.createNew<GenericSettingData>(
-                data: GenericSettingData.fromData(
+              Generic.createNew(
+                data: MemoplannerSettingData(
                   data: StartView.photoAlbum.index,
                   identifier: FunctionsSettings.functionMenuStartViewKey,
                 ),
@@ -982,8 +982,8 @@ void main() {
 
     testWidgets('SGC-2378 Show months in app bar', (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: StartView.weekCalendar.index,
                 identifier: FunctionsSettings.functionMenuStartViewKey,
               ),
@@ -1392,8 +1392,8 @@ void main() {
       final expectedTime =
           initialTime.onlyDays().nextDay().millisecondsSinceEpoch;
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: AlarmSettings.showAlarmOnOffSwitchKey,
               ),
@@ -1405,14 +1405,14 @@ void main() {
       expect(find.byType(ToggleAlarmButtonInactive), findsOneWidget);
 
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: AlarmSettings.showAlarmOnOffSwitchKey,
               ),
             ),
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: expectedTime,
                 identifier: AlarmSettings.alarmsDisabledUntilKey,
               ),
@@ -1496,8 +1496,8 @@ void main() {
         syncDelay: Duration.zero,
       );
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: AlarmSettings.showAlarmOnOffSwitchKey,
               ),

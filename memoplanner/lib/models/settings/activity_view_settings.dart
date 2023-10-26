@@ -59,24 +59,24 @@ class ActivityViewSettings extends Equatable {
         displayTimeLeft: displayTimeLeft ?? this.displayTimeLeft,
       );
 
-  List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+  List<MemoplannerSettingData> get memoplannerSettingData => [
+        MemoplannerSettingData(
           data: displayAlarmButton,
           identifier: ActivityViewSettings.displayAlarmButtonKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: displayDeleteButton,
           identifier: ActivityViewSettings.displayDeleteButtonKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: displayEditButton,
           identifier: ActivityViewSettings.displayEditButtonKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: displayQuarterHour,
           identifier: ActivityViewSettings.displayQuarterHourKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: displayTimeLeft,
           identifier: ActivityViewSettings.displayTimeLeftKey,
         ),

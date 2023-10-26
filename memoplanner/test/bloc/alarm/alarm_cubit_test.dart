@@ -342,8 +342,8 @@ void main() {
         when(() => mockGenericRepository.getAll()).thenAnswer(
           (invocation) => Future.value(
             [
-              Generic.createNew<GenericSettingData>(
-                data: GenericSettingData.fromData(
+              Generic.createNew(
+                data: MemoplannerSettingData(
                   data: day.nextDay().millisecondsSinceEpoch,
                   identifier: AlarmSettings.alarmsDisabledUntilKey,
                 ),

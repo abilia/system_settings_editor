@@ -239,37 +239,37 @@ void main() {
     );
 
     final expectedSettingsData = [
-      GenericSettingData<dynamic>.fromData(
+      MemoplannerSettingData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayWeekKey,
       ),
-      GenericSettingData<dynamic>.fromData(
+      MemoplannerSettingData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayMonthKey,
       ),
-      GenericSettingData<dynamic>.fromData(
+      MemoplannerSettingData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayNewActivityKey,
       ),
-      GenericSettingData<dynamic>.fromData(
+      MemoplannerSettingData(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
       ),
-      GenericSettingData<dynamic>.fromData(
+      MemoplannerSettingData(
           data: false, identifier: DisplaySettings.functionMenuDisplayMenuKey),
-      GenericSettingData<dynamic>.fromData(
+      MemoplannerSettingData(
         data: 0,
         identifier: TimeoutSettings.activityTimeoutKey,
       ),
-      GenericSettingData<dynamic>.fromData(
+      MemoplannerSettingData(
         data: false, // if timeout is 0 screensaver should be false
         identifier: TimeoutSettings.useScreensaverKey,
       ),
-      GenericSettingData<dynamic>.fromData(
+      MemoplannerSettingData(
         data: true,
         identifier: TimeoutSettings.screensaverOnlyDuringNightKey,
       ),
-      GenericSettingData<dynamic>.fromData(
+      MemoplannerSettingData(
         data: StartView.photoAlbum.index,
         identifier: FunctionsSettings.functionMenuStartViewKey,
       ),
@@ -289,9 +289,9 @@ void main() {
         verify(() => genericCubit.genericUpdated(captureAny())).captured;
     expect(captured, hasLength(1));
 
-    expect(captured.single.runtimeType, List<GenericSettingData<dynamic>>);
+    expect(captured.single.runtimeType, List<GenericSettingData>);
     expect(
-      (captured.single as List<GenericSettingData<dynamic>>),
+      (captured.single as List<GenericSettingData>),
       expectedSettingsData,
     );
   });

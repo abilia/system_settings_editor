@@ -143,8 +143,8 @@ void main() {
     testWidgets('change display settings shows no popup and is stored',
         (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: MenuSettings.showSettingsKey,
           ),
@@ -192,8 +192,8 @@ void main() {
     testWidgets('hides CameraButton', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: MenuSettings.showCameraKey,
           ),
@@ -206,8 +206,8 @@ void main() {
     testWidgets('hides MyPhotosButton', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: MenuSettings.showPhotosKey,
           ),
@@ -220,8 +220,8 @@ void main() {
     testWidgets('hides PhotoCalendarButton', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: MenuSettings.showPhotoCalendarKey,
           ),
@@ -234,8 +234,8 @@ void main() {
     testWidgets('hides BasicTemplatesButton', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: MenuSettings.showTemplatesKey,
           ),
@@ -248,8 +248,8 @@ void main() {
     testWidgets('hides QuickSettingsButton', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: MenuSettings.showQuickSettingsKey,
           ),
@@ -262,8 +262,8 @@ void main() {
     testWidgets('hides SettingsButton', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: MenuSettings.showSettingsKey,
           ),
@@ -277,8 +277,8 @@ void main() {
         (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: MenuSettings.showSettingsKey,
           ),
@@ -293,38 +293,38 @@ void main() {
   testWidgets('all menu items disable hiddes menu button', (tester) async {
     // Arrange
     generics = [
-      Generic.createNew<GenericSettingData>(
-        data: GenericSettingData.fromData(
+      Generic.createNew(
+        data: MemoplannerSettingData(
           data: false,
           identifier: MenuSettings.showCameraKey,
         ),
       ),
-      Generic.createNew<GenericSettingData>(
-        data: GenericSettingData.fromData(
+      Generic.createNew(
+        data: MemoplannerSettingData(
           data: false,
           identifier: MenuSettings.showPhotosKey,
         ),
       ),
-      Generic.createNew<GenericSettingData>(
-        data: GenericSettingData.fromData(
+      Generic.createNew(
+        data: MemoplannerSettingData(
           data: false,
           identifier: MenuSettings.showPhotoCalendarKey,
         ),
       ),
-      Generic.createNew<GenericSettingData>(
-        data: GenericSettingData.fromData(
+      Generic.createNew(
+        data: MemoplannerSettingData(
           data: false,
           identifier: MenuSettings.showTemplatesKey,
         ),
       ),
-      Generic.createNew<GenericSettingData>(
-        data: GenericSettingData.fromData(
+      Generic.createNew(
+        data: MemoplannerSettingData(
           data: false,
           identifier: MenuSettings.showQuickSettingsKey,
         ),
       ),
-      Generic.createNew<GenericSettingData>(
-        data: GenericSettingData.fromData(
+      Generic.createNew(
+        data: MemoplannerSettingData(
           data: false,
           identifier: MenuSettings.showSettingsKey,
         ),

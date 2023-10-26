@@ -60,27 +60,27 @@ class WeekCalendarSettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showBrowseButtons,
           identifier: WeekCalendarSettings.showBrowseButtonsKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showWeekNumber,
           identifier: WeekCalendarSettings.showWeekNumberKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showYearAndMonth,
           identifier: WeekCalendarSettings.showYearAndMonthKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showClock,
           identifier: WeekCalendarSettings.showClockKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: weekDisplayDays.index,
           identifier: WeekCalendarSettings.showFullWeekKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: weekColor.index,
           identifier: WeekCalendarSettings.showColorModeKey,
         ),

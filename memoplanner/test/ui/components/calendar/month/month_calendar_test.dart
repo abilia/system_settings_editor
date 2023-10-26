@@ -483,8 +483,8 @@ void main() {
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (realInvocation) => Future.value(
           [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),

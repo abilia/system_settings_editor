@@ -226,8 +226,8 @@ void main() {
   testWidgets('past activities are hidden by scroll',
       (WidgetTester tester) async {
     genericResponse = () => [
-          Generic.createNew<GenericSettingData>(
-            data: GenericSettingData.fromData(
+          Generic.createNew(
+            data: MemoplannerSettingData(
               data: false,
               identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
             ),
@@ -663,14 +663,14 @@ void main() {
         (WidgetTester tester) async {
       const leftCategoryName = 'New Left', rightCategoryName = 'New Right';
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: leftCategoryName,
                 identifier: CategoriesSettings.calendarActivityTypeLeftKey,
               ),
             ),
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: rightCategoryName,
                 identifier: CategoriesSettings.calendarActivityTypeRightKey,
               ),
@@ -689,8 +689,8 @@ void main() {
     testWidgets('memoplanner settings - show categories ',
         (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -719,14 +719,14 @@ void main() {
       expect(rightFinder, findsOneWidget);
 
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: leftCategoryName,
                 identifier: CategoriesSettings.calendarActivityTypeLeftKey,
               ),
             ),
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: rightCategoryName,
                 identifier: CategoriesSettings.calendarActivityTypeRightKey,
               ),
@@ -754,8 +754,8 @@ void main() {
       expect(find.byType(CategoryLeft), findsOneWidget);
 
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -799,8 +799,8 @@ void main() {
     testWidgets('memoplanner settings - show colors false',
         (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowColorKey,
               ),
@@ -816,14 +816,14 @@ void main() {
     testWidgets('memoplanner settings - show colors false, leftImageId',
         (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowColorKey,
               ),
             ),
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: 'file id',
                 identifier: CategoriesSettings.calendarActivityTypeLeftImageKey,
               ),
@@ -900,14 +900,14 @@ void main() {
         'memoplanner settings - show colors true, category false -> no colors',
         (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: CategoriesSettings.calendarActivityTypeShowColorKey,
               ),
             ),
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),

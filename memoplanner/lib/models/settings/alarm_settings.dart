@@ -139,31 +139,31 @@ class AlarmSettings extends Equatable {
       };
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: nonCheckableSound.name,
           identifier: AlarmSettings.nonCheckableActivityAlarmKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: checkableSound.name,
           identifier: AlarmSettings.checkableActivityAlarmKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: reminderSound.name,
           identifier: AlarmSettings.reminderAlarmKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: timerSound.name,
           identifier: AlarmSettings.timerAlarmKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: alarmDuration.milliseconds(),
           identifier: AlarmSettings.alarmDurationKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showAlarmOnOffSwitch,
           identifier: AlarmSettings.showAlarmOnOffSwitchKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: _showOngoingActivityInFullScreen,
           identifier: AlarmSettings.showOngoingActivityInFullScreenKey,
         )
