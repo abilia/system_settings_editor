@@ -107,7 +107,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     final generics = await genericRepository.getAll();
 
     final settings = MemoplannerSettings.fromSettingsMap(
-      generics.toGenericKeyMap().filterMemoplannerSettingsData(),
+      generics.toGenericKeyMap().filterSettingsData(),
     );
 
     log.fine('finding alarms from ${activities.length} activities');

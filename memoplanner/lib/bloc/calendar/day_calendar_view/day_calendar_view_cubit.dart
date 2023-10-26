@@ -16,7 +16,7 @@ class DayCalendarViewCubit extends Cubit<DayCalendarViewSettings> {
         (event) async {
           await setDayCalendarViewOptionsSettings(
             DayCalendarViewSettings.fromSettingsMap(
-              event.generics.filterMemoplannerSettingsData(),
+              event.generics.filterSettingsData(),
             ),
           );
         },

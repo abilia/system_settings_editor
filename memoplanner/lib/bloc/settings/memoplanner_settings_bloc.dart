@@ -21,7 +21,7 @@ class MemoplannerSettingsBloc
                 MemoplannerSettings.fromSettingsMap(
                   (genericCubit?.state as GenericsLoaded?)
                           ?.generics
-                          .filterMemoplannerSettingsData() ??
+                          .filterSettingsData() ??
                       <String, GenericSettingData>{},
                 ),
               )
@@ -54,7 +54,7 @@ class MemoplannerSettingsBloc
       Emitter<MemoplannerSettings> emit) async {
     emit(MemoplannerSettingsLoaded(
       MemoplannerSettings.fromSettingsMap(
-        event.generics.filterMemoplannerSettingsData(),
+        event.generics.filterSettingsData(),
       ),
     ));
   }

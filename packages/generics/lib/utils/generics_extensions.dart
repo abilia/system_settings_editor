@@ -1,7 +1,7 @@
 import 'package:generics/generics.dart';
 
 extension GenericMapExtensions on Map<String, Generic> {
-  Map<String, GenericSettingData> filterMemoplannerSettingsData() {
+  Map<String, GenericSettingData> filterSettingsData() {
     return (map((key, value) => MapEntry(key, value.data))
           ..removeWhere((key, value) => value is! GenericSettingData))
         .cast<String, GenericSettingData>();
