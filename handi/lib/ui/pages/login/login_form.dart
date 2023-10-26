@@ -60,6 +60,17 @@ class _LoginFormState extends State<LoginForm> {
               ),
               SizedBox(height: spacings.spacing600),
               const _LoginButton(),
+              if (messageState != null &&
+                  messageState == MessageState.caution &&
+                  helperBoxMessage != null) ...[
+                SizedBox(height: spacings.spacing300),
+                SeagullHelperBox(
+                  text: helperBoxMessage,
+                  state: messageState,
+                  icon: helperBoxIcon,
+                  size: HelperBoxSize.medium,
+                )
+              ],
             ],
           ),
         ),
@@ -221,8 +232,10 @@ class _PasswordLoginInput extends StatelessWidget {
         onSubmitted: (_) async =>
             context.read<LoginCubit>().loginButtonPressed(),
         messageState: messageState,
-        helperBoxIcon: helperBoxIcon,
-        helperBoxMessage: helperBoxMessage,
+        helperBoxIcon:
+            messageState == MessageState.error ? helperBoxIcon : null,
+        helperBoxMessage:
+            messageState == MessageState.error ? helperBoxMessage : null,
         onFocused: onFocused,
       ),
     );
