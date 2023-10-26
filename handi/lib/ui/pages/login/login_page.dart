@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:flutter/material.dart';
