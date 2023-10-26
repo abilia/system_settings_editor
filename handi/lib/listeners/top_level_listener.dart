@@ -39,13 +39,12 @@ class TopLevelListener extends StatelessWidget {
         );
       },
       onUnauthenticated: (context, navigator, authenticationState) async {
-        final loggedOutReason = authenticationState.loggedOutReason;
         await navigator.pushAndRemoveUntil<void>(
           MaterialPageRoute<void>(
-            builder: (_) => LoginPage(loggedOutReason: loggedOutReason),
+            builder: (_) => const LoginPage(),
             settings: (LoginPage).routeSetting(
               properties: {
-                'logout reason': loggedOutReason.name,
+                'logout reason': authenticationState.loggedOutReason.name,
               },
             ),
           ),

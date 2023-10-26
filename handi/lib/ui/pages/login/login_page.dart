@@ -22,26 +22,13 @@ part 'login_form.dart';
 part 'logo_with_change_server.dart';
 
 class LoginPage extends StatefulWidget {
-  final LoggedOutReason loggedOutReason;
-
-  const LoginPage({
-    required this.loggedOutReason,
-    super.key,
-  });
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  @override
-  void initState() {
-    if (widget.loggedOutReason != LoggedOutReason.logOut) {
-      _showLoggedOutDialog();
-    }
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final abiliaTheme = AbiliaTheme.of(context);
@@ -59,30 +46,6 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: abiliaTheme.colors.surface.tertiary,
         body: const LoginForm(),
       ),
-    );
-  }
-
-  void _showLoggedOutDialog() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async {
-        return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Unauthorized'),
-              content: const Text('Logged out'),
-              actions: <Widget>[
-                SeagullActionButton(
-                  text: 'Ok',
-                  type: ActionButtonType.primary,
-                  size: ButtonSize.medium,
-                  onPressed: Navigator.of(context).maybePop,
-                ),
-              ],
-            );
-          },
-        );
-      },
     );
   }
 }
