@@ -15,9 +15,15 @@ import 'package:ui/components/helper_box.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/utils/states.dart';
 
+part 'login_button.dart';
+
 part 'login_form.dart';
 
+part 'login_inputs.dart';
+
 part 'logo_with_change_server.dart';
+
+part 'welcome_to_handi_text.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
