@@ -3,7 +3,15 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:ui/components/buttons/buttons.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/utils/sizes.dart';
+import 'package:ui/utils/states.dart';
 import 'package:widgetbook/widgetbook.dart';
+
+IconData? nullableIconKnob(BuildContext context) => context.knobs.boolean(
+      label: 'Show icon',
+      initialValue: true,
+    )
+        ? iconKnob(context)
+        : null;
 
 IconData iconKnob(BuildContext context) => context.knobs.list(
       label: 'Icon',
@@ -87,6 +95,31 @@ MediumLargeSize mediumLargeSizeKnob(BuildContext context) {
         return 'Medium';
       }
       return 'Large';
+    },
+  );
+}
+
+MessageState messageStateKnob(BuildContext context) {
+  return context.knobs.list(
+    label: 'State',
+    options: [
+      MessageState.caution,
+      MessageState.error,
+      MessageState.info,
+      MessageState.success,
+    ],
+    initialOption: MessageState.caution,
+    labelBuilder: (state) {
+      if (state == MessageState.caution) {
+        return 'Caution';
+      }
+      if (state == MessageState.error) {
+        return 'Error';
+      }
+      if (state == MessageState.info) {
+        return 'Info';
+      }
+      return 'Success';
     },
   );
 }

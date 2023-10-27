@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:showcase/knobs.dart';
 import 'package:ui/components/combo_box.dart';
-import 'package:ui/utils/states.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 class ComboBoxUseCase extends WidgetbookUseCase {
@@ -48,33 +47,17 @@ class ComboBoxUseCase extends WidgetbookUseCase {
                   )
                       ? Symbols.visibility
                       : null,
-                  messageState: context.knobs.list(
-                    label: 'State',
-                    options: [
-                      MessageState.caution,
-                      MessageState.error,
-                      MessageState.info,
-                      MessageState.success,
-                    ],
-                    initialOption: MessageState.caution,
-                    labelBuilder: (state) {
-                      if (state == MessageState.caution) {
-                        return 'Caution';
-                      }
-                      if (state == MessageState.error) {
-                        return 'Error';
-                      }
-                      if (state == MessageState.info) {
-                        return 'Info';
-                      }
-                      return 'Success';
-                    },
-                  ),
-                  helperBoxIcon: context.knobs.boolean(
+                  messageState: context.knobs.boolean(
                     label: 'Show helper box',
                     initialValue: false,
                   )
-                      ? Symbols.info
+                      ? messageStateKnob(context)
+                      : null,
+                  helperBoxIcon: context.knobs.boolean(
+                    label: 'Helper box icon',
+                    initialValue: true,
+                  )
+                      ? iconKnob(context)
                       : null,
                   helperBoxMessage: context.knobs.string(
                     label: 'Message',
