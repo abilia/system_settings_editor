@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-// ignore: implementation_imports
-import 'package:equatable/src/equatable_utils.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:uuid/uuid.dart';
 

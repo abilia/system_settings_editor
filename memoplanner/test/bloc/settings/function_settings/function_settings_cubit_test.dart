@@ -239,37 +239,37 @@ void main() {
     );
 
     final expectedSettingsData = [
-      MemoplannerSettingData(
+      MemoplannerSettingData<dynamic>(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayWeekKey,
       ),
-      MemoplannerSettingData(
+      MemoplannerSettingData<dynamic>(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayMonthKey,
       ),
-      MemoplannerSettingData(
+      MemoplannerSettingData<dynamic>(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayNewActivityKey,
       ),
-      MemoplannerSettingData(
+      MemoplannerSettingData<dynamic>(
         data: false,
         identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
       ),
-      MemoplannerSettingData(
+      MemoplannerSettingData<dynamic>(
           data: false, identifier: DisplaySettings.functionMenuDisplayMenuKey),
-      MemoplannerSettingData(
+      MemoplannerSettingData<dynamic>(
         data: 0,
         identifier: TimeoutSettings.activityTimeoutKey,
       ),
-      MemoplannerSettingData(
+      MemoplannerSettingData<dynamic>(
         data: false, // if timeout is 0 screensaver should be false
         identifier: TimeoutSettings.useScreensaverKey,
       ),
-      MemoplannerSettingData(
+      MemoplannerSettingData<dynamic>(
         data: true,
         identifier: TimeoutSettings.screensaverOnlyDuringNightKey,
       ),
-      MemoplannerSettingData(
+      MemoplannerSettingData<dynamic>(
         data: StartView.photoAlbum.index,
         identifier: FunctionsSettings.functionMenuStartViewKey,
       ),

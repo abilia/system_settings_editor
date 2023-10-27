@@ -12,14 +12,6 @@ abstract class GenericData extends Equatable {
 
   @override
   bool get stringify => true;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is GenericData && equals(props, other.props);
-
-  @override
-  int get hashCode => mapPropsToHashCode(props);
 }
 
 class RawGenericData extends GenericData {
