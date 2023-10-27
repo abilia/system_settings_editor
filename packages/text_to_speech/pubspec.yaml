@@ -5,9 +5,7 @@ environment:
 
 dependencies:
   acapela_tts:
-    git:
-      url: https://github.com/abilia/acapela_tts.git
-      ref: v1.2.0
+    path: ../acapela_tts
   collection: any
   crypto: any
   equatable: any

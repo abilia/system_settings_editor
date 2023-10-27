@@ -27,11 +27,9 @@ packages:
   acapela_tts:
     dependency: transitive
     description:
-      path: "."
-      ref: "v1.2.0"
-      resolved-ref: "4a972366b07a16a93ea2a77b3d09c92e3b598b9e"
-      url: "https://github.com/abilia/acapela_tts.git"
-    source: git
+      path: "../packages/acapela_tts"
+      relative: true
+    source: path
     version: "1.2.0"
   analyzer:
     dependency: transitive

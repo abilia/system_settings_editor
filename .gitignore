@@ -26,7 +26,6 @@ test_bundle.dart
 *.iws
 .idea/
 
-<<<<<<< HEAD
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
@@ -40,12 +39,8 @@ test_bundle.dart
 .packages
 .pub-cache/
 .pub/
-<<<<<<< HEAD
 **/build/
 **/coverage
-=======
-.idea/
->>>>>>> 9c29aa259 (SGC-582: added functions for getting and setting brightness)
 
 # Android related
 **/gradle-wrapper.jar
@@ -106,10 +101,3 @@ test_bundle.dart
 
 # Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
 packages/**/pubspec.lock
-=======
-build/
-
-**/.classpath
-**/.settings/
-**/.project
->>>>>>> 9bafb3a19 (SGC-582 Added premission and slider top example)

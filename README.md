@@ -1,11 +1,7 @@
 # The Seagull Project
 
-<<<<<<< HEAD
 | [:calendar: memoplanner](https://github.com/abilia/seagull/tree/master/memoplanner/)|[:blue_book: handi](https://github.com/abilia/seagull/tree/master/handi/)|[:phone: CARY Mobile](https://github.com/abilia/seagull/tree/master/carymobile/)|
 --- | --- | ---
-=======
-A flutter plugin to read and write system settings.
->>>>>>> 9c29aa259 (SGC-582: added functions for getting and setting brightness)
 
 ## Workflow
 
