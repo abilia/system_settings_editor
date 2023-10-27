@@ -44,7 +44,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   void passwordChanged(String password) {
     emit(state.copyWith(
-      password: password.trim(),
+      password: password,
     ));
   }
 

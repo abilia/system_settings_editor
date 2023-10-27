@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -17,31 +15,24 @@ import 'package:ui/components/helper_box.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/utils/states.dart';
 
+part 'login_button.dart';
+
 part 'login_form.dart';
+
+part 'login_inputs.dart';
 
 part 'logo_with_change_server.dart';
 
-class LoginPage extends StatefulWidget {
-  final LoggedOutReason loggedOutReason;
+part 'welcome_to_handi_text.dart';
 
-  const LoginPage({
-    required this.loggedOutReason,
-    super.key,
-  });
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  @override
-  void initState() {
-    if (widget.loggedOutReason != LoggedOutReason.logOut) {
-      _showLoggedOutDialog();
-    }
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final abiliaTheme = AbiliaTheme.of(context);
@@ -59,30 +50,6 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: abiliaTheme.colors.surface.tertiary,
         body: const LoginForm(),
       ),
-    );
-  }
-
-  void _showLoggedOutDialog() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async {
-        return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Unauthorized'),
-              content: const Text('Logged out'),
-              actions: <Widget>[
-                SeagullActionButton(
-                  text: 'Ok',
-                  type: ActionButtonType.primary,
-                  size: ButtonSize.medium,
-                  onPressed: Navigator.of(context).maybePop,
-                ),
-              ],
-            );
-          },
-        );
-      },
     );
   }
 }

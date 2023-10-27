@@ -54,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'clockTwentyMinutesToTts':
             MessageLookupByLibrary.simpleMessage('twenty to %s'),
         'close': MessageLookupByLibrary.simpleMessage('Close'),
+        'connect': MessageLookupByLibrary.simpleMessage('Connect'),
         'connect_to_myabilia':
             MessageLookupByLibrary.simpleMessage('Connect to myAbilia'),
         'connected': MessageLookupByLibrary.simpleMessage('Connected'),
@@ -74,7 +75,9 @@ class MessageLookup extends MessageLookupByLibrary {
         'no_license': MessageLookupByLibrary.simpleMessage(
             'We could not find a licence for your account. Make sure that CARY Base is connected to myAbilia before logging in here with the same account.'),
         'not_connected': MessageLookupByLibrary.simpleMessage('Not connected'),
-        'ok': MessageLookupByLibrary.simpleMessage('Ok'),
+        'ok': MessageLookupByLibrary.simpleMessage('OK'),
+        'onboarding_hint': MessageLookupByLibrary.simpleMessage(
+            'To start using CARY Mobile connect to the Internet'),
         'password': MessageLookupByLibrary.simpleMessage('Password'),
         'play': MessageLookupByLibrary.simpleMessage('Play'),
         'producer': MessageLookupByLibrary.simpleMessage('Producer'),

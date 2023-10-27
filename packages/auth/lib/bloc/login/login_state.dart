@@ -62,9 +62,6 @@ class LoginState extends Equatable {
         password,
         obscurePassword,
       ];
-
-  @override
-  bool get stringify => true;
 }
 
 enum LoginFailureCause {

@@ -1,0 +1,32 @@
+name: Showcase Analyze
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  pull_request:
+    branches:
+      - master
+      - release*
+    paths:
+      - 'showcase/**'
+      - '!**.md'
+      - '!**.yaml'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ./showcase
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.5.0
+        with:
+          flutter-version: '3.13.0'
+          channel: 'stable'
+
+      - run: flutter pub get
+      - run: flutter analyze .
+      - run: dart format --set-exit-if-changed .

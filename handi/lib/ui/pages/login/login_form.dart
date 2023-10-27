@@ -1,22 +1,7 @@
 part of 'login_page.dart';
 
-class LoginForm extends StatefulWidget {
+class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
-
-  @override
-  State<LoginForm> createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State<LoginForm> {
-  final ScrollController _scrollController = ScrollController();
-  final userNameKey = GlobalKey();
-  final passwordKey = GlobalKey();
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +16,6 @@ class _LoginFormState extends State<LoginForm> {
     final messageState = _getMessageState(loginFailureCause);
     return SafeArea(
       child: SingleChildScrollView(
-        controller: _scrollController,
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: spacings.spacing400,
@@ -44,16 +28,10 @@ class _LoginFormState extends State<LoginForm> {
               const _WelcomeToHandiText(),
               SizedBox(height: spacings.spacing800),
               _UsernameLoginInput(
-                key: userNameKey,
-                scrollController: _scrollController,
-                onFocused: () async => _onInputFocused(userNameKey),
                 messageState: messageState,
               ),
               SizedBox(height: spacings.spacing300),
               _PasswordLoginInput(
-                key: passwordKey,
-                scrollController: _scrollController,
-                onFocused: () async => _onInputFocused(passwordKey),
                 messageState: messageState,
                 helperBoxIcon: helperBoxIcon,
                 helperBoxMessage: helperBoxMessage,
@@ -75,17 +53,6 @@ class _LoginFormState extends State<LoginForm> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> _onInputFocused(GlobalKey key) async {
-    final inputObject = key.currentContext?.findRenderObject();
-    if (inputObject == null) return;
-    await Future.delayed(const Duration(milliseconds: 250));
-    await _scrollController.position.ensureVisible(
-      inputObject,
-      alignment: 0.5,
-      duration: const Duration(milliseconds: 500),
     );
   }
 }
@@ -147,125 +114,5 @@ MessageState? _getMessageState(LoginFailureCause? failureCause) {
     case LoginFailureCause.tooManyAttempts:
     case LoginFailureCause.noConnection:
       return MessageState.caution;
-  }
-}
-
-class _WelcomeToHandiText extends StatelessWidget {
-  const _WelcomeToHandiText();
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      Lt.of(context).welcomeToHandi,
-      style: AbiliaTheme.of(context).textStyles.primary525,
-      textAlign: TextAlign.center,
-    );
-  }
-}
-
-class _UsernameLoginInput extends StatelessWidget {
-  final MessageState? messageState;
-  final ScrollController scrollController;
-  final VoidCallback onFocused;
-
-  const _UsernameLoginInput({
-    required this.messageState,
-    required this.scrollController,
-    required this.onFocused,
-    required super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final translate = Lt.of(context);
-    final username = context.select((LoginCubit cubit) => cubit.state.username);
-    return Tooltip(
-      message: translate.userNameOrEmail,
-      child: SeagullComboBox(
-        label: translate.userNameOrEmail,
-        size: ComboBoxSize.medium,
-        leadingIcon: Symbols.account_circle,
-        maxLength: 128,
-        trailingIcon: username.isNotEmpty ? Symbols.play_circle : null,
-        onTrailingIconOnTap: () async => GetIt.I<TtsHandler>().speak(username),
-        textInputAction: TextInputAction.next,
-        onChanged: context.read<LoginCubit>().usernameChanged,
-        messageState: messageState,
-        onFocused: onFocused,
-      ),
-    );
-  }
-}
-
-class _PasswordLoginInput extends StatelessWidget {
-  final MessageState? messageState;
-  final IconData? helperBoxIcon;
-  final String? helperBoxMessage;
-  final ScrollController scrollController;
-  final VoidCallback onFocused;
-
-  const _PasswordLoginInput({
-    required this.messageState,
-    required this.helperBoxIcon,
-    required this.helperBoxMessage,
-    required this.scrollController,
-    required this.onFocused,
-    required super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final translate = Lt.of(context);
-    final obscurePassword =
-        context.select((LoginCubit cubit) => cubit.state.obscurePassword);
-    return Tooltip(
-      message: translate.password,
-      child: SeagullComboBox(
-        label: translate.password,
-        size: ComboBoxSize.medium,
-        leadingIcon: Symbols.key,
-        trailingIcon: Symbols.visibility,
-        obscureText: obscurePassword,
-        maxLength: 128,
-        onTrailingIconOnTap: context.read<LoginCubit>().toggleObscurePassword,
-        onChanged: context.read<LoginCubit>().passwordChanged,
-        onSubmitted: (_) async =>
-            context.read<LoginCubit>().loginButtonPressed(),
-        messageState: messageState,
-        helperBoxIcon:
-            messageState == MessageState.error ? helperBoxIcon : null,
-        helperBoxMessage:
-            messageState == MessageState.error ? helperBoxMessage : null,
-        onFocused: onFocused,
-      ),
-    );
-  }
-}
-
-class _LoginButton extends StatelessWidget {
-  const _LoginButton();
-
-  @override
-  Widget build(BuildContext context) {
-    final isLoading =
-        context.select((LoginCubit cubit) => cubit.state is LoginLoading);
-    final isFormValid =
-        context.select((LoginCubit cubit) => cubit.state.isFormValid);
-    return SizedBox(
-      width: double.infinity,
-      child: SeagullActionButton(
-        text: Lt.of(context).signIn,
-        type: ActionButtonType.primary,
-        size: ButtonSize.medium,
-        isLoading: isLoading,
-        leadingIcon: Symbols.login,
-        onPressed: isFormValid
-            ? () async {
-                FocusScope.of(context).requestFocus(FocusNode());
-                await context.read<LoginCubit>().loginButtonPressed();
-              }
-            : null,
-      ),
-    );
   }
 }

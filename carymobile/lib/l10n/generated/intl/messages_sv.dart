@@ -52,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
         'clockTwentyMinutesToTts':
             MessageLookupByLibrary.simpleMessage('Tjugo minuter i %s'),
         'close': MessageLookupByLibrary.simpleMessage('Stäng'),
+        'connect': MessageLookupByLibrary.simpleMessage('Anslut'),
         'connect_to_myabilia':
             MessageLookupByLibrary.simpleMessage('Anslut till myAbilia'),
         'connected': MessageLookupByLibrary.simpleMessage('Ansluten'),
@@ -74,6 +75,8 @@ class MessageLookup extends MessageLookupByLibrary {
             'Vi kunde inte hitta en licens för ditt konto. Se till att CARY Base är ansluten till myAbilia innan du loggar in här med samma konto.'),
         'not_connected': MessageLookupByLibrary.simpleMessage('Inte ansluten'),
         'ok': MessageLookupByLibrary.simpleMessage('OK'),
+        'onboarding_hint': MessageLookupByLibrary.simpleMessage(
+            'To start using CARY Mobile connect to the Internet'),
         'password': MessageLookupByLibrary.simpleMessage('Lösenord'),
         'play': MessageLookupByLibrary.simpleMessage('Spela'),
         'producer': MessageLookupByLibrary.simpleMessage('Tillverkare'),

@@ -38,10 +38,14 @@ class _Tts extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
         behavior: HitTestBehavior.translucent,
         excludeFromSemantics: true,
-        onTap: (onTap != null || data != null) ? _playTts : null,
+        onTap: (onTap != null || data != null) ? _playOrStopTts : null,
         child: child,
       );
 
-  Future<void> _playTts() async =>
-      GetIt.I<TtsHandler>().speak(onTap?.call() ?? data ?? '');
+  Future<void> _playOrStopTts() async {
+    final tts = GetIt.I<TtsHandler>();
+    final isSpeaking = await tts.isSpeaking;
+    if (isSpeaking) return await tts.stop();
+    await tts.speak(onTap?.call() ?? data ?? '');
+  }
 }
