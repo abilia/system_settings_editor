@@ -13,7 +13,7 @@ class LogoWithChangeServer extends StatelessWidget {
         height: spacings.spacing1000,
         width: spacings.spacing1000,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(spacings.spacing300),
+          borderRadius: BorderRadius.circular(spacings.spacing400),
           boxShadow: [
             BoxShadow(
               color: colors.primary.shade200,

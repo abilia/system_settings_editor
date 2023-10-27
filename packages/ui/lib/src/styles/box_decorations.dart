@@ -4,7 +4,7 @@ import 'package:ui/src/tokens/numericals.dart';
 
 final textFieldBoxDecoration = BoxDecoration(
   borderRadius: const BorderRadius.all(
-    Radius.circular(numerical200),
+    Radius.circular(numerical300),
   ),
   color: MaterialStateColor.resolveWith(
     (states) {
@@ -14,4 +14,13 @@ final textFieldBoxDecoration = BoxDecoration(
       return SurfaceColors.primary;
     },
   ),
+);
+
+final textFieldBoxDecorationSelected = textFieldBoxDecoration.copyWith(
+  boxShadow: [
+    const BoxShadow(
+      color: Color(0xFFD5D7F5),
+      spreadRadius: numerical200,
+    ),
+  ],
 );
