@@ -12,6 +12,8 @@ class MockBaseClient extends Mock implements BaseClient, ListenableClient {}
 
 class MockUserDb extends Mock implements UserDb {}
 
+class MockLoginCubit extends Mock implements LoginCubit {}
+
 class MockLoginDb extends Mock implements LoginDb {}
 
 class MockDatabase extends Mock implements Database {}

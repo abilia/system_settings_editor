@@ -1,9 +1,18 @@
+import 'dart:async';
+
+import 'package:auth/bloc/authentication/authentication_bloc.dart';
+import 'package:auth/bloc/login/login_cubit.dart';
+import 'package:auth/repository/user_repository.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:handi/l10n/all.dart';
 import 'package:handi/ui/pages/logged_in_page.dart';
 import 'package:handi/ui/pages/login/login_page.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:seagull_clock/clock_cubit.dart';
 import 'package:seagull_fakes/all.dart';
 
 import '../../extensions/finder_extensions.dart';
@@ -12,6 +21,7 @@ import '../../fakes/fake_getit.dart';
 
 void main() {
   late final Lt translate;
+  final loginCubit = MockLoginCubit();
   final longUsername =
       'a7nDY7qyd87QEWBYFNDH87Wefyb8ew7ftbvFVT76EWFTFUHWGRUFA8ERWBGY7REGF' * 231;
   final longPassword =
@@ -21,11 +31,50 @@ void main() {
     setupPermissions();
     await Lokalise.initMock();
     translate = await Lt.load(Lt.supportedLocales.first);
+
+    when(() => loginCubit.state).thenReturn(LoginState.initial());
+    when(() => loginCubit.stream).thenAnswer((_) => const Stream.empty());
+    when(() => loginCubit.close()).thenAnswer((_) => Future.value());
   });
 
-  setUp(() => initGetItFakes());
+  setUp(() {
+    initGetItFakes();
+  });
 
   tearDown(() => GetIt.I.reset());
+
+  Future<void> pumpAndSettleLoginPage(WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [Lt.delegate],
+        home: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider<UserRepository>(
+              create: (_) => FakeUserRepository(),
+            ),
+          ],
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<AuthenticationBloc>(
+                create: (_) => FakeAuthenticationBloc(),
+              ),
+              BlocProvider<LoginCubit>(
+                create: (_) => loginCubit,
+              ),
+              BlocProvider<ClockCubit>(
+                create: (_) => ClockCubit(
+                  StreamController<DateTime>().stream,
+                  initialTime: DateTime.now(),
+                ),
+              ),
+            ],
+            child: const LoginPage(),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
 
   group('Login button', () {
     testWidgets('Disabled when username or password is empty', (tester) async {
@@ -138,6 +187,105 @@ void main() {
       expect(find.byIcon(Symbols.error), findsOneWidget);
       expect(find.text(translate.verifyCredentials), findsOneWidget);
       expect(find.byType(LoginPage), findsOneWidget);
+    });
+  });
+
+  group('Error messages', () {
+    Future<void> pumpLoginAndFillFields(WidgetTester tester) async {
+      await pumpAndSettleLoginPage(tester);
+      await tester.enterText(find.usernameField, 'username');
+      await tester.enterTextAndSettle(find.passwordField, 'password');
+      await tester.tapAndSettle(find.loginButton);
+    }
+
+    testWidgets('Invalid credentials', (tester) async {
+      when(() => loginCubit.state).thenReturn(
+        loginCubit.state.failure(cause: LoginFailureCause.credentials),
+      );
+      await pumpLoginAndFillFields(tester);
+
+      expect(find.byIcon(Symbols.error), findsOneWidget);
+      expect(find.text(translate.verifyCredentials), findsOneWidget);
+    });
+
+    testWidgets('No username', (tester) async {
+      when(() => loginCubit.state).thenReturn(
+        loginCubit.state.failure(cause: LoginFailureCause.noUsername),
+      );
+      await pumpLoginAndFillFields(tester);
+
+      expect(find.byIcon(Symbols.error), findsOneWidget);
+      expect(find.text(translate.verifyCredentials), findsOneWidget);
+    });
+
+    testWidgets('No password', (tester) async {
+      when(() => loginCubit.state).thenReturn(
+        loginCubit.state.failure(cause: LoginFailureCause.noPassword),
+      );
+      await pumpLoginAndFillFields(tester);
+
+      expect(find.byIcon(Symbols.error), findsOneWidget);
+      expect(find.text(translate.verifyCredentials), findsOneWidget);
+    });
+
+    testWidgets('Too many attempts', (tester) async {
+      when(() => loginCubit.state).thenReturn(
+        loginCubit.state.failure(cause: LoginFailureCause.tooManyAttempts),
+      );
+      await pumpLoginAndFillFields(tester);
+
+      expect(find.byIcon(Symbols.lightbulb), findsOneWidget);
+      expect(find.text(translate.tooManyAttempts), findsOneWidget);
+    });
+
+    testWidgets('No license', (tester) async {
+      when(() => loginCubit.state).thenReturn(
+        loginCubit.state.failure(cause: LoginFailureCause.noLicense),
+      );
+      await pumpLoginAndFillFields(tester);
+
+      expect(find.byIcon(Symbols.error), findsOneWidget);
+      expect(find.text(translate.noHandiLicence), findsOneWidget);
+    });
+
+    testWidgets('License expired', (tester) async {
+      when(() => loginCubit.state).thenReturn(
+        loginCubit.state.failure(cause: LoginFailureCause.licenseExpired),
+      );
+      await pumpLoginAndFillFields(tester);
+
+      expect(find.byIcon(Symbols.error), findsOneWidget);
+      expect(find.text(translate.lincenseExpired), findsOneWidget);
+    });
+
+    testWidgets('No license', (tester) async {
+      when(() => loginCubit.state).thenReturn(
+        loginCubit.state.failure(cause: LoginFailureCause.noConnection),
+      );
+      await pumpLoginAndFillFields(tester);
+
+      expect(find.byIcon(Symbols.error), findsOneWidget);
+      expect(find.text(translate.connectToInternet), findsOneWidget);
+    });
+
+    testWidgets('Not empty database', (tester) async {
+      when(() => loginCubit.state).thenReturn(
+        loginCubit.state.failure(cause: LoginFailureCause.notEmptyDatabase),
+      );
+      await pumpLoginAndFillFields(tester);
+
+      expect(find.byIcon(Symbols.error), findsOneWidget);
+      expect(find.text(translate.somethingWentWrong), findsOneWidget);
+    });
+
+    testWidgets('Unsupported user type', (tester) async {
+      when(() => loginCubit.state).thenReturn(
+        loginCubit.state.failure(cause: LoginFailureCause.unsupportedUserType),
+      );
+      await pumpLoginAndFillFields(tester);
+
+      expect(find.byIcon(Symbols.error), findsOneWidget);
+      expect(find.text(translate.unsupportedUserType), findsOneWidget);
     });
   });
 }

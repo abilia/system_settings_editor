@@ -9,6 +9,19 @@ import 'package:mocktail/mocktail.dart';
 import 'package:repository_base/repository_base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
+  @override
+  Stream<AuthenticationState> get stream => const Stream.empty();
+
+  @override
+  AuthenticationState get state => const Authenticated(
+        user: User(id: 1234, type: 'type', name: 'name'),
+      );
+
+  @override
+  Future<void> close() async {}
+}
+
 class FakeDeviceDb extends Fake implements DeviceDb {
   @override
   Future<String> getClientId() async {
@@ -146,6 +159,7 @@ class FakeListenableClient {
 
 class ListenableMockClient extends MockClient implements ListenableClient {
   ListenableMockClient(super.handler);
+
   final _stateController = StreamController<HttpMessage>.broadcast();
 
   @override

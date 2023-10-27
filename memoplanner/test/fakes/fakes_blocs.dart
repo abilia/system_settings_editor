@@ -6,17 +6,6 @@ import 'package:mocktail/mocktail.dart';
 
 import 'all.dart';
 
-class FakeAuthenticationBloc extends Fake implements AuthenticationBloc {
-  @override
-  Stream<AuthenticationState> get stream => const Stream.empty();
-
-  @override
-  AuthenticationState get state => const Authenticated(user: user);
-
-  @override
-  Future<void> close() async {}
-}
-
 class FakeGenericCubit extends Fake implements GenericCubit {
   @override
   Stream<GenericState> get stream => const Stream.empty();
