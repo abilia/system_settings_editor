@@ -86,9 +86,9 @@ class _SeagullComboBoxState extends State<SeagullComboBox> {
           SizedBox(height: spacings.spacing100),
         ],
         AnimatedContainer(
-          decoration: comboBoxTheme.boxDecoration.copyWith(
-            boxShadow: focusNode.hasFocus ? [comboBoxTheme.boxShadow] : [],
-          ),
+          decoration: focusNode.hasFocus
+              ? comboBoxTheme.boxDecorationSelected
+              : comboBoxTheme.boxDecoration,
           duration: const Duration(milliseconds: 150),
           child: IconTheme(
             data: comboBoxTheme.iconThemeData,
