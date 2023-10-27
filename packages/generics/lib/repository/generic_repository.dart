@@ -8,20 +8,21 @@ import 'package:repository_base/repository_base.dart';
 class GenericRepository extends DataRepository<Generic> {
   final GenericDb genericDb;
   final Set<String> noSyncSettings;
+  final String? type;
 
   GenericRepository({
     required super.baseUrlDb,
     required super.client,
     required super.userId,
     required this.genericDb,
-    required this.noSyncSettings,
+    this.noSyncSettings = const {},
+    this.type,
   }) : super(
           path: 'generics',
           postPath: 'generics',
           db: genericDb,
           fromJsonToDataModel: DbGeneric.fromJson,
           log: Logger((GenericRepository).toString()),
-          filter: (g) => g.model.type == GenericType.memoPlannerSettings,
         );
 
   @override
@@ -61,7 +62,13 @@ class GenericRepository extends DataRepository<Generic> {
     log.fine('loading $path...');
     try {
       final revision = await db.getLastRevision();
-      final fetchedData = await fetchData(revision);
+      final type = this.type;
+      final fetchedData = await fetchData(
+        revision,
+        queryParameters: {
+          if (type != null) 'type': type,
+        },
+      );
       log.fine('${fetchedData.length} $path fetched');
 
       if (fetchedData.isEmpty) return false;

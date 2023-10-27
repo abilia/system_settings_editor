@@ -52,19 +52,19 @@ class TimepillarSettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: use12h,
           identifier: setting12hTimeFormatTimelineKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: timeline,
           identifier: settingDisplayTimelineKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: hourLines,
           identifier: settingDisplayHourLinesKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: columnOfDots,
           identifier: settingTimePillarTimelineKey,
         ),

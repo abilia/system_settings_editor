@@ -1,13 +1,14 @@
 part of 'generic.dart';
 
 abstract class GenericData extends Equatable {
-  final String identifier;
-  const GenericData(this.identifier);
+  final String identifier, type, key;
+  final dynamic dynamicData;
+  const GenericData({
+    required this.identifier,
+    required this.type,
+    required this.dynamicData,
+  }) : key = '$type-$identifier';
   String toRaw();
-  String get genericTypeString;
-  String get key => uniqueId(genericTypeString, identifier);
-  static String uniqueId(genericTypeString, identifier) =>
-      '$genericTypeString-$identifier';
 
   @override
   bool get stringify => true;
@@ -16,71 +17,62 @@ abstract class GenericData extends Equatable {
 class RawGenericData extends GenericData {
   final String data;
 
-  const RawGenericData(this.data, String identifier) : super(identifier);
+  const RawGenericData({
+    required super.identifier,
+    required super.type,
+    required this.data,
+  }) : super(dynamicData: data);
 
   @override
   String toRaw() => data;
 
   @override
-  String get genericTypeString => '';
-
-  @override
-  List<Object> get props => [data, identifier];
+  List<Object> get props => [identifier, type, data];
 }
 
 class GenericSettingData<T> extends GenericData {
   final T data;
-  final String type;
-
-  const GenericSettingData._({
+  final String dataType;
+  @override
+  GenericSettingData({
+    required super.identifier,
+    required super.type,
     required this.data,
-    required this.type,
-    required String identifier,
-  }) : super(identifier);
+  })  : dataType = typeString(data.runtimeType),
+        super(dynamicData: data);
 
-  factory GenericSettingData.fromData({
-    required T data,
-    required String identifier,
-  }) {
-    String type;
-    switch (data.runtimeType) {
+  static String typeString(Type type) {
+    switch (type) {
       case bool:
-        type = 'Boolean';
-        break;
+        return 'Boolean';
       case int:
-        type = 'Integer';
-        break;
+        return 'Integer';
       case String:
-        type = 'String';
-        break;
+        return 'String';
       default:
         throw UnimplementedError();
     }
-    return GenericSettingData._(
-      data: data,
-      type: type,
-      identifier: identifier,
-    );
   }
 
   @override
   String toRaw() => json.encode({
         'data': data,
-        'type': type,
+        'type': dataType,
       });
 
   @override
-  String get genericTypeString => GenericType.memoPlannerSettings;
+  List<Object?> get props => [identifier, type, data, dataType];
 
-  @override
-  List<Object?> get props => [data, type, identifier];
-
-  factory GenericSettingData.fromJson(String data, String identifier) {
-    final genericData = json.decode(data);
-    return GenericSettingData._(
-      data: genericData['data'],
-      type: genericData['type'],
+  factory GenericSettingData.fromJson({
+    required String identifier,
+    required String type,
+    required String jsonData,
+  }) {
+    final genericData = json.decode(jsonData);
+    return GenericSettingData(
       identifier: identifier,
+      type: type,
+      data: genericData['data'],
     );
   }
 }

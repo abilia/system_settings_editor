@@ -56,10 +56,17 @@ abstract class DataRepository<M extends DataModel> extends Repository {
   }
 
   @protected
-  Future<Iterable<DbModel<M>>> fetchData(int revision) async {
+  Future<Iterable<DbModel<M>>> fetchData(
+    int revision, {
+    Map<String, String> queryParameters = const {},
+  }) async {
     log.fine('fetching $path for revision $revision');
+    final queries = queryParameters.entries.fold(
+      '',
+      (q, kvp) => '$q&${kvp.key}=${kvp.value}',
+    );
     final response = await client.get(
-      '$baseUrl/api/v1/data/$userId/$path?revision=$revision'.toUri(),
+      '$baseUrl/api/v1/data/$userId/$path?revision=$revision$queries'.toUri(),
     );
     final decoded = response.json() as List;
     return decoded

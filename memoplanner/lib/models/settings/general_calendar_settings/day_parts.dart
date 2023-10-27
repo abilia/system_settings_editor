@@ -92,19 +92,19 @@ class DayParts extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: morning.inMilliseconds,
           identifier: DayParts.morningIntervalStartKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: day.inMilliseconds,
           identifier: DayParts.forenoonIntervalStartKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: evening.inMilliseconds,
           identifier: DayParts.eveningIntervalStartKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: night.inMilliseconds,
           identifier: DayParts.nightIntervalStartKey,
         ),

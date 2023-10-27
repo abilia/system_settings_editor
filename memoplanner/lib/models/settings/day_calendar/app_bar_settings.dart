@@ -59,23 +59,23 @@ class DayAppBarSettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showBrowseButtons,
           identifier: dayCaptionShowDayButtonsKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showWeekday,
           identifier: activityDisplayWeekdayKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showDayPeriod,
           identifier: activityDisplayDayPeriodKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showDate,
           identifier: activityDisplayDateKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: showClock,
           identifier: activityDisplayClockKey,
         ),

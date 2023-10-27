@@ -131,8 +131,8 @@ void main() {
           MenuSettings.showQuickSettingsKey,
           MenuSettings.showSettingsKey,
         ].map(
-          (id) => Generic.createNew<GenericSettingData>(
-            data: GenericSettingData.fromData(data: false, identifier: id),
+          (id) => Generic.createNew(
+            data: MemoplannerSettingData(data: false, identifier: id),
           ),
         );
         await tester.pumpApp();
@@ -400,20 +400,20 @@ void main() {
 
     testWidgets('timout settings correct', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: 5.minutes().inMilliseconds,
             identifier: TimeoutSettings.activityTimeoutKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: true,
             identifier: TimeoutSettings.useScreensaverKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: true,
             identifier: TimeoutSettings.screensaverOnlyDuringNightKey,
           ),
@@ -469,8 +469,8 @@ void main() {
     testWidgets('hides AddActivity Button in bottomBar', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: DisplaySettings.functionMenuDisplayNewActivityKey,
           ),
@@ -487,8 +487,8 @@ void main() {
     testWidgets('hides AddTimer Button in bottomBar', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: DisplaySettings.functionMenuDisplayNewTimerKey,
           ),
@@ -509,8 +509,8 @@ void main() {
         DisplaySettings.functionMenuDisplayNewActivityKey,
         DisplaySettings.functionMenuDisplayNewTimerKey,
       ].map(
-        (id) => Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(data: false, identifier: id),
+        (id) => Generic.createNew(
+          data: MemoplannerSettingData(data: false, identifier: id),
         ),
       );
       // Act
@@ -524,8 +524,8 @@ void main() {
     testWidgets('hides Menu Button in bottomBar', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: DisplaySettings.functionMenuDisplayMenuKey,
           ),
@@ -541,8 +541,8 @@ void main() {
     testWidgets('hides Week calendar in bottomBar', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: DisplaySettings.functionMenuDisplayWeekKey,
           ),
@@ -559,8 +559,8 @@ void main() {
     testWidgets('hides Month calendar in bottomBar', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: DisplaySettings.functionMenuDisplayMonthKey,
           ),
@@ -580,8 +580,8 @@ void main() {
         DisplaySettings.functionMenuDisplayMonthKey,
         DisplaySettings.functionMenuDisplayWeekKey,
       ].map(
-        (id) => Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(data: false, identifier: id),
+        (id) => Generic.createNew(
+          data: MemoplannerSettingData(data: false, identifier: id),
         ),
       );
       // Act
@@ -602,8 +602,8 @@ void main() {
         DisplaySettings.functionMenuDisplayMonthKey,
         DisplaySettings.functionMenuDisplayWeekKey,
       ].map(
-        (id) => Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(data: false, identifier: id),
+        (id) => Generic.createNew(
+          data: MemoplannerSettingData(data: false, identifier: id),
         ),
       );
       // Act
@@ -614,8 +614,8 @@ void main() {
         DisplaySettings.functionMenuDisplayMonthKey,
         DisplaySettings.functionMenuDisplayWeekKey,
       ].map(
-        (id) => Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(data: true, identifier: id),
+        (id) => Generic.createNew(
+          data: MemoplannerSettingData(data: true, identifier: id),
         ),
       );
       await tester.drag(find.byType(CalendarPage), const Offset(0, 500));
@@ -643,8 +643,8 @@ void main() {
         DisplaySettings.functionMenuDisplayNewTimerKey,
         DisplaySettings.functionMenuDisplayMenuKey,
       ].map(
-        (id) => Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(data: false, identifier: id),
+        (id) => Generic.createNew(
+          data: MemoplannerSettingData(data: false, identifier: id),
         ),
       );
       // Act
@@ -663,8 +663,8 @@ void main() {
         DisplaySettings.functionMenuDisplayNewTimerKey,
         DisplaySettings.functionMenuDisplayMenuKey,
       ].map(
-        (id) => Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(data: false, identifier: id),
+        (id) => Generic.createNew(
+          data: MemoplannerSettingData(data: false, identifier: id),
         ),
       );
       // Act

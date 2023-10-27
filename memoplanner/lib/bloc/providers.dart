@@ -74,6 +74,7 @@ class AuthenticatedBlocsProvider extends StatelessWidget {
               genericDb: GetIt.I<GenericDb>(),
               userId: authenticatedState.userId,
               noSyncSettings: MemoplannerSettings.noSyncSettings,
+              type: MemoplannerSettingData.genericType,
             ),
           ),
           RepositoryProvider<SessionsRepository>(

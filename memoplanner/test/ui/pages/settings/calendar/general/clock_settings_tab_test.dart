@@ -124,8 +124,8 @@ void main() {
     testWidgets('hides digital', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: ClockType.analogue.index,
             identifier: GeneralCalendarSettings.settingClockTypeKey,
           ),
@@ -141,8 +141,8 @@ void main() {
     testWidgets('hides analog', (tester) async {
       // Arrange
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: ClockType.digital.index,
             identifier: GeneralCalendarSettings.settingClockTypeKey,
           ),
@@ -322,8 +322,8 @@ void main() {
 
     testWidgets('12h true in 24h settings', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: true,
             identifier: TimepillarSettings.setting12hTimeFormatTimelineKey,
           ),
@@ -338,8 +338,8 @@ void main() {
 
     testWidgets('column of red dots', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: true,
             identifier: TimepillarSettings.settingTimePillarTimelineKey,
           ),
@@ -354,8 +354,8 @@ void main() {
 
     testWidgets('time line hides', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: TimepillarSettings.settingDisplayTimelineKey,
           ),
@@ -367,8 +367,8 @@ void main() {
 
     testWidgets('HourLines shows', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: true,
             identifier: TimepillarSettings.settingDisplayHourLinesKey,
           ),

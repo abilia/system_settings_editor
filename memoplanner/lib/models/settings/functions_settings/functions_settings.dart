@@ -75,7 +75,7 @@ class FunctionsSettings extends Equatable {
   List<GenericSettingData> get memoplannerSettingData => [
         ...display.memoplannerSettingData,
         ...timeout.memoplannerSettingData,
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: startView.index,
           identifier: functionMenuStartViewKey,
         ),

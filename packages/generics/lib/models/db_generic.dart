@@ -24,21 +24,28 @@ class DbGeneric extends DbModel<Generic> {
     required String data,
     required bool deleted,
   }) {
-    switch (type) {
-      case GenericType.memoPlannerSettings:
-        return Generic<GenericSettingData>._(
-          id: id,
+    try {
+      return Generic._(
+        id: id,
+        type: type,
+        data: GenericSettingData.fromJson(
+          identifier: identifier,
           type: type,
-          data: GenericSettingData.fromJson(data, identifier),
-          deleted: deleted,
-        );
-      default:
-        return Generic<RawGenericData>._(
-          id: id,
+          jsonData: data,
+        ),
+        deleted: deleted,
+      );
+    } catch (_) {
+      return Generic._(
+        id: id,
+        type: type,
+        deleted: deleted,
+        data: RawGenericData(
+          identifier: identifier,
           type: type,
-          deleted: deleted,
-          data: RawGenericData(data, identifier),
-        );
+          data: data,
+        ),
+      );
     }
   }
 
@@ -57,8 +64,8 @@ class DbGeneric extends DbModel<Generic> {
   @override
   Map<String, dynamic> toJson() => {
         'id': generic.id,
-        'type': generic.type?.nullOnEmpty(),
-        'identifier': generic.data.identifier.nullOnEmpty(),
+        'type': generic.type,
+        'identifier': generic.data.identifier,
         'data': generic.data.toRaw(),
         'deleted': generic.deleted,
         'revision': revision,

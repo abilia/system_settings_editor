@@ -101,12 +101,13 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
       genericDb: GenericDb(database),
       userId: user.id,
       noSyncSettings: MemoplannerSettings.noSyncSettings,
+      type: MemoplannerSettingData.genericType,
     );
     await genericRepository.fetchIntoDatabase();
     final generics = await genericRepository.getAll();
 
     final settings = MemoplannerSettings.fromSettingsMap(
-      generics.toGenericKeyMap().filterMemoplannerSettingsData(),
+      generics.toGenericKeyMap().filterSettingsData(),
     );
 
     log.fine('finding alarms from ${activities.length} activities');

@@ -66,20 +66,20 @@ void main() {
 
     testWidgets('memosettings respected', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             identifier: MonthCalendarSettings.monthCaptionShowClockKey,
             data: false,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             identifier: MonthCalendarSettings.monthCaptionShowMonthButtonsKey,
             data: false,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             identifier: MonthCalendarSettings.monthCaptionShowYearKey,
             data: false,
           ),
@@ -153,20 +153,20 @@ void main() {
 
     testWidgets('memosettings respected', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             identifier: MonthCalendarSettings.monthCaptionShowClockKey,
             data: false,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             identifier: MonthCalendarSettings.monthCaptionShowMonthButtonsKey,
             data: false,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             identifier: MonthCalendarSettings.monthCaptionShowYearKey,
             data: false,
           ),
@@ -196,8 +196,8 @@ void main() {
 
     testWidgets('memosettings respected', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             identifier: MonthCalendarSettings.calendarMonthViewShowColorsKey,
             data: WeekColor.captions.index,
           ),
@@ -261,8 +261,8 @@ void main() {
       'color respected',
       (tester) async {
         generics = [
-          Generic.createNew<GenericSettingData>(
-            data: GenericSettingData.fromData(
+          Generic.createNew(
+            data: MemoplannerSettingData(
               identifier: MonthCalendarSettings.calendarMonthViewShowColorsKey,
               data: WeekColor.captions.index,
             ),

@@ -2,19 +2,13 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
 part 'db_generic.dart';
 part 'generic_data.dart';
 
-class GenericType {
-  static const String memoPlannerSettings = 'memoPlannerSettings';
-}
-
 class Generic<T extends GenericData> extends DataModel {
-  final String? type;
-
+  final String type;
   final T data;
 
   const Generic._({
@@ -30,18 +24,13 @@ class Generic<T extends GenericData> extends DataModel {
   }) {
     return Generic<T>._(
       id: const Uuid().v4(),
-      type: _getTypeString<T>(),
+      type: data.type,
       data: data,
       deleted: deleted,
     );
   }
 
-  static String? _getTypeString<T extends GenericData>() {
-    if (T == GenericSettingData) return GenericType.memoPlannerSettings;
-    return null;
-  }
-
-  Generic<T> copyWithNewData({required T newData}) => Generic._(
+  Generic copyWithNewData({required newData}) => Generic._(
         id: id,
         type: type,
         data: newData,

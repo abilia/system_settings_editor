@@ -60,19 +60,19 @@ class CodeProtectSettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: code,
           identifier: codeKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: protectSettings,
           identifier: protectSettingsKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: protectCodeProtect,
           identifier: protectCodeProtectKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: protectAndroidSettings,
           identifier: protectAndroidSettingsKey,
         ),

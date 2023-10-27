@@ -27,7 +27,7 @@ class GenericCubit extends Cubit<GenericState> {
         for (var generic in genericData.whereType<GenericSettingData>())
           generic.key: currentState.generics[generic.key]
                   ?.copyWithNewData(newData: generic) ??
-              Generic.createNew<GenericSettingData>(data: generic)
+              Generic.createNew(data: generic)
       };
 
       emit(

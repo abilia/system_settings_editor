@@ -75,32 +75,32 @@ void main() {
 
     testWidgets('respects memoSettings ', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayAlarmButtonKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayDeleteButtonKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayEditButtonKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayQuarterHourKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayTimeLeftKey,
           ),
@@ -123,32 +123,32 @@ void main() {
 
     testWidgets('respects memoSettings with different values ', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: true,
             identifier: ActivityViewSettings.displayAlarmButtonKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayDeleteButtonKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayEditButtonKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: true,
             identifier: ActivityViewSettings.displayQuarterHourKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayTimeLeftKey,
           ),
@@ -296,26 +296,26 @@ void main() {
       ];
       activityDb.initWithActivities(activities);
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayAlarmButtonKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayDeleteButtonKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayEditButtonKey,
           ),
         ),
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: false,
             identifier: ActivityViewSettings.displayQuarterHourKey,
           ),

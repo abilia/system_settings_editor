@@ -225,8 +225,8 @@ void main() {
       when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
         (_) => Future.value(
           [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: activityWithAlarmTime
                     .onlyDays()
                     .nextDay()
@@ -1072,8 +1072,8 @@ void main() {
         when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
           (_) => Future.value(
             [
-              Generic.createNew<GenericSettingData>(
-                data: GenericSettingData.fromData(
+              Generic.createNew(
+                data: MemoplannerSettingData(
                   data: true,
                   identifier: AlarmSettings.showOngoingActivityInFullScreenKey,
                 ),
@@ -1129,8 +1129,8 @@ void main() {
         when(() => mockGenericDb.getAllNonDeletedMaxRevision()).thenAnswer(
           (_) => Future.value(
             [
-              Generic.createNew<GenericSettingData>(
-                data: GenericSettingData.fromData(
+              Generic.createNew(
+                data: MemoplannerSettingData(
                   data: true,
                   identifier: AlarmSettings.showOngoingActivityInFullScreenKey,
                 ),

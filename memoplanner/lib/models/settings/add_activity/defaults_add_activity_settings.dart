@@ -56,19 +56,19 @@ class DefaultsAddActivitySettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: alarm.intValue,
           identifier: defaultAlarmTypeKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: availableForType.index,
           identifier: defaultAvailableForTypeKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: checkable,
           identifier: defaultCheckableKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: removeAtEndOfDay,
           identifier: defaultRemoveAtEndOfDayKey,
         ),

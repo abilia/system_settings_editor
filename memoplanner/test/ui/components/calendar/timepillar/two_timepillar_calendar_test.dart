@@ -207,8 +207,8 @@ void main() {
 
     testWidgets('Dont Exists if settings say so', (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: TimepillarSettings.settingDisplayTimelineKey,
               ),
@@ -230,8 +230,8 @@ void main() {
       expect(find.byType(Timeline), findsWidgets);
 
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: TimepillarSettings.settingDisplayTimelineKey,
               ),
@@ -286,8 +286,8 @@ void main() {
     testWidgets('hourTimeline shows if setting is set',
         (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: TimepillarSettings.settingDisplayHourLinesKey,
               ),
@@ -305,8 +305,8 @@ void main() {
       expect(find.byType(HourLines), findsNothing);
 
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: true,
                 identifier: TimepillarSettings.settingDisplayHourLinesKey,
               ),
@@ -332,8 +332,8 @@ void main() {
     testWidgets('Categories dont Exists if settings say so',
         (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -358,8 +358,8 @@ void main() {
       expect(rightFinder, findsOneWidget);
 
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: false,
                 identifier: CategoriesSettings.calendarActivityTypeShowTypesKey,
               ),
@@ -460,8 +460,8 @@ void main() {
             );
         mockActivityDb.initWithActivities([a1, a2, a3, a4]);
         genericResponse = () => [
-              Generic.createNew<GenericSettingData>(
-                data: GenericSettingData.fromData(
+              Generic.createNew(
+                data: MemoplannerSettingData(
                   data: false,
                   identifier:
                       CategoriesSettings.calendarActivityTypeShowColorKey,
@@ -921,14 +921,14 @@ void main() {
         'When night is longer than day, timepillars have the same width',
         (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: 10 * Duration.millisecondsPerHour,
                 identifier: DayParts.morningIntervalStartKey,
               ),
             ),
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: 19 * Duration.millisecondsPerHour,
                 identifier: DayParts.nightIntervalStartKey,
               ),
@@ -950,14 +950,14 @@ void main() {
         'When day is longer than night, day timepillar is wider than night timepillar',
         (WidgetTester tester) async {
       genericResponse = () => [
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: 5 * Duration.millisecondsPerHour,
                 identifier: DayParts.morningIntervalStartKey,
               ),
             ),
-            Generic.createNew<GenericSettingData>(
-              data: GenericSettingData.fromData(
+            Generic.createNew(
+              data: MemoplannerSettingData(
                 data: 22 * Duration.millisecondsPerHour,
                 identifier: DayParts.nightIntervalStartKey,
               ),

@@ -47,15 +47,15 @@ class TimeoutSettings extends Equatable {
       );
 
   List<GenericSettingData> get memoplannerSettingData => [
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: duration.inMilliseconds,
           identifier: activityTimeoutKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: shouldUseScreensaver,
           identifier: useScreensaverKey,
         ),
-        GenericSettingData.fromData(
+        MemoplannerSettingData(
           data: screensaverOnlyDuringNight && screensaver,
           identifier: screensaverOnlyDuringNightKey,
         ),

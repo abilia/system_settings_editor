@@ -141,8 +141,8 @@ void main() {
 
     testWidgets('no color respected ', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: DayColor.noColors.index,
             identifier: GeneralCalendarSettings.calendarDayColorKey,
           ),
@@ -159,8 +159,8 @@ void main() {
 
     testWidgets('weekend color respected ', (tester) async {
       generics = [
-        Generic.createNew<GenericSettingData>(
-          data: GenericSettingData.fromData(
+        Generic.createNew(
+          data: MemoplannerSettingData(
             data: DayColor.saturdayAndSunday.index,
             identifier: GeneralCalendarSettings.calendarDayColorKey,
           ),

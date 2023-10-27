@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:generics/generics.dart';
 import 'package:repository_base/repository_base.dart';
-import 'package:seagull_fakes/all.dart';
+
 import 'package:sqflite/sqflite.dart';
 
 void main() {
@@ -18,8 +18,22 @@ void main() {
     const key = 'KeY';
     expect(all.length, 0);
 
-    final g1 = genericSetting(true, key);
-    final g2 = genericSetting(false, key);
+    final g1 = Generic.createNew(
+      data: GenericSettingData(
+        identifier: key,
+        type: 'type',
+        data: true,
+      ),
+    );
+
+    final g2 = Generic.createNew(
+      data: GenericSettingData(
+        identifier: key,
+        type: 'type',
+        data: false,
+      ),
+    );
+
     await genericDb.insert([g1.wrapWithDbModel(revision: 1)]
         .whereType<DbModel<Generic<GenericData>>>());
     await genericDb.insert([g2.wrapWithDbModel(revision: 2)]

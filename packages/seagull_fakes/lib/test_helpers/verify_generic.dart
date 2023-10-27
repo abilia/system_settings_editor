@@ -43,21 +43,7 @@ void verifyGenerics(
   expect(v.callCount, 1);
   final l = v.captured.single.toList() as List<Generic<GenericData>>;
   for (var kvp in keyMatch.entries) {
-    final d = l
-        .whereType<Generic<GenericSettingData>>()
-        .firstWhere((element) => element.data.identifier == kvp.key);
-    expect(d.data.data, kvp.value);
+    final d = l.firstWhere((element) => element.data.identifier == kvp.key);
+    expect(d.data.dynamicData, kvp.value);
   }
-}
-
-Generic<GenericSettingData> genericSetting(
-  bool value,
-  String identifier,
-) {
-  return Generic.createNew<GenericSettingData>(
-    data: GenericSettingData.fromData(
-      data: value,
-      identifier: identifier,
-    ),
-  );
 }
