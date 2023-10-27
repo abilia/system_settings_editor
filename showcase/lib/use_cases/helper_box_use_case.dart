@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:showcase/knobs.dart';
 import 'package:ui/components/helper_box.dart';
-import 'package:ui/utils/states.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 class HelperBoxUseCase extends WidgetbookUseCase {
@@ -13,29 +12,8 @@ class HelperBoxUseCase extends WidgetbookUseCase {
             child: SeagullHelperBox(
               size: mediumLargeSizeKnob(context),
               text: textKnob(context),
-              icon: iconKnob(context),
-              state: context.knobs.list(
-                label: 'State',
-                options: [
-                  MessageState.caution,
-                  MessageState.error,
-                  MessageState.info,
-                  MessageState.success,
-                ],
-                initialOption: MessageState.caution,
-                labelBuilder: (state) {
-                  if (state == MessageState.caution) {
-                    return 'Caution';
-                  }
-                  if (state == MessageState.error) {
-                    return 'Error';
-                  }
-                  if (state == MessageState.info) {
-                    return 'Info';
-                  }
-                  return 'Success';
-                },
-              ),
+              icon: nullableIconKnob(context),
+              state: messageStateKnob(context),
             ),
           ),
         );
