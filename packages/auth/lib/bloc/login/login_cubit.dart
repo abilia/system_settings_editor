@@ -30,6 +30,12 @@ class LoginCubit extends Cubit<LoginState> {
   final bool allowExpiredLicense;
   final Product product;
 
+  void toggleObscurePassword() {
+    emit(state.copyWith(
+      obscurePassword: !state.obscurePassword,
+    ));
+  }
+
   void usernameChanged(String username) {
     emit(state.copyWith(
       username: username.trim(),
@@ -38,7 +44,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   void passwordChanged(String password) {
     emit(state.copyWith(
-      password: password.trim(),
+      password: password,
     ));
   }
 

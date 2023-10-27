@@ -25,7 +25,27 @@ class MessageLookup extends MessageLookupByLibrary {
       _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
+        'connectToInternet': MessageLookupByLibrary.simpleMessage(
+            'Connect to the internet to continue.'),
+        'lincenseExpired': MessageLookupByLibrary.simpleMessage(
+            'Your license expired, please connect support to extend license.'),
         'logOut': MessageLookupByLibrary.simpleMessage('Log out'),
-        'signIn': MessageLookupByLibrary.simpleMessage('Sign In')
+        'noHandiLicence': MessageLookupByLibrary.simpleMessage(
+            'You need to have Handi Calendar licence to be able to use app.'),
+        'password': MessageLookupByLibrary.simpleMessage('Password'),
+        'signIn': MessageLookupByLibrary.simpleMessage('Log in'),
+        'somethingWentWrong': MessageLookupByLibrary.simpleMessage(
+            'Something went wrong on our side. Please try again later.'),
+        'sync': MessageLookupByLibrary.simpleMessage('Sync'),
+        'tooManyAttempts': MessageLookupByLibrary.simpleMessage(
+            'Please, wait a moment before you can try again.'),
+        'unsupportedUserType': MessageLookupByLibrary.simpleMessage(
+            'You need to have myAbilia account with type “User” to be able use Handi calendar app.'),
+        'userNameOrEmail':
+            MessageLookupByLibrary.simpleMessage('Username or email address'),
+        'verifyCredentials': MessageLookupByLibrary.simpleMessage(
+            'Username or password doesn’t match. Verify your credentials and try again.'),
+        'welcomeToHandi':
+            MessageLookupByLibrary.simpleMessage('Welcome to Handi!')
       };
 }

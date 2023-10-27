@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:ui/src/extensions/text_style_extensions.dart';
 import 'package:ui/src/styles/borders.dart';

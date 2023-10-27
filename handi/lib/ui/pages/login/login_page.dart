@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:auth/auth.dart';
 import 'package:auth/repository/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -10,57 +8,34 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:repository_base/end_point.dart';
 import 'package:seagull_clock/clock_cubit.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:text_to_speech/tts_handler.dart';
 import 'package:ui/components/buttons/buttons.dart';
 import 'package:ui/components/combo_box.dart';
+import 'package:ui/components/helper_box.dart';
 import 'package:ui/themes/abilia_theme.dart';
 import 'package:ui/utils/states.dart';
 
+part 'login_button.dart';
+
+part 'login_form.dart';
+
+part 'login_inputs.dart';
+
 part 'logo_with_change_server.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({
-    required this.unauthenticatedState,
-    super.key,
-  });
+part 'welcome_to_handi_text.dart';
 
-  final Unauthenticated unauthenticatedState;
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
   Widget build(BuildContext context) {
-    final reason = unauthenticatedState.loggedOutReason;
-    final translate = Lt.of(context);
     final abiliaTheme = AbiliaTheme.of(context);
-    final textStyles = abiliaTheme.textStyles;
-    final spacings = abiliaTheme.spacings;
-    if (reason != LoggedOutReason.logOut) {
-      Future(
-        () async => showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Unauthorized'),
-              content: const SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    Text('Logged out'),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                SeagullActionButton(
-                  text: 'Ok',
-                  type: ActionButtonType.primary,
-                  size: ButtonSize.large,
-                  onPressed: () {
-                    Navigator.of(context).maybePop();
-                  },
-                ),
-              ],
-            );
-          },
-        ),
-      );
-    }
     return BlocProvider(
       create: (context) => LoginCubit(
         authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
@@ -72,67 +47,8 @@ class LoginPage extends StatelessWidget {
         product: Product.handicalendar,
       ),
       child: Scaffold(
-        body: BlocBuilder<LoginCubit, LoginState>(
-          builder: (context, state) => SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: spacings.spacing400,
-                vertical: spacings.spacing600,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const LogoWithChangeServer(),
-                  SizedBox(height: spacings.spacing800),
-                  Text(
-                    'Welcome to Handi!',
-                    style: textStyles.primary525,
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: spacings.spacing800),
-                  Tooltip(
-                    message: 'Username',
-                    child: SeagullComboBox(
-                      label: 'Username',
-                      size: ComboBoxSize.medium,
-                      leadingIcon: Symbols.account_circle,
-                      textInputAction: TextInputAction.next,
-                      onChanged: context.read<LoginCubit>().usernameChanged,
-                      messageState:
-                          state is LoginFailure ? MessageState.error : null,
-                    ),
-                  ),
-                  SizedBox(height: spacings.spacing300),
-                  Tooltip(
-                    message: 'Password',
-                    child: SeagullComboBox(
-                      label: 'Password',
-                      size: ComboBoxSize.medium,
-                      leadingIcon: Symbols.key,
-                      trailingIcon: Symbols.visibility,
-                      obscureText: true,
-                      onChanged: context.read<LoginCubit>().passwordChanged,
-                      messageState:
-                          state is LoginFailure ? MessageState.error : null,
-                      message: state is LoginFailure ? state.cause.name : null,
-                    ),
-                  ),
-                  SizedBox(height: spacings.spacing600),
-                  SeagullActionButton(
-                    text: translate.signIn,
-                    type: ActionButtonType.primary,
-                    size: ButtonSize.large,
-                    isLoading: state is LoginLoading,
-                    leadingIcon: Symbols.login,
-                    onPressed: state.isFormValid
-                        ? context.read<LoginCubit>().loginButtonPressed
-                        : null,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
+        backgroundColor: abiliaTheme.colors.surface.tertiary,
+        body: const LoginForm(),
       ),
     );
   }

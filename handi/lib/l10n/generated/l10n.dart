@@ -37,7 +37,18 @@ class Lt {
 
   static final Map<String, List<String>> _metadata = {
     'logOut': [],
-    'signIn': []
+    'signIn': [],
+    'sync': [],
+    'userNameOrEmail': [],
+    'password': [],
+    'welcomeToHandi': [],
+    'verifyCredentials': [],
+    'unsupportedUserType': [],
+    'noHandiLicence': [],
+    'lincenseExpired': [],
+    'somethingWentWrong': [],
+    'connectToInternet': [],
+    'tooManyAttempts': []
   };
 
   static Future<Lt> load(Locale locale) {
@@ -71,11 +82,121 @@ class Lt {
     );
   }
 
-  /// `Sign In`
+  /// `Log in`
   String get signIn {
     return Intl.message(
-      'Sign In',
+      'Log in',
       name: 'signIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync`
+  String get sync {
+    return Intl.message(
+      'Sync',
+      name: 'sync',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username or email address`
+  String get userNameOrEmail {
+    return Intl.message(
+      'Username or email address',
+      name: 'userNameOrEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message(
+      'Password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome to Handi!`
+  String get welcomeToHandi {
+    return Intl.message(
+      'Welcome to Handi!',
+      name: 'welcomeToHandi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username or password doesn’t match. Verify your credentials and try again.`
+  String get verifyCredentials {
+    return Intl.message(
+      'Username or password doesn’t match. Verify your credentials and try again.',
+      name: 'verifyCredentials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to have myAbilia account with type “User” to be able use Handi calendar app.`
+  String get unsupportedUserType {
+    return Intl.message(
+      'You need to have myAbilia account with type “User” to be able use Handi calendar app.',
+      name: 'unsupportedUserType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to have Handi Calendar licence to be able to use app.`
+  String get noHandiLicence {
+    return Intl.message(
+      'You need to have Handi Calendar licence to be able to use app.',
+      name: 'noHandiLicence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your license expired, please connect support to extend license.`
+  String get lincenseExpired {
+    return Intl.message(
+      'Your license expired, please connect support to extend license.',
+      name: 'lincenseExpired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Something went wrong on our side. Please try again later.`
+  String get somethingWentWrong {
+    return Intl.message(
+      'Something went wrong on our side. Please try again later.',
+      name: 'somethingWentWrong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connect to the internet to continue.`
+  String get connectToInternet {
+    return Intl.message(
+      'Connect to the internet to continue.',
+      name: 'connectToInternet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, wait a moment before you can try again.`
+  String get tooManyAttempts {
+    return Intl.message(
+      'Please, wait a moment before you can try again.',
+      name: 'tooManyAttempts',
       desc: '',
       args: [],
     );
