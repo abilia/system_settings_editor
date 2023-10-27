@@ -39,8 +39,12 @@ test_bundle.dart
 .packages
 .pub-cache/
 .pub/
+<<<<<<< HEAD
 **/build/
 **/coverage
+=======
+.idea/
+>>>>>>> 9c29aa259 (SGC-582: added functions for getting and setting brightness)
 
 # Android related
 **/gradle-wrapper.jar
