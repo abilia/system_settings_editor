@@ -7,6 +7,7 @@ import 'package:generics/generics.dart';
 import 'package:handi/bloc/settings_cubit.dart';
 import 'package:handi/l10n/generated/l10n.dart';
 import 'package:handi/ui/components/tts.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:sortables/sortables.dart';
 import 'package:support_persons/bloc/support_persons_cubit.dart';
 import 'package:ui/components/buttons/buttons.dart';
@@ -37,7 +38,7 @@ class LoggedInPage extends StatelessWidget {
     final tts = context.select(
         (SettingsCubit settingsCubit) => settingsCubit.state.textToSpeech);
 
-    final hasSynced = context.select((SyncBloc bloc) => bloc.hasSynced);
+    final isSyncing = context.select((SyncBloc bloc) => bloc.state is Syncing);
     return Scaffold(
       body: BlocListener<PushCubit, RemoteMessage>(
         listener: (context, message) {
@@ -47,80 +48,73 @@ class LoggedInPage extends StatelessWidget {
             ),
           );
         },
-        child: !hasSynced
-            ? const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.blue),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 100),
+              Center(
+                child: Tts(
+                  child: Text('${authenticated.user}'),
                 ),
-              )
-            : Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: 100),
-                    Center(
-                      child: Tts(
-                        child: Text('${authenticated.user}'),
-                      ),
-                    ),
-                    const SizedBox(height: 100),
-                    Column(
-                      children: [
-                        FutureBuilder(
-                          future: context
-                              .read<ActivitiesCubit>()
-                              // ignore: discarded_futures
-                              .getActivitiesAfter(DateTime.now()),
-                          builder: (context, snapshot) {
-                            final activities = snapshot.data?.where(
-                                    (activity) => activity.startTime
-                                        .isAfter(DateTime.now())) ??
-                                [];
+              ),
+              const SizedBox(height: 100),
+              Column(
+                children: [
+                  FutureBuilder(
+                    future: context
+                        .read<ActivitiesCubit>()
+                        // ignore: discarded_futures
+                        .getActivitiesAfter(DateTime.now()),
+                    builder: (context, snapshot) {
+                      final activities = snapshot.data?.where((activity) =>
+                              activity.startTime.isAfter(DateTime.now())) ??
+                          [];
 
-                            return Text(
-                                'Upcoming activities: ${activities.length}');
-                          },
-                        ),
-                        Text('Generics: $generics'),
-                        Text('Sortables: $sortables'),
-                        Text('User files: $userFiles'),
-                        Text('Support persons: $supportPersons'),
-                      ],
-                    ),
-                    const Spacer(),
-                    Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Text('Tts'),
-                          Switch(
-                            value: tts,
-                            onChanged: context.read<SettingsCubit>().setTts,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SeagullActionButton(
-                      text: 'Sync',
-                      type: ActionButtonType.primary,
-                      size: ButtonSize.large,
-                      onPressed: () =>
-                          context.read<SyncBloc>().add(const SyncAll()),
-                    ),
-                    const SizedBox(height: 8),
-                    SeagullActionButton(
-                      text: Lt.of(context).logOut,
-                      type: ActionButtonType.primary,
-                      size: ButtonSize.large,
-                      onPressed: () => context
-                          .read<AuthenticationBloc>()
-                          .add(const LoggedOut()),
+                      return Text('Upcoming activities: ${activities.length}');
+                    },
+                  ),
+                  Text('Generics: $generics'),
+                  Text('Sortables: $sortables'),
+                  Text('User files: $userFiles'),
+                  Text('Support persons: $supportPersons'),
+                ],
+              ),
+              const Spacer(),
+              Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('Tts'),
+                    Switch(
+                      value: tts,
+                      onChanged: context.read<SettingsCubit>().setTts,
                     ),
                   ],
                 ),
               ),
+              SeagullActionButton(
+                text: 'Sync',
+                type: ActionButtonType.primary,
+                size: ButtonSize.large,
+                isLoading: isSyncing,
+                leadingIcon: Symbols.sync,
+                onPressed: () => context.read<SyncBloc>().add(const SyncAll()),
+              ),
+              const SizedBox(height: 8),
+              SeagullActionButton(
+                text: Lt.of(context).logOut,
+                type: ActionButtonType.primary,
+                size: ButtonSize.large,
+                leadingIcon: Symbols.logout,
+                onPressed: () =>
+                    context.read<AuthenticationBloc>().add(const LoggedOut()),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
